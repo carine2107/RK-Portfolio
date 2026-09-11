@@ -246,6 +246,9 @@
     "details": {
       "subtitle": "Untertitel",
       "author": "Autor",
+      "publisher": "Verlag",
+      "publicationDate": "Erscheinungsdatum",
+      "pages": "Seitenzahl",
       "summary": "Zusammenfassung",
       "audience": "Zielgruppe",
       "language": "Sprache",

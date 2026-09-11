@@ -246,6 +246,9 @@
     "details": {
       "subtitle": "Subtitle",
       "author": "Author",
+      "publisher": "Publisher",
+      "publicationDate": "Publication date",
+      "pages": "Pages",
       "summary": "Summary",
       "audience": "Who it is for",
       "language": "Language",

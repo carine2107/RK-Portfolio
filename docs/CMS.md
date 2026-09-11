@@ -73,7 +73,8 @@ Le site n'affiche que les articles publiés dont `publishedAt` est passé.
 ### `books` — Livres et publications
 
 `title`_, `slug`_, `subtitle`, `author`_, `cover`, `summary`_, `description`,
-`audience[]`, `bookLanguage[]`, `format[]`, `isbn`, `price`, `currency`,
+`audience[]`, `bookLanguage[]`, `format[]`, `isbn`, `publisher`,
+`publicationDate`, `pages`, `price`, `currency`,
 `availability`_, `saleType`_, `purchaseLinks[]`, `previewPdf`, `relatedBooks`,
 `featured`, `order`, `isPlaceholder`, `seo`.
 

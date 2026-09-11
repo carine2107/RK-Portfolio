@@ -592,6 +592,12 @@ export interface Book {
    */
   isbn?: string | null;
   /**
+   * Publishing house or "Self-published".
+   */
+  publisher?: string | null;
+  publicationDate?: string | null;
+  pages?: number | null;
+  /**
    * Leave empty when the price is set by the retailer.
    */
   price?: number | null;
@@ -1258,6 +1264,9 @@ export interface BooksSelect<T extends boolean = true> {
   bookLanguage?: T;
   format?: T;
   isbn?: T;
+  publisher?: T;
+  publicationDate?: T;
+  pages?: T;
   price?: T;
   currency?: T;
   availability?: T;

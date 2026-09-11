@@ -14,7 +14,7 @@ import { Section } from '@/components/ui/Section'
 import type { Locale } from '@/i18n/routing'
 import { entryPaths } from '@/lib/alternates'
 import { getBookBySlug, getBooks } from '@/lib/cms'
-import { formatPrice } from '@/lib/format'
+import { formatDate, formatPrice } from '@/lib/format'
 import { metaDescription, pageMetadata } from '@/lib/seo'
 
 /**
@@ -77,6 +77,9 @@ export default async function BookDetailPage({ params }: Props) {
 
   const facts: { label: string; value: string }[] = [
     { label: t('details.author'), value: book.author },
+    { label: t('details.publisher'), value: book.publisher },
+    { label: t('details.publicationDate'), value: formatDate(book.publicationDate, locale) },
+    { label: t('details.pages'), value: book.pages !== null ? String(book.pages) : '' },
     {
       label: t('details.language'),
       value: book.languages.map((code) => LANGUAGE_LABELS[code]?.[locale] ?? code).join(', '),

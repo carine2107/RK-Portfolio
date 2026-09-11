@@ -96,6 +96,10 @@ export type BookView = {
   languages: string[]
   formats: string[]
   isbn: string
+  publisher: string
+  /** ISO date, '' when unknown. */
+  publicationDate: string
+  pages: number | null
   price: number | null
   currency: string
   availability: 'available' | 'preorder' | 'comingSoon' | 'outOfStock'

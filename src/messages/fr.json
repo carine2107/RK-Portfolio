@@ -246,6 +246,9 @@
     "details": {
       "subtitle": "Sous-titre",
       "author": "Auteur",
+      "publisher": "Éditeur",
+      "publicationDate": "Date de parution",
+      "pages": "Nombre de pages",
       "summary": "Résumé",
       "audience": "Public concerné",
       "language": "Langue",

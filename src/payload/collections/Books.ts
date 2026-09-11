@@ -127,6 +127,36 @@ export const Books: CollectionConfig = {
       },
     },
     {
+      type: 'row',
+      fields: [
+        {
+          name: 'publisher',
+          type: 'text',
+          label: tr('Éditeur', 'Verlag', 'Publisher'),
+          admin: {
+            description: tr(
+              'Maison d’édition ou « Auto-édition ».',
+              'Verlag oder „Selbstverlag“.',
+              'Publishing house or "Self-published".',
+            ),
+          },
+        },
+        {
+          name: 'publicationDate',
+          type: 'date',
+          label: tr('Date de parution', 'Erscheinungsdatum', 'Publication date'),
+          admin: { date: { pickerAppearance: 'dayOnly', displayFormat: 'dd/MM/yyyy' } },
+        },
+        {
+          name: 'pages',
+          type: 'number',
+          label: tr('Nombre de pages', 'Seitenzahl', 'Number of pages'),
+          min: 1,
+          admin: { step: 1 },
+        },
+      ],
+    },
+    {
       name: 'price',
       type: 'number',
       label: tr('Prix TTC', 'Preis inkl. MwSt.', 'Price incl. VAT'),

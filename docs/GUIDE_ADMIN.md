@@ -149,16 +149,17 @@ approche, expériences et articles liés.
 
 **Contenus → Livres et publications**
 
-| Champ                                        | Rôle                                                         |
-| -------------------------------------------- | ------------------------------------------------------------ |
-| **Couverture**                               | Couverture, format portrait                                  |
-| **Résumé**, **Présentation détaillée**       | Résumé court et présentation détaillée                       |
-| **Public**, **Langue**, **Format**, **ISBN** | Fiche technique                                              |
-| **Prix TTC** + **Devise**                    | Prix TTC ; laisser vide si le prix est fixé par le revendeur |
-| **Disponibilité**                            | Disponible / Précommande / Bientôt / Épuisé                  |
-| **Mode de vente**                            | _External retailer_, _Direct sale_, _Information only_       |
-| **Liens d’achat**                            | Un ou plusieurs boutons d'achat externes (Amazon, éditeur…)  |
-| **Extrait (PDF)**                            | Extrait facultatif                                           |
+| Champ                                                  | Rôle                                                         |
+| ------------------------------------------------------ | ------------------------------------------------------------ |
+| **Couverture**                                         | Couverture, format portrait                                  |
+| **Résumé**, **Présentation détaillée**                 | Résumé court et présentation détaillée                       |
+| **Public**, **Langue**, **Format**, **ISBN**           | Fiche technique                                              |
+| **Éditeur**, **Date de parution**, **Nombre de pages** | Fiche technique ; affichés seulement s'ils sont renseignés   |
+| **Prix TTC** + **Devise**                              | Prix TTC ; laisser vide si le prix est fixé par le revendeur |
+| **Disponibilité**                                      | Disponible / Précommande / Bientôt / Épuisé                  |
+| **Mode de vente**                                      | _External retailer_, _Direct sale_, _Information only_       |
+| **Liens d’achat**                                      | Un ou plusieurs boutons d'achat externes (Amazon, éditeur…)  |
+| **Extrait (PDF)**                                      | Extrait facultatif                                           |
 
 **Modèle de vente** — le site est conçu pour le modèle hybride prévu au cahier
 des charges :

@@ -86,6 +86,9 @@ export function bookSchema(book: BookView, locale: Locale): Json {
     author: { '@type': 'Person', name: book.author },
     inLanguage: book.languages.length > 0 ? book.languages : locale,
     ...(book.isbn ? { isbn: book.isbn } : {}),
+    ...(book.publisher ? { publisher: { '@type': 'Organization', name: book.publisher } } : {}),
+    ...(book.publicationDate ? { datePublished: book.publicationDate.slice(0, 10) } : {}),
+    ...(book.pages !== null ? { numberOfPages: book.pages } : {}),
     url: absoluteUrl(locale, `/books/${book.slug}`),
     ...(book.cover?.url ? { image: `${siteUrl}${book.cover.url}` } : {}),
     ...(book.price !== null && book.saleType === 'external'

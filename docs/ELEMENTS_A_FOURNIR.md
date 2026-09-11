@@ -9,6 +9,14 @@ témoignage ni statistique ne figure sur le site.
 
 Légende : 🔴 bloquant pour la mise en ligne · 🟠 important · 🟡 confort
 
+**Qui saisit quoi ?** Tous les contenus (textes, traductions, photos, livre,
+activités, expériences, formations, documents PDF, coordonnées, pages légales)
+se saisissent **directement dans l'administration, à tout moment**, sans
+intervention technique : voir `GUIDE_ADMIN.md`. Seuls le domaine, l'hébergement,
+le compte d'envoi d'e-mails (SMTP), la mesure d'audience et un éventuel
+prestataire de paiement demandent une configuration technique (sections 1, 8 et
+5.5).
+
 ---
 
 ## 1. Domaine, hébergement, comptes
@@ -55,16 +63,16 @@ Légende : 🔴 bloquant pour la mise en ligne · 🟠 important · 🟡 confort
 
 ## 5. Livres et publications
 
-| #   | Élément                                                                                                                  | Priorité                          |
-| --- | ------------------------------------------------------------------------------------------------------------------------ | --------------------------------- |
-| 5.1 | ✅ Titre, sous-titre, résumé, public, langue, format, ISBN (978-3-9828510-0-6) — reçus le 11/09/2026                     | —                                 |
-| 5.2 | ✅ Couverture — extraite du fichier d’impression « Book 6x9 new.pdf »                                                    | —                                 |
-| 5.3 | ✅ Modèle de vente : externe (Amazon), commande directe avec dédicace annoncée « prochainement »                         | —                                 |
-| 5.4 | ✅ Liens Amazon Allemagne et Amazon France                                                                               | —                                 |
-| 5.6 | **Prix TTC** du livre (non fourni : le site n’affiche pas de prix, Amazon fait foi)                                      | 🟡                                |
-| 5.7 | Nombre de pages, date de parution, éditeur (Kenmogne Strategic Publishing ?)                                             | 🟡                                |
-| 5.8 | Relecture des traductions allemande et anglaise de la fiche livre                                                        | 🟠                                |
-| 5.5 | Si vente directe : prestataire de paiement, prix TTC, TVA, pays desservis, transporteur, frais, CGV, politique de retour | 🔴 _pour cette option uniquement_ |
+| #   | Élément                                                                                                                                                  | Priorité                          |
+| --- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------- |
+| 5.1 | ✅ Titre, sous-titre, résumé, public, langue, format, ISBN (978-3-9828510-0-6) — reçus le 11/09/2026                                                     | —                                 |
+| 5.2 | ✅ Couverture — extraite du fichier d’impression « Book 6x9 new.pdf »                                                                                    | —                                 |
+| 5.3 | ✅ Modèle de vente : externe (Amazon), commande directe avec dédicace annoncée « prochainement »                                                         | —                                 |
+| 5.4 | ✅ Liens Amazon Allemagne et Amazon France                                                                                                               | —                                 |
+| 5.6 | **Prix TTC** du livre (non fourni : le site n’affiche pas de prix, Amazon fait foi) — champ _Prix TTC_ de la fiche livre                                 | 🟡                                |
+| 5.7 | Nombre de pages, date de parution, éditeur (Kenmogne Strategic Publishing ?) — champs _Éditeur_, _Date de parution_, _Nombre de pages_ de la fiche livre | 🟡                                |
+| 5.8 | Relecture des traductions allemande et anglaise de la fiche livre — sélecteur de langue du contenu en haut de la fiche                                   | 🟠                                |
+| 5.5 | Si vente directe : prestataire de paiement, prix TTC, TVA, pays desservis, transporteur, frais, CGV, politique de retour                                 | 🔴 _pour cette option uniquement_ |
 
 > La vente directe **n'est pas activée** : le modèle de données est prêt, mais
 > aucun paiement n'est simulé. Son activation est une évolution à chiffrer.
