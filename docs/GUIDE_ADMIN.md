@@ -1,0 +1,286 @@
+# Guide administrateur — RK CMS
+
+Ce guide s'adresse au propriétaire du site. Aucune compétence technique n'est
+nécessaire : tout ce qui suit se fait depuis l'interface d'administration.
+
+**Adresse de l'administration : `https://<votre-domaine>/admin`**
+
+---
+
+## 1. Se connecter et gérer son compte
+
+1. Ouvrir `/admin`, saisir l'e-mail et le mot de passe.
+2. En haut à droite, le menu du compte permet de changer le mot de passe.
+3. Après cinq tentatives infructueuses, le compte est verrouillé dix minutes.
+
+### Rôles
+
+| Rôle                | Peut faire                                                                                                       | Ne peut pas faire                                                   |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| **Administrator**   | Tout : contenus, réglages du site, pages légales, comptes utilisateurs                                           | —                                                                   |
+| **Editor / Author** | Créer, modifier et publier les contenus (articles, expertises, expériences, livres, activités), gérer les médias | Créer des comptes, changer un rôle, créer/supprimer une page légale |
+
+Créer un compte : **Administration → Utilisateurs → Créer**, choisir le rôle,
+saisir un mot de passe solide. Ne jamais partager un compte entre deux personnes.
+
+---
+
+## 2. Deux réglages de langue à ne pas confondre
+
+| Réglage                                               | Où                                           | Ce qu'il change                                                           |
+| ----------------------------------------------------- | -------------------------------------------- | ------------------------------------------------------------------------- |
+| **Locale** (en haut à droite : « Locale : Français ») | Barre supérieure de l'administration         | La **langue du contenu** que vous êtes en train de rédiger (FR / DE / EN) |
+| **Language**                                          | Votre compte → _Payload Settings → Language_ | La **langue de l'interface** d'administration (boutons, menus, messages)  |
+
+Autrement dit : passer la _Locale_ en français ne traduit pas les boutons de
+l'interface — c'est le réglage _Language_ qui s'en charge.
+
+Le sélecteur _Locale_ n'apparaît que là où il sert : il est masqué sur votre
+compte, sur les utilisateurs et sur les demandes de contact, qui ne contiennent
+aucun champ traduit.
+
+L'administration est **entièrement traduite en français, allemand et anglais** :
+menus, noms de collections, libellés de champs, options et textes d'aide. Elle
+s'ouvre dans la langue de votre navigateur ; pour la forcer en français une fois
+pour toutes : **votre compte → _Payload Settings_ → _Language / Sprache_ →
+Français**.
+
+## 3. Les trois langues
+
+Chaque contenu existe en **français, allemand et anglais**.
+
+- En haut de l'écran d'édition, un **sélecteur de langue** (`English`,
+  `Français`, `Deutsch`) change la langue en cours d'édition.
+- On enregistre **par langue** : rédiger en anglais, enregistrer, passer au
+  français, traduire, enregistrer, puis l'allemand.
+- Les champs non traduits (dates, prix, liens, ISBN, images) sont communs.
+- Une traduction laissée vide retombe automatiquement sur l'anglais : le site
+  n'affiche jamais de texte vide ni de code technique. **Mais** un contenu
+  partiellement traduit produit une page mélangeant deux langues : toujours
+  compléter les trois versions avant de publier.
+- Le **slug** (fin de l'URL) est traduisible : `/fr/insights/lire-un-bilan…`
+  et `/de/insights/eine-bilanz-lesen…` désignent le même article. Laisser le
+  champ vide le génère automatiquement à partir du titre.
+
+> ⚠️ Ne jamais coller une traduction automatique non relue : le cahier des
+> charges l'interdit explicitement.
+
+---
+
+## 4. Publier un article RK Insights
+
+1. **RK Insights → Articles RK Insights → Créer**.
+2. Renseigner :
+   - **Titre** — le titre affiché ;
+   - **Slug (URL)** — laisser vide pour la génération automatique ;
+   - **Accroche** — 2 à 3 phrases, réutilisées dans les listes et les partages
+     LinkedIn/Facebook ;
+   - **Image de couverture** — paysage, au moins 1600 × 900 px (voir §8) ;
+   - **Catégorie** — obligatoire ;
+   - **Published at** — date d'affichage. **Une date future programme la
+     publication** : l'article n'apparaîtra qu'à partir de cette date ;
+   - **Article à la une** — met l'article en avant en haut de la page RK Insights ;
+   - onglet **Article** — le corps du texte (titres de niveau 2 pour le
+     sommaire automatique) ;
+   - onglet **Liens** — expertises, articles et livres liés ;
+   - onglet **Référencement** — titre et description spécifiques si besoin.
+3. Traduire dans les deux autres langues (§3).
+4. **Enregistrer comme brouillon** pour continuer plus tard, **Aperçu** pour voir
+   le rendu, **Publier** pour mettre en ligne.
+
+Le temps de lecture est calculé automatiquement à l'enregistrement.
+
+> **Aperçu** — le bouton _Aperçu_ ouvre la page telle qu'elle sera publiée,
+> même si l'article est encore en brouillon. Un bandeau orange le rappelle ;
+> « Quitter l'aperçu » revient à la version publique. L'aperçu n'est visible que
+> par une personne connectée à l'administration.
+>
+> **Délai d'affichage** — une modification publiée apparaît sur le site public
+> dans les **5 minutes** au plus (le site met les pages en cache pour rester
+> rapide). Un rechargement forcé ne raccourcit pas ce délai.
+
+### Modifier ou dépublier
+
+Ouvrir l'article → modifier → **Publier les modifications**.
+Pour le retirer du site : menu **⋯ → Dépublier** (l'article reste en brouillon).
+Toutes les versions sont conservées : onglet **Versions → Restaurer** pour revenir
+à un état antérieur.
+
+---
+
+## 5. Gérer les expériences et projets
+
+**Contenus → Expériences et projets**
+
+| Champ                      | Remarque                                                                                |
+| -------------------------- | --------------------------------------------------------------------------------------- |
+| **Type**                   | _Mission / poste_ ou _Projet / programme_                                               |
+| **Organisation**           | Nom uniquement — aucun logo tiers n'est affiché                                         |
+| **Rôle**, **Secteur**      | Traduits                                                                                |
+| **Région**                 | Europe / Afrique / International — alimente les filtres                                 |
+| **Pays**                   | Liste de pays                                                                           |
+| **Début / Fin**            | Laisser la date de fin vide pour une mission en cours                                   |
+| **Résumé**                 | Texte affiché dans la liste                                                             |
+| **Afficher sur l'accueil** | Affiche la fiche sur la page d'accueil                                                  |
+| **Résultats vérifiés…**    | **Case décisive** : les résultats ne s'affichent sur le site **que si elle est cochée** |
+| **Liens**                  | Expertises et articles liés                                                             |
+
+> Ne jamais saisir un chiffre ou un résultat non vérifiable. Tant que la case
+> « Résultats vérifiés et validés pour publication » est décochée, le site indique simplement qu'aucun
+> résultat n'est publié pour cette mission.
+
+---
+
+## 6. Domaines d'expertise
+
+**Contenus → Domaines d’expertise**
+
+Chaque domaine dispose d'une page dédiée référencée par les moteurs de
+recherche : introduction, problématiques traitées, prestations, publics,
+approche, expériences et articles liés.
+
+- **Order** — ordre d'affichage (croissant).
+- **Featured on home** — présence sur la page d'accueil.
+- **Icon** — pictogramme de la carte.
+
+---
+
+## 7. Livres et publications
+
+**Contenus → Livres et publications**
+
+| Champ                                        | Rôle                                                         |
+| -------------------------------------------- | ------------------------------------------------------------ |
+| **Couverture**                               | Couverture, format portrait                                  |
+| **Résumé**, **Présentation détaillée**       | Résumé court et présentation détaillée                       |
+| **Public**, **Langue**, **Format**, **ISBN** | Fiche technique                                              |
+| **Prix TTC** + **Devise**                    | Prix TTC ; laisser vide si le prix est fixé par le revendeur |
+| **Disponibilité**                            | Disponible / Précommande / Bientôt / Épuisé                  |
+| **Mode de vente**                            | _External retailer_, _Direct sale_, _Information only_       |
+| **Liens d’achat**                            | Un ou plusieurs boutons d'achat externes (Amazon, éditeur…)  |
+| **Extrait (PDF)**                            | Extrait facultatif                                           |
+
+**Modèle de vente** — le site est conçu pour le modèle hybride prévu au cahier
+des charges :
+
+- _External retailer_ : le bouton renvoie vers la plateforme choisie ;
+- _Direct sale_ : le modèle de données est prêt mais **aucun paiement n'est
+  activé** sur le site. La fiche affiche honnêtement que la vente directe n'est
+  pas encore ouverte et propose le formulaire de contact. Activer un vrai
+  paiement nécessite un prestataire (Stripe, PayPal…), des CGV, une politique de
+  livraison et de retour — c'est une évolution à chiffrer séparément ;
+- _Information only_ : présentation sans achat.
+
+---
+
+## 8. Médias et documents
+
+- **Médiathèque → Médiathèque** : images. Le **texte alternatif est obligatoire**
+  (accessibilité et SEO) : décrire ce que montre l'image en une phrase.
+  Les images sont converties en WebP et déclinées automatiquement en cinq
+  tailles ; inutile de les redimensionner avant l'envoi (10 Mo maximum).
+- **Médiathèque → Documents (PDF)** : CV international, International Expert
+  Profile, extraits de livres. Choisir le bon **Type de document**.
+
+### Publier l'International Expert Profile
+
+1. **Médiathèque → Documents (PDF) → Créer**, téléverser le PDF, **Type de document = International Expert Profile**.
+2. **Administration → Réglages du site → Marque → International Expert Profile** : sélectionner ce document.
+3. Les boutons « Télécharger l'Expert Profile » deviennent actifs partout sur le site.
+
+Tant qu'aucun document n'est associé, le bouton reste visible mais explique que
+le document n'est pas encore publié — il ne renvoie jamais vers un lien mort.
+
+---
+
+## 9. Réglages du site
+
+**Administration → Réglages du site**
+
+| Onglet              | Contenu                                                                                      |
+| ------------------- | -------------------------------------------------------------------------------------------- |
+| **Marque**          | Nom, positionnement (traduit), signature, logo, Expert Profile, CV                           |
+| **Contact**         | E-mail et téléphone publiés, adresse, **adresse de réception des demandes**, langues parlées |
+| **Réseaux sociaux** | Profils LinkedIn, X, Facebook, YouTube, Instagram (affichés dans le pied de page)            |
+| **SEO par défaut**  | Titre et description par défaut, image de partage social (1200 × 630)                        |
+
+Le **crédit de bas de page** (« © by Nana-Consulting ») s'affiche sous le
+copyright sur toutes les pages. Vider le champ _Credit name_ le supprime ;
+renseigner _Credit url_ le transforme en lien.
+
+**Pages → Page d’accueil** : accroche, proposition de valeur, photo du hero, points
+clés, textes d'introduction des sections, appel à l'action final.
+
+**Pages → Page À propos** : biographie exécutive, parcours, vision Europe–Afrique,
+valeurs, langues, régions.
+
+**Contenus → Formations et qualifications** : diplômes et certifications.
+
+---
+
+## 10. Activités entrepreneuriales
+
+**Contenus → Écosystème entrepreneurial** — RK Business Consulting, RK IMMO-FINANZ,
+KAILI Institut, KAILI Event.
+
+Décocher **Activité visible** masque immédiatement une activité du site sans la supprimer.
+
+---
+
+## 11. Demandes de contact
+
+**Administration → Demandes de contact**
+
+Chaque demande envoyée par le formulaire est enregistrée avec le nom,
+l'organisation, l'e-mail, le pays, le type de demande, le sujet, le message, la
+langue et l'horodatage du consentement.
+
+- **Statut** : Nouvelle → En cours → Répondue → Archivée.
+- **Notification envoyée** indique si la notification a réellement pu être envoyée.
+- Répondre depuis sa messagerie habituelle (l'e-mail de notification a le
+  visiteur en `Reply-To`).
+- **Protection des données** : supprimer les demandes traitées selon la durée de
+  conservation annoncée dans la politique de confidentialité.
+
+---
+
+## 12. Pages légales
+
+**Administration → Pages légales** — Impressum, confidentialité, cookies, CGV,
+livraison/retours.
+
+Ces pages sont livrées comme **trames à compléter**. Tant que la case
+**« Brouillon à faire valider juridiquement »** est cochée :
+
+- un bandeau d'avertissement s'affiche sur la page ;
+- la page est exclue des moteurs de recherche et du sitemap.
+
+Décocher la case **uniquement** après validation par le commanditaire et, si
+nécessaire, par un professionnel du droit.
+
+---
+
+## 13. Contenus d'exemple
+
+Les entrées livrées avec le site portent la mention **« Contenu d'exemple »**
+(case _Contenu d’exemple_ dans la barre latérale) et affichent un bandeau
+d'avertissement sur le site public.
+
+Avant la mise en ligne : remplacer le contenu par des informations validées puis
+**décocher la case**, ou supprimer l'entrée.
+
+Liste complète des éléments encore attendus :
+[`ELEMENTS_A_FOURNIR.md`](ELEMENTS_A_FOURNIR.md).
+
+---
+
+## 14. Bonnes pratiques
+
+- Publier en trois langues ou pas du tout : une page à moitié traduite se voit.
+- Toujours renseigner le texte alternatif des images.
+- Vérifier titres, fonctions, organisations, dates, pays et résultats **avant**
+  publication : le site n'invente rien, il affiche ce qui est saisi.
+- Utiliser l'aperçu avant de publier un article.
+- Ne pas publier de logo ou de témoignage tiers sans autorisation écrite.
+- Prévenir le prestataire technique avant toute modification du modèle de
+  contenu (ajout de champ, nouvelle collection).

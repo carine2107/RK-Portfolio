@@ -1,0 +1,410 @@
+{
+  "brand": {
+    "name": "Romial Kenmogne",
+    "headline": "Business & Financial Consultant | Project Manager",
+    "scope": "Europe · Africa · International",
+    "signature": "Understand Money. Build Businesses. Invest. Create Wealth.",
+    "insights": "RK Insights",
+    "insightsTagline": "Editorial signature and thought leadership"
+  },
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "expertise": "Expertise",
+    "experience": "Experience",
+    "insights": "RK Insights",
+    "books": "Books",
+    "businesses": "Businesses",
+    "contact": "Contact",
+    "workWithMe": "Work With Me",
+    "openMenu": "Open the main menu",
+    "closeMenu": "Close the main menu",
+    "mainLabel": "Main navigation",
+    "footerLabel": "Secondary navigation",
+    "breadcrumbLabel": "Breadcrumb"
+  },
+  "theme": {
+    "label": "Colour theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System",
+    "current": "Current theme: {theme}"
+  },
+  "language": {
+    "label": "Language",
+    "switchTo": "Switch to {language}",
+    "en": "English",
+    "fr": "French",
+    "de": "German",
+    "shortEn": "EN",
+    "shortFr": "FR",
+    "shortDe": "DE"
+  },
+  "common": {
+    "skipToContent": "Skip to main content",
+    "readMore": "Read more",
+    "readArticle": "Read the article",
+    "learnMore": "Learn more",
+    "viewAll": "View all",
+    "backTo": "Back to {target}",
+    "loading": "Loading…",
+    "minuteRead": "{minutes} min read",
+    "publishedOn": "Published on {date}",
+    "updatedOn": "Updated on {date}",
+    "author": "By {name}",
+    "share": "Share",
+    "shareLinkedin": "Share on LinkedIn",
+    "shareFacebook": "Share on Facebook",
+    "copyLink": "Copy link",
+    "linkCopied": "Link copied",
+    "download": "Download",
+    "downloadProfile": "Download Expert Profile",
+    "exploreExpertise": "Explore My Expertise",
+    "getInTouch": "Get in touch",
+    "required": "required",
+    "optional": "optional",
+    "filters": "Filters",
+    "clearFilters": "Clear filters",
+    "search": "Search",
+    "searchPlaceholder": "Search articles…",
+    "results": "{count, plural, =0 {No result} one {# result} other {# results}}",
+    "page": "Page {current} of {total}",
+    "previous": "Previous",
+    "next": "Next",
+    "all": "All",
+    "tableOfContents": "On this page",
+    "relatedArticles": "Related articles",
+    "relatedExpertise": "Related expertise",
+    "relatedExperience": "Related experience",
+    "externalLink": "opens in a new tab",
+    "comingSoon": "Coming soon",
+    "notAvailableYet": "Not available yet",
+    "placeholderBadge": "Sample content",
+    "placeholderNotice": "This entry is starter content supplied with the website. Replace or remove it in the CMS before going live.",
+    "documentPendingTitle": "Document not published yet",
+    "documentPendingBody": "The International Expert Profile has not been uploaded to the CMS yet. Please use the contact form to request it.",
+    "regions": {
+      "europe": "Europe",
+      "africa": "Africa",
+      "international": "International"
+    }
+  },
+  "home": {
+    "meta": {
+      "title": "Romial Kenmogne — Business & Financial Consultant, Project Manager",
+      "description": "International business and financial consultant, project manager and investment advisor across Europe, Africa and international markets."
+    },
+    "hero": {
+      "eyebrow": "Europe · Africa · International",
+      "valueProposition": "I help organisations, SMEs and investors understand their numbers, structure their projects and build businesses that last.",
+      "portraitAlt": "Professional portrait of Romial Kenmogne",
+      "portraitPlaceholder": "Professional photograph to be supplied"
+    },
+    "expertise": {
+      "eyebrow": "Core expertise",
+      "title": "Where I create value",
+      "intro": "Eight complementary areas, from financial analysis to capacity building."
+    },
+    "experience": {
+      "eyebrow": "Selected international experience",
+      "title": "Assignments across Europe and Africa",
+      "intro": "Organisations, roles and regions — presented only once verified.",
+      "cta": "See all assignments"
+    },
+    "projects": {
+      "eyebrow": "Selected projects",
+      "title": "Featured project work",
+      "cta": "See all projects"
+    },
+    "insights": {
+      "eyebrow": "RK Insights",
+      "title": "Latest analyses",
+      "intro": "Finance, entrepreneurship and investment, explained clearly.",
+      "cta": "Read RK Insights"
+    },
+    "books": {
+      "eyebrow": "Books & publications",
+      "title": "Publications",
+      "cta": "See all publications"
+    },
+    "ecosystem": {
+      "eyebrow": "Business ecosystem",
+      "title": "Entrepreneurial activities",
+      "intro": "Four complementary ventures behind the advisory practice.",
+      "cta": "Discover the ecosystem"
+    },
+    "finalCta": {
+      "title": "Looking for an international consultant, financial expert or project manager?",
+      "body": "Tell me about your organisation, your project and your timeline. I answer every qualified request personally.",
+      "cta": "Work With Me"
+    }
+  },
+  "about": {
+    "meta": {
+      "title": "About Romial Kenmogne",
+      "description": "Executive biography, career path, Europe–Africa vision, qualifications and languages of Romial Kenmogne."
+    },
+    "title": "About",
+    "lead": "Business & financial consultant, project manager and entrepreneur working between Europe and Africa.",
+    "biography": "Executive biography",
+    "career": "Career path",
+    "vision": "Europe–Africa vision",
+    "approach": "Approach and values",
+    "education": "Education",
+    "credentials": "Selected professional credentials",
+    "languages": "Languages",
+    "regions": "Regions of experience",
+    "profileCta": {
+      "title": "International Expert Profile",
+      "body": "A concise document summarising the profile, areas of expertise and international experience."
+    }
+  },
+  "expertise": {
+    "meta": {
+      "title": "Expertise — Corporate finance, due diligence, SME advisory",
+      "description": "Areas of intervention: corporate finance, financial due diligence, business development, project management, investment readiness, real estate financing and training."
+    },
+    "title": "Expertise",
+    "lead": "Eight areas of intervention, applied to organisations, SMEs, investors and institutions.",
+    "sections": {
+      "challenges": "Challenges addressed",
+      "services": "Areas of intervention",
+      "audiences": "Who it is for",
+      "approach": "Approach",
+      "experience": "Related experience",
+      "insights": "Related articles"
+    },
+    "cta": {
+      "title": "Discuss this expertise",
+      "body": "Describe your situation and we will assess together how I can contribute.",
+      "button": "Work With Me"
+    },
+    "empty": "The expertise areas are being published in the CMS."
+  },
+  "experience": {
+    "meta": {
+      "title": "Experience & international projects",
+      "description": "Assignments and projects by expertise, sector, organisation and region across Europe, Africa and international markets."
+    },
+    "title": "Experience & international projects",
+    "lead": "Assignments, roles and project work. Results are published only when verified.",
+    "filters": {
+      "expertise": "Expertise",
+      "sector": "Sector",
+      "organisation": "Organisation",
+      "region": "Region",
+      "type": "Type"
+    },
+    "card": {
+      "role": "Role",
+      "period": "Period",
+      "countries": "Countries",
+      "ongoing": "Ongoing"
+    },
+    "detail": {
+      "context": "Context",
+      "responsibilities": "Responsibilities",
+      "results": "Results",
+      "resultsPending": "Results are not published for this assignment."
+    },
+    "map": {
+      "title": "Regions covered",
+      "description": "Regions where assignments have been delivered."
+    },
+    "empty": "No assignment matches these filters.",
+    "emptyAll": "Assignments are being published in the CMS.",
+    "types": {
+      "assignment": "Assignments",
+      "project": "Projects"
+    }
+  },
+  "insights": {
+    "meta": {
+      "title": "RK Insights — Finance, business and investment analyses",
+      "description": "Articles and analyses on finance, financial education, due diligence, entrepreneurship, investment, real estate, project management and leadership."
+    },
+    "title": "RK Insights",
+    "lead": "Analyses on finance, entrepreneurship and investment — written to be useful, not to impress.",
+    "featured": "Featured",
+    "allArticles": "All articles",
+    "categories": "Categories",
+    "category": "Category",
+    "empty": "No article matches your search.",
+    "emptyAll": "The first articles are being published in the CMS.",
+    "searchLabel": "Search RK Insights",
+    "resultsAnnouncement": "{count, plural, =0 {No article found} one {# article found} other {# articles found}}",
+    "readingTime": "{minutes} min read",
+    "backToList": "Back to RK Insights"
+  },
+  "books": {
+    "meta": {
+      "title": "Books & publications",
+      "description": "Books and publications by Romial Kenmogne on finance, entrepreneurship and wealth creation."
+    },
+    "title": "Books & publications",
+    "lead": "Publications written to make finance and entrepreneurship usable by everyone.",
+    "details": {
+      "subtitle": "Subtitle",
+      "author": "Author",
+      "summary": "Summary",
+      "audience": "Who it is for",
+      "language": "Language",
+      "format": "Format",
+      "isbn": "ISBN",
+      "price": "Price",
+      "priceNote": "Price incl. VAT",
+      "availability": "Availability",
+      "preview": "Read an extract"
+    },
+    "availability": {
+      "available": "Available",
+      "preorder": "Pre-order",
+      "comingSoon": "Coming soon",
+      "outOfStock": "Out of stock"
+    },
+    "buy": {
+      "external": "Buy the book",
+      "externalNote": "Purchase is handled by an external retailer.",
+      "directPending": "Direct sales are not open yet",
+      "directPendingNote": "Online payment is not activated on this website. Use the contact form to order or to be notified.",
+      "contact": "Ask about this book"
+    },
+    "related": "Other publications",
+    "empty": "Publications are being published in the CMS."
+  },
+  "businesses": {
+    "meta": {
+      "title": "Business ecosystem",
+      "description": "RK Business Consulting, RK IMMO-FINANZ, KAILI Institut and KAILI Event — the entrepreneurial ecosystem of Romial Kenmogne."
+    },
+    "title": "Business ecosystem",
+    "lead": "Four complementary ventures. The advisory practice remains the centre of gravity.",
+    "fields": {
+      "valueProposition": "Value proposition",
+      "field": "Field",
+      "audience": "Who it serves",
+      "website": "Website",
+      "contact": "Contact"
+    },
+    "cta": "Get in touch",
+    "empty": "The ventures are being published in the CMS."
+  },
+  "contact": {
+    "meta": {
+      "title": "Work With Me — Contact",
+      "description": "Request a consulting assignment, a due diligence, business advisory, project management, training or a speaking engagement."
+    },
+    "title": "Work With Me",
+    "lead": "Describe your organisation, your need and your timeline. Every qualified request receives a personal answer.",
+    "formTitle": "Qualified request",
+    "fields": {
+      "name": "Full name",
+      "organisation": "Organisation",
+      "email": "E-mail address",
+      "country": "Country",
+      "requestType": "Type of request",
+      "subject": "Subject",
+      "message": "Message",
+      "consent": "I have read the <link>privacy policy</link> and agree that my data may be used to answer my request."
+    },
+    "placeholders": {
+      "name": "Jane Doe",
+      "organisation": "Company, institution or NGO",
+      "email": "jane.doe@organisation.com",
+      "country": "Select a country",
+      "requestType": "Select a request type",
+      "subject": "Financial due diligence for an acquisition",
+      "message": "Context, objectives, timeline and expected support."
+    },
+    "requestTypes": {
+      "consulting": "Consulting assignment",
+      "dueDiligence": "Financial due diligence",
+      "advisory": "Business advisory",
+      "projectManagement": "Project management",
+      "smeProgramme": "SME / entrepreneurship programme",
+      "training": "Training / mentoring",
+      "speaking": "Speaking / media",
+      "partnership": "Partnership",
+      "other": "Other"
+    },
+    "submit": "Send my request",
+    "submitting": "Sending…",
+    "success": {
+      "title": "Thank you — your request has been received.",
+      "body": "A confirmation has been sent to your e-mail address. You will receive a personal answer shortly."
+    },
+    "successNoEmail": {
+      "title": "Thank you — your request has been recorded.",
+      "body": "E-mail delivery is not activated on this environment yet, so no confirmation e-mail was sent. The message is stored in the CMS."
+    },
+    "errors": {
+      "name": "Please enter your name (at least 2 characters).",
+      "organisation": "Organisation must be 200 characters or fewer.",
+      "email": "Please enter a valid e-mail address.",
+      "country": "Please select your country.",
+      "requestType": "Please select a type of request.",
+      "subject": "Please enter a subject (at least 3 characters).",
+      "message": "Please write a message of at least 20 characters.",
+      "consent": "Your consent is required to process the request.",
+      "rateLimit": "Too many requests have been sent from this connection. Please try again later.",
+      "server": "The request could not be sent. Please try again, or write directly to the e-mail address below.",
+      "summaryTitle": "Please correct the following {count, plural, one {field} other {fields}}:"
+    },
+    "info": {
+      "title": "Direct contact",
+      "responseTime": "Typical answer time",
+      "responseTimeValue": "2 working days",
+      "languages": "Languages",
+      "emailPending": "Professional e-mail address to be confirmed before publication.",
+      "phonePending": "Professional phone number to be confirmed before publication."
+    },
+    "privacyNote": "Your data is used only to answer your request. It is never sold nor used for marketing without your consent."
+  },
+  "legal": {
+    "meta": {
+      "title": "Legal information",
+      "description": "Imprint, privacy policy, cookie policy and terms & conditions."
+    },
+    "title": "Legal",
+    "imprint": "Imprint",
+    "privacy": "Privacy policy",
+    "cookies": "Cookie policy",
+    "terms": "Terms & conditions",
+    "returns": "Delivery & returns",
+    "reviewNoticeTitle": "Draft pending legal review",
+    "reviewNoticeBody": "This text is a structural draft. It must be completed and validated by the site owner and, where required, by a qualified legal professional before going live.",
+    "lastUpdated": "Last updated: {date}"
+  },
+  "notFound": {
+    "meta": {
+      "title": "Page not found",
+      "description": "The requested page does not exist."
+    },
+    "code": "404",
+    "title": "This page does not exist",
+    "body": "The page may have been moved or the address mistyped. Here are the main sections of the site.",
+    "cta": "Back to home"
+  },
+  "error": {
+    "title": "Something went wrong",
+    "body": "An unexpected error occurred. Please try again — if the problem persists, use the contact form.",
+    "retry": "Try again",
+    "home": "Back to home"
+  },
+  "footer": {
+    "professionalInfo": "Professional information",
+    "addressPending": "Professional address to be confirmed before publication.",
+    "social": "Follow",
+    "legalLinks": "Legal",
+    "copyright": "© {year} Romial Kenmogne. All rights reserved.",
+    "builtNotice": "Content managed through the RK CMS.",
+    "builtBy": "© by {name}"
+  },
+  "cms": {
+    "fallbackNotice": "The content management system is unavailable — the site is showing its built-in starter content."
+  },
+  "preview": {
+    "notice": "Preview: you are viewing the unpublished version of this page.",
+    "exit": "Leave preview"
+  }
+}

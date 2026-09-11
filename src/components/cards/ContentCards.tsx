@@ -1,0 +1,247 @@
+import Image from 'next/image'
+import { getTranslations } from 'next-intl/server'
+
+import { Card, CardBody, CardLink, CardMeta, CardTitle } from '@/components/ui/Card'
+import { Icon, type IconName } from '@/components/ui/Icon'
+import { ExternalLink } from '@/components/ui/ExternalLink'
+import { PlaceholderBadge } from '@/components/ui/Notices'
+import { Link } from '@/i18n/navigation'
+import type { Locale } from '@/i18n/routing'
+import { formatDate, formatPeriod, isoDate } from '@/lib/format'
+import type {
+  BookView,
+  BusinessView,
+  ExperienceView,
+  ExpertiseView,
+  InsightView,
+} from '@/lib/types'
+
+const EXPERTISE_ICONS: Record<string, IconName> = {
+  chart: 'chart',
+  magnifier: 'magnifier',
+  growth: 'growth',
+  plan: 'plan',
+  spark: 'spark',
+  coins: 'coins',
+  building: 'building',
+  people: 'people',
+}
+
+export function ExpertiseCard({ area }: { area: ExpertiseView }) {
+  return (
+    <Card className="justify-between">
+      <div>
+        <span className="mb-5 inline-flex size-11 items-center justify-center rounded-full border border-line-accent text-accent-text transition-colors group-hover:bg-surface-accent">
+          <Icon name={EXPERTISE_ICONS[area.icon] ?? 'chart'} className="size-5" />
+        </span>
+        <CardTitle>
+          <CardLink href={`/expertise/${area.slug}`}>{area.title}</CardLink>
+        </CardTitle>
+        <CardBody>{area.summary}</CardBody>
+      </div>
+      <span className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-accent-text">
+        <Icon name="arrow" className="size-4 transition-transform group-hover:translate-x-1" />
+      </span>
+    </Card>
+  )
+}
+
+export async function ExperienceCard({
+  experience,
+  locale,
+}: {
+  experience: ExperienceView
+  locale: Locale
+}) {
+  const t = await getTranslations('experience')
+  const common = await getTranslations('common')
+  const period = formatPeriod(experience.startDate, experience.endDate, locale, t('card.ongoing'))
+
+  return (
+    <Card>
+      <CardMeta>
+        <span className="text-accent-text">{common(`regions.${experience.region}`)}</span>
+        {period ? (
+          <>
+            <span aria-hidden="true">·</span>
+            <span>{period}</span>
+          </>
+        ) : null}
+      </CardMeta>
+      <div className="mt-4">
+        <CardTitle>
+          <CardLink href={`/experience/${experience.slug}`}>{experience.title}</CardLink>
+        </CardTitle>
+        <p className="mt-2 text-sm font-medium text-primary">{experience.organisation}</p>
+        <p className="text-sm text-secondary">{experience.role}</p>
+        <CardBody>{experience.summary}</CardBody>
+      </div>
+      {experience.isPlaceholder ? (
+        <div className="mt-5">
+          <PlaceholderBadge />
+        </div>
+      ) : null}
+    </Card>
+  )
+}
+
+export async function InsightCard({
+  article,
+  locale,
+  featured = false,
+}: {
+  article: InsightView
+  locale: Locale
+  featured?: boolean
+}) {
+  const t = await getTranslations('common')
+
+  return (
+    <Card className={featured ? 'md:flex-row md:items-stretch md:gap-8' : ''}>
+      {article.cover ? (
+        <div
+          className={[
+            'relative mb-5 overflow-hidden rounded-card bg-surface-subtle',
+            featured ? 'md:mb-0 md:w-1/2 md:shrink-0' : '',
+          ].join(' ')}
+        >
+          <Image
+            src={article.cover.url}
+            alt={article.cover.alt}
+            width={article.cover.width ?? 1600}
+            height={article.cover.height ?? 900}
+            sizes={featured ? '(min-width: 768px) 32rem, 100vw' : '(min-width: 768px) 24rem, 100vw'}
+            className="aspect-16/9 w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+          />
+        </div>
+      ) : null}
+
+      <div className="flex flex-1 flex-col">
+        <CardMeta>
+          {article.category ? (
+            <span className="text-accent-text">{article.category.title}</span>
+          ) : null}
+          {article.publishedAt ? (
+            <>
+              <span aria-hidden="true">·</span>
+              <time dateTime={isoDate(article.publishedAt)}>
+                {formatDate(article.publishedAt, locale)}
+              </time>
+            </>
+          ) : null}
+          <span aria-hidden="true">·</span>
+          <span>{t('minuteRead', { minutes: article.readingTime })}</span>
+        </CardMeta>
+
+        <div className="mt-4 flex-1">
+          <CardTitle as={featured ? 'h2' : 'h3'}>
+            <CardLink href={`/insights/${article.slug}`}>{article.title}</CardLink>
+          </CardTitle>
+          <CardBody>{article.excerpt}</CardBody>
+        </div>
+
+        <div className="mt-6 flex items-center gap-3">
+          {article.isPlaceholder ? <PlaceholderBadge /> : null}
+          <span className="inline-flex items-center gap-2 text-sm font-medium text-accent-text">
+            {t('readArticle')}
+            <Icon name="arrow" className="size-4 transition-transform group-hover:translate-x-1" />
+          </span>
+        </div>
+      </div>
+    </Card>
+  )
+}
+
+export async function BookCard({ book }: { book: BookView }) {
+  const t = await getTranslations('books')
+
+  return (
+    <Card className="sm:flex-row sm:gap-6">
+      <div className="mb-5 w-32 shrink-0 sm:mb-0 sm:w-36">
+        <div className="relative aspect-3/4 overflow-hidden rounded-sm border border-line bg-surface-subtle">
+          {book.cover ? (
+            <Image
+              src={book.cover.url}
+              alt={book.cover.alt}
+              fill
+              sizes="9rem"
+              className="object-cover"
+            />
+          ) : (
+            <span className="flex h-full items-center justify-center px-2 text-center font-serif text-xs text-secondary">
+              RK
+            </span>
+          )}
+        </div>
+      </div>
+      <div className="flex flex-1 flex-col">
+        <CardTitle>
+          <CardLink href={`/books/${book.slug}`}>{book.title}</CardLink>
+        </CardTitle>
+        {book.subtitle ? <p className="mt-1 text-sm text-secondary">{book.subtitle}</p> : null}
+        <CardBody>{book.summary}</CardBody>
+        <div className="mt-5 flex flex-wrap items-center gap-3">
+          <span className="rounded-full border border-line px-3 py-1 text-xs tracking-wide text-secondary uppercase">
+            {t(`availability.${book.availability}`)}
+          </span>
+          {book.isPlaceholder ? <PlaceholderBadge /> : null}
+        </div>
+      </div>
+    </Card>
+  )
+}
+
+export async function BusinessCard({ business }: { business: BusinessView }) {
+  const t = await getTranslations('businesses')
+
+  return (
+    <Card tone="outline">
+      <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-2">
+        <div className="min-w-0">
+          <CardTitle>{business.name}</CardTitle>
+          {business.tagline ? (
+            <p className="mt-1 text-sm text-accent-text">{business.tagline}</p>
+          ) : null}
+        </div>
+        {business.isPlaceholder ? <PlaceholderBadge /> : null}
+      </div>
+      <CardBody>{business.description}</CardBody>
+      <dl className="mt-5 grid gap-3 text-sm sm:grid-cols-2">
+        {business.field ? (
+          <div>
+            <dt className="text-xs tracking-wide text-secondary uppercase">{t('fields.field')}</dt>
+            <dd className="mt-0.5 text-primary">{business.field}</dd>
+          </div>
+        ) : null}
+        {business.audience ? (
+          <div>
+            <dt className="text-xs tracking-wide text-secondary uppercase">
+              {t('fields.audience')}
+            </dt>
+            <dd className="mt-0.5 text-primary">{business.audience}</dd>
+          </div>
+        ) : null}
+      </dl>
+      <div className="mt-6 flex flex-wrap gap-4 text-sm">
+        {business.website ? (
+          <ExternalLink
+            href={business.website}
+            event="business_click"
+            payload={{ business: business.slug }}
+            className="inline-flex items-center gap-2 font-medium text-accent-text underline-offset-4 hover:underline"
+          >
+            {t('fields.website')}
+            <Icon name="external" className="size-4" />
+          </ExternalLink>
+        ) : null}
+        <Link
+          href="/contact"
+          className="inline-flex items-center gap-2 font-medium text-primary underline-offset-4 hover:underline"
+        >
+          {t('cta')}
+          <Icon name="arrow" className="size-4" />
+        </Link>
+      </div>
+    </Card>
+  )
+}

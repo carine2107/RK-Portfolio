@@ -1,0 +1,435 @@
+@import 'tailwindcss';
+
+/*
+ * Dark mode is driven by the `data-theme` attribute set on <html> by the
+ * theme script (see src/components/theme/ThemeScript.tsx). The attribute is
+ * always resolved to `light` or `dark`, never to `system`, so that no
+ * component has to know about the user's preference source.
+ */
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+/* ---------------------------------------------------------------------------
+ * 1. Brand palette (raw values — never used directly by components)
+ * ------------------------------------------------------------------------- */
+:root {
+  --rk-navy: #10233f;
+  --rk-navy-700: #1b3457;
+  --rk-navy-500: #2c4a72;
+  --rk-gold: #b8924b;
+  --rk-gold-dark: #6f571f;
+  --rk-gold-light: #d5b579;
+  --rk-white: #ffffff;
+  --rk-gray-light: #f3f5f7;
+  --rk-slate: #465568;
+
+  /* -----------------------------------------------------------------------
+   * 2. Semantic tokens — LIGHT theme (the default, defined on bare :root)
+   * --------------------------------------------------------------------- */
+  --surface-base: var(--rk-white);
+  --surface-subtle: var(--rk-gray-light);
+  --surface-raised: var(--rk-white);
+  --surface-sunken: #e9edf2;
+  --surface-inverse: var(--rk-navy);
+  --surface-inverse-subtle: #17304f;
+  --surface-accent-soft: #f7f1e4;
+
+  /* Deep, high-contrast band (footer, final CTA). Stays dark in BOTH themes —
+     it is a design surface, not an inversion of the current theme. */
+  --surface-contrast: var(--rk-navy);
+  --surface-contrast-raised: #17304f;
+  --text-on-contrast: #f4f7fb;
+  --text-on-contrast-secondary: #c3cddb;
+  --border-on-contrast: #2a4468;
+
+  --text-primary: var(--rk-navy);
+  --text-secondary: var(--rk-slate);
+  --text-muted: #6b7a8e;
+  --text-inverse: var(--rk-white);
+  --text-inverse-secondary: #c3cddb;
+  --text-accent: var(--rk-gold-dark);
+  --text-on-accent: #1a1206;
+
+  --border-subtle: #dfe4ea;
+  --border-strong: #b9c3cf;
+  --border-inverse: #2a4468;
+  --border-accent: var(--rk-gold);
+
+  --accent: var(--rk-gold);
+  --accent-strong: #9a7838;
+  --accent-contrast: #1a1206;
+
+  --focus-ring: var(--rk-navy);
+  --focus-ring-offset: var(--surface-base);
+
+  --state-success-surface: #e8f3ec;
+  --state-success-text: #1d5b34;
+  --state-success-border: #a9cfb8;
+  --state-error-surface: #fdecec;
+  --state-error-text: #a01b1b;
+  --state-error-border: #f0b8b8;
+  --state-warning-surface: #fdf4e3;
+  --state-warning-text: #7a5307;
+  --state-warning-border: #e7cd97;
+
+  --shadow-sm: 0 1px 2px rgb(16 35 63 / 0.06);
+  --shadow-md: 0 6px 20px -8px rgb(16 35 63 / 0.16);
+  --shadow-lg: 0 24px 60px -28px rgb(16 35 63 / 0.32);
+
+  --header-height: 4.5rem;
+  --content-max: 76rem;
+
+  color-scheme: light;
+}
+
+/* ---------------------------------------------------------------------------
+ * 3. Semantic tokens — DARK theme
+ *    Declared twice on purpose: once for the explicit user choice, once for
+ *    `prefers-color-scheme` so the very first paint is correct without JS.
+ * ------------------------------------------------------------------------- */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --surface-base: #0b1728;
+    --surface-subtle: #101f35;
+    --surface-raised: #16273f;
+    --surface-sunken: #081221;
+    --surface-inverse: #eef2f7;
+    --surface-inverse-subtle: #dee5ee;
+    --surface-accent-soft: #241d10;
+
+    --surface-contrast: #17293f;
+    --surface-contrast-raised: #1e3350;
+    --text-on-contrast: #f2f5f9;
+    --text-on-contrast-secondary: #aebdd0;
+    --border-on-contrast: #27405f;
+
+    --text-primary: #f2f5f9;
+    --text-secondary: #aebdd0;
+    --text-muted: #8b9ab0;
+    --text-inverse: #0b1728;
+    --text-inverse-secondary: #3d5372;
+    --text-accent: #d9b978;
+    --text-on-accent: #10233f;
+
+    --border-subtle: #1f3450;
+    --border-strong: #33506f;
+    --border-inverse: #c9d3e0;
+    --border-accent: #b8924b;
+
+    --accent: #d0aa63;
+    --accent-strong: #e0c084;
+    --accent-contrast: #0b1728;
+
+    --focus-ring: #d9b978;
+    --focus-ring-offset: var(--surface-base);
+
+    --state-success-surface: #10281a;
+    --state-success-text: #8ed9a8;
+    --state-success-border: #235c3a;
+    --state-error-surface: #2c1214;
+    --state-error-text: #f4a3a3;
+    --state-error-border: #7a2b2b;
+    --state-warning-surface: #2a2110;
+    --state-warning-text: #edc57e;
+    --state-warning-border: #6b5320;
+
+    --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.4);
+    --shadow-md: 0 8px 24px -10px rgb(0 0 0 / 0.6);
+    --shadow-lg: 0 28px 70px -30px rgb(0 0 0 / 0.75);
+
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme='dark'] {
+  --surface-base: #0b1728;
+  --surface-subtle: #101f35;
+  --surface-raised: #16273f;
+  --surface-sunken: #081221;
+  --surface-inverse: #eef2f7;
+  --surface-inverse-subtle: #dee5ee;
+  --surface-accent-soft: #241d10;
+
+  --surface-contrast: #17293f;
+  --surface-contrast-raised: #1e3350;
+  --text-on-contrast: #f2f5f9;
+  --text-on-contrast-secondary: #aebdd0;
+  --border-on-contrast: #27405f;
+
+  --text-primary: #f2f5f9;
+  --text-secondary: #aebdd0;
+  --text-muted: #8b9ab0;
+  --text-inverse: #0b1728;
+  --text-inverse-secondary: #3d5372;
+  --text-accent: #d9b978;
+  --text-on-accent: #10233f;
+
+  --border-subtle: #1f3450;
+  --border-strong: #33506f;
+  --border-inverse: #c9d3e0;
+  --border-accent: #b8924b;
+
+  --accent: #d0aa63;
+  --accent-strong: #e0c084;
+  --accent-contrast: #0b1728;
+
+  --focus-ring: #d9b978;
+  --focus-ring-offset: var(--surface-base);
+
+  --state-success-surface: #10281a;
+  --state-success-text: #8ed9a8;
+  --state-success-border: #235c3a;
+  --state-error-surface: #2c1214;
+  --state-error-text: #f4a3a3;
+  --state-error-border: #7a2b2b;
+  --state-warning-surface: #2a2110;
+  --state-warning-text: #edc57e;
+  --state-warning-border: #6b5320;
+
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.4);
+  --shadow-md: 0 8px 24px -10px rgb(0 0 0 / 0.6);
+  --shadow-lg: 0 28px 70px -30px rgb(0 0 0 / 0.75);
+
+  color-scheme: dark;
+}
+
+/* ---------------------------------------------------------------------------
+ * 4. Tailwind theme mapping — utilities such as `bg-surface`, `text-secondary`
+ * ------------------------------------------------------------------------- */
+@theme inline {
+  --color-surface: var(--surface-base);
+  --color-surface-subtle: var(--surface-subtle);
+  --color-surface-raised: var(--surface-raised);
+  --color-surface-sunken: var(--surface-sunken);
+  --color-surface-inverse: var(--surface-inverse);
+  --color-surface-inverse-subtle: var(--surface-inverse-subtle);
+  --color-surface-accent: var(--surface-accent-soft);
+  --color-contrast: var(--surface-contrast);
+  --color-contrast-raised: var(--surface-contrast-raised);
+  --color-on-contrast: var(--text-on-contrast);
+  --color-on-contrast-secondary: var(--text-on-contrast-secondary);
+  --color-line-contrast: var(--border-on-contrast);
+
+  --color-primary: var(--text-primary);
+  --color-secondary: var(--text-secondary);
+  --color-inverse: var(--text-inverse);
+  --color-inverse-secondary: var(--text-inverse-secondary);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-text: var(--text-accent);
+  --color-on-accent: var(--accent-contrast);
+
+  --color-line: var(--border-subtle);
+  --color-line-strong: var(--border-strong);
+  --color-line-inverse: var(--border-inverse);
+  --color-line-accent: var(--border-accent);
+
+  --color-success-surface: var(--state-success-surface);
+  --color-success-text: var(--state-success-text);
+  --color-success-line: var(--state-success-border);
+  --color-error-surface: var(--state-error-surface);
+  --color-error-text: var(--state-error-text);
+  --color-error-line: var(--state-error-border);
+  --color-warning-surface: var(--state-warning-surface);
+  --color-warning-text: var(--state-warning-text);
+  --color-warning-line: var(--state-warning-border);
+
+  --font-sans: var(--font-body), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-serif: var(--font-display), ui-serif, Georgia, 'Times New Roman', serif;
+
+  --shadow-card: var(--shadow-sm);
+  --shadow-raised: var(--shadow-md);
+  --shadow-float: var(--shadow-lg);
+
+  --spacing-section: 5rem;
+  --spacing-section-lg: 7.5rem;
+
+  --radius-card: 0.5rem;
+}
+
+/* ---------------------------------------------------------------------------
+ * 5. Base layer
+ * ------------------------------------------------------------------------- */
+@layer base {
+  * {
+    border-color: var(--border-subtle);
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--surface-base);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.65;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-serif);
+    color: var(--text-primary);
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+    /* German compounds must never widen a column. */
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  /* Never rely on the default UA outline being invisible on dark surfaces. */
+  [data-inverse] :focus-visible {
+    outline-color: var(--accent);
+  }
+
+  ::selection {
+    background: var(--accent);
+    color: var(--accent-contrast);
+  }
+
+  img,
+  svg,
+  video {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Anchor targets clear the sticky header. */
+  :target {
+    scroll-margin-top: calc(var(--header-height) + 1.5rem);
+  }
+
+  [hidden] {
+    display: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * 6. Small component primitives that are reused everywhere
+ * ------------------------------------------------------------------------- */
+@layer components {
+  .rk-container {
+    width: 100%;
+    max-width: var(--content-max);
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+
+  @media (min-width: 768px) {
+    .rk-container {
+      padding-inline: 2rem;
+    }
+  }
+
+  .rk-prose {
+    color: var(--text-secondary);
+    font-size: 1.0625rem;
+    line-height: 1.75;
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+
+  .rk-prose > * + * {
+    margin-top: 1.15em;
+  }
+
+  .rk-prose h2 {
+    font-size: 1.6rem;
+    margin-top: 2.25em;
+    color: var(--text-primary);
+  }
+
+  .rk-prose h3 {
+    font-size: 1.25rem;
+    margin-top: 1.9em;
+    color: var(--text-primary);
+  }
+
+  .rk-prose strong {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  .rk-prose a {
+    color: var(--text-accent);
+    text-underline-offset: 3px;
+    text-decoration: underline;
+  }
+
+  .rk-prose ul,
+  .rk-prose ol {
+    padding-left: 1.25rem;
+    list-style: disc;
+  }
+
+  .rk-prose ol {
+    list-style: decimal;
+  }
+
+  .rk-prose li + li {
+    margin-top: 0.4em;
+  }
+
+  .rk-prose blockquote {
+    border-left: 2px solid var(--border-accent);
+    padding-left: 1.15rem;
+    font-style: italic;
+    color: var(--text-primary);
+  }
+
+  /* Thin gold rule used as a section marker. */
+  .rk-rule::before {
+    content: '';
+    display: block;
+    width: 2.5rem;
+    height: 2px;
+    background: var(--accent);
+    margin-bottom: 1rem;
+  }
+
+  .rk-fade-up {
+    animation: rk-fade-up 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+}
+
+@keyframes rk-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(0.75rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}

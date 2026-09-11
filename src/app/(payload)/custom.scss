@@ -1,0 +1,30 @@
+/*
+ * Light branding for the CMS so administrators recognise the project.
+ */
+:root {
+  --theme-success-500: #1d5b34;
+}
+
+.template-default__wrap .nav .nav__link:hover {
+  text-decoration: underline;
+}
+
+/*
+ * The locale selector in the header switches the language of the *content*
+ * being edited. Payload displays it on every screen, including those where no
+ * field is translated — where it looks broken because nothing happens.
+ * It is hidden on those screens only: the account page, and the two
+ * collections that hold no translated field (users, contact requests).
+ */
+.account .app-header .localizer,
+.account .app-header .localizer-label,
+.template-default__wrap:has(.collection-list--users) .app-header .localizer,
+.template-default__wrap:has(.collection-list--users) .app-header .localizer-label,
+.template-default__wrap:has(.collection-edit--users) .app-header .localizer,
+.template-default__wrap:has(.collection-edit--users) .app-header .localizer-label,
+.template-default__wrap:has(.collection-list--contact-submissions) .app-header .localizer,
+.template-default__wrap:has(.collection-list--contact-submissions) .app-header .localizer-label,
+.template-default__wrap:has(.collection-edit--contact-submissions) .app-header .localizer,
+.template-default__wrap:has(.collection-edit--contact-submissions) .app-header .localizer-label {
+  display: none;
+}

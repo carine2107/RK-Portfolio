@@ -1,0 +1,32 @@
+# Local development services for the Romial Kenmogne website.
+# Ports are offset to avoid clashing with other projects on this machine.
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: rk-site-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: romial
+      POSTGRES_PASSWORD: romial
+      POSTGRES_DB: romial_website
+    ports:
+      - '5437:5432'
+    volumes:
+      - rk-site-db:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U romial -d romial_website']
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  # Catches every outgoing e-mail locally: http://localhost:8026
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: rk-site-mailhog
+    restart: unless-stopped
+    ports:
+      - '1026:1025'
+      - '8026:8025'
+
+volumes:
+  rk-site-db:
