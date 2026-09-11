@@ -78,7 +78,7 @@ const PAIRS: { fg: string; bg: string; min: number; label: string }[] = [
     min: 4.5,
     label: 'secondary text on dark band',
   },
-  { fg: '--accent', bg: '--surface-contrast', min: 3, label: 'gold accent on dark band' },
+  { fg: '--accent', bg: '--surface-contrast', min: 4.5, label: 'gold text on dark band' },
   { fg: '--accent-contrast', bg: '--accent', min: 4.5, label: 'text on gold button' },
   { fg: '--text-inverse', bg: '--surface-inverse', min: 4.5, label: 'primary button label' },
   { fg: '--state-error-text', bg: '--state-error-surface', min: 4.5, label: 'error message' },

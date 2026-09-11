@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import { getTranslations } from 'next-intl/server'
 
 import { CtaLink } from '@/components/ui/CtaLink'
@@ -6,14 +7,17 @@ import { ExpertProfileButton } from '@/components/ui/ExpertProfileButton'
 import { Icon } from '@/components/ui/Icon'
 import { Portrait } from '@/components/ui/Portrait'
 import { Link } from '@/i18n/navigation'
-import type { HomeContentView, SiteSettingsView } from '@/lib/types'
+import type { AppearanceView, HomeContentView, SiteSettingsView } from '@/lib/types'
 
 export async function Hero({
   content,
   settings,
+  background,
 }: {
   content: HomeContentView
   settings: SiteSettingsView
+  /** Background chosen in the CMS (Appearance → Home page). */
+  background: AppearanceView['hero']
 }) {
   const t = await getTranslations('home.hero')
   const common = await getTranslations('common')
@@ -22,11 +26,30 @@ export async function Hero({
 
   return (
     <section className="relative overflow-hidden border-b border-line bg-surface">
-      {/* Decorative gradient wash — never carries information. */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(120%_90%_at_85%_-10%,var(--surface-accent-soft),transparent_55%)]"
-      />
+      {background.style === 'image' && background.image ? (
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+          {/* Decorative: the veil in the page colour keeps every text readable
+              (at most 15 % of the photo shows through). */}
+          <Image
+            src={background.image.url}
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover"
+          />
+          <div
+            className={`absolute inset-0 bg-surface ${background.intensity === 'visible' ? 'opacity-85' : 'opacity-92'}`}
+          />
+        </div>
+      ) : null}
+      {background.style === 'halo' ? (
+        /* Decorative gradient wash — never carries information. */
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(120%_90%_at_85%_-10%,var(--surface-accent-soft),transparent_55%)]"
+        />
+      ) : null}
       <div className="rk-container relative grid gap-12 py-16 md:py-24 lg:grid-cols-12 lg:gap-16">
         <div className="lg:col-span-7">
           <p className="text-xs font-semibold tracking-[0.22em] text-accent-text uppercase">

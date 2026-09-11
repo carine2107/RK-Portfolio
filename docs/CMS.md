@@ -138,6 +138,22 @@ Session 8 h, verrouillage après 5 échecs pendant 10 minutes, cookies
 - **Social** : `social[{platform, url}]`
 - **SEO defaults** : `defaultSeoTitle`, `defaultSeoDescription`, `defaultOgImage`
 
+### `appearance` — Apparence (Administrator uniquement)
+
+- **Couleurs** : `palette` (`signature` par défaut, `ivory`, `anthracite`,
+  `petrol`, `forest`, `burgundy`, `custom`) ; si `custom` :
+  `light{primary, accent, textSecondary, background, backgroundSubtle}` et
+  `dark{background, backgroundSubtle, accent}` (hex, vide = valeur Signature)
+- **Typographie** : `headingFont` (`source-serif`, `playfair`, `inter`)
+- **Page d'accueil** : `hero{style: halo | plain | image, image, intensity: subtle | visible}`
+
+Le moteur `src/lib/theme.ts` dérive de ces quelques couleurs l'ensemble des
+design tokens des deux thèmes et ajuste chaque couleur de texte pour atteindre le
+contraste WCAG AA ; la feuille générée est injectée dans le `<head>`
+(`#rk-appearance`). Palette Signature = aucune surcharge : les tokens réglés à la
+main dans `globals.css` s'appliquent. L'enregistrement déclenche la
+revalidation des pages (`revalidatePath`).
+
 ### `home-page`
 
 `heroEyebrow`, `heroValueProposition`, `heroPortrait`, `heroKeyPoints[]`,
@@ -159,6 +175,7 @@ Session 8 h, verrouillage après 5 échecs pendant 10 minutes, cookies
 | Lire un brouillon                 | ❌     | ✅     | ✅    |
 | Créer / modifier un contenu       | ❌     | ✅     | ✅    |
 | Créer / supprimer une page légale | ❌     | ❌     | ✅    |
+| Modifier l'apparence du site      | ❌     | ❌     | ✅    |
 | Lire les demandes de contact      | ❌     | ✅     | ✅    |
 | Supprimer une demande de contact  | ❌     | ❌     | ✅    |
 | Gérer les comptes et les rôles    | ❌     | ❌     | ✅    |

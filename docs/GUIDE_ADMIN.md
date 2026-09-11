@@ -17,7 +17,7 @@ nécessaire : tout ce qui suit se fait depuis l'interface d'administration.
 
 | Rôle                | Peut faire                                                                                                       | Ne peut pas faire                                                   |
 | ------------------- | ---------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
-| **Administrator**   | Tout : contenus, réglages du site, pages légales, comptes utilisateurs                                           | —                                                                   |
+| **Administrator**   | Tout : contenus, réglages du site, apparence (couleurs, polices), pages légales, comptes utilisateurs            | —                                                                   |
 | **Editor / Author** | Créer, modifier et publier les contenus (articles, expertises, expériences, livres, activités), gérer les médias | Créer des comptes, changer un rôle, créer/supprimer une page légale |
 
 Créer un compte : **Administration → Utilisateurs → Créer**, choisir le rôle,
@@ -219,7 +219,44 @@ valeurs, langues, régions.
 
 ---
 
-## 10. Activités entrepreneuriales
+## 10. Apparence du site
+
+**Administration → Apparence** (réservé au rôle Administrator ; les éditeurs la
+consultent sans pouvoir la modifier).
+
+| Onglet             | Réglage                                                                                                                                                                                       |
+| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Couleurs**       | Une **palette prête à l'emploi** (Signature marine et or — par défaut —, Ivoire et marine, Anthracite et or, Bleu pétrole et cuivre, Vert profond et or, Bordeaux et or) ou **Personnalisée** |
+| **Typographie**    | Police des titres : Source Serif 4 (par défaut), Playfair Display ou Inter. Le texte courant reste en Inter                                                                                   |
+| **Page d'accueil** | Fond du bandeau d'accueil : halo doré (par défaut), uni, ou **image** (discrète ou marquée)                                                                                                   |
+
+**Palette personnalisée** : choisir « Personnalisée » fait apparaître les
+couleurs du **mode clair** (couleur principale, accent, texte secondaire, fond de
+page, fond des sections alternées) et du **mode sombre** (fond de page, fond des
+sections alternées, accent). Chaque couleur se choisit avec le nuancier ou en
+saisissant son code (`#10233F`) ; le bouton **Par défaut** la vide, et une
+couleur vide reprend celle de la palette Signature.
+
+**Lisibilité garantie** : le site ajuste automatiquement les couleurs des textes
+(et au besoin celle des boutons ou du bandeau foncé) pour respecter le contraste
+WCAG 2.2 AA. Une couleur choisie peut donc apparaître légèrement plus foncée ou
+plus claire sur le site : l'**aperçu** affiché sous les couleurs montre le
+rendu réel, en mode clair et en mode sombre, et signale quand un ajustement a eu
+lieu. Deux garde-fous refusent l'enregistrement : un fond trop sombre pour le mode
+clair, ou trop clair pour le mode sombre.
+
+**Image de fond** : une photo décorative (bureau, ville, texture), idéalement
+2 400 px de large. Elle est voilée de la couleur de fond (85 % ou 92 %) pour que
+le texte reste lisible ; elle n'a pas de texte alternatif, car elle ne porte aucune
+information. Ne pas utiliser de portrait généré par IA.
+
+Les changements sont visibles sur le site **dès l'enregistrement**. Pour revenir
+à l'apparence d'origine : palette **Signature**, police **Source Serif 4**, fond
+**Halo doré**.
+
+---
+
+## 11. Activités entrepreneuriales
 
 **Contenus → Écosystème entrepreneurial** — RK Business Consulting, RK IMMO-FINANZ,
 Kenmogne Strategic Publishing, KAILI Institut, KAILI Event.
@@ -228,7 +265,7 @@ Décocher **Activité visible** masque immédiatement une activité du site sans
 
 ---
 
-## 11. Demandes de contact
+## 12. Demandes de contact
 
 **Administration → Demandes de contact**
 
@@ -245,7 +282,7 @@ langue et l'horodatage du consentement.
 
 ---
 
-## 12. Pages légales
+## 13. Pages légales
 
 **Administration → Pages légales** — Impressum, confidentialité, cookies, CGV,
 livraison/retours.
@@ -261,7 +298,7 @@ nécessaire, par un professionnel du droit.
 
 ---
 
-## 13. Contenus d'exemple
+## 14. Contenus d'exemple
 
 Les entrées livrées avec le site portent la mention **« Contenu d'exemple »**
 (case _Contenu d’exemple_ dans la barre latérale) et affichent un bandeau
@@ -275,7 +312,7 @@ Liste complète des éléments encore attendus :
 
 ---
 
-## 14. Bonnes pratiques
+## 15. Bonnes pratiques
 
 - Publier en trois langues ou pas du tout : une page à moitié traduite se voit.
 - Toujours renseigner le texte alternatif des images.

@@ -154,6 +154,17 @@ export type SiteSettingsView = {
   defaultOgImage: string | null
 }
 
+export type AppearanceView = {
+  /** Stylesheet overriding the default design tokens ('' = default look). */
+  css: string
+  themeColors: { light: string; dark: string }
+  hero: {
+    style: 'halo' | 'plain' | 'image'
+    image: ImageView
+    intensity: 'subtle' | 'visible'
+  }
+}
+
 export type HomeContentView = {
   heroEyebrow: string
   heroValueProposition: string

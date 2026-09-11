@@ -19,8 +19,18 @@ import {
 } from '@/content/starter'
 import type { Locale } from '@/i18n/routing'
 import { cmsEnabled, siteUrl } from '@/lib/env'
+import {
+  appearanceCss,
+  HEADING_FONTS,
+  HERO_STYLES,
+  PALETTE_KEYS,
+  themeColors,
+  type AppearanceColors,
+  type HeadingFont,
+} from '@/lib/theme'
 import type {
   AboutContentView,
+  AppearanceView,
   BookView,
   BusinessView,
   CategoryView,
@@ -225,6 +235,47 @@ export const getSiteSettings = cache(
       },
       () => starterSiteSettings(locale),
     ),
+)
+
+/* -------------------------------------------------------------------------- */
+/* Appearance                                                                 */
+/* -------------------------------------------------------------------------- */
+
+const defaultAppearance = (): AppearanceView => ({
+  css: '',
+  themeColors: themeColors(null),
+  hero: { style: 'halo', image: null, intensity: 'subtle' },
+})
+
+const oneOf = <T extends string>(value: unknown, allowed: readonly T[], fallback: T): T =>
+  allowed.includes(value as T) ? (value as T) : fallback
+
+/** Colours, heading font and home background chosen in the CMS (Appearance global). */
+export const getAppearance = cache(
+  async (): Promise<AppearanceView> =>
+    withCms(async (cms) => {
+      const doc = asDoc(await cms.findGlobal({ slug: 'appearance', depth: 1 }))
+      const colors: AppearanceColors = {
+        palette: oneOf(doc.palette, [...PALETTE_KEYS, 'custom'] as const, 'signature'),
+        light: (doc.light as AppearanceColors['light']) ?? null,
+        dark: (doc.dark as AppearanceColors['dark']) ?? null,
+      }
+      const headingFont: HeadingFont = oneOf(doc.headingFont, HEADING_FONTS, 'source-serif')
+      const hero = (doc.hero as Doc | undefined) ?? {}
+      const heroImage = image(hero.image)
+      const style = oneOf(hero.style, HERO_STYLES, 'halo')
+
+      return {
+        css: appearanceCss({ ...colors, headingFont }),
+        themeColors: themeColors(colors),
+        hero: {
+          // An "image" style without an image falls back to the default look.
+          style: style === 'image' && !heroImage ? 'halo' : style,
+          image: heroImage,
+          intensity: hero.intensity === 'visible' ? 'visible' : 'subtle',
+        },
+      }
+    }, defaultAppearance),
 )
 
 /* -------------------------------------------------------------------------- */

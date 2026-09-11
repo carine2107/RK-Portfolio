@@ -13,8 +13,9 @@
  * The locale selector in the header switches the language of the *content*
  * being edited. Payload displays it on every screen, including those where no
  * field is translated — where it looks broken because nothing happens.
- * It is hidden on those screens only: the account page, and the two
- * collections that hold no translated field (users, contact requests).
+ * It is hidden on those screens only: the account page, the two collections
+ * and the global that hold no translated field (users, contact requests,
+ * appearance).
  */
 .account .app-header .localizer,
 .account .app-header .localizer-label,
@@ -25,6 +26,83 @@
 .template-default__wrap:has(.collection-list--contact-submissions) .app-header .localizer,
 .template-default__wrap:has(.collection-list--contact-submissions) .app-header .localizer-label,
 .template-default__wrap:has(.collection-edit--contact-submissions) .app-header .localizer,
-.template-default__wrap:has(.collection-edit--contact-submissions) .app-header .localizer-label {
+.template-default__wrap:has(.collection-edit--contact-submissions) .app-header .localizer-label,
+.template-default__wrap:has(.global-edit--appearance) .app-header .localizer,
+.template-default__wrap:has(.global-edit--appearance) .app-header .localizer-label {
   display: none;
+}
+
+/*
+ * Appearance global: colour fields and live preview.
+ */
+.rk-color-field__row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.rk-color-field__swatch {
+  flex: none;
+  width: 2.75rem;
+  height: 2.5rem;
+  padding: 0.2rem;
+  border: 1px solid var(--theme-elevation-250);
+  border-radius: var(--style-radius-s);
+  background: var(--theme-input-bg);
+  cursor: pointer;
+}
+
+.rk-color-field__hex {
+  flex: 1;
+  min-width: 0;
+  height: 2.5rem;
+  padding: 0 0.75rem;
+  border: 1px solid var(--theme-elevation-150);
+  border-radius: var(--style-radius-s);
+  background: var(--theme-input-bg);
+  color: var(--theme-elevation-800);
+  font-family: var(--font-mono, monospace);
+  text-transform: lowercase;
+
+  &:focus {
+    outline: none;
+    border-color: var(--theme-elevation-400);
+    box-shadow: 0 0 0 2px var(--theme-elevation-150);
+  }
+}
+
+.rk-color-field.error .rk-color-field__hex {
+  border-color: var(--theme-error-400);
+}
+
+.rk-color-field__reset {
+  flex: none;
+  height: 2.5rem;
+  padding: 0 0.75rem;
+  border: 1px solid var(--theme-elevation-150);
+  border-radius: var(--style-radius-s);
+  background: transparent;
+  color: var(--theme-elevation-800);
+  cursor: pointer;
+
+  &:hover {
+    background: var(--theme-elevation-50);
+  }
+}
+
+.rk-appearance-preview__title {
+  margin: 0 0 0.75rem;
+  font-size: 1rem;
+}
+
+.rk-appearance-preview__grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+}
+
+.rk-appearance-preview__note {
+  margin: 0.75rem 0 0;
+  color: var(--theme-elevation-600);
+  font-size: 0.8125rem;
 }

@@ -111,11 +111,13 @@ export interface Config {
   fallbackLocale: ('false' | 'none' | 'null') | false | null | ('en' | 'fr' | 'de') | ('en' | 'fr' | 'de')[];
   globals: {
     'site-settings': SiteSetting;
+    appearance: Appearance;
     'home-page': HomePage;
     'about-page': AboutPage;
   };
   globalsSelect: {
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
+    appearance: AppearanceSelect<false> | AppearanceSelect<true>;
     'home-page': HomePageSelect<false> | HomePageSelect<true>;
     'about-page': AboutPageSelect<false> | AboutPageSelect<true>;
   };
@@ -669,7 +671,7 @@ export interface Document {
   focalY?: number | null;
 }
 /**
- * RK Business Consulting, RK IMMO-FINANZ, KAILI Institut, KAILI Event. Uncheck "Active" to hide a venture temporarily.
+ * RK Business Consulting, RK IMMO-FINANZ, Kenmogne Strategic Publishing, KAILI Institut, KAILI Event. Uncheck "Active" to hide a venture temporarily.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "businesses".
@@ -1597,7 +1599,7 @@ export interface SiteSetting {
    */
   cvDocument?: (number | null) | Document;
   /**
-   * Credit shown at the very bottom of every page ("© by …"). Leave empty to remove it.
+   * Notice shown at the very bottom of every page ("© by [name]. All rights reserved."). Empty: "© year Romial Kenmogne" instead.
    */
   creditName?: string | null;
   /**
@@ -1637,6 +1639,54 @@ export interface SiteSetting {
    * 1200×630 pixels.
    */
   defaultOgImage?: (number | null) | Media;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Colours, heading font and home-page background of the public site. Text always stays readable: its colours are adjusted automatically (WCAG AA). Changes show on the site within seconds.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "appearance".
+ */
+export interface Appearance {
+  id: number;
+  /**
+   * Choose "Custom" to set your own colours. An empty colour falls back to the Signature palette.
+   */
+  palette: 'signature' | 'ivory' | 'anthracite' | 'petrol' | 'forest' | 'burgundy' | 'custom';
+  light?: {
+    /**
+     * Headings, text, buttons and dark bands (footer).
+     */
+    primary?: string | null;
+    /**
+     * Rules, links and gold buttons.
+     */
+    accent?: string | null;
+    /**
+     * Subtitles and supporting text.
+     */
+    textSecondary?: string | null;
+    background?: string | null;
+    backgroundSubtle?: string | null;
+  };
+  dark?: {
+    background?: string | null;
+    backgroundSubtle?: string | null;
+    accent?: string | null;
+  };
+  /**
+   * Body text stays in Inter for comfortable reading.
+   */
+  headingFont: 'source-serif' | 'playfair' | 'inter';
+  hero: {
+    style: 'halo' | 'plain' | 'image';
+    /**
+     * Decorative photo (office, city, texture…), ideally 2400 px wide. It is veiled with the background colour so the text stays readable. Do not use generated portraits.
+     */
+    image?: (number | null) | Media;
+    intensity?: ('subtle' | 'visible') | null;
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1829,6 +1879,40 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   defaultSeoTitle?: T;
   defaultSeoDescription?: T;
   defaultOgImage?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "appearance_select".
+ */
+export interface AppearanceSelect<T extends boolean = true> {
+  palette?: T;
+  light?:
+    | T
+    | {
+        primary?: T;
+        accent?: T;
+        textSecondary?: T;
+        background?: T;
+        backgroundSubtle?: T;
+      };
+  dark?:
+    | T
+    | {
+        background?: T;
+        backgroundSubtle?: T;
+        accent?: T;
+      };
+  headingFont?: T;
+  hero?:
+    | T
+    | {
+        style?: T;
+        image?: T;
+        intensity?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

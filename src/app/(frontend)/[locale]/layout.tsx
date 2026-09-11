@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next'
-import { Inter, Source_Serif_4 } from 'next/font/google'
+import { Inter, Playfair_Display, Source_Serif_4 } from 'next/font/google'
 import { hasLocale, NextIntlClientProvider } from 'next-intl'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { notFound } from 'next/navigation'
@@ -11,7 +11,7 @@ import { Header } from '@/components/layout/Header'
 import { ThemeScript } from '@/components/theme/ThemeScript'
 import { Notice } from '@/components/ui/Notices'
 import { locales, routing, type Locale } from '@/i18n/routing'
-import { getContentSource, getSiteSettings } from '@/lib/cms'
+import { getAppearance, getContentSource, getSiteSettings } from '@/lib/cms'
 import { isProduction, siteUrl } from '@/lib/env'
 
 import '../globals.css'
@@ -29,17 +29,29 @@ const body = Inter({
   display: 'swap',
 })
 
+/** Alternative heading font (Appearance global). Not preloaded: only downloaded when used. */
+const playfair = Playfair_Display({
+  subsets: ['latin'],
+  variable: '--font-playfair',
+  display: 'swap',
+  weight: ['400', '600'],
+  preload: false,
+})
+
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }))
 }
 
-export const viewport: Viewport = {
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
-    { media: '(prefers-color-scheme: dark)', color: '#0b1728' },
-  ],
-  width: 'device-width',
-  initialScale: 1,
+export async function generateViewport(): Promise<Viewport> {
+  const { themeColors } = await getAppearance()
+  return {
+    themeColor: [
+      { media: '(prefers-color-scheme: light)', color: themeColors.light },
+      { media: '(prefers-color-scheme: dark)', color: themeColors.dark },
+    ],
+    width: 'device-width',
+    initialScale: 1,
+  }
 }
 
 export async function generateMetadata({
@@ -81,14 +93,24 @@ export default async function LocaleLayout({
   setRequestLocale(locale)
 
   const settings = await getSiteSettings(locale as Locale)
+  const appearance = await getAppearance()
   const contentSource = await getContentSource()
   const t = await getTranslations({ locale, namespace: 'common' })
   const cms = await getTranslations({ locale, namespace: 'cms' })
 
   return (
-    <html lang={locale} suppressHydrationWarning className={`${display.variable} ${body.variable}`}>
+    <html
+      lang={locale}
+      suppressHydrationWarning
+      className={`${display.variable} ${body.variable} ${playfair.variable}`}
+    >
       <head>
         <ThemeScript />
+        {/* Colours and fonts chosen in the CMS (Appearance). Generated from
+            validated hex values only — see src/lib/theme.ts. */}
+        {appearance.css ? (
+          <style id="rk-appearance" dangerouslySetInnerHTML={{ __html: appearance.css }} />
+        ) : null}
       </head>
       <body className="flex min-h-dvh flex-col bg-surface text-primary antialiased">
         <NextIntlClientProvider>

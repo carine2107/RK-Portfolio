@@ -22,6 +22,7 @@ import { Media } from './payload/collections/Media'
 import { Users } from './payload/collections/Users'
 import { AboutPage } from './payload/globals/AboutPage'
 import { HomePage } from './payload/globals/HomePage'
+import { Appearance } from './payload/globals/Appearance'
 import { SiteSettings } from './payload/globals/SiteSettings'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -76,7 +77,7 @@ export default buildConfig({
     ContactSubmissions,
     Users,
   ],
-  globals: [SiteSettings, HomePage, AboutPage],
+  globals: [SiteSettings, Appearance, HomePage, AboutPage],
   localization: {
     locales: [
       { label: 'English', code: 'en' },

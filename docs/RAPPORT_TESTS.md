@@ -8,22 +8,26 @@ Environnement : Windows 11, Node 24.15, PostgreSQL 16 (Docker), build de
 
 ## 1. Synthèse
 
-| Suite                            | Périmètre                                                  | Résultat                            |
-| -------------------------------- | ---------------------------------------------------------- | ----------------------------------- |
-| Tests unitaires (Vitest)         | Traductions, contrastes, validation, SEO, anti-abus        | **55 / 55 réussis**                 |
-| Tests end-to-end (Playwright)    | 46 scénarios × 4 configurations                            | **182 réussis, 2 ignorés, 0 échec** |
-| Compilation TypeScript (`tsc`)   | Mode strict, tout le projet                                | **0 erreur**                        |
-| Lint (ESLint 9 + config Next 16) | Tout le projet                                             | **0 erreur, 0 avertissement**       |
-| Formatage (Prettier)             | `src`, `tests`, `docs`                                     | **conforme**                        |
-| Build de production              | `next build`                                               | **réussi**                          |
-| Recette visuelle                 | 11 pages × 3 langues × 2 thèmes × 5 largeurs (99 captures) | **conforme après corrections**      |
+| Suite                            | Périmètre                                                               | Résultat                             |
+| -------------------------------- | ----------------------------------------------------------------------- | ------------------------------------ |
+| Tests unitaires (Vitest)         | Traductions, contrastes, moteur d'apparence, validation, SEO, anti-abus | **69 / 69 réussis**                  |
+| Tests end-to-end (Playwright)    | 59 scénarios × 4 configurations                                         | **210 réussis, 26 ignorés, 0 échec** |
+| Compilation TypeScript (`tsc`)   | Mode strict, tout le projet                                             | **0 erreur**                         |
+| Lint (ESLint 9 + config Next 16) | Tout le projet                                                          | **0 erreur, 0 avertissement**        |
+| Formatage (Prettier)             | `src`, `tests`, `docs`                                                  | **conforme**                         |
+| Build de production              | `next build`                                                            | **réussi**                           |
+| Recette visuelle                 | 11 pages × 3 langues × 2 thèmes × 5 largeurs (99 captures)              | **conforme après corrections**       |
 
 Configurations end-to-end : **Chromium 1280 px**, **mobile 375 px**,
 **Firefox**, **WebKit**.
 
-Les 2 tests ignorés le sont sur WebKit uniquement : Safari ne déplace pas le
-focus vers les liens avec la touche Tab tant que « Full Keyboard Access » n'est
-pas activé dans le système. Le comportement est vérifié sur Chromium et Firefox.
+Tests ignorés, tous volontaires :
+
+- **24** : l'audit de contraste axe (12 scénarios) ne tourne que sur les deux
+  configurations Chromium — le contraste ne dépend pas du moteur de rendu ;
+- **2** sur WebKit : Safari ne déplace pas le focus vers les liens avec la touche
+  Tab tant que « Full Keyboard Access » n'est pas activé dans le système. Le
+  comportement est vérifié sur Chromium et Firefox.
 
 Commandes :
 
@@ -35,17 +39,18 @@ node tests/visual/capture.mjs test-results/visual
 
 ---
 
-## 2. Tests unitaires (55)
+## 2. Tests unitaires (69)
 
-| Fichier                  | Ce qui est vérifié                                                                                                                            |
-| ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| `messages.test.ts`       | FR et DE couvrent 100 % des clés anglaises, aucune clé en trop, aucun message vide, paramètres ICU identiques, navigation réellement traduite |
-| `contrast.test.ts`       | 15 paires couleur texte/fond × 2 thèmes + anneau de focus, seuils WCAG 2.2 AA calculés depuis les design tokens du CSS                        |
-| `contact-schema.test.ts` | Schéma du formulaire (consentement, e-mail, pays, type de demande, longueurs), clés d'erreur traduisibles, liste de pays localisée et triée   |
-| `seo.test.ts`            | Canonical, hreflang FR/DE/EN + `x-default`, chemins traduits, `noindex`, Open Graph, troncature des descriptions, génération des slugs        |
-| `rate-limit.test.ts`     | Limitation par IP : seuil, réinitialisation de fenêtre, isolation entre clients, lecture des en-têtes de proxy                                |
+| Fichier                  | Ce qui est vérifié                                                                                                                                                                                                                             |
+| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `messages.test.ts`       | FR et DE couvrent 100 % des clés anglaises, aucune clé en trop, aucun message vide, paramètres ICU identiques, navigation réellement traduite                                                                                                  |
+| `contrast.test.ts`       | 15 paires couleur texte/fond × 2 thèmes + anneau de focus, seuils WCAG 2.2 AA calculés depuis les design tokens du CSS                                                                                                                         |
+| `contact-schema.test.ts` | Schéma du formulaire (consentement, e-mail, pays, type de demande, longueurs), clés d'erreur traduisibles, liste de pays localisée et triée                                                                                                    |
+| `seo.test.ts`            | Canonical, hreflang FR/DE/EN + `x-default`, chemins traduits, `noindex`, Open Graph, troncature des descriptions, génération des slugs                                                                                                         |
+| `theme.test.ts`          | Moteur d'apparence : les 6 palettes et **300 palettes personnalisées aléatoires** respectent 15 paires de contraste AA dans les deux thèmes ; couleurs vides = palette Signature ; aucune saisie brute du CMS dans la feuille de style générée |
+| `rate-limit.test.ts`     | Limitation par IP : seuil, réinitialisation de fenêtre, isolation entre clients, lecture des en-têtes de proxy                                                                                                                                 |
 
-## 3. Tests end-to-end (46 scénarios)
+## 3. Tests end-to-end (59 scénarios)
 
 ### Navigation et structure (`navigation.spec.ts`)
 
@@ -97,6 +102,16 @@ node tests/visual/capture.mjs test-results/visual
 - Tous les champs sont étiquetés ; les erreurs sont liées par `aria-describedby`
 - La signature de marque anglaise est déclarée `lang="en"` sur une page allemande
 - **Zoom 200 %** (équivalent 640 px) sans perte de contenu ni défilement horizontal
+
+### Contraste réel des pages (`contrast.spec.ts`)
+
+- Audit **axe-core** (règle `color-contrast`, WCAG 2.2 AA) sur 6 pages clés, en
+  **mode clair et en mode sombre** (12 scénarios), avec la palette enregistrée
+  dans le CMS
+- Pendant le développement de l'écran Apparence, l'audit a aussi été passé avec
+  la palette « Vert profond et or » et avec une palette personnalisée volontairement
+  mal assortie (bleu clair, rose vif, gris clair, fond crème) + image de fond : **0
+  violation** après correction automatique des couleurs
 
 ---
 

@@ -17,6 +17,7 @@ import { Section, SectionHeading } from '@/components/ui/Section'
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
 import {
+  getAppearance,
   getBooks,
   getBusinesses,
   getExperiences,
@@ -59,7 +60,7 @@ export default async function HomePage({ params }: Props) {
   const common = await getTranslations('common')
   const nav = await getTranslations('nav')
 
-  const [settings, content, expertise, experiences, insights, books, businesses] =
+  const [settings, content, expertise, experiences, insights, books, businesses, appearance] =
     await Promise.all([
       getSiteSettings(locale),
       getHomeContent(locale),
@@ -68,6 +69,7 @@ export default async function HomePage({ params }: Props) {
       getInsights(locale),
       getBooks(locale),
       getBusinesses(locale),
+      getAppearance(),
     ])
 
   const homeExpertise = expertise.filter((area) => area.featuredOnHome).slice(0, 8)
@@ -84,7 +86,7 @@ export default async function HomePage({ params }: Props) {
     <>
       <JsonLd data={[personSchema(settings, locale), websiteSchema(settings, locale)]} />
 
-      <Hero content={content} settings={settings} />
+      <Hero content={content} settings={settings} background={appearance.hero} />
 
       {homeExpertise.length > 0 ? (
         <Section id="expertise" labelledBy="home-expertise-title">

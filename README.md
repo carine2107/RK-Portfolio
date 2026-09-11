@@ -99,16 +99,16 @@ src/
 │   ├── seo/ (JSON-LD)                analytics/
 ├── content/starter.ts           Contenu de démarrage (marqué « exemple »)
 ├── i18n/                        Configuration des locales et de la navigation
-├── lib/                         cms, seo, email, format, validation, env
+├── lib/                         cms, seo, email, format, validation, env, theme (apparence)
 ├── messages/{en,fr,de}.json     Toutes les chaînes d'interface
-├── payload/                     Collections, globals, champs, accès
+├── payload/                     Collections, globals, champs, accès, composants admin
 ├── payload.config.ts            Configuration du CMS
 ├── proxy.ts                     Négociation de langue (ex-middleware)
 └── scripts/seed.ts              Script d'amorçage
 
 tests/
-├── unit/                        Vitest (traductions, contrastes, validation, SEO)
-├── e2e/                         Playwright (navigation, i18n, thème, formulaire…)
+├── unit/                        Vitest (traductions, contrastes, apparence, validation, SEO)
+├── e2e/                         Playwright (navigation, i18n, thème, formulaire, contraste axe…)
 └── visual/capture.mjs           Captures d'écran pour la recette visuelle
 docs/                            Installation, déploiement, guide admin, checklists
 ```
@@ -151,6 +151,12 @@ traduction manque, si une clé est en trop ou si un paramètre ICU diverge.
   plus claires, or adouci), **pas une inversion automatique**.
 - Tous les contrastes sont vérifiés automatiquement
   (`tests/unit/contrast.test.ts`, WCAG 2.2 AA sur les deux thèmes).
+- **Apparence modifiable dans le CMS** (Administration → Apparence) : 6 palettes
+  ou couleurs personnalisées pour les deux thèmes, police des titres, fond de la
+  page d'accueil (halo, uni, image voilée). `src/lib/theme.ts` dérive tous les
+  tokens et **ajuste les couleurs de texte pour rester en WCAG AA** quoi que
+  l'administrateur choisisse (testé sur 300 palettes aléatoires +
+  `tests/e2e/contrast.spec.ts` avec axe-core).
 
 ---
 
