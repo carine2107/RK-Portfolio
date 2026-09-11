@@ -1091,6 +1091,35 @@ export const starterBusinesses: StarterBusiness[] = [
     website: '',
   },
   {
+    // Only confirmed fact: Romial Kenmogne founded it (author bio of the book).
+    // Whether it publishes his book is not confirmed and is not claimed here.
+    key: 'kenmogne-strategic-publishing',
+    name: 'Kenmogne Strategic Publishing',
+    order: 25,
+    tagline: {
+      en: 'Books and publications',
+      fr: 'Livres et publications',
+      de: 'Bücher und Publikationen',
+    },
+    description: {
+      en: '[Description to be provided by the owner.] Publishing activity founded by Romial Kenmogne.',
+      fr: "[Description à fournir par le propriétaire.] Activité d'édition fondée par Romial Kenmogne.",
+      de: '[Beschreibung durch den Inhaber zu liefern.] Von Romial Kenmogne gegründete Verlagsaktivität.',
+    },
+    valueProposition: {
+      en: '[Value proposition to be confirmed.]',
+      fr: '[Proposition de valeur à confirmer.]',
+      de: '[Nutzenversprechen zu bestätigen.]',
+    },
+    field: { en: 'Publishing', fr: 'Édition', de: 'Verlag' },
+    audience: {
+      en: '[Audience to be confirmed]',
+      fr: '[Public à confirmer]',
+      de: '[Zielgruppe zu bestätigen]',
+    },
+    website: '',
+  },
+  {
     key: 'kaili-institut',
     name: 'KAILI Institut',
     order: 30,

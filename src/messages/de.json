@@ -130,7 +130,7 @@
     "ecosystem": {
       "eyebrow": "Unternehmerisches Ökosystem",
       "title": "Unternehmerische Aktivitäten",
-      "intro": "Vier sich ergänzende Unternehmungen rund um die Beratungspraxis.",
+      "intro": "Sich ergänzende Unternehmungen rund um die Beratungspraxis.",
       "cta": "Ökosystem entdecken"
     },
     "finalCta": {
@@ -275,10 +275,10 @@
   "businesses": {
     "meta": {
       "title": "Unternehmerisches Ökosystem",
-      "description": "RK Business Consulting, RK IMMO-FINANZ, KAILI Institut und KAILI Event — das unternehmerische Ökosystem von Romial Kenmogne."
+      "description": "RK Business Consulting, RK IMMO-FINANZ, Kenmogne Strategic Publishing, KAILI Institut und KAILI Event — das unternehmerische Ökosystem von Romial Kenmogne."
     },
     "title": "Unternehmerisches Ökosystem",
-    "lead": "Vier sich ergänzende Aktivitäten. Die Beratungspraxis bleibt der Schwerpunkt.",
+    "lead": "Sich ergänzende Aktivitäten. Die Beratungspraxis bleibt der Schwerpunkt.",
     "fields": {
       "valueProposition": "Nutzenversprechen",
       "field": "Bereich",
@@ -398,7 +398,7 @@
     "legalLinks": "Rechtliches",
     "copyright": "© {year} Romial Kenmogne. Alle Rechte vorbehalten.",
     "builtNotice": "Inhalte werden über das RK CMS gepflegt.",
-    "builtBy": "© by {name}"
+    "creditLine": "<credit>© by {name}</credit>. Alle Rechte vorbehalten."
   },
   "cms": {
     "fallbackNotice": "Das Content-Management-System ist nicht erreichbar — die Website zeigt ihre integrierten Startinhalte."

@@ -77,9 +77,10 @@ Le script est **idempotent** (relançable sans créer de doublons). Il crée :
 - 8 domaines d'expertise rédigés dans les trois langues ;
 - 3 fiches d'expérience **d'exemple** (organisations entre crochets, à remplacer) ;
 - 3 articles RK Insights **d'exemple** ;
-- 1 fiche livre **d'exemple** ;
-- les 4 activités de l'écosystème (RK Business Consulting, RK IMMO-FINANZ,
-  KAILI Institut, KAILI Event) avec des descriptions à compléter ;
+- la fiche du livre « Réussir son premier achat immobilier en Europe » ;
+- les 5 activités de l'écosystème (RK Business Consulting, RK IMMO-FINANZ,
+  Kenmogne Strategic Publishing, KAILI Institut, KAILI Event) avec des
+  descriptions à compléter ;
 - 5 pages légales à l'état de **trame juridique** ;
 - les réglages du site, de la page d'accueil et de la page À propos.
 

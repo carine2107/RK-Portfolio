@@ -32,18 +32,18 @@ Légende : 🔴 bloquant pour la mise en ligne · 🟠 important · 🟡 confort
 
 ## 3. Contenus professionnels
 
-| #    | Élément                                                                                                     | Priorité | Où l'utiliser                                                          |
-| ---- | ----------------------------------------------------------------------------------------------------------- | -------- | ---------------------------------------------------------------------- |
-| 3.1  | 🟡 **Biographie** — reprise de la présentation d’auteur du livre (11/09/2026) ; versions DE/EN à relire     | 🟠       | Page À propos                                                          |
-| 3.2  | **Parcours professionnel** (chronologie)                                                                    | 🔴       | Page À propos                                                          |
-| 3.3  | **Expériences et projets vérifiés** : organisation, rôle, période, pays, contexte, responsabilités          | 🔴       | Expériences. 3 fiches d'exemple à remplacer                            |
-| 3.4  | **Résultats validés** (uniquement s'ils sont vérifiables)                                                   | 🟠       | Case « Results verified » d'une expérience                             |
-| 3.5  | **Formations et certifications** avec intitulés exacts                                                      | 🔴       | Education & credentials (2 fiches d'exemple)                           |
-| 3.6  | **International Expert Profile (PDF)**                                                                      | 🔴       | Active les boutons de téléchargement                                   |
-| 3.7  | **International CV 2026 (PDF)**                                                                             | 🟠       | Documents                                                              |
-| 3.8  | Niveaux de langue réels (FR / EN / DE)                                                                      | 🟠       | Page À propos (« [Niveau] » aujourd'hui)                               |
-| 3.9  | Descriptions validées des 4 activités : RK Business Consulting, RK IMMO-FINANZ, KAILI Institut, KAILI Event | 🔴       | Écosystème (textes entre crochets)                                     |
-| 3.10 | Relecture des 8 pages d'expertise (FR / DE / EN)                                                            | 🟠       | Les textes livrés décrivent la discipline, pas un historique personnel |
+| #    | Élément                                                                                                                                                                                                                                                    | Priorité | Où l'utiliser                                                          |
+| ---- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ---------------------------------------------------------------------- |
+| 3.1  | 🟡 **Biographie** — reprise de la présentation d’auteur du livre (11/09/2026) ; versions DE/EN à relire                                                                                                                                                    | 🟠       | Page À propos                                                          |
+| 3.2  | **Parcours professionnel** (chronologie)                                                                                                                                                                                                                   | 🔴       | Page À propos                                                          |
+| 3.3  | **Expériences et projets vérifiés** : organisation, rôle, période, pays, contexte, responsabilités                                                                                                                                                         | 🔴       | Expériences. 3 fiches d'exemple à remplacer                            |
+| 3.4  | **Résultats validés** (uniquement s'ils sont vérifiables)                                                                                                                                                                                                  | 🟠       | Case « Results verified » d'une expérience                             |
+| 3.5  | **Formations et certifications** avec intitulés exacts                                                                                                                                                                                                     | 🔴       | Education & credentials (2 fiches d'exemple)                           |
+| 3.6  | **International Expert Profile (PDF)**                                                                                                                                                                                                                     | 🔴       | Active les boutons de téléchargement                                   |
+| 3.7  | **International CV 2026 (PDF)**                                                                                                                                                                                                                            | 🟠       | Documents                                                              |
+| 3.8  | Niveaux de langue réels (FR / EN / DE)                                                                                                                                                                                                                     | 🟠       | Page À propos (« [Niveau] » aujourd'hui)                               |
+| 3.9  | Descriptions validées des 5 activités : RK Business Consulting, RK IMMO-FINANZ, Kenmogne Strategic Publishing, KAILI Institut, KAILI Event ; pour Kenmogne Strategic Publishing, préciser aussi le public visé, le site web et s'il est l'éditeur du livre | 🔴       | Écosystème (textes entre crochets)                                     |
+| 3.10 | Relecture des 8 pages d'expertise (FR / DE / EN)                                                                                                                                                                                                           | 🟠       | Les textes livrés décrivent la discipline, pas un historique personnel |
 
 ## 4. RK Insights
 
@@ -118,7 +118,7 @@ L'architecture est prête à les accueillir sans refonte.
 1. Domaine + hébergement + HTTPS (1.1 → 1.3)
 2. Parcours, expériences et formations validés (3.2 → 3.5) ; relecture DE/EN de la biographie (3.1)
 3. International Expert Profile (3.6)
-4. Descriptions des 4 activités (3.9)
+4. Descriptions des 5 activités (3.9)
 5. Coordonnées professionnelles (6.1, 6.3, 6.4)
 6. Textes juridiques validés (7.1 → 7.5)
 7. Compte SMTP et test d'envoi réel (8.1)

@@ -130,7 +130,7 @@
     "ecosystem": {
       "eyebrow": "Écosystème entrepreneurial",
       "title": "Activités entrepreneuriales",
-      "intro": "Quatre activités complémentaires autour de la pratique de conseil.",
+      "intro": "Des activités complémentaires, construites autour de la pratique de conseil.",
       "cta": "Découvrir l’écosystème"
     },
     "finalCta": {
@@ -275,10 +275,10 @@
   "businesses": {
     "meta": {
       "title": "Écosystème entrepreneurial",
-      "description": "RK Business Consulting, RK IMMO-FINANZ, KAILI Institut et KAILI Event — l’écosystème entrepreneurial de Romial Kenmogne."
+      "description": "RK Business Consulting, RK IMMO-FINANZ, Kenmogne Strategic Publishing, KAILI Institut et KAILI Event — l’écosystème entrepreneurial de Romial Kenmogne."
     },
     "title": "Écosystème entrepreneurial",
-    "lead": "Quatre activités complémentaires. La pratique de conseil reste le centre de gravité.",
+    "lead": "Des activités complémentaires. La pratique de conseil reste le centre de gravité.",
     "fields": {
       "valueProposition": "Proposition de valeur",
       "field": "Domaine",
@@ -398,7 +398,7 @@
     "legalLinks": "Informations légales",
     "copyright": "© {year} Romial Kenmogne. Tous droits réservés.",
     "builtNotice": "Contenus gérés depuis le CMS RK.",
-    "builtBy": "© by {name}"
+    "creditLine": "<credit>© by {name}</credit>. Tous droits réservés."
   },
   "cms": {
     "fallbackNotice": "Le système de gestion de contenu est indisponible — le site affiche son contenu de démarrage intégré."

@@ -69,7 +69,7 @@ export default async function BusinessesPage({ params }: Props) {
         {businesses.length === 0 ? (
           <EmptyState message={t('empty')} />
         ) : (
-          <ul className="grid gap-6 lg:grid-cols-2">
+          <ul className="grid gap-6 lg:grid-cols-2 lg:[&>li:last-child:nth-child(odd)]:col-span-2">
             {businesses.map((business) => (
               <li key={business.id} className="flex">
                 <BusinessCard business={business} />

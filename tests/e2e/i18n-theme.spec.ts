@@ -13,19 +13,21 @@ test.describe('language switching', () => {
 
   test('follows the translated slug of an article', async ({ page }) => {
     await page.goto('/en/insights')
-    await page.locator('main a[href^="/en/insights/"]').first().click()
-    await expect(page).toHaveURL(/\/en\/insights\/.+/)
+    const article = await page.locator('main a[href^="/en/insights/"]').first().getAttribute('href')
+    const englishSlug = article?.split('/').pop() ?? ''
+    await page.goto(article ?? '/en/insights')
 
-    const switcher = await languageSwitcher(page)
     // The switcher reads the hreflang alternates once hydrated; a click fired
-    // before that lands on the untranslated fallback path. Retried as a block.
-    await expect(async () => {
-      await switcher.getByText('DE').click()
-      await expect(page).toHaveURL(/\/de\/insights\/.+/, { timeout: 3000 })
-    }).toPass({ timeout: 20_000 })
+    // before that lands on the untranslated fallback path (/de/insights/<English
+    // slug>). Wait until the link carries the German slug.
+    const germanLink = (await languageSwitcher(page)).locator('a[hreflang="de"]')
+    await expect(germanLink).toHaveAttribute('href', /^\/de\/insights\/.+/)
+    await expect(germanLink).not.toHaveAttribute('href', new RegExp(`/${englishSlug}$`))
+    const germanPath = await germanLink.getAttribute('href')
+    await germanLink.click()
+
+    await expect(page).toHaveURL(new RegExp(`${germanPath}$`))
     await expect(page.locator('html')).toHaveAttribute('lang', 'de')
-    // The German slug differs from the English one.
-    expect(page.url()).not.toContain('reading-a-balance-sheet')
   })
 
   test('keeps the selected language while navigating', async ({ page }) => {

@@ -222,8 +222,8 @@ export default async function HomePage({ params }: Props) {
               </Link>
             }
           />
-          <ul className="grid gap-5 md:grid-cols-2">
-            {businesses.slice(0, 4).map((business) => (
+          <ul className="grid gap-5 md:grid-cols-2 md:[&>li:last-child:nth-child(odd)]:col-span-2">
+            {businesses.map((business) => (
               <li key={business.id} className="flex">
                 <BusinessCard business={business} />
               </li>

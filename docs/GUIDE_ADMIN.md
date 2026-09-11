@@ -204,9 +204,10 @@ le document n'est pas encore publié — il ne renvoie jamais vers un lien mort.
 | **Réseaux sociaux** | Profils LinkedIn, X, Facebook, YouTube, Instagram (affichés dans le pied de page)            |
 | **SEO par défaut**  | Titre et description par défaut, image de partage social (1200 × 630)                        |
 
-Le **crédit de bas de page** (« © by Nana-Consulting ») s'affiche sous le
-copyright sur toutes les pages. Vider le champ _Credit name_ le supprime ;
-renseigner _Credit url_ le transforme en lien.
+La **mention de bas de page** (« © by Nana-Consulting. Tous droits réservés. »)
+s'affiche tout en bas de chaque page. Vider le champ _Crédit du pied de page_ la
+remplace par « © {année} Romial Kenmogne. Tous droits réservés. » ; renseigner
+l'URL du crédit transforme « © by Nana-Consulting » en lien.
 
 **Pages → Page d’accueil** : accroche, proposition de valeur, photo du hero, points
 clés, textes d'introduction des sections, appel à l'action final.
@@ -221,7 +222,7 @@ valeurs, langues, régions.
 ## 10. Activités entrepreneuriales
 
 **Contenus → Écosystème entrepreneurial** — RK Business Consulting, RK IMMO-FINANZ,
-KAILI Institut, KAILI Event.
+Kenmogne Strategic Publishing, KAILI Institut, KAILI Event.
 
 Décocher **Activité visible** masque immédiatement une activité du site sans la supprimer.
 

@@ -213,7 +213,7 @@ export async function BusinessCard({ business }: { business: BusinessView }) {
   const t = await getTranslations('businesses')
 
   return (
-    <Card tone="outline">
+    <Card tone="outline" className="w-full">
       <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-2">
         <div className="min-w-0">
           <CardTitle>{business.name}</CardTitle>

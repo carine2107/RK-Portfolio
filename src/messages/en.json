@@ -130,7 +130,7 @@
     "ecosystem": {
       "eyebrow": "Business ecosystem",
       "title": "Entrepreneurial activities",
-      "intro": "Four complementary ventures behind the advisory practice.",
+      "intro": "Complementary ventures built around the advisory practice.",
       "cta": "Discover the ecosystem"
     },
     "finalCta": {
@@ -275,10 +275,10 @@
   "businesses": {
     "meta": {
       "title": "Business ecosystem",
-      "description": "RK Business Consulting, RK IMMO-FINANZ, KAILI Institut and KAILI Event — the entrepreneurial ecosystem of Romial Kenmogne."
+      "description": "RK Business Consulting, RK IMMO-FINANZ, Kenmogne Strategic Publishing, KAILI Institut and KAILI Event — the entrepreneurial ecosystem of Romial Kenmogne."
     },
     "title": "Business ecosystem",
-    "lead": "Four complementary ventures. The advisory practice remains the centre of gravity.",
+    "lead": "Complementary ventures. The advisory practice remains the centre of gravity.",
     "fields": {
       "valueProposition": "Value proposition",
       "field": "Field",
@@ -398,7 +398,7 @@
     "legalLinks": "Legal",
     "copyright": "© {year} Romial Kenmogne. All rights reserved.",
     "builtNotice": "Content managed through the RK CMS.",
-    "builtBy": "© by {name}"
+    "creditLine": "<credit>© by {name}</credit>. All rights reserved."
   },
   "cms": {
     "fallbackNotice": "The content management system is unavailable — the site is showing its built-in starter content."

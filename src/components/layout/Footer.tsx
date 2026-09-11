@@ -144,33 +144,28 @@ export async function Footer({ locale, settings }: { locale: Locale; settings: S
 
       <div className="border-t border-line-contrast">
         <div className="rk-container flex flex-col items-center justify-between gap-4 py-6 text-xs text-on-contrast-secondary sm:flex-row">
-          <div className="flex flex-col items-center gap-x-3 gap-y-1 sm:flex-row">
-            <p>{t('copyright', { year: new Date().getFullYear() })}</p>
-            {settings.creditName ? (
-              <>
-                <span
-                  aria-hidden="true"
-                  className="hidden text-on-contrast-secondary opacity-40 sm:inline"
-                >
-                  ·
-                </span>
-                <p>
-                  {settings.creditUrl ? (
+          {settings.creditName ? (
+            <p>
+              {t.rich('creditLine', {
+                name: settings.creditName,
+                credit: (chunks) =>
+                  settings.creditUrl ? (
                     <a
                       href={settings.creditUrl}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="underline-offset-4 transition-colors hover:text-accent hover:underline"
                     >
-                      {t('builtBy', { name: settings.creditName })}
+                      {chunks}
                     </a>
                   ) : (
-                    t('builtBy', { name: settings.creditName })
-                  )}
-                </p>
-              </>
-            ) : null}
-          </div>
+                    chunks
+                  ),
+              })}
+            </p>
+          ) : (
+            <p>{t('copyright', { year: new Date().getFullYear() })}</p>
+          )}
           <LanguageSwitcher tone="contrast" />
         </div>
       </div>

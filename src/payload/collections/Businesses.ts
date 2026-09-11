@@ -15,9 +15,9 @@ export const Businesses: CollectionConfig = {
     useAsTitle: 'name',
     defaultColumns: ['name', 'active', 'order', '_status'],
     description: tr(
-      'RK Business Consulting, RK IMMO-FINANZ, KAILI Institut, KAILI Event. Décochez « Activité visible » pour masquer une activité temporairement.',
-      'RK Business Consulting, RK IMMO-FINANZ, KAILI Institut, KAILI Event. „Sichtbar“ deaktivieren, um eine Aktivität vorübergehend auszublenden.',
-      'RK Business Consulting, RK IMMO-FINANZ, KAILI Institut, KAILI Event. Uncheck "Active" to hide a venture temporarily.',
+      'RK Business Consulting, RK IMMO-FINANZ, Kenmogne Strategic Publishing, KAILI Institut, KAILI Event. Décochez « Activité visible » pour masquer une activité temporairement.',
+      'RK Business Consulting, RK IMMO-FINANZ, Kenmogne Strategic Publishing, KAILI Institut, KAILI Event. „Sichtbar“ deaktivieren, um eine Aktivität vorübergehend auszublenden.',
+      'RK Business Consulting, RK IMMO-FINANZ, Kenmogne Strategic Publishing, KAILI Institut, KAILI Event. Uncheck "Active" to hide a venture temporarily.',
     ),
   },
   versions: { drafts: { autosave: false }, maxPerDoc: 10 },

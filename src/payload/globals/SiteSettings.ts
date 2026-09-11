@@ -94,9 +94,9 @@ export const SiteSettings: GlobalConfig = {
               defaultValue: 'Nana-Consulting',
               admin: {
                 description: tr(
-                  'Mention « © by … » affichée tout en bas de chaque page. Videz le champ pour la retirer.',
-                  'Hinweis „© by …“ ganz unten auf jeder Seite. Feld leeren, um ihn zu entfernen.',
-                  'Credit shown at the very bottom of every page ("© by …"). Leave empty to remove it.',
+                  'Mention « © by [nom]. Tous droits réservés. » affichée tout en bas de chaque page. Vide : « © année Romial Kenmogne » à la place.',
+                  'Hinweis „© by [Name]. Alle Rechte vorbehalten.“ ganz unten auf jeder Seite. Leer: stattdessen „© Jahr Romial Kenmogne“.',
+                  'Notice shown at the very bottom of every page ("© by [name]. All rights reserved."). Empty: "© year Romial Kenmogne" instead.',
                 ),
               },
             },
