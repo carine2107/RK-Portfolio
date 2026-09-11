@@ -3,7 +3,7 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 
-import { BookCard } from '@/components/cards/ContentCards'
+import { BookCard, bookTitleLang } from '@/components/cards/ContentCards'
 import { PurchaseBlock } from '@/components/books/PurchaseBlock'
 import { bookSchema, breadcrumbSchema, JsonLd } from '@/components/seo/JsonLd'
 import { Icon } from '@/components/ui/Icon'
@@ -113,6 +113,7 @@ export default async function BookDetailPage({ params }: Props) {
         eyebrow={nav('books')}
         title={book.title}
         lead={book.subtitle}
+        titleLang={bookTitleLang(book, locale)}
         crumbs={[
           { label: nav('home'), href: '/' },
           { label: nav('books'), href: '/books' },
@@ -125,13 +126,14 @@ export default async function BookDetailPage({ params }: Props) {
 
         <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-4">
-            <div className="relative mx-auto aspect-3/4 w-full max-w-xs overflow-hidden rounded-card border border-line bg-surface-subtle shadow-raised">
+            <div className="relative mx-auto aspect-2/3 w-full max-w-xs overflow-hidden rounded-sm border border-line bg-surface-subtle shadow-float">
               {book.cover ? (
                 <Image
                   src={book.cover.url}
                   alt={book.cover.alt || book.title}
                   fill
-                  sizes="(min-width: 1024px) 20rem, 60vw"
+                  priority
+                  sizes="(min-width: 1024px) 20rem, 80vw"
                   className="object-cover"
                 />
               ) : (

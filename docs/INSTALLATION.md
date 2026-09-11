@@ -86,6 +86,22 @@ Le script est **idempotent** (relançable sans créer de doublons). Il crée :
 Tout ce qui doit être validé par le commanditaire est marqué
 **« Contenu d'exemple »** dans le CMS et affiché comme tel sur le site public.
 
+### Import des visuels du client
+
+Les photographies et la couverture du livre ne sont **pas** dans le dépôt Git
+(données personnelles / visuels client) : elles vivent dans la médiathèque du
+CMS et ses sauvegardes. Pour les (ré)importer dans un nouvel environnement :
+
+```bash
+npm run import:assets -- "<dossier contenant RK.jpeg, RK1.jpeg, RK2.jpeg>" "<image de couverture>"
+```
+
+Le script est idempotent : il réutilise les fichiers déjà présents, renseigne les
+textes alternatifs en FR/DE/EN, associe la photo du hero, le portrait de la page
+À propos et la couverture du livre, et n'écrase jamais une biographie déjà
+modifiée dans le CMS. Les métadonnées EXIF (dont la géolocalisation) sont
+supprimées à l'import.
+
 ## 6. Lancement
 
 ```bash

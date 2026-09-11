@@ -1176,7 +1176,7 @@ export const starterExperiences: StarterExperience[] = [
     key: 'europe-assignment-placeholder',
     type: 'assignment',
     region: 'europe',
-    organisation: '[Organisation — to be provided]',
+    organisation: '[Organisation]',
     startDate: '2023-01-01',
     featured: true,
     order: 10,
@@ -1207,7 +1207,7 @@ export const starterExperiences: StarterExperience[] = [
     key: 'africa-project-placeholder',
     type: 'project',
     region: 'africa',
-    organisation: '[Organisation — to be provided]',
+    organisation: '[Organisation]',
     startDate: '2022-01-01',
     endDate: '2023-06-01',
     featured: true,
@@ -1235,7 +1235,7 @@ export const starterExperiences: StarterExperience[] = [
     key: 'international-assignment-placeholder',
     type: 'assignment',
     region: 'international',
-    organisation: '[Organisation — to be provided]',
+    organisation: '[Organisation]',
     startDate: '2021-01-01',
     endDate: '2022-01-01',
     featured: true,
@@ -1397,40 +1397,158 @@ export const starterInsights: StarterInsight[] = [
 
 export type StarterBook = {
   key: string
+  /** URL segment per language (the title itself stays in the book's language). */
+  slug: Localized
   order: number
   availability: 'available' | 'preorder' | 'comingSoon' | 'outOfStock'
   saleType: 'external' | 'direct' | 'none'
+  isPlaceholder: boolean
   title: Localized
   subtitle: Localized
   summary: Localized
   audience: Localized<string[]>
+  /** `## ` marks a heading, everything else is a paragraph. */
+  description: Localized<string[]>
+  bookLanguage: ('en' | 'fr' | 'de')[]
+  format: ('paperback' | 'hardcover' | 'ebook' | 'audiobook')[]
+  isbn: string
+  purchaseLinks: { label: Localized; url: string }[]
+  seo: { title: Localized; description: Localized }
 }
+
+/**
+ * Real publication supplied by the client on 2026-09-11
+ * ("Information pour la publication du livre…" + print cover "Book 6x9 new.pdf").
+ * The book is written in French: its title stays in French in every language,
+ * while the presentation texts are translated. The German and English versions
+ * are translations to be proofread by the author.
+ * Price and page count were not supplied: they are deliberately left empty.
+ */
+const BOOK_TITLE = 'Réussir son premier achat immobilier en Europe — Tome 1'
+const BOOK_SUBTITLE =
+  'Indicateurs, techniques, meilleures pratiques et erreurs à éviter (cas de l’Allemagne et de la France)'
+const BOOK_QUOTE_FR =
+  '« Acheter un bien immobilier, ce n’est pas seulement acquérir des murs : c’est poser les fondations d’un projet de vie, d’une indépendance ou d’un patrimoine. » — Romial Kenmogne'
 
 export const starterBooks: StarterBook[] = [
   {
-    key: 'understand-money',
+    key: 'reussir-son-premier-achat-immobilier-en-europe-tome-1',
+    slug: {
+      fr: 'reussir-son-premier-achat-immobilier-en-europe-tome-1',
+      de: 'erste-immobilie-kaufen-in-europa-band-1',
+      en: 'buying-your-first-property-in-europe-volume-1',
+    },
     order: 10,
-    availability: 'comingSoon',
-    saleType: 'none',
-    title: {
-      en: '[Book title — to be provided]',
-      fr: '[Titre du livre — à fournir]',
-      de: '[Buchtitel — anzugeben]',
-    },
-    subtitle: {
-      en: '[Subtitle — to be provided]',
-      fr: '[Sous-titre — à fournir]',
-      de: '[Untertitel — anzugeben]',
-    },
+    availability: 'available',
+    saleType: 'external',
+    isPlaceholder: false,
+    title: { fr: BOOK_TITLE, de: BOOK_TITLE, en: BOOK_TITLE },
+    subtitle: { fr: BOOK_SUBTITLE, de: BOOK_SUBTITLE, en: BOOK_SUBTITLE },
     summary: {
-      en: 'Sample entry showing how a publication is presented: cover, summary, audience, format, ISBN, price and purchase link. Replace it with the real publication data in the CMS. No payment flow is activated on this website.',
-      fr: "Fiche d'exemple montrant la présentation d'une publication : couverture, résumé, public, format, ISBN, prix et lien d'achat. Remplacez-la par les données réelles dans le CMS. Aucun flux de paiement n'est activé sur ce site.",
-      de: 'Beispieleintrag für die Darstellung einer Publikation: Cover, Zusammenfassung, Zielgruppe, Format, ISBN, Preis und Kauflink. Im CMS durch die echten Daten ersetzen. Auf dieser Website ist kein Zahlungsprozess aktiviert.',
+      fr: 'Dans ce livre, Romial Kenmogne propose une approche pratique et structurée destinée à aider les futurs acquéreurs à comprendre avant d’acheter, analyser avant de décider et se préparer avant de s’engager. Une attention particulière est portée aux marchés immobiliers de la France et de l’Allemagne, afin d’aider notamment les personnes vivant ou investissant entre ces deux pays.',
+      de: 'In diesem Buch (auf Französisch erschienen) stellt Romial Kenmogne einen praxisnahen, strukturierten Ansatz vor, der künftigen Käufern hilft, zu verstehen, bevor sie kaufen, zu analysieren, bevor sie entscheiden, und sich vorzubereiten, bevor sie sich verpflichten. Besonderes Augenmerk liegt auf den Immobilienmärkten Frankreichs und Deutschlands – insbesondere für Menschen, die zwischen beiden Ländern leben oder investieren.',
+      en: 'In this book (published in French), Romial Kenmogne offers a practical, structured approach that helps future buyers understand before buying, analyse before deciding and prepare before committing. Particular attention is paid to the French and German property markets, notably for people living or investing between the two countries.',
     },
     audience: {
-      en: ['[Target audience — to be provided]'],
-      fr: ['[Public cible — à fournir]'],
-      de: ['[Zielgruppe — anzugeben]'],
+      fr: [
+        'Primo-accédants',
+        'Salariés',
+        'Indépendants',
+        'Entrepreneurs',
+        'Expatriés',
+        'Futurs investisseurs',
+      ],
+      de: [
+        'Erstkäufer',
+        'Angestellte',
+        'Selbstständige',
+        'Unternehmer',
+        'Expats',
+        'Künftige Investoren',
+      ],
+      en: [
+        'First-time buyers',
+        'Employees',
+        'Self-employed professionals',
+        'Entrepreneurs',
+        'Expatriates',
+        'Future investors',
+      ],
+    },
+    description: {
+      fr: [
+        '## Votre projet immobilier commence par une bonne préparation',
+        'Acheter son premier bien immobilier représente bien plus que l’acquisition d’une maison ou d’un appartement. C’est une décision financière et patrimoniale qui peut avoir un impact pendant de nombreuses années.',
+        'Comment préparer son projet ? Quel budget prévoir ? Comment comprendre les indicateurs du marché ? Comment optimiser son financement ? Comment négocier ? Quels pièges éviter ? Faut-il privilégier une résidence principale ou commencer par un investissement locatif ?',
+        '## Ce que vous découvrirez',
+        'Au fil du livre, vous apprendrez à mieux comprendre les principaux indicateurs du marché immobilier, préparer votre financement, analyser un bien, négocier plus efficacement et identifier les erreurs fréquentes à éviter. Vous découvrirez également comment réfléchir au choix entre résidence principale et investissement locatif, et comment développer l’état d’esprit nécessaire pour prendre des décisions immobilières plus éclairées.',
+        BOOK_QUOTE_FR,
+        '## Commander le livre',
+        'Le livre est disponible sur Amazon Allemagne et Amazon France. Le paiement, la livraison et le suivi de commande sont gérés directement par Amazon, selon les modalités proposées sur la plateforme au moment de la commande.',
+        '## Prochainement : commande directe',
+        'Il sera bientôt possible de commander votre exemplaire directement auprès de Romial Kenmogne, avec des exemplaires disponibles en stock et, selon les offres proposées, une dédicace personnalisée par l’auteur.',
+      ],
+      de: [
+        '## Ihr Immobilienprojekt beginnt mit guter Vorbereitung',
+        'Der Kauf der ersten Immobilie ist weit mehr als der Erwerb eines Hauses oder einer Wohnung. Es ist eine finanzielle und vermögensrelevante Entscheidung, die über viele Jahre nachwirken kann.',
+        'Wie bereitet man sein Projekt vor? Welches Budget ist realistisch? Wie liest man die Indikatoren des Marktes? Wie optimiert man die Finanzierung? Wie verhandelt man? Welche Fallstricke gilt es zu vermeiden? Sollte man mit dem Eigenheim beginnen oder mit einer vermieteten Kapitalanlage?',
+        '## Was Sie erfahren',
+        'Im Laufe des Buches lernen Sie, die wichtigsten Indikatoren des Immobilienmarktes besser zu verstehen, Ihre Finanzierung vorzubereiten, eine Immobilie zu analysieren, wirkungsvoller zu verhandeln und häufige Fehler zu vermeiden. Außerdem erfahren Sie, wie Sie zwischen Eigenheim und Kapitalanlage abwägen und die Haltung entwickeln, die fundierte Immobilienentscheidungen erfordern.',
+        '„Eine Immobilie zu kaufen heißt nicht nur, Mauern zu erwerben: Es heißt, das Fundament für ein Lebensprojekt, für Unabhängigkeit oder für ein Vermögen zu legen.“ — Romial Kenmogne',
+        '## Sprache',
+        'Das Buch ist auf Französisch erschienen.',
+        '## Buch bestellen',
+        'Das Buch ist bei Amazon Deutschland und Amazon Frankreich erhältlich. Zahlung, Versand und Sendungsverfolgung werden direkt von Amazon abgewickelt – zu den dort beim Kauf angegebenen Bedingungen.',
+        '## Demnächst: Direktbestellung',
+        'In Kürze können Sie Ihr Exemplar auch direkt bei Romial Kenmogne bestellen – mit vorrätigen Exemplaren und, je nach Angebot, einer persönlichen Widmung des Autors.',
+      ],
+      en: [
+        '## Your property project starts with good preparation',
+        'Buying your first property is much more than acquiring a house or a flat. It is a financial and wealth decision whose effects can last for many years.',
+        'How do you prepare your project? What budget should you plan for? How do you read market indicators? How do you optimise your financing? How do you negotiate? Which pitfalls should you avoid? Should you start with a home to live in or with a buy-to-let investment?',
+        '## What you will learn',
+        'Throughout the book, you will learn to better understand the key indicators of the property market, prepare your financing, analyse a property, negotiate more effectively and spot common mistakes. You will also see how to weigh a main residence against a rental investment, and how to develop the mindset needed for better-informed property decisions.',
+        '“Buying a property is not just acquiring walls: it is laying the foundations of a life project, of independence or of wealth.” — Romial Kenmogne',
+        '## Language',
+        'The book is published in French.',
+        '## Order the book',
+        'The book is available on Amazon Germany and Amazon France. Payment, delivery and order tracking are handled directly by Amazon, under the terms shown on the platform at the time of ordering.',
+        '## Coming soon: direct orders',
+        'You will soon be able to order your copy directly from Romial Kenmogne, with copies in stock and, depending on the offer, a personal dedication by the author.',
+      ],
+    },
+    bookLanguage: ['fr'],
+    format: ['paperback'],
+    isbn: '978-3-9828510-0-6',
+    purchaseLinks: [
+      {
+        label: {
+          fr: 'Commander sur Amazon Allemagne',
+          de: 'Bei Amazon Deutschland bestellen',
+          en: 'Order on Amazon Germany',
+        },
+        url: 'https://www.amazon.de/dp/3982851009',
+      },
+      {
+        label: {
+          fr: 'Commander sur Amazon France',
+          de: 'Bei Amazon Frankreich bestellen',
+          en: 'Order on Amazon France',
+        },
+        url: 'https://www.amazon.fr/dp/3982851009',
+      },
+    ],
+    seo: {
+      title: {
+        fr: 'Réussir son premier achat immobilier en Europe — Tome 1',
+        de: 'Erste Immobilie in Europa kaufen – Buch von Romial Kenmogne',
+        en: 'Buying your first property in Europe — book by Romial Kenmogne',
+      },
+      description: {
+        fr: 'Le guide de Romial Kenmogne pour préparer, financer et réussir son premier achat immobilier en France et en Allemagne. Disponible sur Amazon.',
+        de: 'Praxisleitfaden (auf Französisch) für den ersten Immobilienkauf in Deutschland und Frankreich: Markt, Finanzierung, Verhandlung. Bei Amazon.',
+        en: 'A practical guide (in French) to preparing, financing and succeeding in your first property purchase in France and Germany. On Amazon.',
+      },
     },
   },
 ]
@@ -1448,8 +1566,8 @@ export const starterCredentials: StarterCredential[] = [
   {
     key: 'education-placeholder',
     kind: 'education',
-    institution: '[Institution — to be provided]',
-    year: '[Year]',
+    institution: '[Institution]',
+    year: '[…]',
     order: 10,
     title: {
       en: '[Diploma — to be provided]',
@@ -1460,8 +1578,8 @@ export const starterCredentials: StarterCredential[] = [
   {
     key: 'credential-placeholder',
     kind: 'credential',
-    institution: '[Issuing body — to be provided]',
-    year: '[Year]',
+    institution: '[Institution]',
+    year: '[…]',
     order: 20,
     title: {
       en: '[Professional credential — to be provided]',
@@ -1477,11 +1595,30 @@ export const starterAbout = {
     fr: "Consultant en business et finance, chef de projet et entrepreneur, entre l'Europe et l'Afrique.",
     de: 'Business- und Finanzberater, Projektmanager und Unternehmer zwischen Europa und Afrika.',
   } satisfies Localized,
+  /**
+   * Author biography supplied by the client with the book (2026-09-11). The
+   * German and English versions are translations to be proofread.
+   */
   biography: {
-    en: '[Executive biography to be provided and validated by the owner.] This section presents the professional profile: positioning, main areas of intervention and the type of organisations supported. It must be written by — or validated with — Romial Kenmogne before publication.',
-    fr: "[Biographie exécutive à fournir et à valider par le propriétaire.] Cette section présente le profil professionnel : positionnement, principaux domaines d'intervention et types d'organisations accompagnées. Elle doit être rédigée par — ou validée avec — Romial Kenmogne avant publication.",
-    de: '[Executive Biografie durch den Inhaber zu liefern und freizugeben.] Dieser Abschnitt stellt das berufliche Profil dar: Positionierung, zentrale Tätigkeitsfelder und Art der begleiteten Organisationen. Vor Veröffentlichung von Romial Kenmogne zu verfassen oder freizugeben.',
-  } satisfies Localized,
+    fr: [
+      'Romial Kenmogne est conseiller financier stratégique, entrepreneur, formateur et conférencier. Son expérience en France et en Allemagne lui a permis d’accompagner des particuliers, des investisseurs et des entreprises dans leurs projets immobiliers et de gestion d’actifs.',
+      'Son approche vise à rendre les concepts financiers et immobiliers plus accessibles, en simplifiant ce qui paraît complexe et en transmettant des stratégies concrètes et applicables. Son objectif est clair : aider chacun à se constituer un patrimoine de manière intelligente, durable et éclairée.',
+      'Il est le fondateur de RK Business Consulting, de RK IMMO-FINANZ et de Kenmogne Strategic Publishing, et l’auteur de « Réussir son premier achat immobilier en Europe ».',
+      '« Un meilleur avenir commence par de meilleures décisions. »',
+    ],
+    de: [
+      'Romial Kenmogne ist strategischer Finanzberater, Unternehmer, Trainer und Referent. Seine Erfahrung in Frankreich und Deutschland hat es ihm ermöglicht, Privatpersonen, Investoren und Unternehmen bei ihren Immobilien- und Vermögensprojekten zu begleiten.',
+      'Sein Ansatz zielt darauf ab, Finanz- und Immobilienthemen zugänglicher zu machen: Komplexes wird vereinfacht, und es werden konkrete, umsetzbare Strategien vermittelt. Sein Ziel ist klar: jedem zu helfen, Vermögen auf kluge, nachhaltige und fundierte Weise aufzubauen.',
+      'Er ist Gründer von RK Business Consulting, RK IMMO-FINANZ und Kenmogne Strategic Publishing sowie Autor des Buches „Réussir son premier achat immobilier en Europe“.',
+      '„Eine bessere Zukunft beginnt mit besseren Entscheidungen.“',
+    ],
+    en: [
+      'Romial Kenmogne is a strategic financial advisor, entrepreneur, trainer and speaker. His experience in France and Germany has enabled him to support individuals, investors and companies in their property and asset-management projects.',
+      'His approach aims to make financial and property concepts more accessible, by simplifying what seems complex and passing on concrete, actionable strategies. His goal is clear: to help everyone build wealth in a smart, sustainable and well-informed way.',
+      'He is the founder of RK Business Consulting, RK IMMO-FINANZ and Kenmogne Strategic Publishing, and the author of “Réussir son premier achat immobilier en Europe”.',
+      '“A better future starts with better decisions.”',
+    ],
+  } satisfies Localized<string[]>,
   career: {
     en: '[Career path to be provided.] A synthetic timeline of the professional path, in Europe and in Africa.',
     fr: '[Parcours professionnel à fournir.] Une chronologie synthétique du parcours, en Europe et en Afrique.',

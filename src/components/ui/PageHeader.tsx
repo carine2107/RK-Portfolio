@@ -9,12 +9,15 @@ export function PageHeader({
   eyebrow,
   crumbs,
   children,
+  titleLang,
 }: {
   title: string
   lead?: string
   eyebrow?: string
   crumbs?: Crumb[]
   children?: ReactNode
+  /** Set when the title is in another language than the page (a book title). */
+  titleLang?: string
 }) {
   return (
     <div className="border-b border-line bg-surface-subtle">
@@ -25,10 +28,17 @@ export function PageHeader({
             {eyebrow}
           </p>
         ) : null}
-        <h1 className="max-w-3xl font-serif text-[clamp(2rem,4.5vw,3rem)] leading-[1.12] text-primary">
+        <h1
+          lang={titleLang}
+          className="max-w-3xl font-serif text-[clamp(2rem,4.5vw,3rem)] leading-[1.12] text-primary"
+        >
           {title}
         </h1>
-        {lead ? <p className="mt-5 max-w-2xl text-lg text-secondary">{lead}</p> : null}
+        {lead ? (
+          <p lang={titleLang} className="mt-5 max-w-2xl text-lg text-secondary">
+            {lead}
+          </p>
+        ) : null}
         {children ? <div className="mt-8">{children}</div> : null}
       </div>
     </div>

@@ -27,7 +27,9 @@ import {
   type Localized,
 } from '../content/starter'
 import { slugify } from '../payload/fields/shared'
+import { upsertBook } from './books'
 import { lexicalFromParagraphs, lexicalFromText } from './lexical'
+import { withRowIds, writeAboutProfileRows } from './rows'
 
 type Locale = 'en' | 'fr' | 'de'
 const LOCALES: Locale[] = ['en', 'fr', 'de']
@@ -206,7 +208,7 @@ async function seedExperiences(
   const defaultExpertise = [expertiseIds.get('corporate-finance')].filter(Boolean)
 
   for (const entry of starterExperiences) {
-    await upsert(
+    const id = await upsert(
       payload,
       'experiences',
       entry.key,
@@ -239,13 +241,35 @@ async function seedExperiences(
             role: pick(entry.role, locale),
             sector: pick(entry.sector, locale),
             summary: pick(entry.summary, locale),
-            countries: pick(entry.countries, locale).map((name) => ({ name })),
             responsibilities: pick(entry.responsibilities, locale).map((item) => ({ item })),
             _status: 'published' as const,
           },
         ]),
       ),
     )
+
+    // Countries are shared rows with a translated name: same rows, per language.
+    const english = await payload.findByID({
+      collection: 'experiences',
+      id,
+      locale: 'en',
+      overrideAccess: true,
+      draft: true,
+    })
+    for (const locale of OTHER_LOCALES) {
+      await payload.update({
+        collection: 'experiences',
+        id,
+        locale,
+        overrideAccess: true,
+        data: {
+          countries: withRowIds(
+            pick(entry.countries, locale).map((name) => ({ name })),
+            english.countries,
+          ),
+        } as never,
+      })
+    }
   }
 
   console.log(`· ${starterExperiences.length} experience entries`)
@@ -297,39 +321,8 @@ async function seedInsights(
 
 async function seedBooks(payload: Payload): Promise<void> {
   for (const book of starterBooks) {
-    await upsert(
-      payload,
-      'books',
-      book.key,
-      {
-        title: pick(book.title, 'en'),
-        slug: book.key,
-        subtitle: pick(book.subtitle, 'en'),
-        author: 'Romial Kenmogne',
-        summary: pick(book.summary, 'en'),
-        audience: pick(book.audience, 'en').map((item) => ({ item })),
-        availability: book.availability,
-        saleType: book.saleType,
-        currency: 'EUR',
-        featured: true,
-        order: book.order,
-        isPlaceholder: true,
-        _status: 'published' as const,
-      },
-      Object.fromEntries(
-        OTHER_LOCALES.map((locale) => [
-          locale,
-          {
-            title: pick(book.title, locale),
-            slug: `${book.key}-${locale}`,
-            subtitle: pick(book.subtitle, locale),
-            summary: pick(book.summary, locale),
-            audience: pick(book.audience, locale).map((item) => ({ item })),
-            _status: 'published' as const,
-          },
-        ]),
-      ),
-    )
+    // "understand-money" was the sample book shipped before the real one.
+    await upsertBook(payload, book, { legacySlugs: ['understand-money'] })
   }
 
   console.log(`· ${starterBooks.length} books`)
@@ -380,7 +373,7 @@ async function seedCredentials(payload: Payload): Promise<void> {
       collection: 'credentials',
       locale: 'en',
       limit: 1,
-      where: { institution: { equals: credential.institution } },
+      where: { title: { equals: pick(credential.title, 'en') } },
       overrideAccess: true,
       draft: true,
     })
@@ -564,18 +557,15 @@ async function seedGlobals(payload: Payload): Promise<void> {
       overrideAccess: true,
       data: {
         lead: pick(starterAbout.lead, locale),
-        biography: lexicalFromText(pick(starterAbout.biography, locale)),
+        biography: lexicalFromParagraphs(pick(starterAbout.biography, locale)),
         career: lexicalFromText(pick(starterAbout.career, locale)),
         vision: lexicalFromText(pick(starterAbout.vision, locale)),
         values: pick(starterAbout.values, locale),
-        languages: starterAbout.languages.map((entry) => ({
-          language: pick(entry.language, locale),
-          level: pick(entry.level, locale),
-        })),
-        regions: starterAbout.regions.map((region) => ({ name: pick(region, locale) })),
       },
     })
   }
+
+  await writeAboutProfileRows(payload)
 
   console.log('· Globals (site settings, home page, about page)')
 }

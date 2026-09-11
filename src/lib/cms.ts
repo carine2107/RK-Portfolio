@@ -18,7 +18,7 @@ import {
   type Localized,
 } from '@/content/starter'
 import type { Locale } from '@/i18n/routing'
-import { cmsEnabled } from '@/lib/env'
+import { cmsEnabled, siteUrl } from '@/lib/env'
 import type {
   AboutContentView,
   BookView,
@@ -114,12 +114,21 @@ const paragraphs = (value: string | string[]): RichContent => {
   return cleaned.length > 0 ? { kind: 'paragraphs', paragraphs: cleaned } : null
 }
 
+/**
+ * Payload builds absolute URLs from `serverURL`. Files served by this same
+ * site are turned back into relative paths: `next/image` only optimises
+ * local images (an absolute URL is treated as a remote host and refused), and
+ * a relative path keeps working behind any domain or proxy.
+ */
+const toRelativeUrl = (url: string): string =>
+  url.startsWith(`${siteUrl}/`) ? url.slice(siteUrl.length) : url
+
 const image = (value: unknown, size?: string): ImageView => {
   if (!value || typeof value !== 'object') return null
   const doc = value as Doc
   const sizes = doc.sizes as Record<string, Doc> | undefined
   const chosen = size && sizes?.[size]?.url ? (sizes[size] as Doc) : doc
-  const url = str(chosen.url)
+  const url = toRelativeUrl(str(chosen.url))
   if (!url) return null
   return {
     url,
@@ -201,9 +210,9 @@ export const getSiteSettings = cache(
           social: arrayOf(doc.social)
             .map((entry) => ({ platform: str(entry.platform), url: str(entry.url) }))
             .filter((entry) => entry.platform && entry.url),
-          expertProfileUrl: profile ? str(profile.url) || null : null,
+          expertProfileUrl: profile ? toRelativeUrl(str(profile.url)) || null : null,
           expertProfileTitle: profile ? str(profile.title) : '',
-          cvUrl: cv ? str(cv.url) || null : null,
+          cvUrl: cv ? toRelativeUrl(str(cv.url)) || null : null,
           // An empty value in the CMS removes the credit; a missing value keeps
           // the default.
           creditName: doc.creditName === '' ? '' : str(doc.creditName, fallback.creditName),
@@ -579,27 +588,34 @@ export async function getInsightBySlug(locale: Locale, slug: string): Promise<In
 const starterBookViews = (locale: Locale): BookView[] =>
   starterBooks.map((entry) => ({
     id: entry.key,
-    slug: entry.key,
+    slug: pick(entry.slug, locale),
     title: pick(entry.title, locale),
     subtitle: pick(entry.subtitle, locale),
     author: 'Romial Kenmogne',
     summary: pick(entry.summary, locale),
-    description: null,
+    description: paragraphs(pick(entry.description, locale)),
+    // The cover is a media upload: it only exists once imported into the CMS.
     cover: null,
     audience: pick(entry.audience, locale),
-    languages: [],
-    formats: [],
-    isbn: '',
+    languages: entry.bookLanguage,
+    formats: entry.format,
+    isbn: entry.isbn,
     price: null,
     currency: 'EUR',
     availability: entry.availability,
     saleType: entry.saleType,
-    purchaseLinks: [],
+    purchaseLinks: entry.purchaseLinks.map((link) => ({
+      label: pick(link.label, locale),
+      url: link.url,
+    })),
     previewUrl: null,
     relatedBookSlugs: [],
     featured: true,
-    isPlaceholder: true,
-    seo: {},
+    isPlaceholder: entry.isPlaceholder,
+    seo: {
+      title: pick(entry.seo.title, locale),
+      description: pick(entry.seo.description, locale),
+    },
   }))
 
 const mapBook = (doc: Doc): BookView => {
@@ -614,7 +630,7 @@ const mapBook = (doc: Doc): BookView => {
     author: str(doc.author, 'Romial Kenmogne'),
     summary: str(doc.summary),
     description: richText(doc.description),
-    cover: image(doc.cover, 'portrait'),
+    cover: image(doc.cover, 'book'),
     audience: itemList(doc.audience),
     languages: selectList(doc.bookLanguage),
     formats: selectList(doc.format),
@@ -626,7 +642,7 @@ const mapBook = (doc: Doc): BookView => {
     purchaseLinks: arrayOf(doc.purchaseLinks)
       .map((entry) => ({ label: str(entry.label), url: str(entry.url) }))
       .filter((entry) => entry.url),
-    previewUrl: preview ? str(preview.url) || null : null,
+    previewUrl: preview ? toRelativeUrl(str(preview.url)) || null : null,
     relatedBookSlugs: relationSlugs(doc.relatedBooks),
     featured: boolean(doc.featured),
     isPlaceholder: boolean(doc.isPlaceholder),

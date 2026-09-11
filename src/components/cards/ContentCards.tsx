@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { getTranslations } from 'next-intl/server'
+import { getLocale, getTranslations } from 'next-intl/server'
 
 import { Card, CardBody, CardLink, CardMeta, CardTitle } from '@/components/ui/Card'
 import { Icon, type IconName } from '@/components/ui/Icon'
@@ -152,19 +152,31 @@ export async function InsightCard({
   )
 }
 
+/**
+ * Language of a book title when it differs from the page (a French book on the
+ * German site): declared with `lang` so screen readers pronounce it correctly.
+ */
+export function bookTitleLang(book: BookView, locale: string): string | undefined {
+  const [only] = book.languages
+  return book.languages.length === 1 && only && only !== locale ? only : undefined
+}
+
 export async function BookCard({ book }: { book: BookView }) {
   const t = await getTranslations('books')
+  const locale = await getLocale()
+  const titleLang = bookTitleLang(book, locale)
 
   return (
     <Card className="sm:flex-row sm:gap-6">
       <div className="mb-5 w-32 shrink-0 sm:mb-0 sm:w-36">
-        <div className="relative aspect-3/4 overflow-hidden rounded-sm border border-line bg-surface-subtle">
+        {/* 2:3 is the 6 × 9 in trade format: a cover is never cropped. */}
+        <div className="relative aspect-2/3 overflow-hidden rounded-sm border border-line bg-surface-subtle shadow-raised">
           {book.cover ? (
             <Image
               src={book.cover.url}
               alt={book.cover.alt}
               fill
-              sizes="9rem"
+              sizes="(min-width: 640px) 9rem, 8rem"
               className="object-cover"
             />
           ) : (
@@ -176,9 +188,15 @@ export async function BookCard({ book }: { book: BookView }) {
       </div>
       <div className="flex flex-1 flex-col">
         <CardTitle>
-          <CardLink href={`/books/${book.slug}`}>{book.title}</CardLink>
+          <CardLink href={`/books/${book.slug}`}>
+            <span lang={titleLang}>{book.title}</span>
+          </CardLink>
         </CardTitle>
-        {book.subtitle ? <p className="mt-1 text-sm text-secondary">{book.subtitle}</p> : null}
+        {book.subtitle ? (
+          <p lang={titleLang} className="mt-1 text-sm text-secondary">
+            {book.subtitle}
+          </p>
+        ) : null}
         <CardBody>{book.summary}</CardBody>
         <div className="mt-5 flex flex-wrap items-center gap-3">
           <span className="rounded-full border border-line px-3 py-1 text-xs tracking-wide text-secondary uppercase">

@@ -280,7 +280,6 @@
     text-wrap: balance;
     /* German compounds must never widen a column. */
     overflow-wrap: break-word;
-    hyphens: auto;
   }
 
   p {
@@ -357,23 +356,47 @@
     font-size: 1.0625rem;
     line-height: 1.75;
     overflow-wrap: break-word;
-    hyphens: auto;
   }
 
-  .rk-prose > * + * {
+  /*
+   * Rhythm between blocks. Written with sibling selectors on the block
+   * elements themselves (not on direct children): the CMS renderer wraps its
+   * output in an extra element, so `.rk-prose > * + *` would never match.
+   */
+  .rk-prose :where(p, ul, ol, blockquote, figure, h2, h3) + :where(p, ul, ol, blockquote, figure) {
     margin-top: 1.15em;
   }
 
   .rk-prose h2 {
     font-size: 1.6rem;
-    margin-top: 2.25em;
     color: var(--text-primary);
   }
 
   .rk-prose h3 {
     font-size: 1.25rem;
-    margin-top: 1.9em;
     color: var(--text-primary);
+  }
+
+  .rk-prose :where(p, ul, ol, blockquote, figure) + h2 {
+    margin-top: 2.25em;
+  }
+
+  .rk-prose :where(p, ul, ol, blockquote, figure, h2) + h3 {
+    margin-top: 1.9em;
+  }
+
+  .rk-prose :where(h2, h3) + :where(p, ul, ol) {
+    margin-top: 0.75em;
+  }
+
+  /* On narrow screens only, long words (German compounds) are hyphenated. */
+  @media (max-width: 640px) {
+    .rk-prose,
+    h1,
+    h2,
+    h3 {
+      hyphens: auto;
+    }
   }
 
   .rk-prose strong {

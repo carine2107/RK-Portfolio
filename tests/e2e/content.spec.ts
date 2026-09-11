@@ -111,3 +111,39 @@ test.describe('metadata', () => {
     })
   }
 })
+
+test.describe('images', () => {
+  test('every image on the key pages actually loads', async ({ page }) => {
+    for (const path of ['/fr', '/fr/about', '/fr/books']) {
+      await page.goto(path)
+      // Scroll through the page so that lazy-loaded images are requested too.
+      await page.evaluate(async () => {
+        for (let y = 0; y < document.body.scrollHeight; y += window.innerHeight) {
+          window.scrollTo(0, y)
+          await new Promise((resolve) => setTimeout(resolve, 100))
+        }
+      })
+      await page.waitForLoadState('networkidle')
+      // Waits for every image to finish (load or error): the first request for
+      // a new size is generated on the fly and can outlast "network idle".
+      const broken = await page.evaluate(async () => {
+        const images = Array.from(document.querySelectorAll('main img')) as HTMLImageElement[]
+        await Promise.all(
+          images.map((image) =>
+            image.complete
+              ? Promise.resolve()
+              : new Promise<void>((resolve) => {
+                  image.addEventListener('load', () => resolve(), { once: true })
+                  image.addEventListener('error', () => resolve(), { once: true })
+                  setTimeout(resolve, 15_000)
+                }),
+          ),
+        )
+        return images
+          .filter((image) => !image.complete || image.naturalWidth === 0)
+          .map((image) => image.currentSrc || image.getAttribute('src'))
+      })
+      expect(broken, `${path}: images that failed to load`).toEqual([])
+    }
+  })
+})

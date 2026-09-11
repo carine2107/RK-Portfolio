@@ -23,18 +23,18 @@ Légende : 🔴 bloquant pour la mise en ligne · 🟠 important · 🟡 confort
 
 ## 2. Identité visuelle et médias
 
-| #   | Élément                                                                                | Priorité | Où l'utiliser                                                                                                  |
-| --- | -------------------------------------------------------------------------------------- | -------- | -------------------------------------------------------------------------------------------------------------- |
-| 2.1 | **Photographies professionnelles** (portrait vertical ≥ 1600 × 2000 px, 2–3 variantes) | 🔴       | Hero d'accueil, page À propos. Un emplacement élégant s'affiche en attendant ; **aucun visage n'a été généré** |
-| 2.2 | **Logo / monogramme définitif** (SVG ou PNG transparent)                               | 🟠       | En-tête, pied de page, favicon. Un monogramme « RK » sobre est utilisé par défaut                              |
-| 2.3 | Image de partage social 1200 × 630 px                                                  | 🟡       | Réglages du site → SEO defaults (une image générique est fournie)                                              |
-| 2.4 | Photos d'illustration pour les articles                                                | 🟡       | Couvertures RK Insights                                                                                        |
+| #   | Élément                                                                 | Priorité | Où l'utiliser                                                                     |
+| --- | ----------------------------------------------------------------------- | -------- | --------------------------------------------------------------------------------- |
+| 2.1 | ✅ **Photographies professionnelles** — reçues le 11/09/2026 (3 photos) | —        | Hero d’accueil (RK.jpeg), page À propos (RK1.jpeg), médiathèque (RK2.jpeg)        |
+| 2.2 | **Logo / monogramme définitif** (SVG ou PNG transparent)                | 🟠       | En-tête, pied de page, favicon. Un monogramme « RK » sobre est utilisé par défaut |
+| 2.3 | Image de partage social 1200 × 630 px                                   | 🟡       | Réglages du site → SEO defaults (une image générique est fournie)                 |
+| 2.4 | Photos d'illustration pour les articles                                 | 🟡       | Couvertures RK Insights                                                           |
 
 ## 3. Contenus professionnels
 
 | #    | Élément                                                                                                     | Priorité | Où l'utiliser                                                          |
 | ---- | ----------------------------------------------------------------------------------------------------------- | -------- | ---------------------------------------------------------------------- |
-| 3.1  | **Biographie exécutive validée** (FR / DE / EN)                                                             | 🔴       | Page À propos                                                          |
+| 3.1  | 🟡 **Biographie** — reprise de la présentation d’auteur du livre (11/09/2026) ; versions DE/EN à relire     | 🟠       | Page À propos                                                          |
 | 3.2  | **Parcours professionnel** (chronologie)                                                                    | 🔴       | Page À propos                                                          |
 | 3.3  | **Expériences et projets vérifiés** : organisation, rôle, période, pays, contexte, responsabilités          | 🔴       | Expériences. 3 fiches d'exemple à remplacer                            |
 | 3.4  | **Résultats validés** (uniquement s'ils sont vérifiables)                                                   | 🟠       | Case « Results verified » d'une expérience                             |
@@ -57,10 +57,13 @@ Légende : 🔴 bloquant pour la mise en ligne · 🟠 important · 🟡 confort
 
 | #   | Élément                                                                                                                  | Priorité                          |
 | --- | ------------------------------------------------------------------------------------------------------------------------ | --------------------------------- |
-| 5.1 | Titre, sous-titre, résumé, public, langue, format, ISBN                                                                  | 🟠                                |
-| 5.2 | Couverture haute définition                                                                                              | 🟠                                |
-| 5.3 | **Modèle de vente retenu** : externe, direct ou hybride                                                                  | 🟠                                |
-| 5.4 | Liens d'achat externes (Amazon, éditeur…)                                                                                | 🟠                                |
+| 5.1 | ✅ Titre, sous-titre, résumé, public, langue, format, ISBN (978-3-9828510-0-6) — reçus le 11/09/2026                     | —                                 |
+| 5.2 | ✅ Couverture — extraite du fichier d’impression « Book 6x9 new.pdf »                                                    | —                                 |
+| 5.3 | ✅ Modèle de vente : externe (Amazon), commande directe avec dédicace annoncée « prochainement »                         | —                                 |
+| 5.4 | ✅ Liens Amazon Allemagne et Amazon France                                                                               | —                                 |
+| 5.6 | **Prix TTC** du livre (non fourni : le site n’affiche pas de prix, Amazon fait foi)                                      | 🟡                                |
+| 5.7 | Nombre de pages, date de parution, éditeur (Kenmogne Strategic Publishing ?)                                             | 🟡                                |
+| 5.8 | Relecture des traductions allemande et anglaise de la fiche livre                                                        | 🟠                                |
 | 5.5 | Si vente directe : prestataire de paiement, prix TTC, TVA, pays desservis, transporteur, frais, CGV, politique de retour | 🔴 _pour cette option uniquement_ |
 
 > La vente directe **n'est pas activée** : le modèle de données est prêt, mais
@@ -113,11 +116,10 @@ L'architecture est prête à les accueillir sans refonte.
 ## Récapitulatif : le strict minimum pour la mise en ligne
 
 1. Domaine + hébergement + HTTPS (1.1 → 1.3)
-2. Photographies professionnelles (2.1)
-3. Biographie, parcours, expériences et formations validés (3.1 → 3.5)
-4. International Expert Profile (3.6)
-5. Descriptions des 4 activités (3.9)
-6. Coordonnées professionnelles (6.1, 6.3, 6.4)
-7. Textes juridiques validés (7.1 → 7.5)
-8. Compte SMTP et test d'envoi réel (8.1)
-9. Suppression ou remplacement de tous les « Contenus d'exemple »
+2. Parcours, expériences et formations validés (3.2 → 3.5) ; relecture DE/EN de la biographie (3.1)
+3. International Expert Profile (3.6)
+4. Descriptions des 4 activités (3.9)
+5. Coordonnées professionnelles (6.1, 6.3, 6.4)
+6. Textes juridiques validés (7.1 → 7.5)
+7. Compte SMTP et test d'envoi réel (8.1)
+8. Suppression ou remplacement de tous les « Contenus d'exemple »

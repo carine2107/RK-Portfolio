@@ -25,7 +25,8 @@
     "test:e2e:ui": "playwright test --ui",
     "db:up": "docker compose up -d",
     "db:down": "docker compose down",
-    "verify": "npm run format:check && npm run typecheck && npm run lint && npm run test"
+    "verify": "npm run format:check && npm run typecheck && npm run lint && npm run test",
+    "import:assets": "cross-env NODE_OPTIONS=--no-deprecation tsx src/scripts/import-client-assets.ts"
   },
   "dependencies": {
     "@payloadcms/db-postgres": "3.88.0",

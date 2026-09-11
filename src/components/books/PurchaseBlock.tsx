@@ -3,11 +3,25 @@
 import { useTranslations } from 'next-intl'
 
 import { trackEvent } from '@/components/analytics/track'
+import { Flag } from '@/components/i18n/Flag'
 import { buttonClasses } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
 import { Notice } from '@/components/ui/Notices'
 import { Link } from '@/i18n/navigation'
 import type { BookView } from '@/lib/types'
+
+/** Country of a retailer, read from its domain (amazon.de, amazon.fr, amazon.co.uk). */
+function retailerCountry(url: string): 'fr' | 'de' | 'en' | null {
+  try {
+    const host = new URL(url).hostname
+    if (host.endsWith('.de')) return 'de'
+    if (host.endsWith('.fr')) return 'fr'
+    if (host.endsWith('.co.uk') || host.endsWith('.uk')) return 'en'
+  } catch {
+    /* not a valid URL: no flag */
+  }
+  return null
+}
 
 /**
  * Purchase area of a book.
@@ -29,10 +43,12 @@ export function PurchaseBlock({ book }: { book: BookView }) {
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => trackEvent('book_purchase_click', { book: book.slug, url: link.url })}
-            className={buttonClasses('primary', 'lg')}
+            className={buttonClasses('primary', 'lg', 'w-full')}
           >
+            {retailerCountry(link.url) ? <Flag locale={retailerCountry(link.url) ?? 'fr'} /> : null}
             {link.label || t('buy.external')}
             <Icon name="external" className="size-4" />
+            <span className="sr-only">({t('buy.externalNote')})</span>
           </a>
         ))}
         <p className="text-sm text-secondary">{t('buy.externalNote')}</p>

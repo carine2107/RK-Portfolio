@@ -38,6 +38,8 @@ export const Media: CollectionConfig = {
       { name: 'portrait', width: 800, height: 1000, position: 'centre' },
       { name: 'wide', width: 1600, height: 900, position: 'centre' },
       { name: 'og', width: 1200, height: 630, position: 'centre' },
+      // Width only: keeps the original ratio, so book covers are never cropped.
+      { name: 'book', width: 900 },
     ],
     adminThumbnail: 'thumbnail',
   },
