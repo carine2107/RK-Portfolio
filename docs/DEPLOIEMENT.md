@@ -45,6 +45,7 @@ chmod 600 .env.production      # jamais versionné (.gitignore) ni copié dans l
 | `PAYLOAD_SECRET`                                    | 48 octets aléatoires, **différent** entre staging et production                                                   |
 | `EMAIL_ENABLED`, `SMTP_*`, `EMAIL_FROM`, `EMAIL_TO` | Envoi des e-mails du formulaire ; laisser `EMAIL_ENABLED=false` tant qu'un envoi réel n'a pas été testé           |
 | `CONTACT_RATE_LIMIT`, `CONTACT_RATE_WINDOW_MINUTES` | Anti-abus du formulaire (5 envois / 15 min)                                                                       |
+| `CONTACT_RETENTION_MONTHS`                          | Suppression automatique des demandes de contact inchangées depuis N mois (24 par défaut ; `0` = jamais)           |
 | `NEXT_PUBLIC_ANALYTICS_*`                           | Mesure d'audience facultative (inscrite dans le build)                                                            |
 | `SEED_ADMIN_EMAIL`, `SEED_ADMIN_PASSWORD`           | Premier administrateur, créé par `npm run seed` ; à retirer du fichier ensuite                                    |
 
@@ -263,7 +264,19 @@ rollback consiste alors simplement à redéployer le tag précédent.
 
 ---
 
-## 10. Checklist de mise en ligne
+## 10. Supervision
+
+| Élément                           | Mise en place                                                                                                                                                                                                          |
+| --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Point de santé**                | `GET /api/health` → `200 {"status":"ok","database":"up"}`, ou `503` si la base est injoignable. Aucune information sensible. Utilisé par le healthcheck Docker                                                         |
+| **Surveillance de disponibilité** | Sonde externe sur `https://<domaine>/api/health` toutes les 1 à 5 min avec alerte e-mail : UptimeRobot ou Better Stack (offres gratuites), ou Uptime Kuma auto-hébergé sur une autre machine                           |
+| **Journaux**                      | `dc logs -f app` ; le formulaire journalise le type de demande et le résultat, **jamais** le contenu ni l'adresse e-mail. Rotation : `"log-opts": {"max-size": "10m", "max-file": "5"}` dans `/etc/docker/daemon.json` |
+| **Erreurs**                       | Les erreurs serveur apparaissent dans les journaux avec leur identifiant (`digest`) ; un service de suivi (Sentry, GlitchTip auto-hébergé) peut être branché via `src/instrumentation.ts`                              |
+| **Tâche quotidienne**             | Suppression des demandes de contact expirées (`CONTACT_RETENTION_MONTHS`), lancée par le serveur ; manuellement : `dc exec app npm run purge:contacts`                                                                 |
+
+---
+
+## 11. Checklist de mise en ligne
 
 - [ ] Domaine pointé, HTTPS actif, redirection `http` → `https`
 - [ ] `NEXT_PUBLIC_SITE_URL` correct et build effectué **après** son réglage
@@ -274,5 +287,7 @@ rollback consiste alors simplement à redéployer le tag précédent.
 - [ ] Textes juridiques validés, case « brouillon » décochée
 - [ ] `sitemap.xml` et `robots.txt` accessibles ; staging en `noindex`
 - [ ] Sauvegarde automatique en place **et restauration testée**
+- [ ] Sonde de disponibilité sur `/api/health` avec alerte e-mail
+- [ ] Durée de conservation des demandes (`CONTACT_RETENTION_MONTHS`) identique à la politique de confidentialité
 - [ ] Google Search Console : propriété vérifiée, sitemap soumis
 - [ ] Accès et documentation remis au commanditaire

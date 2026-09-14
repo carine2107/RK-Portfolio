@@ -21,6 +21,7 @@
     "generate:types": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types",
     "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
     "seed": "cross-env NODE_OPTIONS=--no-deprecation tsx src/scripts/seed.ts",
+    "purge:contacts": "cross-env NODE_OPTIONS=--no-deprecation tsx src/scripts/purge-contacts.ts",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",

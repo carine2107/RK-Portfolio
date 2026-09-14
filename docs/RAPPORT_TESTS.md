@@ -10,8 +10,8 @@ Environnement : Windows 11, Node 24.15, PostgreSQL 16 (Docker), build de
 
 | Suite                            | Périmètre                                                               | Résultat                             |
 | -------------------------------- | ----------------------------------------------------------------------- | ------------------------------------ |
-| Tests unitaires (Vitest)         | Traductions, contrastes, moteur d'apparence, validation, SEO, anti-abus | **69 / 69 réussis**                  |
-| Tests end-to-end (Playwright)    | 59 scénarios × 4 configurations                                         | **210 réussis, 26 ignorés, 0 échec** |
+| Tests unitaires (Vitest)         | Traductions, contrastes, moteur d'apparence, validation, SEO, anti-abus | **72 / 72 réussis**                  |
+| Tests end-to-end (Playwright)    | 60 scénarios × 4 configurations                                         | **214 réussis, 26 ignorés, 0 échec** |
 | Compilation TypeScript (`tsc`)   | Mode strict, tout le projet                                             | **0 erreur**                         |
 | Lint (ESLint 9 + config Next 16) | Tout le projet                                                          | **0 erreur, 0 avertissement**        |
 | Formatage (Prettier)             | `src`, `tests`, `docs`                                                  | **conforme**                         |
@@ -39,7 +39,7 @@ node tests/visual/capture.mjs test-results/visual
 
 ---
 
-## 2. Tests unitaires (69)
+## 2. Tests unitaires (72)
 
 | Fichier                  | Ce qui est vérifié                                                                                                                                                                                                                             |
 | ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -48,9 +48,10 @@ node tests/visual/capture.mjs test-results/visual
 | `contact-schema.test.ts` | Schéma du formulaire (consentement, e-mail, pays, type de demande, longueurs), clés d'erreur traduisibles, liste de pays localisée et triée                                                                                                    |
 | `seo.test.ts`            | Canonical, hreflang FR/DE/EN + `x-default`, chemins traduits, `noindex`, Open Graph, troncature des descriptions, génération des slugs                                                                                                         |
 | `theme.test.ts`          | Moteur d'apparence : les 6 palettes et **300 palettes personnalisées aléatoires** respectent 15 paires de contraste AA dans les deux thèmes ; couleurs vides = palette Signature ; aucune saisie brute du CMS dans la feuille de style générée |
+| `retention.test.ts`      | Date limite de conservation des demandes de contact (24 / 6 mois, désactivation à 0, valeurs invalides), calculée en UTC — indépendante du fuseau et de l'heure d'été                                                                          |
 | `rate-limit.test.ts`     | Limitation par IP : seuil, réinitialisation de fenêtre, isolation entre clients, lecture des en-têtes de proxy                                                                                                                                 |
 
-## 3. Tests end-to-end (59 scénarios)
+## 3. Tests end-to-end (60 scénarios)
 
 ### Navigation et structure (`navigation.spec.ts`)
 
@@ -93,6 +94,14 @@ node tests/visual/capture.mjs test-results/visual
 - **Envoi complet accepté et confirmé** (enregistrement CMS + e-mails)
 - Honeypot : la soumission d'un robot est acceptée en apparence et jetée
 - API : payload invalide → 422 avec erreurs par champ
+
+### Supervision (`content.spec.ts`)
+
+- `/api/health` répond `200`, `{"status":"ok","database":"up"}`, non mis en cache, sans aucune autre information
+
+Contrôle manuel complémentaire (base locale) : une demande de contact de test
+antidatée de 2020 est supprimée par `npm run purge:contacts`, les 83 autres
+demandes restent intactes.
 
 ### Accessibilité (`accessibility.spec.ts`)
 

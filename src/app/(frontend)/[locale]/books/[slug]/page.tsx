@@ -6,6 +6,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { BookCard, bookTitleLang } from '@/components/cards/ContentCards'
 import { PurchaseBlock } from '@/components/books/PurchaseBlock'
 import { bookSchema, breadcrumbSchema, JsonLd } from '@/components/seo/JsonLd'
+import { ExternalLink } from '@/components/ui/ExternalLink'
 import { Icon } from '@/components/ui/Icon'
 import { PlaceholderNotice } from '@/components/ui/Notices'
 import { PageHeader } from '@/components/ui/PageHeader'
@@ -151,15 +152,15 @@ export default async function BookDetailPage({ params }: Props) {
             </div>
 
             {book.previewUrl ? (
-              <a
+              <ExternalLink
                 href={book.previewUrl}
-                target="_blank"
-                rel="noopener noreferrer"
+                event="book_preview_click"
+                payload={{ book: book.slug }}
                 className="mt-4 inline-flex items-center gap-2 text-sm text-primary underline-offset-4 hover:text-accent-text hover:underline"
               >
                 <Icon name="download" className="size-4" />
                 {t('details.preview')}
-              </a>
+              </ExternalLink>
             ) : null}
           </div>
 

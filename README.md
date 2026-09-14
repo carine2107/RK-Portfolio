@@ -160,7 +160,19 @@ traduction manque, si une clé est en trop ou si un paramètre ICU diverge.
 
 ---
 
-## 7. Publication, aperçu et mise en cache
+## 7. Supervision et données personnelles
+
+- `GET /api/health` : `200` si le site et sa base répondent, `503` sinon — pour la
+  sonde de disponibilité et le healthcheck Docker.
+- Les demandes de contact inchangées depuis `CONTACT_RETENTION_MONTHS` mois (24
+  par défaut) sont supprimées chaque jour par le serveur (`src/instrumentation.ts`) ;
+  `npm run purge:contacts` le fait à la demande.
+- Mesure d'audience sans cookie (Umami / Plausible) : liste des événements dans
+  `docs/GUIDE_ADMIN.md`, section 13.
+
+---
+
+## 8. Publication, aperçu et mise en cache
 
 - Les pages publiques utilisent la **revalidation incrémentale** : elles sont
   servies depuis le cache et régénérées en arrière-plan toutes les **5 minutes**.
@@ -178,7 +190,7 @@ traduction manque, si une clé est en trop ou si un paramètre ICU diverge.
 - Les articles peuvent être **programmés** : une date de publication future les
   garde invisibles jusqu'à l'échéance.
 
-## 8. Sécurité
+## 9. Sécurité
 
 - En-têtes : CSP, HSTS, `X-Content-Type-Options`, `X-Frame-Options`,
   `Referrer-Policy`, `Permissions-Policy` (`next.config.ts`).
@@ -192,7 +204,7 @@ traduction manque, si une clé est en trop ou si un paramètre ICU diverge.
 
 ---
 
-## 9. Documentation
+## 10. Documentation
 
 | Document                                                   | Contenu                                                 |
 | ---------------------------------------------------------- | ------------------------------------------------------- |
@@ -206,7 +218,7 @@ traduction manque, si une clé est en trop ou si un paramètre ICU diverge.
 
 ---
 
-## 10. État de la livraison
+## 11. État de la livraison
 
 Ce que le site fait réellement aujourd'hui :
 
@@ -216,6 +228,9 @@ Ce que le site fait réellement aujourd'hui :
 - ✅ Formulaire de contact validé, anti-spam, e-mails FR/DE/EN **testés**
 - ✅ SEO : métadonnées localisées, canonical, hreflang, sitemap, robots,
   données structurées Person / Article / Book / Organization / BreadcrumbList / WebSite
+- ✅ Apparence (palettes, couleurs, police, fond d'accueil) modifiable dans le CMS, contrastes AA garantis
+- ✅ Déploiement Docker testé sur base vierge (migrations, seed, cache)
+- ✅ Point de santé `/api/health` et suppression automatique des demandes de contact expirées
 - ✅ Tests unitaires et E2E verts
 
 Ce qui est **volontairement** inactif, faute d'éléments ou de prestataire :

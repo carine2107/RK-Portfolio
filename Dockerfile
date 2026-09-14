@@ -40,5 +40,5 @@ RUN mkdir -p public/media/documents && chown -R node:node public/media
 USER node
 EXPOSE 4313
 HEALTHCHECK --interval=30s --timeout=5s --start-period=60s --retries=3 \
-  CMD wget -qO /dev/null http://127.0.0.1:4313/robots.txt || exit 1
+  CMD wget -qO /dev/null http://127.0.0.1:4313/api/health || exit 1
 CMD ["sh", "-c", "npm run migrate && npm start"]

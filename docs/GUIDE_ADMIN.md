@@ -278,12 +278,51 @@ langue et l'horodatage du consentement.
 - **Notification envoyée** indique si la notification a réellement pu être envoyée.
 - Répondre depuis sa messagerie habituelle (l'e-mail de notification a le
   visiteur en `Reply-To`).
-- **Protection des données** : supprimer les demandes traitées selon la durée de
-  conservation annoncée dans la politique de confidentialité.
+- **Protection des données** : une demande restée **sans modification pendant
+  24 mois** est **supprimée automatiquement** (vérification quotidienne). Changer
+  le statut ou la fiche repart de zéro. La durée se règle côté serveur
+  (`CONTACT_RETENTION_MONTHS`, `0` = jamais) et doit correspondre à celle
+  annoncée dans la politique de confidentialité. Une demande peut aussi être
+  supprimée à la main (rôle Administrator), par exemple sur demande de la personne.
 
 ---
 
-## 13. Pages légales
+## 13. Statistiques de fréquentation
+
+Le site est prêt pour une mesure d'audience **sans cookie** : **Umami** ou
+**Plausible**, auto-hébergés ou en offre hébergée. Tant qu'aucun outil n'est
+configuré, rien n'est mesuré et aucun bandeau cookies n'est nécessaire. L'outil
+est branché par le prestataire (variables `NEXT_PUBLIC_ANALYTICS_*`, voir
+`DEPLOIEMENT.md`).
+
+Les statistiques se consultent **dans le tableau de bord de l'outil** (et non dans
+l'administration du site) :
+
+| Indicateur du cahier des charges  | Où le lire                                                        |
+| --------------------------------- | ----------------------------------------------------------------- |
+| Visites, sources, pays, appareils | Page d'accueil du tableau de bord                                 |
+| Pages les plus consultées         | Liste « Pages »                                                   |
+| Actions clés                      | Liste « Événements » (Umami) ou « Goals » (Plausible), ci-dessous |
+
+| Événement                 | Déclenché quand le visiteur…                     | Détail transmis       |
+| ------------------------- | ------------------------------------------------ | --------------------- |
+| `expert_profile_download` | télécharge l'International Expert Profile        | emplacement du bouton |
+| `cv_download`             | télécharge le CV international                   | emplacement           |
+| `work_with_me_click`      | clique sur « Travailler avec moi » / « Contact » | emplacement           |
+| `contact_form_success`    | envoie le formulaire avec succès                 | type de demande       |
+| `article_view`            | ouvre un article RK Insights                     | article               |
+| `book_purchase_click`     | clique sur un bouton d'achat (Amazon…)           | livre, lien           |
+| `book_preview_click`      | ouvre l'extrait d'un livre                       | livre                 |
+| `business_click`          | ouvre le site d'une activité de l'écosystème     | activité              |
+| `language_change`         | change de langue                                 | langues               |
+| `theme_change`            | passe en mode clair / sombre / système           | thème                 |
+
+Aucune donnée personnelle n'est transmise (ni nom, ni e-mail, ni message). Avec
+Plausible, déclarer chaque événement comme « Goal » pour qu'il apparaisse.
+
+---
+
+## 14. Pages légales
 
 **Administration → Pages légales** — Impressum, confidentialité, cookies, CGV,
 livraison/retours.
@@ -299,7 +338,7 @@ nécessaire, par un professionnel du droit.
 
 ---
 
-## 14. Contenus d'exemple
+## 15. Contenus d'exemple
 
 Les entrées livrées avec le site portent la mention **« Contenu d'exemple »**
 (case _Contenu d’exemple_ dans la barre latérale) et affichent un bandeau
@@ -313,7 +352,7 @@ Liste complète des éléments encore attendus :
 
 ---
 
-## 15. Bonnes pratiques
+## 16. Bonnes pratiques
 
 - Publier en trois langues ou pas du tout : une page à moitié traduite se voit.
 - Toujours renseigner le texte alternatif des images.

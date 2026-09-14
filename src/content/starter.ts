@@ -1874,7 +1874,7 @@ export const starterLegalPages: StarterLegalPage[] = [
         },
         {
           heading: 'How long',
-          body: '[Retention period to be confirmed — recommended: 24 months after the last exchange, then deletion.]',
+          body: '[To be validated] Contact requests are deleted automatically 24 months after the last exchange.',
         },
         {
           heading: 'Who receives the data',
@@ -1900,7 +1900,7 @@ export const starterLegalPages: StarterLegalPage[] = [
         },
         {
           heading: 'Durée de conservation',
-          body: '[Durée à confirmer — recommandation : 24 mois après le dernier échange, puis suppression.]',
+          body: '[À valider] Les demandes de contact sont supprimées automatiquement 24 mois après le dernier échange.',
         },
         {
           heading: 'Destinataires',
@@ -1926,7 +1926,7 @@ export const starterLegalPages: StarterLegalPage[] = [
         },
         {
           heading: 'Speicherdauer',
-          body: '[Dauer zu bestätigen — Empfehlung: 24 Monate nach dem letzten Kontakt, danach Löschung.]',
+          body: '[Zu bestätigen] Kontaktanfragen werden 24 Monate nach dem letzten Austausch automatisch gelöscht.',
         },
         {
           heading: 'Empfänger',

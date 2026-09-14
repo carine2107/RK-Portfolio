@@ -93,6 +93,20 @@ test.describe('legal pages and downloads', () => {
     expect(await robots.text()).toContain('Disallow: /admin')
   })
 
+  test('the health check reports the site and its database as up', async ({ request }) => {
+    const response = await request.get('/api/health')
+    expect(response.status()).toBe(200)
+    expect(response.headers()['cache-control']).toContain('no-store')
+    const body = await response.json()
+    expect(body).toMatchObject({ status: 'ok', database: 'up' })
+    expect(Object.keys(body).sort()).toEqual([
+      'database',
+      'responseTimeMs',
+      'status',
+      'uptimeSeconds',
+    ])
+  })
+
   test('the CMS admin is not indexable', async ({ request }) => {
     const response = await request.get('/admin')
     expect(response.headers()['x-robots-tag']).toContain('noindex')

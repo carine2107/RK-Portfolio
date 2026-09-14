@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 
 import { breadcrumbSchema, JsonLd, personSchema } from '@/components/seo/JsonLd'
+import { buttonClasses } from '@/components/ui/Button'
 import { CtaLink } from '@/components/ui/CtaLink'
 import { ExpertProfileButton } from '@/components/ui/ExpertProfileButton'
 import { Icon } from '@/components/ui/Icon'
@@ -10,6 +11,7 @@ import { PlaceholderBadge } from '@/components/ui/Notices'
 import { Portrait } from '@/components/ui/Portrait'
 import { RichText, richTextToPlainText } from '@/components/ui/RichText'
 import { Section } from '@/components/ui/Section'
+import { TrackedDownload } from '@/components/ui/TrackedDownload'
 import type { Locale } from '@/i18n/routing'
 import { getAboutContent, getCredentials, getSiteSettings } from '@/lib/cms'
 import { metaDescription, pageMetadata } from '@/lib/seo'
@@ -47,6 +49,7 @@ export default async function AboutPage({ params }: Props) {
   const t = await getTranslations('about')
   const nav = await getTranslations('nav')
   const hero = await getTranslations('home.hero')
+  const common = await getTranslations('common')
   const [content, credentials, settings] = await Promise.all([
     getAboutContent(locale),
     getCredentials(locale),
@@ -143,6 +146,18 @@ export default async function AboutPage({ params }: Props) {
                   variant="primary"
                   location="about"
                 />
+                {/* Shown only once the CV has been uploaded to the CMS. */}
+                {settings.cvUrl ? (
+                  <TrackedDownload
+                    href={settings.cvUrl}
+                    event="cv_download"
+                    payload={{ location: 'about' }}
+                    className={buttonClasses('secondary')}
+                  >
+                    <Icon name="download" className="size-4" />
+                    {common('downloadCv')}
+                  </TrackedDownload>
+                ) : null}
                 <CtaLink
                   href="/contact"
                   event="work_with_me_click"

@@ -39,6 +39,9 @@ export const contactRateLimit = {
   windowMs: int(process.env.CONTACT_RATE_WINDOW_MINUTES, 15) * 60 * 1000,
 }
 
+/** Months a contact request is kept after its last change; 0 disables deletion. */
+export const contactRetentionMonths = int(process.env.CONTACT_RETENTION_MONTHS, 24)
+
 export const analyticsConfig = {
   provider: process.env.NEXT_PUBLIC_ANALYTICS_PROVIDER ?? '',
   scriptUrl: process.env.NEXT_PUBLIC_ANALYTICS_SCRIPT_URL ?? '',

@@ -54,9 +54,9 @@ export const ContactSubmissions: CollectionConfig = {
     useAsTitle: 'subject',
     defaultColumns: ['subject', 'name', 'requestType', 'status', 'createdAt'],
     description: tr(
-      'Demandes reçues via le formulaire « Travailler avec moi ».',
-      'Anfragen über das Formular „Zusammenarbeiten“.',
-      'Requests received through the "Work With Me" form.',
+      'Demandes reçues via le formulaire « Travailler avec moi ». Protection des données : une demande restée sans modification pendant 24 mois (durée réglable) est supprimée automatiquement.',
+      'Anfragen über das Formular „Zusammenarbeiten“. Datenschutz: Eine Anfrage, die 24 Monate lang nicht geändert wurde (Dauer einstellbar), wird automatisch gelöscht.',
+      'Requests received through the "Work With Me" form. Data protection: a request left unchanged for 24 months (configurable) is deleted automatically.',
     ),
   },
   access: {
