@@ -404,8 +404,6 @@ présente dans le menu et le pied de page.
 - N'ajouter que des interventions réelles, et des vidéos dont la diffusion est
   autorisée.
 
----
-
 ### Médiathèque
 
 La page **Médiathèque** (`/media`, liée depuis Conférences & médias et le pied de page)
@@ -427,7 +425,9 @@ soient utiles, renseigner dans chaque fiche :
 Un podcast se publie avec le type _Podcast_ et le lien vers l'épisode (Spotify, Apple
 Podcasts, site de l'émission…) dans _Lien externe_.
 
-## 13 bis. Pages de campagne
+---
+
+## 14. Pages de campagne
 
 Une page de campagne est une page d’atterrissage dédiée à **un livre, une formation ou
 une mission** : on la partage sur les réseaux, par e-mail ou dans une publicité. Elle
@@ -464,6 +464,10 @@ lui-même la langue. Une adresse incorrecte est refusée à l’enregistrement.
 Pour une campagne temporaire : cocher **Exclure des moteurs de recherche** dans l’onglet
 Référencement, puis dépublier la page à la fin de la campagne.
 
+---
+
+## 15. Demandes de contact
+
 **Administration → Demandes de contact**
 
 Chaque demande envoyée par le formulaire est enregistrée avec le nom,
@@ -480,8 +484,6 @@ langue et l'horodatage du consentement.
   (`CONTACT_RETENTION_MONTHS`, `0` = jamais) et doit correspondre à celle
   annoncée dans la politique de confidentialité. Une demande peut aussi être
   supprimée à la main (rôle Administrator), par exemple sur demande de la personne.
-
----
 
 ### Priorité des demandes (qualification)
 
@@ -555,7 +557,9 @@ colorer les lignes, mais **ne modifiez pas la colonne ID** et ne renommez pas le
 Ne partagez le tableur avec personne d’autre que le compte de service : il contient des
 données personnelles.
 
-## 15. Statistiques de fréquentation
+---
+
+## 16. Statistiques de fréquentation
 
 Trois outils sont possibles, branchés par le prestataire (variables
 `NEXT_PUBLIC_ANALYTICS_*`, voir `DEPLOIEMENT.md`) :
@@ -619,7 +623,7 @@ Plausible, déclarer chaque événement comme « Goal » pour qu'il apparaisse.
 
 ---
 
-## 16. Pages légales
+## 17. Pages légales
 
 **Administration → Pages légales** — Impressum, confidentialité, cookies, CGV,
 livraison/retours.
@@ -635,7 +639,7 @@ nécessaire, par un professionnel du droit.
 
 ---
 
-## 17. Contenus d'exemple
+## 18. Contenus d'exemple
 
 Les entrées livrées avec le site portent la mention **« Contenu d'exemple »**
 (case _Contenu d’exemple_ dans la barre latérale) et affichent un bandeau
@@ -649,7 +653,7 @@ Liste complète des éléments encore attendus :
 
 ---
 
-## 18. Bonnes pratiques
+## 19. Bonnes pratiques
 
 - Publier en trois langues ou pas du tout : une page à moitié traduite se voit.
 - Toujours renseigner le texte alternatif des images.

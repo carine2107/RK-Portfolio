@@ -30,17 +30,18 @@ verrouillage : le projet peut être migré vers un autre hébergeur sans réécr
 
 ## 3. Dépendances de développement
 
-| Paquet                                    | Licence    | Rôle                               |
-| ----------------------------------------- | ---------- | ---------------------------------- |
-| `typescript`                              | Apache-2.0 | Typage strict                      |
-| `tailwindcss`, `@tailwindcss/postcss`     | MIT        | Styles utilitaires + design tokens |
-| `eslint`, `eslint-config-next`            | MIT        | Qualité de code                    |
-| `prettier`                                | MIT        | Formatage                          |
-| `vitest`, `@vitejs/plugin-react`, `jsdom` | MIT        | Tests unitaires                    |
-| `@playwright/test`                        | Apache-2.0 | Tests end-to-end                   |
-| `@testing-library/*`                      | MIT        | Utilitaires de test                |
-| `tsx`, `cross-env`, `dotenv`              | MIT        | Outillage de scripts               |
-| `@types/*`                                | MIT        | Définitions de types               |
+| Paquet                                    | Licence    | Rôle                                                            |
+| ----------------------------------------- | ---------- | --------------------------------------------------------------- |
+| `typescript`                              | Apache-2.0 | Typage strict                                                   |
+| `tailwindcss`, `@tailwindcss/postcss`     | MIT        | Styles utilitaires + design tokens                              |
+| `eslint`, `eslint-config-next`            | MIT        | Qualité de code                                                 |
+| `prettier`                                | MIT        | Formatage                                                       |
+| `vitest`, `@vitejs/plugin-react`, `jsdom` | MIT        | Tests unitaires                                                 |
+| `@playwright/test`                        | Apache-2.0 | Tests end-to-end                                                |
+| `marked`                                  | MIT        | Conversion du guide administrateur en PDF (`npm run guide:pdf`) |
+| `@testing-library/*`                      | MIT        | Utilitaires de test                                             |
+| `tsx`, `cross-env`, `dotenv`              | MIT        | Outillage de scripts                                            |
+| `@types/*`                                | MIT        | Définitions de types                                            |
 
 ## 4. Services externes
 

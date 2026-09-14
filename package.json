@@ -29,7 +29,8 @@
     "db:up": "docker compose up -d",
     "db:down": "docker compose down",
     "verify": "npm run format:check && npm run typecheck && npm run lint && npm run test",
-    "import:assets": "cross-env NODE_OPTIONS=--no-deprecation tsx src/scripts/import-client-assets.ts"
+    "import:assets": "cross-env NODE_OPTIONS=--no-deprecation tsx src/scripts/import-client-assets.ts",
+    "guide:pdf": "cross-env NODE_OPTIONS=--no-deprecation tsx src/scripts/build-guide-pdf.ts"
   },
   "dependencies": {
     "@payloadcms/db-postgres": "3.88.0",
@@ -73,6 +74,7 @@
     "eslint": "^9.39.1",
     "eslint-config-next": "16.3.4",
     "jsdom": "30.0.1",
+    "marked": "18.0.13",
     "prettier": "3.6.2",
     "tailwindcss": "4.3.3",
     "tsx": "4.23.13",
