@@ -228,6 +228,7 @@ Ce que le site fait réellement aujourd'hui :
 - ✅ Formulaire de contact validé, anti-spam, e-mails FR/DE/EN **testés**
 - ✅ SEO : métadonnées localisées, canonical, hreflang, sitemap, robots,
   données structurées Person / Article / Book / Organization / BreadcrumbList / WebSite
+- ✅ Prise de rendez-vous : bouton vers l’outil externe (Cal.com, Calendly…) réglable dans le CMS, sans script tiers
 - ✅ Page Conférences & médias (interventions à venir / passées, vidéos chargées au clic sans cookie, invitation préremplie)
 - ✅ Carte Europe–Afrique des expériences (calculée côté serveur, sans service tiers), filtre par pays accessible au clavier
 - ✅ Apparence (palettes, couleurs, police, fond d'accueil) modifiable dans le CMS, contrastes AA garantis

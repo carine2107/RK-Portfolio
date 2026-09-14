@@ -2155,6 +2155,14 @@ export interface SiteSetting {
    * e.g. "French, English, German".
    */
   spokenLanguages?: string | null;
+  /**
+   * Booking page of an external tool (Cal.com, Calendly…), full https:// address. A "Book a call" button then appears on the Contact and About pages; the tool opens in a new tab and nothing is loaded before the click. Empty: no button.
+   */
+  bookingUrl?: string | null;
+  /**
+   * e.g. "Book 30 minutes". Empty: "Book a call".
+   */
+  bookingLabel?: string | null;
   social?:
     | {
         platform: 'linkedin' | 'x' | 'facebook' | 'youtube' | 'instagram';
@@ -2401,6 +2409,8 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   address?: T;
   notificationEmail?: T;
   spokenLanguages?: T;
+  bookingUrl?: T;
+  bookingLabel?: T;
   social?:
     | T
     | {

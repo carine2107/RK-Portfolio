@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 
+import { BookingLink } from '@/components/contact/BookingLink'
 import { breadcrumbSchema, JsonLd, personSchema } from '@/components/seo/JsonLd'
 import { buttonClasses } from '@/components/ui/Button'
 import { CtaLink } from '@/components/ui/CtaLink'
@@ -167,6 +168,14 @@ export default async function AboutPage({ params }: Props) {
                   {nav('workWithMe')}
                   <Icon name="arrow" className="size-4" />
                 </CtaLink>
+                {settings.bookingUrl ? (
+                  <BookingLink
+                    url={settings.bookingUrl}
+                    label={settings.bookingLabel}
+                    location="about"
+                    variant="secondary"
+                  />
+                ) : null}
               </div>
             </div>
 

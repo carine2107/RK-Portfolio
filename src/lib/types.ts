@@ -177,6 +177,9 @@ export type SiteSettingsView = {
   phone: string
   address: string
   spokenLanguages: string
+  /** External booking page (https only), '' when not configured. */
+  bookingUrl: string
+  bookingLabel: string
   social: { platform: string; url: string }[]
   expertProfileUrl: string | null
   expertProfileTitle: string

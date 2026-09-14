@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 
+import { BookingLink } from '@/components/contact/BookingLink'
 import { ContactForm } from '@/components/contact/ContactForm'
 import { breadcrumbSchema, JsonLd } from '@/components/seo/JsonLd'
 import { Icon } from '@/components/ui/Icon'
@@ -67,6 +68,19 @@ export default async function ContactPage({ params }: Props) {
           </div>
 
           <aside className="lg:col-span-5">
+            {settings.bookingUrl ? (
+              <div className="mb-6 rounded-card border border-line-accent bg-surface-accent p-6">
+                <h2 className="text-base font-semibold text-primary">{t('booking.title')}</h2>
+                <p className="mt-2 text-sm leading-relaxed text-secondary">{t('booking.body')}</p>
+                <BookingLink
+                  url={settings.bookingUrl}
+                  label={settings.bookingLabel}
+                  location="contact"
+                  className="mt-5"
+                />
+              </div>
+            ) : null}
+
             <div className="rounded-card border border-line bg-surface-subtle p-6">
               <h2 className="text-base font-semibold text-primary">{t('info.title')}</h2>
 

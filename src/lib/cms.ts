@@ -20,6 +20,7 @@ import {
 import type { Locale } from '@/i18n/routing'
 import { countryName, isCountryCode } from '@/lib/countries'
 import { cmsEnabled, siteUrl } from '@/lib/env'
+import { safeHttpsUrl } from '@/lib/url'
 import { parseVideoUrl } from '@/lib/video'
 import {
   appearanceCss,
@@ -192,6 +193,8 @@ const starterSiteSettings = (locale: Locale): SiteSettingsView => ({
     fr: 'Français, anglais, allemand',
     de: 'Französisch, Englisch, Deutsch',
   }[locale],
+  bookingUrl: '',
+  bookingLabel: '',
   social: [],
   expertProfileUrl: null,
   expertProfileTitle: '',
@@ -220,6 +223,8 @@ export const getSiteSettings = cache(
           phone: str(doc.phone),
           address: str(doc.address),
           spokenLanguages: str(doc.spokenLanguages, fallback.spokenLanguages),
+          bookingUrl: safeHttpsUrl(str(doc.bookingUrl)),
+          bookingLabel: str(doc.bookingLabel),
           social: arrayOf(doc.social)
             .map((entry) => ({ platform: str(entry.platform), url: str(entry.url) }))
             .filter((entry) => entry.platform && entry.url),

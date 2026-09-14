@@ -172,6 +172,49 @@ export const SiteSettings: GlobalConfig = {
                 ),
               },
             },
+            {
+              name: 'bookingUrl',
+              type: 'text',
+              label: tr(
+                'Lien de prise de rendez-vous',
+                'Link zur Terminbuchung',
+                'Appointment booking link',
+              ),
+              validate: (value: unknown) => {
+                if (!value) return true
+                try {
+                  const url = new URL(String(value))
+                  if (url.protocol === 'https:') return true
+                } catch {
+                  /* invalid */
+                }
+                return 'https://…'
+              },
+              admin: {
+                description: tr(
+                  'Page de réservation d’un outil externe (Cal.com, Calendly…), adresse complète en https://. Un bouton « Réserver un échange » apparaît alors sur les pages Contact et À propos ; l’outil s’ouvre dans un nouvel onglet, rien n’est chargé avant le clic. Vide : aucun bouton.',
+                  'Buchungsseite eines externen Tools (Cal.com, Calendly …), vollständige https://-Adresse. Dann erscheint auf Kontakt und Über mich die Schaltfläche „Gespräch buchen“; das Tool öffnet sich in einem neuen Tab, vor dem Klick wird nichts geladen. Leer: keine Schaltfläche.',
+                  'Booking page of an external tool (Cal.com, Calendly…), full https:// address. A "Book a call" button then appears on the Contact and About pages; the tool opens in a new tab and nothing is loaded before the click. Empty: no button.',
+                ),
+              },
+            },
+            {
+              name: 'bookingLabel',
+              type: 'text',
+              label: tr(
+                'Texte du bouton (facultatif)',
+                'Schaltflächentext (optional)',
+                'Button text (optional)',
+              ),
+              localized: true,
+              admin: {
+                description: tr(
+                  'Par exemple « Réserver 30 minutes ». Vide : « Réserver un échange ».',
+                  'Zum Beispiel „30 Minuten buchen“. Leer: „Gespräch buchen“.',
+                  'e.g. "Book 30 minutes". Empty: "Book a call".',
+                ),
+              },
+            },
           ],
         },
         {

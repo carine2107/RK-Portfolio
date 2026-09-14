@@ -145,7 +145,7 @@ Session 8 h, verrouillage après 5 échecs pendant 10 minutes, cookies
   `expertProfile`, `cvDocument`, `creditName` (crédit « © by … » du pied de
   page, vide = masqué), `creditUrl` (lien facultatif)
 - **Contact** : `email`, `phone`, `address`, `notificationEmail`,
-  `spokenLanguages`
+  `spokenLanguages`, `bookingUrl` (https, outil de rendez-vous externe), `bookingLabel`
 - **Social** : `social[{platform, url}]`
 - **SEO defaults** : `defaultSeoTitle`, `defaultSeoDescription`, `defaultOgImage`
 

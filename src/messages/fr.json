@@ -409,7 +409,13 @@
       "emailPending": "Adresse e-mail professionnelle à confirmer avant publication.",
       "phonePending": "Numéro de téléphone professionnel à confirmer avant publication."
     },
-    "privacyNote": "Vos données servent uniquement à répondre à votre demande. Elles ne sont ni vendues ni utilisées à des fins marketing sans votre consentement."
+    "privacyNote": "Vos données servent uniquement à répondre à votre demande. Elles ne sont ni vendues ni utilisées à des fins marketing sans votre consentement.",
+    "booking": {
+      "title": "Réserver un échange",
+      "body": "Choisissez directement un créneau pour un premier échange, sans passer par le formulaire.",
+      "cta": "Réserver un échange",
+      "opensIn": "S’ouvre sur {host}, dans un nouvel onglet."
+    }
   },
   "legal": {
     "meta": {

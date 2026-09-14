@@ -409,7 +409,13 @@
       "emailPending": "Berufliche E-Mail-Adresse vor Veröffentlichung zu bestätigen.",
       "phonePending": "Berufliche Telefonnummer vor Veröffentlichung zu bestätigen."
     },
-    "privacyNote": "Ihre Daten werden ausschließlich zur Beantwortung Ihrer Anfrage verwendet. Sie werden weder verkauft noch ohne Ihre Einwilligung für Marketing genutzt."
+    "privacyNote": "Ihre Daten werden ausschließlich zur Beantwortung Ihrer Anfrage verwendet. Sie werden weder verkauft noch ohne Ihre Einwilligung für Marketing genutzt.",
+    "booking": {
+      "title": "Gespräch buchen",
+      "body": "Wählen Sie direkt einen Termin für ein erstes Gespräch, ohne Formular.",
+      "cta": "Gespräch buchen",
+      "opensIn": "Öffnet {host} in einem neuen Tab."
+    }
   },
   "legal": {
     "meta": {

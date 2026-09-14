@@ -409,7 +409,13 @@
       "emailPending": "Professional e-mail address to be confirmed before publication.",
       "phonePending": "Professional phone number to be confirmed before publication."
     },
-    "privacyNote": "Your data is used only to answer your request. It is never sold nor used for marketing without your consent."
+    "privacyNote": "Your data is used only to answer your request. It is never sold nor used for marketing without your consent.",
+    "booking": {
+      "title": "Book a call",
+      "body": "Pick a slot for a first conversation directly, without going through the form.",
+      "cta": "Book a call",
+      "opensIn": "Opens {host} in a new tab."
+    }
   },
   "legal": {
     "meta": {

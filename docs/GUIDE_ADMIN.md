@@ -204,17 +204,24 @@ le document n'est pas encore publié — il ne renvoie jamais vers un lien mort.
 
 **Administration → Réglages du site**
 
-| Onglet              | Contenu                                                                                      |
-| ------------------- | -------------------------------------------------------------------------------------------- |
-| **Marque**          | Nom, positionnement (traduit), signature, logo, Expert Profile, CV                           |
-| **Contact**         | E-mail et téléphone publiés, adresse, **adresse de réception des demandes**, langues parlées |
-| **Réseaux sociaux** | Profils LinkedIn, X, Facebook, YouTube, Instagram (affichés dans le pied de page)            |
-| **SEO par défaut**  | Titre et description par défaut, image de partage social (1200 × 630)                        |
+| Onglet              | Contenu                                                                                                                        |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| **Marque**          | Nom, positionnement (traduit), signature, logo, Expert Profile, CV                                                             |
+| **Contact**         | E-mail et téléphone publiés, adresse, **adresse de réception des demandes**, langues parlées, **lien de prise de rendez-vous** |
+| **Réseaux sociaux** | Profils LinkedIn, X, Facebook, YouTube, Instagram (affichés dans le pied de page)                                              |
+| **SEO par défaut**  | Titre et description par défaut, image de partage social (1200 × 630)                                                          |
 
 La **mention de bas de page** (« © by Nana-Consulting. Tous droits réservés. »)
 s'affiche tout en bas de chaque page. Vider le champ _Crédit du pied de page_ la
 remplace par « © {année} Romial Kenmogne. Tous droits réservés. » ; renseigner
 l'URL du crédit transforme « © by Nana-Consulting » en lien.
+
+**Prise de rendez-vous** : coller dans _Lien de prise de rendez-vous_ l'adresse de
+la page de réservation (Cal.com, Calendly, Microsoft Bookings…). Un bouton
+« Réserver un échange » apparaît alors sur les pages **Contact** et **À propos** ;
+l'outil s'ouvre dans un nouvel onglet et rien n'en est chargé sur le site avant
+le clic (pas de cookie tiers). Vider le champ retire le bouton. Les rendez-vous se
+gèrent dans l'outil choisi.
 
 **Pages → Page d’accueil** : accroche, proposition de valeur, photo du hero, points
 clés, textes d'introduction des sections, appel à l'action final.
@@ -347,6 +354,7 @@ l'administration du site) :
 | `article_view`            | ouvre un article RK Insights                                | article               |
 | `book_purchase_click`     | clique sur un bouton d'achat (Amazon…)                      | livre, lien           |
 | `book_preview_click`      | ouvre l'extrait d'un livre                                  | livre                 |
+| `booking_click`           | ouvre l'outil de prise de rendez-vous                       | page d'origine        |
 | `video_play`              | lance une vidéo (Conférences & médias)                      | plateforme            |
 | `media_link_click`        | ouvre le lien externe d'une intervention (podcast, presse…) | intervention          |
 | `business_click`          | ouvre le site d'une activité de l'écosystème                | activité              |

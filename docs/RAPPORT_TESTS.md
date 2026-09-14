@@ -10,8 +10,8 @@ Environnement : Windows 11, Node 24.15, PostgreSQL 16 (Docker), build de
 
 | Suite                            | Périmètre                                                               | Résultat                             |
 | -------------------------------- | ----------------------------------------------------------------------- | ------------------------------------ |
-| Tests unitaires (Vitest)         | Traductions, contrastes, moteur d'apparence, validation, SEO, anti-abus | **79 / 79 réussis**                  |
-| Tests end-to-end (Playwright)    | 68 scénarios × 4 configurations                                         | **246 réussis, 26 ignorés, 0 échec** |
+| Tests unitaires (Vitest)         | Traductions, contrastes, moteur d'apparence, validation, SEO, anti-abus | **82 / 82 réussis**                  |
+| Tests end-to-end (Playwright)    | 71 scénarios × 4 configurations                                         | **254 réussis, 30 ignorés, 0 échec** |
 | Compilation TypeScript (`tsc`)   | Mode strict, tout le projet                                             | **0 erreur**                         |
 | Lint (ESLint 9 + config Next 16) | Tout le projet                                                          | **0 erreur, 0 avertissement**        |
 | Formatage (Prettier)             | `src`, `tests`, `docs`                                                  | **conforme**                         |
@@ -23,6 +23,7 @@ Configurations end-to-end : **Chromium 1280 px**, **mobile 375 px**,
 
 Tests ignorés, tous volontaires :
 
+- **4** : la vérification d'un lien de prise de rendez-vous configuré est sautée tant qu'aucun lien n'est renseigné dans le CMS ;
 - **24** : l'audit de contraste axe (12 scénarios) ne tourne que sur les deux
   configurations Chromium — le contraste ne dépend pas du moteur de rendu ;
 - **2** sur WebKit : Safari ne déplace pas le focus vers les liens avec la touche
@@ -39,7 +40,7 @@ node tests/visual/capture.mjs test-results/visual
 
 ---
 
-## 2. Tests unitaires (79)
+## 2. Tests unitaires (82)
 
 | Fichier                  | Ce qui est vérifié                                                                                                                                                                                                                             |
 | ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -48,12 +49,13 @@ node tests/visual/capture.mjs test-results/visual
 | `contact-schema.test.ts` | Schéma du formulaire (consentement, e-mail, pays, type de demande, longueurs), clés d'erreur traduisibles, liste de pays localisée et triée                                                                                                    |
 | `seo.test.ts`            | Canonical, hreflang FR/DE/EN + `x-default`, chemins traduits, `noindex`, Open Graph, troncature des descriptions, génération des slugs                                                                                                         |
 | `theme.test.ts`          | Moteur d'apparence : les 6 palettes et **300 palettes personnalisées aléatoires** respectent 15 paires de contraste AA dans les deux thèmes ; couleurs vides = palette Signature ; aucune saisie brute du CMS dans la feuille de style générée |
+| `url.test.ts`            | Liens externes saisis dans le CMS : seules les adresses https:// absolues sont conservées (`http:`, `javascript:`, chemins relatifs, localhost refusés) ; affichage du domaine de destination                                                  |
 | `video.test.ts`          | Liens YouTube (watch, youtu.be, embed, shorts, live, mobile) et Vimeo convertis en lecteurs sans cookie ; tout autre lien refusé (domaines imitant YouTube, `javascript:`, identifiants invalides)                                             |
 | `world-map.test.ts`      | Carte Europe–Afrique : pays d'Europe et d'Afrique présents avec leur code ISO, pays lointains exclus, taille des tracés < 80 Ko ; noms de pays localisés FR/DE/EN                                                                              |
 | `retention.test.ts`      | Date limite de conservation des demandes de contact (24 / 6 mois, désactivation à 0, valeurs invalides), calculée en UTC — indépendante du fuseau et de l'heure d'été                                                                          |
 | `rate-limit.test.ts`     | Limitation par IP : seuil, réinitialisation de fenêtre, isolation entre clients, lecture des en-têtes de proxy                                                                                                                                 |
 
-## 3. Tests end-to-end (68 scénarios)
+## 3. Tests end-to-end (71 scénarios)
 
 ### Navigation et structure (`navigation.spec.ts`)
 
@@ -111,6 +113,13 @@ demandes restent intactes.
 - « Proposer une intervention » ouvre le formulaire avec « Conférence / médias » présélectionné
 - Aucune requête vers YouTube / Vimeo et aucun `iframe` avant action du visiteur
 - Page présente dans le sitemap
+
+### Prise de rendez-vous (`booking.spec.ts`)
+
+- Aucune requête vers Cal.com / Calendly / Microsoft Bookings et aucun `iframe` sur Contact et À propos
+- Lien configuré : ouverture dans un nouvel onglet, `rel="noopener"`, adresse https
+
+Contrôle manuel (serveur de développement, lien de test Cal.com temporaire) : bloc « Réserver un échange » sur Contact (FR) et bouton « Gespräch buchen » sur À propos (DE), destination annoncée, aucun débordement.
 
 ### Accessibilité (`accessibility.spec.ts`)
 
