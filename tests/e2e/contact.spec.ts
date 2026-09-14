@@ -27,7 +27,8 @@ test.describe('contact form', () => {
     await page.goto('/en/contact')
 
     await page.locator('main form').getByLabel('Full name').fill('Test Visitor')
-    await page.locator('main form').getByLabel('Organisation').fill('Playwright QA')
+    // By id: "Type of organisation" (qualification) also contains the word.
+    await page.locator('#contact-organisation').fill('Playwright QA')
     await page.locator('main form').getByLabel('E-mail address').fill('qa@example.com')
     await page.locator('main form').getByLabel('Country').selectOption('DE')
     await page.locator('main form').getByLabel('Type of request').selectOption('consulting')
@@ -62,6 +63,56 @@ test.describe('contact form', () => {
     expect(response.status()).toBe(200)
     const body = await response.json()
     expect(body).toEqual({ ok: true, emailSent: false })
+  })
+
+  test('the qualification questions are optional and offered in the page language', async ({
+    page,
+  }) => {
+    await page.goto('/fr/contact')
+    const form = page.locator('main form')
+    await expect(
+      form.getByRole('group', { name: 'Quelques précisions pour préparer la réponse' }),
+    ).toBeVisible()
+    for (const label of [
+      'Type d’organisation',
+      'Budget estimé',
+      'Démarrage souhaité',
+      'Votre rôle dans la décision',
+    ]) {
+      await expect(form.getByLabel(label)).not.toHaveAttribute('required')
+    }
+    await expect(form.getByLabel('Budget estimé').locator('option')).toHaveCount(6)
+  })
+
+  test('the API accepts qualification answers and refuses unknown values', async ({ request }) => {
+    const base = {
+      name: 'Qualification Test',
+      email: 'qa-qualification@example.com',
+      country: 'DE',
+      requestType: 'dueDiligence',
+      subject: 'Automated qualification test',
+      message: 'This message was created by the automated end-to-end test suite of the website.',
+      consent: true,
+      locale: 'en',
+    }
+    const refused = await request.post('/api/contact', { data: { ...base, budget: 'one-million' } })
+    expect(refused.status()).toBe(422)
+    expect((await refused.json()).errors).toEqual({ budget: 'qualification' })
+
+    const accepted = await request.post('/api/contact', {
+      data: {
+        ...base,
+        budget: 'over50k',
+        timeline: 'urgent',
+        decisionRole: '',
+        organisationType: '',
+      },
+    })
+    expect(accepted.status()).toBe(200)
+    const body = await accepted.json()
+    expect(body.ok).toBe(true)
+    // The score is for the owner only: it never reaches the visitor.
+    expect(JSON.stringify(body)).not.toMatch(/score|priority/i)
   })
 
   test('the API rejects an invalid payload with field errors', async ({ request }) => {

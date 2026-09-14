@@ -574,7 +574,11 @@
       "requestType": "Art der Anfrage",
       "subject": "Betreff",
       "message": "Nachricht",
-      "consent": "Ich habe die <link>Datenschutzerklärung</link> gelesen und bin damit einverstanden, dass meine Daten zur Beantwortung meiner Anfrage verwendet werden."
+      "consent": "Ich habe die <link>Datenschutzerklärung</link> gelesen und bin damit einverstanden, dass meine Daten zur Beantwortung meiner Anfrage verwendet werden.",
+      "organisationType": "Art der Organisation",
+      "budget": "Geschätztes Budget",
+      "timeline": "Gewünschter Beginn",
+      "decisionRole": "Ihre Rolle bei der Entscheidung"
     },
     "placeholders": {
       "name": "Maria Muster",
@@ -583,7 +587,8 @@
       "country": "Land auswählen",
       "requestType": "Art der Anfrage auswählen",
       "subject": "Financial Due Diligence für eine Akquisition",
-      "message": "Kontext, Ziele, Zeitplan und erwartete Unterstützung."
+      "message": "Kontext, Ziele, Zeitplan und erwartete Unterstützung.",
+      "choose": "Auswählen…"
     },
     "requestTypes": {
       "consulting": "Beratungsmandat",
@@ -617,7 +622,8 @@
       "consent": "Ihre Einwilligung ist für die Bearbeitung erforderlich.",
       "rateLimit": "Von dieser Verbindung wurden zu viele Anfragen gesendet. Bitte versuchen Sie es später erneut.",
       "server": "Die Anfrage konnte nicht gesendet werden. Bitte erneut versuchen oder direkt an die unten stehende E-Mail-Adresse schreiben.",
-      "summaryTitle": "Bitte korrigieren Sie {count, plural, one {das folgende Feld} other {die folgenden Felder}}:"
+      "summaryTitle": "Bitte korrigieren Sie {count, plural, one {das folgende Feld} other {die folgenden Felder}}:",
+      "qualification": "Bitte wählen Sie eine der vorgeschlagenen Optionen."
     },
     "info": {
       "title": "Direkter Kontakt",
@@ -633,7 +639,41 @@
       "body": "Wählen Sie direkt einen Termin für ein erstes Gespräch, ohne Formular.",
       "cta": "Gespräch buchen",
       "opensIn": "Öffnet {host} in einem neuen Tab."
-    }
+    },
+    "qualification": {
+      "title": "Einige Angaben zur Vorbereitung der Antwort",
+      "hint": "Optional — diese Antworten helfen, Ihre Anfrage zu priorisieren und das erste Gespräch vorzubereiten."
+    },
+    "options": {
+      "organisationType": {
+        "company": "Unternehmen",
+        "sme": "KMU",
+        "startup": "Start-up",
+        "publicInstitution": "Öffentliche Einrichtung",
+        "ngo": "NGO / Verein",
+        "investor": "Investor",
+        "individual": "Privatperson"
+      },
+      "budget": {
+        "under5k": "Unter 5.000 €",
+        "from5to20k": "5.000 bis 20.000 €",
+        "from20to50k": "20.000 bis 50.000 €",
+        "over50k": "Über 50.000 €",
+        "notDefined": "Noch nicht festgelegt"
+      },
+      "timeline": {
+        "urgent": "Innerhalb eines Monats",
+        "quarter": "In 1 bis 3 Monaten",
+        "later": "In mehr als 3 Monaten",
+        "exploring": "Erst einmal informieren"
+      },
+      "decisionRole": {
+        "decisionMaker": "Ich entscheide",
+        "influencer": "Ich bereite die Entscheidung vor",
+        "researching": "Ich informiere mich"
+      }
+    },
+    "successBooking": "Um schneller voranzukommen, können Sie direkt ein erstes Gespräch im Kalender buchen."
   },
   "legal": {
     "meta": {

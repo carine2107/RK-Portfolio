@@ -64,7 +64,7 @@ export default async function ContactPage({ params }: Props) {
         <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-7">
             <h2 className="rk-rule mb-8 text-2xl">{t('formTitle')}</h2>
-            <ContactForm privacyHref={privacyHref} />
+            <ContactForm privacyHref={privacyHref} bookingUrl={settings.bookingUrl} />
           </div>
 
           <aside className="lg:col-span-5">

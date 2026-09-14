@@ -483,6 +483,34 @@ langue et l'horodatage du consentement.
 
 ---
 
+### Priorité des demandes (qualification)
+
+Le formulaire propose au visiteur **quatre questions facultatives** : type d’organisation,
+budget estimé, démarrage souhaité et rôle dans la décision. À la réception, le site calcule
+un **score sur 100** et une **priorité** :
+
+| Critère               | Points                                                                                                                              |
+| --------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| Budget estimé         | plus de 50 000 € : 30 · 20 000 à 50 000 € : 25 · 5 000 à 20 000 € : 15 · moins de 5 000 € ou non défini : 5                         |
+| Démarrage souhaité    | dans le mois : 25 · 1 à 3 mois : 20 · plus de 3 mois : 10 · simple information : 5                                                  |
+| Rôle dans la décision | décide : 20 · prépare la décision : 10 · se renseigne : 5                                                                           |
+| Type de demande       | conseil, due diligence, accompagnement, gestion de projet, programme PME : 15 · formation, conférence, partenariat : 10 · autre : 5 |
+| Complétude            | organisation renseignée : 5 · message détaillé (300 caractères et plus) : 5                                                         |
+
+**Priorité haute** à partir de 60, **moyenne** de 35 à 59, **basse** en dessous. Une
+question sans réponse compte 0 point ; le type d’organisation est enregistré pour
+information mais **n’est jamais noté**.
+
+- Dans **Demandes de contact**, les colonnes **Priorité** et **Score** s’affichent dans la
+  liste : cliquer sur l’en-tête **Score** pour trier. Le détail des réponses est dans le
+  bloc **Qualification** de chaque demande.
+- La priorité peut être corrigée à la main (colonne de droite) ; le score reste celui du
+  calcul d’origine.
+- L’e-mail de notification indique la priorité dans son **objet** (« [Priorité haute] … »).
+- Le visiteur ne voit jamais son score. S’il obtient une priorité haute et qu’un **lien de
+  prise de rendez-vous** est configuré (Réglages du site), le message de confirmation lui
+  propose de réserver directement un échange.
+
 ## 15. Statistiques de fréquentation
 
 Le site est prêt pour une mesure d'audience **sans cookie** : **Umami** ou

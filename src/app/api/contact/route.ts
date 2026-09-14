@@ -7,6 +7,7 @@ import { contactSchema, toFieldErrors, type ContactResponse } from '@/lib/contac
 import { countryOptions } from '@/lib/countries'
 import { sendContactEmails } from '@/lib/email'
 import { contactRateLimit, emailConfig } from '@/lib/env'
+import { scoreLead } from '@/lib/lead-score'
 import { checkRateLimit, clientKey } from '@/lib/rate-limit'
 
 export const runtime = 'nodejs'
@@ -16,9 +17,10 @@ export const dynamic = 'force-dynamic'
  * Contact endpoint.
  *
  * Protections: honeypot field, per-IP rate limit, strict server-side schema.
- * The submission is stored in the CMS, then the notification and confirmation
- * e-mails are attempted. The response says whether e-mail actually went out,
- * so the visitor is never told a message was sent when it was not.
+ * The submission is scored (lead qualification), stored in the CMS, then the
+ * notification and confirmation e-mails are attempted. The response says
+ * whether e-mail actually went out, so the visitor is never told a message was
+ * sent when it was not. The score itself is never returned to the visitor.
  */
 export async function POST(request: Request): Promise<NextResponse<ContactResponse>> {
   const key = createHash('sha256').update(clientKey(request.headers)).digest('hex').slice(0, 32)
@@ -54,6 +56,13 @@ export async function POST(request: Request): Promise<NextResponse<ContactRespon
   const locale = data.locale && isLocale(data.locale) ? data.locale : defaultLocale
   const countryLabel =
     countryOptions(locale).find((entry) => entry.code === data.country)?.label ?? data.country
+  const { score, priority } = scoreLead(data)
+  const qualification = {
+    organisationType: data.organisationType,
+    budget: data.budget,
+    timeline: data.timeline,
+    decisionRole: data.decisionRole,
+  }
 
   let stored = false
   let submissionId: string | number | null = null
@@ -71,6 +80,9 @@ export async function POST(request: Request): Promise<NextResponse<ContactRespon
           requestType: data.requestType,
           subject: data.subject,
           message: data.message,
+          ...qualification,
+          leadScore: score,
+          priority,
           locale,
           status: 'new',
           consentAt: new Date().toISOString(),
@@ -100,6 +112,9 @@ export async function POST(request: Request): Promise<NextResponse<ContactRespon
       requestType: data.requestType,
       subject: data.subject,
       message: data.message,
+      ...qualification,
+      score,
+      priority,
       locale,
     },
     recipient,
@@ -124,8 +139,13 @@ export async function POST(request: Request): Promise<NextResponse<ContactRespon
   }
 
   console.info(
-    `[contact] Request received (type=${data.requestType}, stored=${stored}, mail=${emailSent}).`,
+    `[contact] Request received (type=${data.requestType}, priority=${priority}, stored=${stored}, mail=${emailSent}).`,
   )
 
-  return NextResponse.json({ ok: true, emailSent })
+  return NextResponse.json({
+    ok: true,
+    emailSent,
+    // Priority requests are offered the booking link right away, when one is configured.
+    suggestBooking: priority === 'high' && Boolean(settings.bookingUrl),
+  })
 }

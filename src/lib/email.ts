@@ -3,6 +3,7 @@ import 'server-only'
 import type { Locale } from '@/i18n/routing'
 import { createTransport, escapeHtml, wrapHtml } from '@/lib/email-layout'
 import { emailConfig, siteUrl } from '@/lib/env'
+import { OPTION_LABELS, QUALIFICATION_LABELS, type Priority } from '@/lib/lead-score'
 
 export type ContactEmailData = {
   name: string
@@ -12,6 +13,13 @@ export type ContactEmailData = {
   requestType: string
   subject: string
   message: string
+  organisationType?: string
+  budget?: string
+  timeline?: string
+  decisionRole?: string
+  /** Lead score and priority: shown to the owner only, never to the visitor. */
+  score: number
+  priority: Priority
   locale: Locale
 }
 
@@ -20,10 +28,10 @@ export type ContactEmailData = {
 /* -------------------------------------------------------------------------- */
 
 type Template = {
-  ownerSubject: (data: ContactEmailData) => string
+  ownerSubject: (data: ContactEmailData, priority: string) => string
   ownerIntro: string
   labels: Record<
-    'name' | 'organisation' | 'email' | 'country' | 'type' | 'subject' | 'message',
+    'name' | 'organisation' | 'email' | 'country' | 'type' | 'subject' | 'message' | 'priority',
     string
   >
   confirmationSubject: string
@@ -35,7 +43,8 @@ type Template = {
 
 const templates: Record<Locale, Template> = {
   en: {
-    ownerSubject: (data) => `New request — ${data.requestType} — ${data.name}`,
+    ownerSubject: (data, priority) =>
+      `[${priority} priority] New request — ${data.requestType} — ${data.name}`,
     ownerIntro: 'A new request was submitted through the website contact form.',
     labels: {
       name: 'Name',
@@ -45,6 +54,7 @@ const templates: Record<Locale, Template> = {
       type: 'Type of request',
       subject: 'Subject',
       message: 'Message',
+      priority: 'Priority (score)',
     },
     confirmationSubject: 'Your request has been received — Romial Kenmogne',
     confirmationGreeting: (name) => `Dear ${name},`,
@@ -56,7 +66,8 @@ const templates: Record<Locale, Template> = {
     footer: 'This message was sent automatically. Please do not reply to this address.',
   },
   fr: {
-    ownerSubject: (data) => `Nouvelle demande — ${data.requestType} — ${data.name}`,
+    ownerSubject: (data, priority) =>
+      `[Priorité ${priority.toLowerCase()}] Nouvelle demande — ${data.requestType} — ${data.name}`,
     ownerIntro: 'Une nouvelle demande a été envoyée depuis le formulaire de contact du site.',
     labels: {
       name: 'Nom',
@@ -66,6 +77,7 @@ const templates: Record<Locale, Template> = {
       type: 'Type de demande',
       subject: 'Sujet',
       message: 'Message',
+      priority: 'Priorité (score)',
     },
     confirmationSubject: 'Votre demande a bien été reçue — Romial Kenmogne',
     confirmationGreeting: (name) => `Bonjour ${name},`,
@@ -77,7 +89,8 @@ const templates: Record<Locale, Template> = {
     footer: 'Ce message a été envoyé automatiquement. Merci de ne pas répondre à cette adresse.',
   },
   de: {
-    ownerSubject: (data) => `Neue Anfrage — ${data.requestType} — ${data.name}`,
+    ownerSubject: (data, priority) =>
+      `[Priorität ${priority.toLowerCase()}] Neue Anfrage — ${data.requestType} — ${data.name}`,
     ownerIntro: 'Über das Kontaktformular der Website ist eine neue Anfrage eingegangen.',
     labels: {
       name: 'Name',
@@ -87,6 +100,7 @@ const templates: Record<Locale, Template> = {
       type: 'Art der Anfrage',
       subject: 'Betreff',
       message: 'Nachricht',
+      priority: 'Priorität (Score)',
     },
     confirmationSubject: 'Ihre Anfrage ist eingegangen — Romial Kenmogne',
     confirmationGreeting: (name) => `Guten Tag ${name},`,
@@ -100,13 +114,31 @@ const templates: Record<Locale, Template> = {
   },
 }
 
+/** Label of an optional qualification answer in the e-mail language, '' when unanswered. */
+function answer(
+  field: 'organisationType' | 'budget' | 'timeline' | 'decisionRole',
+  value: string | undefined,
+  locale: Locale,
+): string {
+  const labels = OPTION_LABELS[field] as Record<string, { fr: string; de: string; en: string }>
+  return value && labels[value] ? labels[value][locale] : ''
+}
+
 function detailsRows(data: ContactEmailData, template: Template): [string, string][] {
+  const { locale } = data
   return [
     [template.labels.name, data.name],
     [template.labels.organisation, data.organisation],
     [template.labels.email, data.email],
     [template.labels.country, data.country],
     [template.labels.type, data.requestType],
+    [
+      QUALIFICATION_LABELS.organisationType[locale],
+      answer('organisationType', data.organisationType, locale),
+    ],
+    [QUALIFICATION_LABELS.budget[locale], answer('budget', data.budget, locale)],
+    [QUALIFICATION_LABELS.timeline[locale], answer('timeline', data.timeline, locale)],
+    [QUALIFICATION_LABELS.decisionRole[locale], answer('decisionRole', data.decisionRole, locale)],
     [template.labels.subject, data.subject],
     [template.labels.message, data.message],
   ].filter(([, value]) => value !== '') as [string, string][]
@@ -147,6 +179,11 @@ export async function sendContactEmails(
 
   const template = templates[data.locale]
   const rows = detailsRows(data, template)
+  const priority = OPTION_LABELS.priority[data.priority][data.locale]
+  const ownerRows: [string, string][] = [
+    [template.labels.priority, `${priority} (${data.score}/100)`],
+    ...rows,
+  ]
 
   try {
     const transport = createTransport()
@@ -155,11 +192,11 @@ export async function sendContactEmails(
       from: emailConfig.from,
       to: recipient,
       replyTo: data.email,
-      subject: template.ownerSubject(data),
-      text: `${template.ownerIntro}\n\n${detailsText(rows)}\n\n${siteUrl}/admin`,
+      subject: template.ownerSubject(data, priority),
+      text: `${template.ownerIntro}\n\n${detailsText(ownerRows)}\n\n${siteUrl}/admin`,
       html: wrapHtml(
-        template.ownerSubject(data),
-        `<p style="margin:0 0 16px">${escapeHtml(template.ownerIntro)}</p>${detailsHtml(rows)}`,
+        template.ownerSubject(data, priority),
+        `<p style="margin:0 0 16px">${escapeHtml(template.ownerIntro)}</p>${detailsHtml(ownerRows)}`,
         template.footer,
       ),
     })

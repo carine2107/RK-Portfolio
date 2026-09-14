@@ -10,8 +10,8 @@ Environnement : Windows 11, Node 24.15, PostgreSQL 16 (Docker), build de
 
 | Suite                            | Périmètre                                                               | Résultat                             |
 | -------------------------------- | ----------------------------------------------------------------------- | ------------------------------------ |
-| Tests unitaires (Vitest)         | Traductions, contrastes, moteur d'apparence, validation, SEO, anti-abus | **105 / 105 réussis**                |
-| Tests end-to-end (Playwright)    | 96 scénarios × 4 configurations                                         | **354 réussis, 30 ignorés, 0 échec** |
+| Tests unitaires (Vitest)         | Traductions, contrastes, moteur d'apparence, validation, SEO, anti-abus | **111 / 111 réussis**                |
+| Tests end-to-end (Playwright)    | 98 scénarios × 4 configurations                                         | **362 réussis, 30 ignorés, 0 échec** |
 | Compilation TypeScript (`tsc`)   | Mode strict, tout le projet                                             | **0 erreur**                         |
 | Lint (ESLint 9 + config Next 16) | Tout le projet                                                          | **0 erreur, 0 avertissement**        |
 | Formatage (Prettier)             | `src`, `tests`, `docs`                                                  | **conforme**                         |
@@ -30,6 +30,8 @@ Tests ignorés, tous volontaires :
   Tab tant que « Full Keyboard Access » n'est pas activé dans le système. Le
   comportement est vérifié sur Chromium et Firefox.
 
+Limite d’envoi du formulaire : une suite complète envoie une vingtaine de demandes de contact. Le limiteur (en mémoire, `CONTACT_RATE_LIMIT=50` par 15 minutes en local) peut répondre 429 si l’on enchaîne plusieurs suites : redémarrer le serveur entre deux passages rapprochés.
+
 Commandes :
 
 ```bash
@@ -40,7 +42,7 @@ node tests/visual/capture.mjs test-results/visual
 
 ---
 
-## 2. Tests unitaires (105)
+## 2. Tests unitaires (111)
 
 | Fichier                     | Ce qui est vérifié                                                                                                                                                                                                                                     |
 | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -60,8 +62,9 @@ node tests/visual/capture.mjs test-results/visual
 | `members.test.ts`           | Cookie de session de l’espace membre signé : aller-retour, identifiant modifié, signature falsifiée ou valeur absente refusés                                                                                                                          |
 | `campaign-link.test.ts`     | Boutons des pages de campagne : pages du site (préfixe de langue retiré), https externe ; http, javascript:, //hôte, espaces et mailto: refusés                                                                                                        |
 | `media-library.test.ts`     | Médiathèque : formats (interview filmée = vidéo + interview), entrées à venir et ateliers sans vidéo exclus, filtres format / thème / langue combinés                                                                                                  |
+| `lead-score.test.ts`        | Qualification des prospects : score maximal 100, demande non qualifiée 5, bornes des priorités (35 / 60), type d’organisation et valeurs inconnues non notés ; questions facultatives et valeurs hors liste refusées par le schéma                     |
 
-## 3. Tests end-to-end (96 scénarios)
+## 3. Tests end-to-end (98 scénarios)
 
 ### Navigation et structure (`navigation.spec.ts`)
 
@@ -154,6 +157,14 @@ Contrôle manuel (serveur de développement, clé Stripe et secret de webhook **
 - Lien de connexion falsifié refusé (400, page « lien invalide ») ; téléchargement et progression sans session → 401 ; fichiers protégés inaccessibles par l'API du CMS
 
 Contrôle manuel (serveur de développement, clé Stripe et secret de webhook **factices**, données supprimées ensuite) : un e-book (PDF) et une formation (2 leçons, vidéo, pièce jointe) publiés ; fichier stocké dans `private/files`, jamais servi publiquement (API 403, URL directe 404) ; l'API publique ne renvoie ni le fichier ni le contenu, la vidéo ou la pièce jointe des leçons. Panier : quantité bornée à 1, pas de ligne livraison, case d'**accès immédiat / renonciation au droit de rétractation** obligatoire (422 sans elle). Webhook signé → commande payée, rejeu ignoré, signature falsifiée 400 ; membre et accès créés ; e-mails dans MailHog : confirmation acheteur, notification, **accès aux achats** avec lien. Lien → session ouverte, « Mon espace » liste les deux produits ; lien réutilisé → 400. Téléchargement du PDF 200 (`attachment`, `application/pdf`), produit non acheté → 403. Formation : progression 1/2 enregistrée, leçon vidéo (lecture au clic), pièce jointe, navigation entre leçons.
+
+### Qualification des prospects (`contact.spec.ts`, `lead-score.test.ts`)
+
+- Grille : demande complète et urgente = 100 (haute), demande non qualifiée = 5 (basse), bornes 35 / 60 ; type d'organisation et valeurs inconnues jamais notés
+- Questions facultatives (réponses vides acceptées) ; valeur hors liste refusée avec la clé traduite `qualification`
+- Formulaire FR : groupe « Quelques précisions… », 4 listes non obligatoires ; API : réponses acceptées, score et priorité absents de la réponse au visiteur
+
+Contrôle manuel (serveur de développement + MailHog, lien de réservation de test et demandes supprimés ensuite) : demande FR complète (PME, plus de 50 000 €, dans le mois, décideur, due diligence, message court) → score **95**, priorité **haute** enregistrés en base avec les quatre réponses ; notification « [Priorité haute] Nouvelle demande … » avec la ligne « Priorité (score) » et les réponses traduites ; confirmation au visiteur avec ses réponses mais **sans score ni priorité**. Avec un lien de réservation configuré : demande peu prioritaire → `suggestBooking: false` ; demande prioritaire → `true`, et en allemand le message de confirmation propose « Gespräch buchen » (nouvel onglet, `noopener`). Sans lien configuré : aucune proposition. Aucun débordement à 375 px.
 
 ### Médiathèque (`media.spec.ts`, `media-library.test.ts`)
 

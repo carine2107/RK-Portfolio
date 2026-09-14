@@ -231,6 +231,7 @@ Ce que le site fait réellement aujourd'hui :
 - ✅ Newsletter RK Insights intégrée : double opt-in, envoi des articles dans la langue de chaque abonné, désinscription en un clic, purge automatique
 - ✅ Prise de rendez-vous : bouton vers l’outil externe (Cal.com, Calendly…) réglable dans le CMS, sans script tiers
 - ✅ Page Conférences & médias (interventions à venir / passées, vidéos chargées au clic sans cookie, invitation préremplie)
+- ✅ Qualification des prospects : questions facultatives, score sur 100 et priorité dans le CMS, priorité dans l’objet de la notification, rendez-vous proposé aux demandes prioritaires
 - ✅ Médiathèque (vidéos, podcasts, interviews, presse) filtrable par format, thème et langue, alimentée par Conférences & médias
 - ✅ Pages de campagne composées par blocs dans le CMS (en-tête, texte, points clés, vidéo, livres, produits, FAQ, appel à l’action, newsletter)
 - ✅ Carte Europe–Afrique des expériences (calculée côté serveur, sans service tiers), filtre par pays accessible au clavier

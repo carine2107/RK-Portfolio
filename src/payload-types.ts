@@ -1639,7 +1639,7 @@ export interface LegalPage {
   _status?: ('draft' | 'published') | null;
 }
 /**
- * Requests received through the "Work With Me" form. Data protection: a request left unchanged for 24 months (configurable) is deleted automatically.
+ * Requests received through the "Work With Me" form, with a priority computed from the visitor’s answers (click the "Score" column to sort). Data protection: a request left unchanged for 24 months (configurable) is deleted automatically.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "contact-submissions".
@@ -1662,10 +1662,22 @@ export interface ContactSubmission {
     | 'other';
   subject: string;
   message: string;
+  organisationType?: ('company' | 'sme' | 'startup' | 'publicInstitution' | 'ngo' | 'investor' | 'individual') | null;
+  budget?: ('under5k' | 'from5to20k' | 'from20to50k' | 'over50k' | 'notDefined') | null;
+  timeline?: ('urgent' | 'quarter' | 'later' | 'exploring') | null;
+  decisionRole?: ('decisionMaker' | 'influencer' | 'researching') | null;
   /**
    * Language the visitor used.
    */
   locale?: string | null;
+  /**
+   * Computed on receipt (score 60+: high, 35–59: medium). Can be changed if needed.
+   */
+  priority?: ('high' | 'medium' | 'low') | null;
+  /**
+   * Out of 100: budget (30), start (25), role in the decision (20), type of request (15), organisation given and detailed message (10). The type of organisation is not scored.
+   */
+  leadScore?: number | null;
   status?: ('new' | 'inProgress' | 'answered' | 'archived') | null;
   /**
    * Whether the notification e-mail could actually be sent.
@@ -2610,7 +2622,13 @@ export interface ContactSubmissionsSelect<T extends boolean = true> {
   requestType?: T;
   subject?: T;
   message?: T;
+  organisationType?: T;
+  budget?: T;
+  timeline?: T;
+  decisionRole?: T;
   locale?: T;
+  priority?: T;
+  leadScore?: T;
   status?: T;
   emailDelivered?: T;
   consentAt?: T;

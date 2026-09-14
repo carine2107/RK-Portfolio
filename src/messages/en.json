@@ -574,7 +574,11 @@
       "requestType": "Type of request",
       "subject": "Subject",
       "message": "Message",
-      "consent": "I have read the <link>privacy policy</link> and agree that my data may be used to answer my request."
+      "consent": "I have read the <link>privacy policy</link> and agree that my data may be used to answer my request.",
+      "organisationType": "Type of organisation",
+      "budget": "Estimated budget",
+      "timeline": "When should the work start?",
+      "decisionRole": "Your role in the decision"
     },
     "placeholders": {
       "name": "Jane Doe",
@@ -583,7 +587,8 @@
       "country": "Select a country",
       "requestType": "Select a request type",
       "subject": "Financial due diligence for an acquisition",
-      "message": "Context, objectives, timeline and expected support."
+      "message": "Context, objectives, timeline and expected support.",
+      "choose": "Choose…"
     },
     "requestTypes": {
       "consulting": "Consulting assignment",
@@ -617,7 +622,8 @@
       "consent": "Your consent is required to process the request.",
       "rateLimit": "Too many requests have been sent from this connection. Please try again later.",
       "server": "The request could not be sent. Please try again, or write directly to the e-mail address below.",
-      "summaryTitle": "Please correct the following {count, plural, one {field} other {fields}}:"
+      "summaryTitle": "Please correct the following {count, plural, one {field} other {fields}}:",
+      "qualification": "Please choose one of the proposed options."
     },
     "info": {
       "title": "Direct contact",
@@ -633,7 +639,41 @@
       "body": "Pick a slot for a first conversation directly, without going through the form.",
       "cta": "Book a call",
       "opensIn": "Opens {host} in a new tab."
-    }
+    },
+    "qualification": {
+      "title": "A few details to prepare the answer",
+      "hint": "Optional — these answers help prioritise your request and prepare the first conversation."
+    },
+    "options": {
+      "organisationType": {
+        "company": "Company",
+        "sme": "SME",
+        "startup": "Start-up",
+        "publicInstitution": "Public institution",
+        "ngo": "NGO / non-profit",
+        "investor": "Investor",
+        "individual": "Individual"
+      },
+      "budget": {
+        "under5k": "Under €5,000",
+        "from5to20k": "€5,000 to €20,000",
+        "from20to50k": "€20,000 to €50,000",
+        "over50k": "Over €50,000",
+        "notDefined": "Not defined yet"
+      },
+      "timeline": {
+        "urgent": "Within a month",
+        "quarter": "In 1 to 3 months",
+        "later": "In more than 3 months",
+        "exploring": "Just exploring"
+      },
+      "decisionRole": {
+        "decisionMaker": "I make the decision",
+        "influencer": "I prepare the decision",
+        "researching": "I am gathering information"
+      }
+    },
+    "successBooking": "To move faster, you can book a first conversation in the calendar right away."
   },
   "legal": {
     "meta": {

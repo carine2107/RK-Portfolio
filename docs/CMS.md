@@ -207,6 +207,11 @@ Types acceptés : JPEG, PNG, WebP, AVIF, SVG. Limite 10 Mo.
 dans cette collection (API locale avec `overrideAccess`). Lecture réservée aux
 comptes authentifiés, suppression aux administrateurs.
 
+Qualification (facultative) : `organisationType`, `budget`, `timeline`, `decisionRole`
+(listes fermées), `leadScore` (0–100, lecture seule) et `priority` (`high` | `medium` |
+`low`, modifiable). Grille de calcul et libellés : `src/lib/lead-score.ts` ; le score n'est
+jamais renvoyé au visiteur.
+
 ### `users` — Comptes
 
 `name`_, `email`_, `role`\* (`admin` | `editor`).

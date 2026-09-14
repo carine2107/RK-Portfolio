@@ -14,11 +14,26 @@ import {
   type ContactFieldErrors,
   type ContactResponse,
 } from '@/lib/contact-schema'
+import { BUDGETS, DECISION_ROLES, ORGANISATION_TYPES, TIMELINES } from '@/lib/lead-score'
 import { REQUEST_TYPES } from '@/payload/collections/ContactSubmissions'
 
 type Status = 'idle' | 'submitting' | 'success' | 'successNoEmail' | 'error'
 
-export function ContactForm({ privacyHref }: { privacyHref: string }) {
+const QUALIFICATION_QUESTIONS = [
+  ['organisationType', ORGANISATION_TYPES],
+  ['budget', BUDGETS],
+  ['timeline', TIMELINES],
+  ['decisionRole', DECISION_ROLES],
+] as const
+
+export function ContactForm({
+  privacyHref,
+  bookingUrl = '',
+}: {
+  privacyHref: string
+  /** External booking page, offered after a priority request when configured. */
+  bookingUrl?: string
+}) {
   const t = useTranslations('contact')
   const common = useTranslations('common')
   const locale = useLocale()
@@ -28,6 +43,7 @@ export function ContactForm({ privacyHref }: { privacyHref: string }) {
   const [errors, setErrors] = useState<ContactFieldErrors>({})
   const [status, setStatus] = useState<Status>('idle')
   const [serverReason, setServerReason] = useState<'rateLimit' | 'server' | null>(null)
+  const [suggestBooking, setSuggestBooking] = useState(false)
 
   const countries = useMemo(() => countryOptions(locale), [locale])
 
@@ -56,6 +72,10 @@ export function ContactForm({ privacyHref }: { privacyHref: string }) {
       requestType: String(formData.get('requestType') ?? ''),
       subject: String(formData.get('subject') ?? ''),
       message: String(formData.get('message') ?? ''),
+      organisationType: String(formData.get('organisationType') ?? ''),
+      budget: String(formData.get('budget') ?? ''),
+      timeline: String(formData.get('timeline') ?? ''),
+      decisionRole: String(formData.get('decisionRole') ?? ''),
       consent: formData.get('consent') === 'on',
       company: String(formData.get('company') ?? ''),
       locale,
@@ -83,6 +103,7 @@ export function ContactForm({ privacyHref }: { privacyHref: string }) {
       const result = (await response.json()) as ContactResponse
 
       if (result.ok) {
+        setSuggestBooking(Boolean(result.suggestBooking && bookingUrl))
         setStatus(result.emailSent ? 'success' : 'successNoEmail')
         trackEvent('contact_form_success', { requestType: payload.requestType })
         formRef.current?.reset()
@@ -114,6 +135,20 @@ export function ContactForm({ privacyHref }: { privacyHref: string }) {
     return (
       <Notice tone="success" role="status" title={t(`${key}.title`)} className="text-base">
         <p className="mt-1">{t(`${key}.body`)}</p>
+        {suggestBooking ? (
+          <div className="mt-4 border-t border-success-line pt-4">
+            <p>{t('successBooking')}</p>
+            <a
+              href={bookingUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => trackEvent('booking_click', { location: 'contact_success' })}
+              className="mt-3 inline-flex min-h-11 items-center font-medium underline underline-offset-4"
+            >
+              {t('booking.cta')}
+            </a>
+          </div>
+        ) : null}
       </Notice>
     )
   }
@@ -210,6 +245,31 @@ export function ContactForm({ privacyHref }: { privacyHref: string }) {
           error={errors.subject ? t(`errors.${errors.subject}`) : undefined}
         />
       </div>
+
+      <fieldset className="rounded-card border border-line p-5">
+        <legend className="px-2 text-sm font-semibold text-primary">
+          {t('qualification.title')}
+        </legend>
+        <p className="mb-5 text-sm text-secondary">{t('qualification.hint')}</p>
+        <div className="grid gap-6 sm:grid-cols-2">
+          {QUALIFICATION_QUESTIONS.map(([name, values]) => (
+            <SelectField
+              key={name}
+              name={name}
+              label={t(`fields.${name}`)}
+              optionalLabel={common('optional')}
+              error={errors[name] ? t(`errors.${errors[name]}`) : undefined}
+            >
+              <option value="">{t('placeholders.choose')}</option>
+              {values.map((value) => (
+                <option key={value} value={value}>
+                  {t(`options.${name}.${value}`)}
+                </option>
+              ))}
+            </SelectField>
+          ))}
+        </div>
+      </fieldset>
 
       <div>
         <FieldLabel htmlFor="contact-message" label={t('fields.message')} required />
@@ -358,6 +418,7 @@ function SelectField({
   error,
   children,
   className = '',
+  optionalLabel,
 }: {
   name: string
   label: string
@@ -365,11 +426,12 @@ function SelectField({
   error?: string
   children: React.ReactNode
   className?: string
+  optionalLabel?: string
 }) {
   const id = `contact-${name}`
   return (
     <div className={className}>
-      <FieldLabel htmlFor={id} label={label} required={required} />
+      <FieldLabel htmlFor={id} label={label} required={required} optionalLabel={optionalLabel} />
       <select
         id={id}
         name={name}
