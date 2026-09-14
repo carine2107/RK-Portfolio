@@ -103,13 +103,13 @@ prestataire de paiement demandent une configuration technique (sections 1, 8 et
 
 ## 8. E-mail et technique
 
-| #   | Élément                                                                                                    | Priorité |
-| --- | ---------------------------------------------------------------------------------------------------------- | -------- |
-| 8.1 | **Compte SMTP** (hôte, port, identifiants, adresse d'expédition autorisée)                                 | 🔴       |
-| 8.2 | Enregistrements SPF / DKIM du domaine                                                                      | 🟠       |
-| 8.3 | Choix d'un outil **analytics** respectueux de la vie privée (Umami ou Plausible auto-hébergés recommandés) | 🟡       |
-| 8.4 | Décision sur la bannière cookies (inutile tant qu'aucun traceur n'est installé)                            | 🟡       |
-| 8.5 | Durée de conservation des demandes de contact                                                              | 🟠       |
+| #   | Élément                                                                                                                               | Priorité                            |
+| --- | ------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------- |
+| 8.1 | **Compte SMTP** (hôte, port, identifiants, adresse d'expédition autorisée)                                                            | 🔴                                  |
+| 8.2 | Enregistrements SPF / DKIM du domaine                                                                                                 | 🟠                                  |
+| 8.3 | Choix de l'outil **analytics** : Umami / Plausible (sans cookie) ou **Google Analytics 4** (identifiant `G-…`, compte Google gratuit) | 🟡                                  |
+| 8.4 | Si Google Analytics : **politique de cookies et de confidentialité** complétées et validées (la bannière de consentement est fournie) | 🔴 avant d'activer Google Analytics |
+| 8.5 | Durée de conservation des demandes de contact                                                                                         | 🟠                                  |
 
 ## 5 bis. Vente directe des livres
 

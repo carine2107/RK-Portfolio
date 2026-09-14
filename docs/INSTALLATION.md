@@ -36,17 +36,17 @@ et le coller dans `PAYLOAD_SECRET`.
 
 Variables essentielles :
 
-| Variable                                   | Rôle                                                  | Valeur locale                                            |
-| ------------------------------------------ | ----------------------------------------------------- | -------------------------------------------------------- |
-| `NEXT_PUBLIC_SITE_URL`                     | Base des URL canoniques, hreflang, sitemap, e-mails   | `http://localhost:4313`                                  |
-| `DATABASE_URI`                             | Connexion PostgreSQL                                  | `postgres://romial:romial@localhost:5437/romial_website` |
-| `PAYLOAD_SECRET`                           | Signature des sessions CMS                            | chaîne aléatoire ≥ 32 caractères                         |
-| `CMS_ENABLED`                              | `false` pour servir le contenu de démarrage sans base | `true`                                                   |
-| `EMAIL_ENABLED`                            | Active l'envoi réel d'e-mails                         | `true` avec MailHog                                      |
-| `SMTP_*`, `EMAIL_FROM`, `EMAIL_TO`         | Compte SMTP et destinataires                          | MailHog sur `localhost:1026`                             |
-| `CONTACT_RATE_LIMIT`                       | Demandes maximum par IP et par fenêtre                | `50` en local, **5 en production**                       |
-| `NEXT_PUBLIC_ANALYTICS_*`                  | Analytics respectueux de la vie privée                | vide = désactivé                                         |
-| `SEED_ADMIN_EMAIL` / `SEED_ADMIN_PASSWORD` | Premier compte administrateur                         | à changer après la première connexion                    |
+| Variable                                   | Rôle                                                                       | Valeur locale                                            |
+| ------------------------------------------ | -------------------------------------------------------------------------- | -------------------------------------------------------- |
+| `NEXT_PUBLIC_SITE_URL`                     | Base des URL canoniques, hreflang, sitemap, e-mails                        | `http://localhost:4313`                                  |
+| `DATABASE_URI`                             | Connexion PostgreSQL                                                       | `postgres://romial:romial@localhost:5437/romial_website` |
+| `PAYLOAD_SECRET`                           | Signature des sessions CMS                                                 | chaîne aléatoire ≥ 32 caractères                         |
+| `CMS_ENABLED`                              | `false` pour servir le contenu de démarrage sans base                      | `true`                                                   |
+| `EMAIL_ENABLED`                            | Active l'envoi réel d'e-mails                                              | `true` avec MailHog                                      |
+| `SMTP_*`, `EMAIL_FROM`, `EMAIL_TO`         | Compte SMTP et destinataires                                               | MailHog sur `localhost:1026`                             |
+| `CONTACT_RATE_LIMIT`                       | Demandes maximum par IP et par fenêtre                                     | `50` en local, **5 en production**                       |
+| `NEXT_PUBLIC_ANALYTICS_*`                  | Umami / Plausible, ou Google Analytics 4 (`google` + `G-…`, avec bannière) | vide = désactivé                                         |
+| `SEED_ADMIN_EMAIL` / `SEED_ADMIN_PASSWORD` | Premier compte administrateur                                              | à changer après la première connexion                    |
 
 `.env` n'est **jamais** versionné (`.gitignore`).
 

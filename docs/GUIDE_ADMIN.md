@@ -557,20 +557,43 @@ données personnelles.
 
 ## 15. Statistiques de fréquentation
 
-Le site est prêt pour une mesure d'audience **sans cookie** : **Umami** ou
-**Plausible**, auto-hébergés ou en offre hébergée. Tant qu'aucun outil n'est
-configuré, rien n'est mesuré et aucun bandeau cookies n'est nécessaire. L'outil
-est branché par le prestataire (variables `NEXT_PUBLIC_ANALYTICS_*`, voir
-`DEPLOIEMENT.md`).
+Trois outils sont possibles, branchés par le prestataire (variables
+`NEXT_PUBLIC_ANALYTICS_*`, voir `DEPLOIEMENT.md`) :
+
+| Outil                     | Cookies | Bannière de consentement | Remarque                                                 |
+| ------------------------- | ------- | ------------------------ | -------------------------------------------------------- |
+| **Umami** / **Plausible** | non     | non                      | Mesure anonyme, tous les visiteurs sont comptés          |
+| **Google Analytics 4**    | oui     | **oui**                  | Gratuit ; seuls les visiteurs qui acceptent sont mesurés |
+
+Tant qu'aucun outil n'est configuré, rien n'est mesuré et aucune bannière ne
+s'affiche.
+
+### Google Analytics
+
+- **Bannière** : à la première visite, le visiteur choisit **Accepter** ou **Refuser**
+  (boutons de même importance). Tant qu'il n'a pas accepté, **rien n'est chargé depuis
+  Google** et aucun cookie n'est déposé. Son choix est mémorisé dans son navigateur.
+- **Changer d'avis** : lien **Paramètres des cookies** dans le pied de page (rubrique
+  légale). Un refus après acceptation arrête la mesure et efface les cookies Google.
+- **Réglages appliqués** : signaux Google et personnalisation publicitaire désactivés.
+- **Chiffres** : Google Analytics ne compte que les visiteurs qui ont accepté ; les
+  chiffres sont donc inférieurs à la fréquentation réelle (souvent de moitié en Europe).
+- **Avant l'activation** : compléter la **politique de cookies** et la **politique de
+  confidentialité** (Administration → Pages légales) : Google Analytics, finalité,
+  cookies `_ga` et `_ga_…` (durée 2 ans), transfert de données vers Google, retrait du
+  consentement. Faire valider ces textes.
+- **Où lire les chiffres** : <https://analytics.google.com> → _Rapports_. Les actions
+  ci-dessous apparaissent dans _Rapports → Engagement → Événements_ (compter jusqu'à
+  24 h avant leur première apparition).
 
 Les statistiques se consultent **dans le tableau de bord de l'outil** (et non dans
 l'administration du site) :
 
-| Indicateur du cahier des charges  | Où le lire                                                        |
-| --------------------------------- | ----------------------------------------------------------------- |
-| Visites, sources, pays, appareils | Page d'accueil du tableau de bord                                 |
-| Pages les plus consultées         | Liste « Pages »                                                   |
-| Actions clés                      | Liste « Événements » (Umami) ou « Goals » (Plausible), ci-dessous |
+| Indicateur du cahier des charges  | Où le lire                                                                          |
+| --------------------------------- | ----------------------------------------------------------------------------------- |
+| Visites, sources, pays, appareils | Page d'accueil du tableau de bord                                                   |
+| Pages les plus consultées         | Liste « Pages »                                                                     |
+| Actions clés                      | Liste « Événements » (Umami, Google Analytics) ou « Goals » (Plausible), ci-dessous |
 
 | Événement                 | Déclenché quand le visiteur…                                | Détail transmis       |
 | ------------------------- | ----------------------------------------------------------- | --------------------- |

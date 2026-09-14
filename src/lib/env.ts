@@ -4,6 +4,8 @@
  * visible in one place.
  */
 
+import { validMeasurementId } from '@/lib/consent'
+
 const bool = (value: string | undefined, fallback = false): boolean => {
   if (value === undefined || value === '') return fallback
   return value === 'true' || value === '1' || value === 'yes'
@@ -48,7 +50,16 @@ export const analyticsConfig = {
   siteId: process.env.NEXT_PUBLIC_ANALYTICS_SITE_ID ?? '',
 }
 
+/**
+ * Google Analytics 4 measurement id ("G-…") when the provider is `google`,
+ * otherwise ''. Google Analytics sets cookies: it is loaded only after consent.
+ */
+export const googleAnalyticsId =
+  analyticsConfig.provider === 'google' ? validMeasurementId(analyticsConfig.siteId) : ''
+
 export const analyticsEnabled =
-  analyticsConfig.provider !== '' &&
-  analyticsConfig.scriptUrl !== '' &&
-  analyticsConfig.siteId !== ''
+  analyticsConfig.provider === 'google'
+    ? googleAnalyticsId !== ''
+    : analyticsConfig.provider !== '' &&
+      analyticsConfig.scriptUrl !== '' &&
+      analyticsConfig.siteId !== ''

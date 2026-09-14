@@ -690,6 +690,13 @@
     "reviewNoticeBody": "Ce texte est une trame structurelle. Il doit être complété et validé par le propriétaire du site et, si nécessaire, par un professionnel du droit avant la mise en ligne.",
     "lastUpdated": "Dernière mise à jour : {date}"
   },
+  "consent": {
+    "title": "Mesure d’audience",
+    "body": "Avec votre accord, ce site utilise Google Analytics pour mesurer sa fréquentation (cookies, données de navigation transmises à Google). Rien n’est chargé sans votre accord, et vous pouvez changer d’avis à tout moment avec « Paramètres des cookies » en bas de page. <link>Politique de cookies</link>",
+    "accept": "Accepter",
+    "refuse": "Refuser",
+    "settings": "Paramètres des cookies"
+  },
   "notFound": {
     "meta": {
       "title": "Page introuvable",

@@ -690,6 +690,13 @@
     "reviewNoticeBody": "This text is a structural draft. It must be completed and validated by the site owner and, where required, by a qualified legal professional before going live.",
     "lastUpdated": "Last updated: {date}"
   },
+  "consent": {
+    "title": "Audience measurement",
+    "body": "With your consent, this website uses Google Analytics to measure its traffic (cookies, browsing data sent to Google). Nothing is loaded without your consent, and you can change your mind at any time with “Cookie settings” at the bottom of the page. <link>Cookie policy</link>",
+    "accept": "Accept",
+    "refuse": "Refuse",
+    "settings": "Cookie settings"
+  },
   "notFound": {
     "meta": {
       "title": "Page not found",

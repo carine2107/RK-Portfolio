@@ -1,14 +1,27 @@
 import Script from 'next/script'
 
-import { analyticsConfig, analyticsEnabled } from '@/lib/env'
+import { GoogleAnalytics } from '@/components/analytics/GoogleAnalytics'
+import type { Locale } from '@/i18n/routing'
+import { legalSlug } from '@/lib/cms'
+import { analyticsConfig, analyticsEnabled, googleAnalyticsId } from '@/lib/env'
 
 /**
- * Loads the configured privacy-friendly analytics script, or nothing at all.
- * Both supported providers are cookieless and do not store personal data,
- * which is why no consent banner is displayed by default.
+ * Loads the configured analytics, or nothing at all.
+ * - Umami and Plausible are cookieless and store no personal data: no banner.
+ * - Google Analytics sets cookies: it waits for the visitor's consent, given
+ *   in a banner (see GoogleAnalytics.tsx).
  */
-export function Analytics() {
+export function Analytics({ locale }: { locale: Locale }) {
   if (!analyticsEnabled) return null
+
+  if (analyticsConfig.provider === 'google') {
+    return (
+      <GoogleAnalytics
+        measurementId={googleAnalyticsId}
+        cookiesHref={`/legal/${legalSlug('cookies', locale)}`}
+      />
+    )
+  }
 
   if (analyticsConfig.provider === 'umami') {
     return (

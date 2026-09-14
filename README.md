@@ -167,8 +167,9 @@ traduction manque, si une clé est en trop ou si un paramètre ICU diverge.
 - Les demandes de contact inchangées depuis `CONTACT_RETENTION_MONTHS` mois (24
   par défaut) sont supprimées chaque jour par le serveur (`src/instrumentation.ts`) ;
   `npm run purge:contacts` le fait à la demande.
-- Mesure d'audience sans cookie (Umami / Plausible) : liste des événements dans
-  `docs/GUIDE_ADMIN.md`, section 15.
+- Mesure d'audience sans cookie (Umami / Plausible) ou **Google Analytics 4** avec
+  bannière de consentement FR/DE/EN (rien n'est chargé avant l'accord du visiteur) :
+  liste des événements dans `docs/GUIDE_ADMIN.md`, section 15.
 
 ---
 

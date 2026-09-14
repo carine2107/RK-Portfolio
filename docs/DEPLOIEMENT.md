@@ -38,16 +38,16 @@ cp .env.production.example .env.production
 chmod 600 .env.production      # jamais versionné (.gitignore) ni copié dans l'image (.dockerignore)
 ```
 
-| Variable                                            | Rôle                                                                                                              |
-| --------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
-| `NEXT_PUBLIC_SITE_URL`                              | URL publique, sans barre finale. **Inscrite dans le build** : reconstruire l'image après un changement de domaine |
-| `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_DB` | Base PostgreSQL ; l'adresse de connexion de l'application en est déduite. Mot de passe en lettres et chiffres     |
-| `PAYLOAD_SECRET`                                    | 48 octets aléatoires, **différent** entre staging et production                                                   |
-| `EMAIL_ENABLED`, `SMTP_*`, `EMAIL_FROM`, `EMAIL_TO` | Envoi des e-mails du formulaire ; laisser `EMAIL_ENABLED=false` tant qu'un envoi réel n'a pas été testé           |
-| `CONTACT_RATE_LIMIT`, `CONTACT_RATE_WINDOW_MINUTES` | Anti-abus du formulaire (5 envois / 15 min)                                                                       |
-| `CONTACT_RETENTION_MONTHS`                          | Suppression automatique des demandes de contact inchangées depuis N mois (24 par défaut ; `0` = jamais)           |
-| `NEXT_PUBLIC_ANALYTICS_*`                           | Mesure d'audience facultative (inscrite dans le build)                                                            |
-| `SEED_ADMIN_EMAIL`, `SEED_ADMIN_PASSWORD`           | Premier administrateur, créé par `npm run seed` ; à retirer du fichier ensuite                                    |
+| Variable                                            | Rôle                                                                                                                                                                                      |
+| --------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `NEXT_PUBLIC_SITE_URL`                              | URL publique, sans barre finale. **Inscrite dans le build** : reconstruire l'image après un changement de domaine                                                                         |
+| `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_DB` | Base PostgreSQL ; l'adresse de connexion de l'application en est déduite. Mot de passe en lettres et chiffres                                                                             |
+| `PAYLOAD_SECRET`                                    | 48 octets aléatoires, **différent** entre staging et production                                                                                                                           |
+| `EMAIL_ENABLED`, `SMTP_*`, `EMAIL_FROM`, `EMAIL_TO` | Envoi des e-mails du formulaire ; laisser `EMAIL_ENABLED=false` tant qu'un envoi réel n'a pas été testé                                                                                   |
+| `CONTACT_RATE_LIMIT`, `CONTACT_RATE_WINDOW_MINUTES` | Anti-abus du formulaire (5 envois / 15 min)                                                                                                                                               |
+| `CONTACT_RETENTION_MONTHS`                          | Suppression automatique des demandes de contact inchangées depuis N mois (24 par défaut ; `0` = jamais)                                                                                   |
+| `NEXT_PUBLIC_ANALYTICS_*`                           | Mesure d'audience facultative (inscrite dans le build) : `umami` / `plausible` (+ `SCRIPT_URL`), ou `google` + `SITE_ID=G-…` (bannière de consentement, domaines Google ajoutés à la CSP) |
+| `SEED_ADMIN_EMAIL`, `SEED_ADMIN_PASSWORD`           | Premier administrateur, créé par `npm run seed` ; à retirer du fichier ensuite                                                                                                            |
 
 Points de vigilance :
 
@@ -393,6 +393,7 @@ conservation) retirent aussi les lignes. **Changer ou révoquer la clé** : _Com
 - [ ] Vente directe (si ouverte) : CGV et retours validés, TVA validée par le comptable, clés live Stripe/PayPal, webhook Stripe actif, achat test réel remboursé ; produits numériques : volume `private` sauvegardé, achat test → e-mail d'accès reçu, connexion et téléchargement vérifiés
 - [ ] SPF, DKIM et DMARC publiés ; inscription newsletter testée de bout en bout (confirmation, article, désinscription)
 - [ ] Google Sheets (si utilisé) : tableur partagé uniquement avec le compte de service, « Tout resynchroniser » réussi, fichier JSON de la clé supprimé du poste, politique de confidentialité mentionnant Google
+- [ ] Google Analytics (si utilisé) : politiques de cookies et de confidentialité à jour ; en navigation privée, aucune requête Google avant « Accepter », puis visite visible dans _Temps réel_ ; « Refuser » via « Paramètres des cookies » efface les cookies `_ga`
 - [ ] Mot de passe administrateur changé, comptes inutiles supprimés
 - [ ] Contenus « Contenu d'exemple » remplacés ou dépubliés
 - [ ] Textes juridiques validés, case « brouillon » décochée

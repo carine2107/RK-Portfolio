@@ -44,17 +44,17 @@ verrouillage : le projet peut être migré vers un autre hébergeur sans réécr
 
 ## 4. Services externes
 
-| Service                                                                      | Statut                      | Coût indicatif                                       |
-| ---------------------------------------------------------------------------- | --------------------------- | ---------------------------------------------------- | ----------------------- |
-| **Hébergement** (VPS 2 vCPU / 4 Go)                                          | requis                      | 10–25 € / mois                                       |
-| **Nom de domaine**                                                           | requis                      | 10–20 € / an                                         |
-| **Certificat TLS** (Let's Encrypt)                                           | requis                      | gratuit                                              |
-| **PostgreSQL**                                                               | requis                      | inclus dans le VPS (ou 10–20 € / mois en base gérée) |
-| **SMTP** (Brevo, Postmark, Mailgun, OVH…)                                    | requis pour le formulaire   | 0–15 € / mois selon le volume                        |
-| **Sauvegardes hors site** (stockage objet)                                   | recommandé                  | 1–5 € / mois                                         |
-| **Analytics** (Umami / Plausible auto-hébergés)                              | optionnel                   | 0 € auto-hébergé ; ~9 € / mois en SaaS               |
-| **Surveillance de disponibilité** (UptimeRobot / Better Stack / Uptime Kuma) | recommandé                  | 0 € (offre gratuite ou auto-hébergé)                 | sonde sur `/api/health` |
-| **Prestataire de paiement**                                                  | uniquement si vente directe | commissions ~1,5 % + 0,25 € par transaction          |
+| Service                                                                      | Statut                      | Coût indicatif                                                                                                 |
+| ---------------------------------------------------------------------------- | --------------------------- | -------------------------------------------------------------------------------------------------------------- | ----------------------- |
+| **Hébergement** (VPS 2 vCPU / 4 Go)                                          | requis                      | 10–25 € / mois                                                                                                 |
+| **Nom de domaine**                                                           | requis                      | 10–20 € / an                                                                                                   |
+| **Certificat TLS** (Let's Encrypt)                                           | requis                      | gratuit                                                                                                        |
+| **PostgreSQL**                                                               | requis                      | inclus dans le VPS (ou 10–20 € / mois en base gérée)                                                           |
+| **SMTP** (Brevo, Postmark, Mailgun, OVH…)                                    | requis pour le formulaire   | 0–15 € / mois selon le volume                                                                                  |
+| **Sauvegardes hors site** (stockage objet)                                   | recommandé                  | 1–5 € / mois                                                                                                   |
+| **Analytics** (Umami / Plausible auto-hébergés, ou Google Analytics 4)       | optionnel                   | 0 € auto-hébergé ; ~9 € / mois en SaaS ; Google Analytics gratuit (cookies → bannière de consentement fournie) |
+| **Surveillance de disponibilité** (UptimeRobot / Better Stack / Uptime Kuma) | recommandé                  | 0 € (offre gratuite ou auto-hébergé)                                                                           | sonde sur `/api/health` |
+| **Prestataire de paiement**                                                  | uniquement si vente directe | commissions ~1,5 % + 0,25 € par transaction                                                                    |
 
 **Ordre de grandeur : 15 à 40 € par mois**, hors maintenance et hors paiement.
 

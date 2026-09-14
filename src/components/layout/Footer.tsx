@@ -1,6 +1,7 @@
 import { getTranslations } from 'next-intl/server'
 
 import { LanguageSwitcher } from '@/components/i18n/LanguageSwitcher'
+import { ConsentSettingsButton } from '@/components/analytics/GoogleAnalytics'
 import { NewsletterForm } from '@/components/newsletter/NewsletterForm'
 import { Icon, type IconName } from '@/components/ui/Icon'
 import { Link } from '@/i18n/navigation'
@@ -22,11 +23,14 @@ export async function Footer({
   locale,
   settings,
   newsletterEnabled = false,
+  consentSettings = false,
 }: {
   locale: Locale
   settings: SiteSettingsView
   /** Shown only when e-mail delivery is really configured. */
   newsletterEnabled?: boolean
+  /** "Cookie settings" button, when analytics with cookies (Google) is configured. */
+  consentSettings?: boolean
 }) {
   const t = await getTranslations('footer')
   const nav = await getTranslations('nav')
@@ -190,6 +194,11 @@ export async function Footer({
                 </Link>
               </li>
             ))}
+            {consentSettings ? (
+              <li>
+                <ConsentSettingsButton className="min-h-6 text-left text-on-contrast-secondary underline-offset-4 transition-colors hover:text-accent hover:underline" />
+              </li>
+            ) : null}
           </ul>
         </div>
       </div>

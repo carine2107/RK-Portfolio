@@ -28,6 +28,20 @@ function analyticsOrigin(): string {
 const analytics = analyticsOrigin()
 
 /**
+ * Google Analytics 4 (`NEXT_PUBLIC_ANALYTICS_PROVIDER=google`): its script and
+ * collection endpoints are allowed only when it is configured. The script
+ * itself is injected only after the visitor's consent.
+ */
+const googleAnalytics = process.env.NEXT_PUBLIC_ANALYTICS_PROVIDER === 'google'
+const gaScript = googleAnalytics ? ' https://www.googletagmanager.com' : ''
+const gaConnect = googleAnalytics
+  ? ' https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com'
+  : ''
+const gaImages = googleAnalytics
+  ? ' https://*.google-analytics.com https://www.googletagmanager.com'
+  : ''
+
+/**
  * `upgrade-insecure-requests` is only meaningful once the site is served over
  * HTTPS. Sending it on a plain-HTTP origin (local development, staging without
  * TLS) makes WebKit upgrade every asset request and fail with an SSL error.
@@ -36,13 +50,13 @@ const servesHttps = (process.env.NEXT_PUBLIC_SITE_URL ?? '').startsWith('https:/
 
 const csp = [
   "default-src 'self'",
-  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ''}${analytics}`,
+  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ''}${analytics}${gaScript}`,
   "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: blob:",
+  `img-src 'self' data: blob:${gaImages}`,
   "font-src 'self' data:",
   // Video players, loaded only after the visitor clicks "Play" (src/lib/video.ts).
   'frame-src https://www.youtube-nocookie.com https://player.vimeo.com',
-  "connect-src 'self'" + analytics + (isDev ? ' ws: http://localhost:*' : ''),
+  "connect-src 'self'" + analytics + gaConnect + (isDev ? ' ws: http://localhost:*' : ''),
   "frame-ancestors 'none'",
   "object-src 'none'",
   "base-uri 'self'",

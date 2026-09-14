@@ -10,8 +10,8 @@ Environnement : Windows 11, Node 24.15, PostgreSQL 16 (Docker), build de
 
 | Suite                            | Périmètre                                                               | Résultat                             |
 | -------------------------------- | ----------------------------------------------------------------------- | ------------------------------------ |
-| Tests unitaires (Vitest)         | Traductions, contrastes, moteur d'apparence, validation, SEO, anti-abus | **129 / 129 réussis**                |
-| Tests end-to-end (Playwright)    | 103 scénarios × 4 configurations                                        | **382 réussis, 30 ignorés, 0 échec** |
+| Tests unitaires (Vitest)         | Traductions, contrastes, moteur d'apparence, validation, SEO, anti-abus | **134 / 134 réussis**                |
+| Tests end-to-end (Playwright)    | 105 scénarios × 4 configurations                                        | **390 réussis, 30 ignorés, 0 échec** |
 | Compilation TypeScript (`tsc`)   | Mode strict, tout le projet                                             | **0 erreur**                         |
 | Lint (ESLint 9 + config Next 16) | Tout le projet                                                          | **0 erreur, 0 avertissement**        |
 | Formatage (Prettier)             | `src`, `tests`, `docs`                                                  | **conforme**                         |
@@ -42,7 +42,7 @@ node tests/visual/capture.mjs test-results/visual
 
 ---
 
-## 2. Tests unitaires (129)
+## 2. Tests unitaires (134)
 
 | Fichier                     | Ce qui est vérifié                                                                                                                                                                                                                                                                                            |
 | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -65,8 +65,9 @@ node tests/visual/capture.mjs test-results/visual
 | `lead-score.test.ts`        | Qualification des prospects : score maximal 100, demande non qualifiée 5, bornes des priorités (35 / 60), type d’organisation et valeurs inconnues non notés ; questions facultatives et valeurs hors liste refusées par le schéma                                                                            |
 | `exports.test.ts`           | Export CSV : BOM UTF-8, séparateur « ; », CRLF, échappement des guillemets et retours à la ligne, neutralisation des formules ; collections exportables limitées ; colonnes et libellés FR / DE ; nom de fichier par langue et date                                                                           |
 | `google-sheets.test.ts`     | Google Sheets : configuration inactive tant que les 3 valeurs ne sont pas valides, clé sur une ligne restaurée, endpoints Google imposés en production ; JWT RS256 vérifié ; ajout, mise à jour en place, suppression par index sans création d’onglet, création d’onglet, jeton unique, erreurs sans données |
+| `consent.test.ts`           | Consentement Google Analytics : aucun choix par défaut, mémorisation, nouvelle demande après changement de version ou valeur corrompue, identifiant G- seul accepté, activation seulement avec un identifiant valide, suppression des seuls cookies Google sur le domaine et ses parents                      |
 
-## 3. Tests end-to-end (103 scénarios)
+## 3. Tests end-to-end (105 scénarios)
 
 ### Navigation et structure (`navigation.spec.ts`)
 
@@ -159,6 +160,15 @@ Contrôle manuel (serveur de développement, clé Stripe et secret de webhook **
 - Lien de connexion falsifié refusé (400, page « lien invalide ») ; téléchargement et progression sans session → 401 ; fichiers protégés inaccessibles par l'API du CMS
 
 Contrôle manuel (serveur de développement, clé Stripe et secret de webhook **factices**, données supprimées ensuite) : un e-book (PDF) et une formation (2 leçons, vidéo, pièce jointe) publiés ; fichier stocké dans `private/files`, jamais servi publiquement (API 403, URL directe 404) ; l'API publique ne renvoie ni le fichier ni le contenu, la vidéo ou la pièce jointe des leçons. Panier : quantité bornée à 1, pas de ligne livraison, case d'**accès immédiat / renonciation au droit de rétractation** obligatoire (422 sans elle). Webhook signé → commande payée, rejeu ignoré, signature falsifiée 400 ; membre et accès créés ; e-mails dans MailHog : confirmation acheteur, notification, **accès aux achats** avec lien. Lien → session ouverte, « Mon espace » liste les deux produits ; lien réutilisé → 400. Téléchargement du PDF 200 (`attachment`, `application/pdf`), produit non acheté → 403. Formation : progression 1/2 enregistrée, leçon vidéo (lecture au clic), pièce jointe, navigation entre leçons.
+
+### Mesure d'audience et consentement (`consent.spec.ts`, `consent.test.ts`)
+
+- Sans configuration : aucune bannière, aucun bouton « Paramètres des cookies », aucune requête vers Google, aucun cookie `_ga` ; la CSP n'autorise pas Google
+- Consentement : aucun choix par défaut, mémorisation accepté / refusé, nouvelle demande après changement de version ou valeur corrompue, navigateur sans stockage toléré
+- Identifiant Google Analytics 4 seul accepté (`G-…`, pas `UA-` ni caractères spéciaux) ; Google Analytics activé seulement avec un identifiant valide
+- Retrait : suppression des cookies `_ga`, `_ga_…`, `_gid` sur le domaine et ses parents, sans toucher aux cookies du site
+
+Contrôle manuel (serveur de développement, identifiant Google Analytics **fictif** `G-ZZVERIFY01` dans un `.env.local` supprimé ensuite) : CSP enrichie des seuls domaines Google Analytics ; première visite → bannière « Mesure d’audience » avec « Refuser » et « Accepter » de même style, lien vers la politique de cookies, **aucune requête Google et aucun cookie** ; « Refuser » → choix mémorisé, pas de script, pas de bannière sur la page suivante ; « Paramètres des cookies » (pied de page) → bannière rouverte ; « Accepter » → `gtag.js` chargé, consentement publicitaire refusé, `allow_google_signals` et personnalisation publicitaire à `false`, envoi de la page vue ; page suivante → chargement automatique sans bannière ; retrait → `ga-disable` actif, consentement mis à jour à « refusé », cookies `_ga` et `_ga_…` effacés (cookie de langue du site conservé).
 
 ### Google Sheets (`sheets.spec.ts`, `google-sheets.test.ts`)
 

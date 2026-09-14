@@ -31,6 +31,7 @@ type AnalyticsPayload = Record<string, string | number | boolean>
 type UmamiWindow = Window & {
   umami?: { track: (event: string, data?: AnalyticsPayload) => void }
   plausible?: (event: string, options?: { props: AnalyticsPayload }) => void
+  gtag?: (command: string, event: string, params?: AnalyticsPayload) => void
 }
 
 export function trackEvent(event: AnalyticsEvent, payload: AnalyticsPayload = {}): void {
@@ -43,6 +44,11 @@ export function trackEvent(event: AnalyticsEvent, payload: AnalyticsPayload = {}
     }
     if (typeof w.plausible === 'function') {
       w.plausible(event, { props: payload })
+      return
+    }
+    // Google Analytics: gtag exists only once the visitor has accepted.
+    if (typeof w.gtag === 'function') {
+      w.gtag('event', event, payload)
     }
   } catch {
     /* analytics must never break the page */

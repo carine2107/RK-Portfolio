@@ -690,6 +690,13 @@
     "reviewNoticeBody": "Dieser Text ist ein struktureller Entwurf. Er muss vor dem Livegang vom Websitebetreiber und, sofern erforderlich, von einer qualifizierten Rechtsberatung vervollständigt und freigegeben werden.",
     "lastUpdated": "Zuletzt aktualisiert: {date}"
   },
+  "consent": {
+    "title": "Reichweitenmessung",
+    "body": "Mit Ihrer Einwilligung nutzt diese Website Google Analytics, um die Nutzung zu messen (Cookies, Übermittlung von Nutzungsdaten an Google). Ohne Einwilligung wird nichts geladen, und Sie können Ihre Wahl jederzeit über „Cookie-Einstellungen“ unten auf der Seite ändern. <link>Cookie-Richtlinie</link>",
+    "accept": "Akzeptieren",
+    "refuse": "Ablehnen",
+    "settings": "Cookie-Einstellungen"
+  },
   "notFound": {
     "meta": {
       "title": "Seite nicht gefunden",
