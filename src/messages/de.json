@@ -15,6 +15,7 @@
     "insights": "RK Insights",
     "books": "Bücher",
     "businesses": "Unternehmen",
+    "speaking": "Vorträge",
     "contact": "Kontakt",
     "workWithMe": "Zusammenarbeiten",
     "openMenu": "Hauptmenü öffnen",
@@ -297,6 +298,47 @@
     },
     "cta": "Kontakt aufnehmen",
     "empty": "Die Aktivitäten werden derzeit im CMS veröffentlicht."
+  },
+  "speaking": {
+    "meta": {
+      "title": "Vorträge, Workshops und Medien",
+      "description": "Auftritte von Romial Kenmogne: Vorträge, Workshops, Podiumsdiskussionen, Interviews, Podcasts und Videos zu Finanzen, Business und Investitionen."
+    },
+    "title": "Vorträge & Medien",
+    "lead": "Vorträge, Workshops, Interviews und Videos zu Finanzen, Unternehmensentwicklung und Investitionen.",
+    "upcoming": "Demnächst",
+    "past": "Vergangene Auftritte",
+    "filterLabel": "Nach Art filtern",
+    "all": "Alle",
+    "types": {
+      "conference": "Vortrag",
+      "workshop": "Workshop",
+      "panel": "Podiumsdiskussion",
+      "interview": "Interview",
+      "podcast": "Podcast",
+      "video": "Video",
+      "press": "Presse"
+    },
+    "empty": "Auftritte und Medienbeiträge werden hier in Kürze veröffentlicht.",
+    "emptyFiltered": "Keine Auftritte dieser Art.",
+    "invite": {
+      "title": "Romial Kenmogne einladen",
+      "body": "Vortrag, Workshop, Podium oder Interview: Stellen Sie Ihre Veranstaltung, Ihr Publikum und den Termin vor.",
+      "cta": "Auftritt anfragen"
+    },
+    "detail": {
+      "date": "Datum",
+      "event": "Veranstaltung",
+      "organiser": "Veranstalter",
+      "location": "Ort",
+      "languages": "Sprache(n)",
+      "externalDefault": "Zur Ressource",
+      "back": "Alle Auftritte"
+    },
+    "video": {
+      "play": "Video abspielen: {title}",
+      "notice": "Video bereitgestellt von {provider}. Vor dem Abspielen wird nichts von {provider} geladen; danach erhält {provider} Ihre IP-Adresse."
+    }
   },
   "contact": {
     "meta": {

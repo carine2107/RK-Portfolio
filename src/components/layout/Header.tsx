@@ -80,7 +80,7 @@ export function Header() {
         scrolled ? 'border-line shadow-card' : 'border-transparent',
       ].join(' ')}
     >
-      <div className="rk-container flex h-[var(--header-height)] items-center justify-between gap-3 2xl:gap-4">
+      <div className="rk-container flex h-[var(--header-height)] items-center justify-between gap-3 2xl:max-w-[90rem] 2xl:gap-4">
         <Link
           href="/"
           className="group flex items-center gap-2.5 rounded sm:gap-3"
@@ -107,9 +107,9 @@ export function Header() {
                   href={item.href}
                   aria-current={isActive(item.href) ? 'page' : undefined}
                   className={[
-                    'relative rounded px-2 py-2 text-[0.86rem] whitespace-nowrap transition-colors 2xl:px-3 2xl:text-sm',
+                    'relative rounded px-[0.45rem] py-2 text-[0.82rem] whitespace-nowrap transition-colors 2xl:px-3 2xl:text-sm',
                     isActive(item.href)
-                      ? 'text-primary after:absolute after:inset-x-2 after:-bottom-0.5 after:h-px after:bg-accent after:content-[""] 2xl:after:inset-x-3'
+                      ? 'text-primary after:absolute after:inset-x-[0.45rem] after:-bottom-0.5 after:h-px after:bg-accent after:content-[""] 2xl:after:inset-x-3'
                       : 'text-secondary hover:text-primary',
                   ].join(' ')}
                 >
@@ -129,7 +129,9 @@ export function Header() {
           <div className="hidden md:flex">
             <ThemeToggle size="sm" />
           </div>
-          <div className="hidden lg:block">
+          {/* Full label only from 1536 px, where the header row widens (2xl:max-w):
+              with seven sections the 1216 px content width is too tight for it. */}
+          <div className="hidden 2xl:block">
             <Link
               href={CONTACT_HREF}
               onClick={() => trackEvent('work_with_me_click', { location: 'header' })}
@@ -145,7 +147,7 @@ export function Header() {
           <Link
             href={CONTACT_HREF}
             onClick={() => trackEvent('work_with_me_click', { location: 'header_compact' })}
-            className={buttonClasses('primary', 'md', 'px-3.5 lg:hidden')}
+            className={buttonClasses('primary', 'md', 'px-3.5 2xl:hidden')}
           >
             {t('contact')}
           </Link>

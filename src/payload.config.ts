@@ -11,6 +11,7 @@ import sharp from 'sharp'
 
 import { Books } from './payload/collections/Books'
 import { Businesses } from './payload/collections/Businesses'
+import { Engagements } from './payload/collections/Engagements'
 import { ContactSubmissions } from './payload/collections/ContactSubmissions'
 import { Credentials } from './payload/collections/Credentials'
 import { Documents } from './payload/collections/Documents'
@@ -72,6 +73,7 @@ export default buildConfig({
     Categories,
     Books,
     Businesses,
+    Engagements,
     Credentials,
     LegalPages,
     Media,

@@ -1,7 +1,7 @@
 'use client'
 
 import { useLocale, useTranslations } from 'next-intl'
-import { useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { trackEvent } from '@/components/analytics/track'
 import { Button } from '@/components/ui/Button'
@@ -30,6 +30,20 @@ export function ContactForm({ privacyHref }: { privacyHref: string }) {
   const [serverReason, setServerReason] = useState<'rateLimit' | 'server' | null>(null)
 
   const countries = useMemo(() => countryOptions(locale), [locale])
+
+  // "/contact?type=speaking" preselects the request type (links from the
+  // Speaking & Media pages). Read after hydration so the page stays static.
+  useEffect(() => {
+    const type = new URLSearchParams(window.location.search).get('type')
+    const select = formRef.current?.elements.namedItem('requestType')
+    if (
+      type &&
+      select instanceof HTMLSelectElement &&
+      REQUEST_TYPES.some((value) => value === type)
+    ) {
+      select.value = type
+    }
+  }, [])
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()

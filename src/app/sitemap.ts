@@ -1,7 +1,14 @@
 import type { MetadataRoute } from 'next'
 
 import { locales, type Locale } from '@/i18n/routing'
-import { getBooks, getExperiences, getExpertiseAreas, getInsights, getLegalPages } from '@/lib/cms'
+import {
+  getBooks,
+  getEngagements,
+  getExperiences,
+  getExpertiseAreas,
+  getInsights,
+  getLegalPages,
+} from '@/lib/cms'
 import { siteUrl } from '@/lib/env'
 
 /**
@@ -20,6 +27,7 @@ const STATIC_PATHS = [
   { path: '/insights', priority: 0.8, changeFrequency: 'weekly' as const },
   { path: '/books', priority: 0.7, changeFrequency: 'monthly' as const },
   { path: '/businesses', priority: 0.6, changeFrequency: 'monthly' as const },
+  { path: '/speaking', priority: 0.6, changeFrequency: 'monthly' as const },
   { path: '/contact', priority: 0.7, changeFrequency: 'yearly' as const },
 ]
 
@@ -64,6 +72,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { prefix: '/experience', fetch: getExperiences, priority: 0.6, changeFrequency: 'monthly' },
     { prefix: '/insights', fetch: getInsights, priority: 0.7, changeFrequency: 'weekly' },
     { prefix: '/books', fetch: getBooks, priority: 0.6, changeFrequency: 'monthly' },
+    { prefix: '/speaking', fetch: getEngagements, priority: 0.5, changeFrequency: 'monthly' },
   ]
 
   for (const collection of collections) {

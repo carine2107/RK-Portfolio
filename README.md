@@ -168,7 +168,7 @@ traduction manque, si une clé est en trop ou si un paramètre ICU diverge.
   par défaut) sont supprimées chaque jour par le serveur (`src/instrumentation.ts`) ;
   `npm run purge:contacts` le fait à la demande.
 - Mesure d'audience sans cookie (Umami / Plausible) : liste des événements dans
-  `docs/GUIDE_ADMIN.md`, section 13.
+  `docs/GUIDE_ADMIN.md`, section 14.
 
 ---
 
@@ -228,6 +228,7 @@ Ce que le site fait réellement aujourd'hui :
 - ✅ Formulaire de contact validé, anti-spam, e-mails FR/DE/EN **testés**
 - ✅ SEO : métadonnées localisées, canonical, hreflang, sitemap, robots,
   données structurées Person / Article / Book / Organization / BreadcrumbList / WebSite
+- ✅ Page Conférences & médias (interventions à venir / passées, vidéos chargées au clic sans cookie, invitation préremplie)
 - ✅ Carte Europe–Afrique des expériences (calculée côté serveur, sans service tiers), filtre par pays accessible au clavier
 - ✅ Apparence (palettes, couleurs, police, fond d'accueil) modifiable dans le CMS, contrastes AA garantis
 - ✅ Déploiement Docker testé sur base vierge (migrations, seed, cache)

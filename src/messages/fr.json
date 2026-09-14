@@ -15,6 +15,7 @@
     "insights": "RK Insights",
     "books": "Livres",
     "businesses": "Entreprises",
+    "speaking": "Conférences",
     "contact": "Contact",
     "workWithMe": "Travailler avec moi",
     "openMenu": "Ouvrir le menu principal",
@@ -297,6 +298,47 @@
     },
     "cta": "Prendre contact",
     "empty": "Les activités sont en cours de publication dans le CMS."
+  },
+  "speaking": {
+    "meta": {
+      "title": "Conférences, ateliers et médias",
+      "description": "Interventions de Romial Kenmogne : conférences, ateliers, tables rondes, interviews, podcasts et vidéos sur la finance, le business et l’investissement."
+    },
+    "title": "Conférences & médias",
+    "lead": "Conférences, ateliers, interviews et vidéos sur la finance, le développement des entreprises et l’investissement.",
+    "upcoming": "À venir",
+    "past": "Interventions passées",
+    "filterLabel": "Filtrer par type",
+    "all": "Tout",
+    "types": {
+      "conference": "Conférence",
+      "workshop": "Atelier",
+      "panel": "Table ronde",
+      "interview": "Interview",
+      "podcast": "Podcast",
+      "video": "Vidéo",
+      "press": "Presse"
+    },
+    "empty": "Les interventions et contenus médias seront publiés ici prochainement.",
+    "emptyFiltered": "Aucune intervention de ce type.",
+    "invite": {
+      "title": "Inviter Romial Kenmogne",
+      "body": "Conférence, atelier, table ronde ou interview : présentez votre événement, son public et sa date.",
+      "cta": "Proposer une intervention"
+    },
+    "detail": {
+      "date": "Date",
+      "event": "Événement",
+      "organiser": "Organisateur",
+      "location": "Lieu",
+      "languages": "Langue(s)",
+      "externalDefault": "Voir la ressource",
+      "back": "Toutes les interventions"
+    },
+    "video": {
+      "play": "Lire la vidéo : {title}",
+      "notice": "Vidéo hébergée par {provider}. Rien n’est chargé depuis {provider} avant que vous ne lanciez la lecture ; ensuite, {provider} reçoit votre adresse IP."
+    }
   },
   "contact": {
     "meta": {

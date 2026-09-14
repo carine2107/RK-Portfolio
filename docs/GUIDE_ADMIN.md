@@ -272,7 +272,35 @@ Décocher **Activité visible** masque immédiatement une activité du site sans
 
 ---
 
-## 12. Demandes de contact
+## 12. Conférences & médias
+
+**Contenus → Conférences & médias** — page publique **Conférences** (`/speaking`),
+présente dans le menu et le pied de page.
+
+| Champ                                | Rôle                                                                                                  |
+| ------------------------------------ | ----------------------------------------------------------------------------------------------------- |
+| **Type**                             | Conférence, atelier, table ronde, interview, podcast, vidéo, presse                                   |
+| **Date** / **Fin**                   | Une date future range l'intervention dans « À venir », une date passée dans « Interventions passées » |
+| **Résumé**, **Description**          | Traduits (FR / DE / EN)                                                                               |
+| **Événement**, **Organisateur**      | Nom de l'événement ou de l'émission, organisateur ou média                                            |
+| **Ville**, **Pays**                  | Laisser la ville vide pour une intervention en ligne                                                  |
+| **Image**                            | Photo réelle de l'intervention ou visuel de l'événement ; sert d'aperçu de la vidéo                   |
+| **Vidéo (YouTube ou Vimeo)**         | Coller le lien de la vidéo : elle ne se charge **qu'au clic** du visiteur, en mode sans cookie        |
+| **Lien externe** + **Texte du lien** | Podcast, article de presse, page de l'événement                                                       |
+
+- Brouillon, aperçu et **publication programmée** comme pour les articles.
+- Tant qu'aucune intervention n'est publiée, la page l'indique et propose
+  seulement le bouton **Proposer une intervention**.
+- Ce bouton ouvre le formulaire de contact avec le type « Conférence / médias »
+  déjà sélectionné.
+- Les conférences, ateliers et tables rondes sont déclarés aux moteurs de
+  recherche comme **événements** (date, lieu, intervenant).
+- N'ajouter que des interventions réelles, et des vidéos dont la diffusion est
+  autorisée.
+
+---
+
+## 13. Demandes de contact
 
 **Administration → Demandes de contact**
 
@@ -293,7 +321,7 @@ langue et l'horodatage du consentement.
 
 ---
 
-## 13. Statistiques de fréquentation
+## 14. Statistiques de fréquentation
 
 Le site est prêt pour une mesure d'audience **sans cookie** : **Umami** ou
 **Plausible**, auto-hébergés ou en offre hébergée. Tant qu'aucun outil n'est
@@ -310,25 +338,27 @@ l'administration du site) :
 | Pages les plus consultées         | Liste « Pages »                                                   |
 | Actions clés                      | Liste « Événements » (Umami) ou « Goals » (Plausible), ci-dessous |
 
-| Événement                 | Déclenché quand le visiteur…                     | Détail transmis       |
-| ------------------------- | ------------------------------------------------ | --------------------- |
-| `expert_profile_download` | télécharge l'International Expert Profile        | emplacement du bouton |
-| `cv_download`             | télécharge le CV international                   | emplacement           |
-| `work_with_me_click`      | clique sur « Travailler avec moi » / « Contact » | emplacement           |
-| `contact_form_success`    | envoie le formulaire avec succès                 | type de demande       |
-| `article_view`            | ouvre un article RK Insights                     | article               |
-| `book_purchase_click`     | clique sur un bouton d'achat (Amazon…)           | livre, lien           |
-| `book_preview_click`      | ouvre l'extrait d'un livre                       | livre                 |
-| `business_click`          | ouvre le site d'une activité de l'écosystème     | activité              |
-| `language_change`         | change de langue                                 | langues               |
-| `theme_change`            | passe en mode clair / sombre / système           | thème                 |
+| Événement                 | Déclenché quand le visiteur…                                | Détail transmis       |
+| ------------------------- | ----------------------------------------------------------- | --------------------- |
+| `expert_profile_download` | télécharge l'International Expert Profile                   | emplacement du bouton |
+| `cv_download`             | télécharge le CV international                              | emplacement           |
+| `work_with_me_click`      | clique sur « Travailler avec moi » / « Contact »            | emplacement           |
+| `contact_form_success`    | envoie le formulaire avec succès                            | type de demande       |
+| `article_view`            | ouvre un article RK Insights                                | article               |
+| `book_purchase_click`     | clique sur un bouton d'achat (Amazon…)                      | livre, lien           |
+| `book_preview_click`      | ouvre l'extrait d'un livre                                  | livre                 |
+| `video_play`              | lance une vidéo (Conférences & médias)                      | plateforme            |
+| `media_link_click`        | ouvre le lien externe d'une intervention (podcast, presse…) | intervention          |
+| `business_click`          | ouvre le site d'une activité de l'écosystème                | activité              |
+| `language_change`         | change de langue                                            | langues               |
+| `theme_change`            | passe en mode clair / sombre / système                      | thème                 |
 
 Aucune donnée personnelle n'est transmise (ni nom, ni e-mail, ni message). Avec
 Plausible, déclarer chaque événement comme « Goal » pour qu'il apparaisse.
 
 ---
 
-## 14. Pages légales
+## 15. Pages légales
 
 **Administration → Pages légales** — Impressum, confidentialité, cookies, CGV,
 livraison/retours.
@@ -344,7 +374,7 @@ nécessaire, par un professionnel du droit.
 
 ---
 
-## 15. Contenus d'exemple
+## 16. Contenus d'exemple
 
 Les entrées livrées avec le site portent la mention **« Contenu d'exemple »**
 (case _Contenu d’exemple_ dans la barre latérale) et affichent un bandeau
@@ -358,7 +388,7 @@ Liste complète des éléments encore attendus :
 
 ---
 
-## 16. Bonnes pratiques
+## 17. Bonnes pratiques
 
 - Publier en trois langues ou pas du tout : une page à moitié traduite se voit.
 - Toujours renseigner le texte alternatif des images.

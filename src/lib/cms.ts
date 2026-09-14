@@ -20,6 +20,7 @@ import {
 import type { Locale } from '@/i18n/routing'
 import { countryName, isCountryCode } from '@/lib/countries'
 import { cmsEnabled, siteUrl } from '@/lib/env'
+import { parseVideoUrl } from '@/lib/video'
 import {
   appearanceCss,
   HEADING_FONTS,
@@ -37,6 +38,7 @@ import type {
   CategoryView,
   ContentSource,
   CredentialView,
+  EngagementView,
   ExperienceView,
   ExpertiseView,
   HomeContentView,
@@ -278,6 +280,67 @@ export const getAppearance = cache(
       }
     }, defaultAppearance),
 )
+
+/* -------------------------------------------------------------------------- */
+/* Speaking & media                                                           */
+/* -------------------------------------------------------------------------- */
+
+const mapEngagement = (doc: Doc, locale: Locale): EngagementView => ({
+  id: String(doc.id),
+  slug: str(doc.slug),
+  type: (str(doc.type, 'conference') as EngagementView['type']) ?? 'conference',
+  title: str(doc.title),
+  summary: str(doc.summary),
+  description: richText(doc.description),
+  date: str(doc.date),
+  endDate: str(doc.endDate) || null,
+  eventName: str(doc.eventName),
+  organiser: str(doc.organiser),
+  city: str(doc.city),
+  countryCode: isCountryCode(str(doc.country)) ? str(doc.country) : '',
+  country: countryName(str(doc.country), locale),
+  languages: Array.isArray(doc.languages)
+    ? (doc.languages as unknown[]).filter((value): value is string => typeof value === 'string')
+    : [],
+  videoUrl: str(doc.videoUrl),
+  hasVideo: parseVideoUrl(str(doc.videoUrl)) !== null,
+  externalUrl: str(doc.externalUrl),
+  externalLabel: str(doc.externalLabel),
+  cover: image(doc.cover, 'wide'),
+  featured: boolean(doc.featured),
+  isPlaceholder: boolean(doc.isPlaceholder),
+  seo: seo(doc.seo),
+})
+
+/**
+ * Published engagements, most recent first. No starter content: nothing is
+ * shown until real engagements are entered in the CMS.
+ */
+export const getEngagements = cache(
+  async (locale: Locale): Promise<EngagementView[]> =>
+    withCms(
+      async (cms) => {
+        const result = await cms.find({
+          collection: 'engagements',
+          locale,
+          depth: 1,
+          limit: 300,
+          sort: '-date',
+          where: { _status: { equals: 'published' } },
+        })
+        return result.docs.map((doc) => mapEngagement(asDoc(doc), locale))
+      },
+      () => [],
+    ),
+)
+
+export async function getEngagementBySlug(
+  locale: Locale,
+  slug: string,
+): Promise<EngagementView | null> {
+  const all = await getEngagements(locale)
+  return all.find((entry) => entry.slug === slug) ?? null
+}
 
 /* -------------------------------------------------------------------------- */
 /* Home & about                                                               */

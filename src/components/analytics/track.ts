@@ -11,6 +11,8 @@ export type AnalyticsEvent =
   | 'expert_profile_download'
   | 'cv_download'
   | 'book_preview_click'
+  | 'video_play'
+  | 'media_link_click'
   | 'work_with_me_click'
   | 'contact_form_success'
   | 'article_view'

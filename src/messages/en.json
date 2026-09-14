@@ -15,6 +15,7 @@
     "insights": "RK Insights",
     "books": "Books",
     "businesses": "Businesses",
+    "speaking": "Speaking",
     "contact": "Contact",
     "workWithMe": "Work With Me",
     "openMenu": "Open the main menu",
@@ -297,6 +298,47 @@
     },
     "cta": "Get in touch",
     "empty": "The ventures are being published in the CMS."
+  },
+  "speaking": {
+    "meta": {
+      "title": "Speaking, workshops and media",
+      "description": "Talks, workshops, panels, interviews, podcasts and videos by Romial Kenmogne on finance, business and investment."
+    },
+    "title": "Speaking & Media",
+    "lead": "Talks, workshops, interviews and videos on finance, business development and investment.",
+    "upcoming": "Upcoming",
+    "past": "Past engagements",
+    "filterLabel": "Filter by type",
+    "all": "All",
+    "types": {
+      "conference": "Conference",
+      "workshop": "Workshop",
+      "panel": "Panel",
+      "interview": "Interview",
+      "podcast": "Podcast",
+      "video": "Video",
+      "press": "Press"
+    },
+    "empty": "Talks and media appearances will be published here soon.",
+    "emptyFiltered": "No engagement of this type.",
+    "invite": {
+      "title": "Invite Romial Kenmogne",
+      "body": "Conference, workshop, panel or interview: tell us about your event, its audience and its date.",
+      "cta": "Propose an engagement"
+    },
+    "detail": {
+      "date": "Date",
+      "event": "Event",
+      "organiser": "Organiser",
+      "location": "Location",
+      "languages": "Language(s)",
+      "externalDefault": "View the resource",
+      "back": "All engagements"
+    },
+    "video": {
+      "play": "Play the video: {title}",
+      "notice": "Video hosted by {provider}. Nothing is loaded from {provider} until you press play; after that, {provider} receives your IP address."
+    }
   },
   "contact": {
     "meta": {

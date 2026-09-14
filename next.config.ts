@@ -40,6 +40,8 @@ const csp = [
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob:",
   "font-src 'self' data:",
+  // Video players, loaded only after the visitor clicks "Play" (src/lib/video.ts).
+  'frame-src https://www.youtube-nocookie.com https://player.vimeo.com',
   "connect-src 'self'" + analytics + (isDev ? ' ws: http://localhost:*' : ''),
   "frame-ancestors 'none'",
   "object-src 'none'",

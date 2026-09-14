@@ -89,6 +89,15 @@ paiement n'est simulé), `none` (information seule).
 `audience`, `website`, `contactEmail`, `logo`, `active`, `order`,
 `isPlaceholder`, `seo`. `active: false` masque l'activité sans la supprimer.
 
+### `engagements` — Conférences & médias
+
+`title`_, `slug`_, `type`_ (`conference` | `workshop` | `panel` | `interview` |
+`podcast` | `video` | `press`), `date`_, `endDate`, `summary`\_, `eventName`,
+`organiser`, `city`, `country` (ISO), `languages[]`, `cover`, `featured`,
+`isPlaceholder`, onglet **Description** (`description`), onglet **Vidéo et liens**
+(`videoUrl` YouTube/Vimeo validé, `externalUrl` https, `externalLabel`), **SEO**.
+Brouillons et publication programmée. Aucun contenu de démarrage.
+
 ### `credentials` — Formations et certifications
 
 `title`_, `institution`_, `kind`\* (`education` | `credential`), `year`,

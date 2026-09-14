@@ -62,6 +62,34 @@ export type ExperienceView = {
   seo: SeoView
 }
 
+export type EngagementView = {
+  id: string
+  slug: string
+  type: 'conference' | 'workshop' | 'panel' | 'interview' | 'podcast' | 'video' | 'press'
+  title: string
+  summary: string
+  description: RichContent
+  /** ISO date-time. */
+  date: string
+  endDate: string | null
+  eventName: string
+  organiser: string
+  city: string
+  /** ISO 3166-1 alpha-2, '' when not set. */
+  countryCode: string
+  /** Country name in the page language. */
+  country: string
+  languages: string[]
+  videoUrl: string
+  hasVideo: boolean
+  externalUrl: string
+  externalLabel: string
+  cover: ImageView
+  featured: boolean
+  isPlaceholder: boolean
+  seo: SeoView
+}
+
 export type CategoryView = {
   id: string
   slug: string

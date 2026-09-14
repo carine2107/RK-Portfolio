@@ -90,13 +90,19 @@ test.describe('mobile menu', () => {
 })
 
 test.describe('responsive layout', () => {
-  const widths = [320, 375, 768, 1024, 1440]
+  const widths = [320, 375, 768, 1024, 1280, 1440, 1536]
 
   for (const width of widths) {
     test(`no horizontal scrolling at ${width}px`, async ({ page }) => {
       await page.setViewportSize({ width, height: 900 })
 
-      for (const path of ['/en', '/en/expertise', '/en/insights', '/en/contact']) {
+      for (const path of [
+        '/en',
+        '/en/expertise',
+        '/fr/speaking',
+        '/fr/experience',
+        '/de/contact',
+      ]) {
         await page.goto(path)
         const overflow = await page.evaluate(
           () => document.documentElement.scrollWidth - document.documentElement.clientWidth,

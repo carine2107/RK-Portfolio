@@ -1,7 +1,7 @@
 import type { Locale } from '@/i18n/routing'
 import { absoluteUrl } from '@/lib/seo'
 import { siteUrl } from '@/lib/env'
-import type { BookView, InsightView, SiteSettingsView } from '@/lib/types'
+import type { BookView, EngagementView, InsightView, SiteSettingsView } from '@/lib/types'
 
 type Json = Record<string, unknown>
 
@@ -106,6 +106,47 @@ export function bookSchema(book: BookView, locale: Locale): Json {
           },
         }
       : {}),
+  }
+}
+
+const EVENT_TYPES: EngagementView['type'][] = ['conference', 'workshop', 'panel']
+
+/**
+ * schema.org Event for conferences, workshops and panels (null for the other
+ * types). Engagements without a city or country use a virtual location.
+ */
+export function eventSchema(entry: EngagementView, locale: Locale): Json | null {
+  if (!EVENT_TYPES.includes(entry.type)) return null
+  const url = absoluteUrl(locale, `/speaking/${entry.slug}`)
+  const physical = Boolean(entry.city || entry.countryCode)
+  const location = physical
+    ? {
+        '@type': 'Place',
+        name: entry.eventName || entry.city || entry.country,
+        address: {
+          '@type': 'PostalAddress',
+          ...(entry.city ? { addressLocality: entry.city } : {}),
+          ...(entry.countryCode ? { addressCountry: entry.countryCode } : {}),
+        },
+      }
+    : { '@type': 'VirtualLocation', url: entry.externalUrl || url }
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Event',
+    name: entry.title,
+    description: entry.summary,
+    startDate: entry.date,
+    ...(entry.endDate ? { endDate: entry.endDate } : {}),
+    eventStatus: 'https://schema.org/EventScheduled',
+    eventAttendanceMode: physical
+      ? 'https://schema.org/OfflineEventAttendanceMode'
+      : 'https://schema.org/OnlineEventAttendanceMode',
+    location,
+    performer: { '@type': 'Person', '@id': `${siteUrl}/#person` },
+    ...(entry.organiser ? { organizer: { '@type': 'Organization', name: entry.organiser } } : {}),
+    ...(entry.cover?.url ? { image: `${siteUrl}${entry.cover.url}` } : {}),
+    url,
   }
 }
 

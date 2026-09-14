@@ -11,6 +11,7 @@ export const NAV_ITEMS = [
   { key: 'insights', href: '/insights' },
   { key: 'books', href: '/books' },
   { key: 'businesses', href: '/businesses' },
+  { key: 'speaking', href: '/speaking' },
 ] as const
 
 export type NavItem = (typeof NAV_ITEMS)[number]

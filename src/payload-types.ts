@@ -73,6 +73,7 @@ export interface Config {
     categories: Category;
     books: Book;
     businesses: Business;
+    engagements: Engagement;
     credentials: Credential;
     'legal-pages': LegalPage;
     media: Media;
@@ -93,6 +94,7 @@ export interface Config {
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     books: BooksSelect<false> | BooksSelect<true>;
     businesses: BusinessesSelect<false> | BusinessesSelect<true>;
+    engagements: EngagementsSelect<false> | EngagementsSelect<true>;
     credentials: CredentialsSelect<false> | CredentialsSelect<true>;
     'legal-pages': LegalPagesSelect<false> | LegalPagesSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
@@ -942,6 +944,286 @@ export interface Business {
   _status?: ('draft' | 'published') | null;
 }
 /**
+ * Talks, workshops, panels, interviews, podcasts, videos and press articles. Public page: Speaking & Media.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "engagements".
+ */
+export interface Engagement {
+  id: number;
+  title: string;
+  /**
+   * URL segment. Leave empty to generate it from the title.
+   */
+  slug: string;
+  type: 'conference' | 'workshop' | 'panel' | 'interview' | 'podcast' | 'video' | 'press';
+  /**
+   * A future date lists the engagement under "Upcoming".
+   */
+  date: string;
+  endDate?: string | null;
+  summary: string;
+  eventName?: string | null;
+  organiser?: string | null;
+  /**
+   * Leave empty for an online engagement.
+   */
+  city?: string | null;
+  country?:
+    | (
+        | 'AD'
+        | 'AE'
+        | 'AF'
+        | 'AG'
+        | 'AI'
+        | 'AL'
+        | 'AM'
+        | 'AO'
+        | 'AR'
+        | 'AT'
+        | 'AU'
+        | 'AW'
+        | 'AZ'
+        | 'BA'
+        | 'BB'
+        | 'BD'
+        | 'BE'
+        | 'BF'
+        | 'BG'
+        | 'BH'
+        | 'BI'
+        | 'BJ'
+        | 'BN'
+        | 'BO'
+        | 'BR'
+        | 'BS'
+        | 'BT'
+        | 'BW'
+        | 'BY'
+        | 'BZ'
+        | 'CA'
+        | 'CD'
+        | 'CF'
+        | 'CG'
+        | 'CH'
+        | 'CI'
+        | 'CL'
+        | 'CM'
+        | 'CN'
+        | 'CO'
+        | 'CR'
+        | 'CU'
+        | 'CV'
+        | 'CY'
+        | 'CZ'
+        | 'DE'
+        | 'DJ'
+        | 'DK'
+        | 'DM'
+        | 'DO'
+        | 'DZ'
+        | 'EC'
+        | 'EE'
+        | 'EG'
+        | 'ER'
+        | 'ES'
+        | 'ET'
+        | 'FI'
+        | 'FJ'
+        | 'FR'
+        | 'GA'
+        | 'GB'
+        | 'GD'
+        | 'GE'
+        | 'GH'
+        | 'GM'
+        | 'GN'
+        | 'GQ'
+        | 'GR'
+        | 'GT'
+        | 'GW'
+        | 'GY'
+        | 'HN'
+        | 'HR'
+        | 'HT'
+        | 'HU'
+        | 'ID'
+        | 'IE'
+        | 'IL'
+        | 'IN'
+        | 'IQ'
+        | 'IR'
+        | 'IS'
+        | 'IT'
+        | 'JM'
+        | 'JO'
+        | 'JP'
+        | 'KE'
+        | 'KG'
+        | 'KH'
+        | 'KM'
+        | 'KN'
+        | 'KP'
+        | 'KR'
+        | 'KW'
+        | 'KZ'
+        | 'LA'
+        | 'LB'
+        | 'LC'
+        | 'LI'
+        | 'LK'
+        | 'LR'
+        | 'LS'
+        | 'LT'
+        | 'LU'
+        | 'LV'
+        | 'LY'
+        | 'MA'
+        | 'MC'
+        | 'MD'
+        | 'ME'
+        | 'MG'
+        | 'MH'
+        | 'MK'
+        | 'ML'
+        | 'MM'
+        | 'MN'
+        | 'MR'
+        | 'MT'
+        | 'MU'
+        | 'MV'
+        | 'MW'
+        | 'MX'
+        | 'MY'
+        | 'MZ'
+        | 'NA'
+        | 'NE'
+        | 'NG'
+        | 'NI'
+        | 'NL'
+        | 'NO'
+        | 'NP'
+        | 'NZ'
+        | 'OM'
+        | 'PA'
+        | 'PE'
+        | 'PG'
+        | 'PH'
+        | 'PK'
+        | 'PL'
+        | 'PT'
+        | 'PY'
+        | 'QA'
+        | 'RO'
+        | 'RS'
+        | 'RU'
+        | 'RW'
+        | 'SA'
+        | 'SB'
+        | 'SC'
+        | 'SD'
+        | 'SE'
+        | 'SG'
+        | 'SI'
+        | 'SK'
+        | 'SL'
+        | 'SM'
+        | 'SN'
+        | 'SO'
+        | 'SR'
+        | 'SS'
+        | 'ST'
+        | 'SV'
+        | 'SY'
+        | 'SZ'
+        | 'TD'
+        | 'TG'
+        | 'TH'
+        | 'TJ'
+        | 'TL'
+        | 'TM'
+        | 'TN'
+        | 'TR'
+        | 'TT'
+        | 'TW'
+        | 'TZ'
+        | 'UA'
+        | 'UG'
+        | 'US'
+        | 'UY'
+        | 'UZ'
+        | 'VA'
+        | 'VC'
+        | 'VE'
+        | 'VN'
+        | 'VU'
+        | 'WS'
+        | 'YE'
+        | 'ZA'
+        | 'ZM'
+        | 'ZW'
+      )
+    | null;
+  languages?: ('fr' | 'en' | 'de')[] | null;
+  /**
+   * Real photo of the engagement or event visual (landscape). Also used as the preview before the video plays.
+   */
+  cover?: (number | null) | Media;
+  featured?: boolean | null;
+  /**
+   * Checked for the starter content delivered with the website. Uncheck once the entry contains validated information.
+   */
+  isPlaceholder?: boolean | null;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Video link. It loads only when the visitor clicks, in no-cookie mode.
+   */
+  videoUrl?: string | null;
+  /**
+   * Podcast, article, event page…
+   */
+  externalUrl?: string | null;
+  externalLabel?: string | null;
+  /**
+   * Optional overrides. When empty, the title and summary of the entry are used.
+   */
+  seo?: {
+    /**
+     * Recommended: 50–60 characters.
+     */
+    title?: string | null;
+    /**
+     * Recommended: 120–160 characters.
+     */
+    description?: string | null;
+    /**
+     * Social sharing image (1200×630). Falls back to the site default.
+     */
+    image?: (number | null) | Media;
+    /**
+     * Exclude this entry from search engines and from the sitemap.
+     */
+    noindex?: boolean | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
  * Diplomas and certifications. Only add entries that can be evidenced — never approximate a title.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1240,6 +1522,10 @@ export interface PayloadLockedDocument {
         value: number | Business;
       } | null)
     | ({
+        relationTo: 'engagements';
+        value: number | Engagement;
+      } | null)
+    | ({
         relationTo: 'credentials';
         value: number | Credential;
       } | null)
@@ -1515,6 +1801,41 @@ export interface BusinessesSelect<T extends boolean = true> {
   active?: T;
   order?: T;
   isPlaceholder?: T;
+  seo?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+        noindex?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "engagements_select".
+ */
+export interface EngagementsSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  type?: T;
+  date?: T;
+  endDate?: T;
+  summary?: T;
+  eventName?: T;
+  organiser?: T;
+  city?: T;
+  country?: T;
+  languages?: T;
+  cover?: T;
+  featured?: T;
+  isPlaceholder?: T;
+  description?: T;
+  videoUrl?: T;
+  externalUrl?: T;
+  externalLabel?: T;
   seo?:
     | T
     | {
@@ -2220,10 +2541,15 @@ export interface TaskSchedulePublish {
   input: {
     type?: ('publish' | 'unpublish') | null;
     locale?: string | null;
-    doc?: {
-      relationTo: 'insights';
-      value: number | Insight;
-    } | null;
+    doc?:
+      | ({
+          relationTo: 'insights';
+          value: number | Insight;
+        } | null)
+      | ({
+          relationTo: 'engagements';
+          value: number | Engagement;
+        } | null);
     global?: string | null;
     user?: (number | null) | User;
   };
