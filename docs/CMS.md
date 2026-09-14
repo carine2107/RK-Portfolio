@@ -221,6 +221,15 @@ contre l'injection de formules (`src/lib/csv.ts`, colonnes dans `src/lib/exports
 L'export est journalisé (collection, nombre de lignes, identifiant de l'utilisateur),
 jamais son contenu.
 
+**Google Sheets** (`subscribers`, `contact-submissions`) : hooks `afterChange` /
+`afterDelete` (`src/payload/hooks/sheets.ts`) → `src/lib/google-sheets.ts` (compte de
+service, JWT RS256, API Sheets v4, écriture `RAW`, file d'attente en mémoire, ligne
+retrouvée par l'ID en colonne A). Abonnés synchronisés seulement en `confirmed` /
+`unsubscribed`. Panneau `SheetsSync` au-dessus des listes ; `GET|POST /api/admin/sheets`
+(état / resynchronisation complète, compte de l'équipe connecté, origine vérifiée).
+Inactif sans `GOOGLE_SHEETS_SPREADSHEET_ID`, `GOOGLE_SERVICE_ACCOUNT_EMAIL`,
+`GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY`.
+
 ### `users` — Comptes
 
 `name`_, `email`_, `role`\* (`admin` | `editor`).

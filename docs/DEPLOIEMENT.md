@@ -333,6 +333,57 @@ une adresse de livraison.
 
 ---
 
+## 12 bis. Google Sheets (facultatif)
+
+Copie automatique des **demandes de contact** et des **abonnés newsletter confirmés** dans
+un tableur Google. Fonctionne avec un **compte Google gratuit**, sans carte bancaire. Sans
+les trois variables ci-dessous, rien n'est envoyé à Google.
+
+**1. Le tableur** — sur <https://sheets.google.com>, créer un tableur vide (par exemple
+« RK — Contacts »). Son **identifiant** est la partie de l'adresse entre `/d/` et
+`/edit` : `https://docs.google.com/spreadsheets/d/<IDENTIFIANT>/edit`.
+
+**2. Le compte de service** — sur <https://console.cloud.google.com> avec le même compte :
+
+1. Créer un projet (en haut à gauche → _Nouveau projet_, par exemple « rk-site »).
+2. _API et services → Bibliothèque_ → rechercher **Google Sheets API** → _Activer_.
+3. _API et services → Identifiants → Créer des identifiants → Compte de service_ : nom
+   « rk-site-sync », aucun rôle à ajouter → _OK_.
+4. Ouvrir le compte de service → onglet _Clés_ → _Ajouter une clé → Créer une clé → JSON_.
+   Un fichier `.json` est téléchargé : c'est un **secret**, ne jamais l'envoyer par
+   e-mail, ni le publier, ni le déposer dans le dépôt Git.
+
+**3. Le partage** — dans le tableur : _Partager_ → coller l'adresse du compte de service
+(`rk-site-sync@<projet>.iam.gserviceaccount.com`, champ `client_email` du fichier JSON)
+→ rôle **Éditeur** → décocher « Envoyer une notification » → _Partager_.
+
+**4. Les variables** (`.env` en local, `.env.production` sur le serveur) :
+
+```bash
+GOOGLE_SHEETS_SPREADSHEET_ID=<identifiant du tableur>
+GOOGLE_SERVICE_ACCOUNT_EMAIL=<client_email du fichier JSON>
+GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY="<private_key du fichier JSON, sur une ligne, avec les \n>"
+```
+
+Recopier `private_key` telle qu'elle apparaît dans le fichier JSON (elle commence par
+`-----BEGIN PRIVATE KEY-----\n`), entre guillemets. Redémarrer le site, puis supprimer
+le fichier JSON téléchargé.
+
+**5. Vérifier** — dans l'admin, _Demandes de contact_ : le bloc **Google Sheets** apparaît
+avec **Ouvrir le tableur** et **Tout resynchroniser**. Cliquer sur _Tout resynchroniser_ :
+les onglets « Demandes de contact » et « Abonnés newsletter » sont créés et remplis. En cas
+d'échec, le message rappelle l'adresse avec laquelle partager le tableur ; le détail
+(code Google, jamais les données) est dans les logs du serveur (`[sheets]`).
+
+Fonctionnement : chaque création, modification ou suppression est recopiée en arrière-plan
+(une panne de Google ne bloque jamais le formulaire) ; les lignes sont retrouvées par la
+colonne **ID** ; les valeurs sont écrites en texte brut (aucune formule exécutée) ; les
+inscriptions non confirmées n'apparaissent pas ; les suppressions automatiques (durées de
+conservation) retirent aussi les lignes. **Changer ou révoquer la clé** : _Compte de service
+→ Clés_ → supprimer l'ancienne, en créer une nouvelle, mettre à jour la variable.
+
+---
+
 ## 13. Checklist de mise en ligne
 
 - [ ] Domaine pointé, HTTPS actif, redirection `http` → `https`
@@ -341,6 +392,7 @@ une adresse de livraison.
 - [ ] SMTP configuré, demande de test envoyée et **reçue**
 - [ ] Vente directe (si ouverte) : CGV et retours validés, TVA validée par le comptable, clés live Stripe/PayPal, webhook Stripe actif, achat test réel remboursé ; produits numériques : volume `private` sauvegardé, achat test → e-mail d'accès reçu, connexion et téléchargement vérifiés
 - [ ] SPF, DKIM et DMARC publiés ; inscription newsletter testée de bout en bout (confirmation, article, désinscription)
+- [ ] Google Sheets (si utilisé) : tableur partagé uniquement avec le compte de service, « Tout resynchroniser » réussi, fichier JSON de la clé supprimé du poste, politique de confidentialité mentionnant Google
 - [ ] Mot de passe administrateur changé, comptes inutiles supprimés
 - [ ] Contenus « Contenu d'exemple » remplacés ou dépubliés
 - [ ] Textes juridiques validés, case « brouillon » décochée

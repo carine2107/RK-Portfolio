@@ -123,6 +123,13 @@ prestataire de paiement demandent une configuration technique (sections 1, 8 et
 | 5b.6 | Produits numériques : fichiers définitifs (PDF / EPUB, ressources), contenus et vidéos **non listées** des formations KAILI Institut, prix                | 🟠 pour vendre des produits numériques |
 | 5b.7 | CGV complétées pour les contenus numériques (accès immédiat, perte du droit de rétractation) et confidentialité (espace membre, conservation des comptes) | 🔴 pour vendre des produits numériques |
 
+## 8 ter. Google Sheets (facultatif)
+
+| #    | Élément                                                                                                                           | Priorité                    |
+| ---- | --------------------------------------------------------------------------------------------------------------------------------- | --------------------------- |
+| 8t.1 | Tableur Google et compte de service (clé JSON) créés par le commanditaire — procédure pas à pas dans `DEPLOIEMENT.md`             | 🟡 pour activer la copie    |
+| 8t.2 | Politique de confidentialité : mention de Google comme destinataire des demandes de contact et des adresses des abonnés confirmés | 🔴 avant d’activer la copie |
+
 ## 8 bis. Newsletter
 
 | #    | Élément                                                                                                                                           | Priorité                  |

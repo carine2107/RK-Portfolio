@@ -534,6 +534,27 @@ Mailchimp, HubSpot…).
 > l’import terminé. Une personne désinscrite sur le site doit aussi être retirée de
 > l’outil externe.
 
+### Tableur Google Sheets
+
+Quand la connexion est configurée (voir `DEPLOIEMENT.md`, « Google Sheets »), un bloc
+**Google Sheets** s’affiche en haut des listes _Abonnés newsletter_ et _Demandes de
+contact_ :
+
+- les **nouvelles demandes** et les **abonnés confirmés** arrivent automatiquement dans les
+  onglets « Demandes de contact » et « Abonnés newsletter », en quelques secondes ;
+- une modification dans l’admin (statut, priorité…) met la ligne à jour ; une suppression
+  (manuelle ou automatique) retire la ligne ; un désinscrit apparaît « Désinscrit » jusqu’à
+  sa suppression automatique ;
+- **Ouvrir le tableur** ouvre Google Sheets ; **Tout resynchroniser** réécrit les deux
+  onglets à partir de l’admin (à utiliser après la première configuration ou si le tableur
+  a été modifié par erreur).
+
+Le tableur est une **copie** : les modifications faites dans Google Sheets ne reviennent
+pas dans l’admin, et **Tout resynchroniser** les écrase. Vous pouvez trier, filtrer ou
+colorer les lignes, mais **ne modifiez pas la colonne ID** et ne renommez pas les onglets.
+Ne partagez le tableur avec personne d’autre que le compte de service : il contient des
+données personnelles.
+
 ## 15. Statistiques de fréquentation
 
 Le site est prêt pour une mesure d'audience **sans cookie** : **Umami** ou

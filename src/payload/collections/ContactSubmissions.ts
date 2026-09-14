@@ -10,6 +10,7 @@ import {
   TIMELINES,
 } from '../../lib/lead-score'
 import { isAdmin, isAdminOrEditor } from '../access'
+import { removeFromSheets, syncToSheets } from '../hooks/sheets'
 import { GROUPS, tr } from '../i18n'
 
 export const REQUEST_TYPES = [
@@ -73,6 +74,7 @@ export const ContactSubmissions: CollectionConfig = {
           path: '/payload/components/ExportCsvButton#ExportCsvButton',
           clientProps: { collection: 'contact-submissions' },
         },
+        '/payload/components/SheetsSync#SheetsSync',
       ],
     },
     description: tr(
@@ -86,6 +88,10 @@ export const ContactSubmissions: CollectionConfig = {
     create: () => false,
     update: isAdminOrEditor,
     delete: isAdmin,
+  },
+  hooks: {
+    afterChange: [syncToSheets('contact-submissions')],
+    afterDelete: [removeFromSheets('contact-submissions')],
   },
   fields: [
     { name: 'name', type: 'text', label: tr('Nom', 'Name', 'Name'), required: true },

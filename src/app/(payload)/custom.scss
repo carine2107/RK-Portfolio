@@ -128,3 +128,15 @@
   color: var(--theme-elevation-600);
   font-size: 0.8125rem;
 }
+
+/* Google Sheets panel above the subscribers and contact request lists. */
+.rk-sheets {
+  margin-bottom: var(--base);
+  padding: calc(var(--base) * 0.75);
+  border: 1px solid var(--theme-elevation-150);
+  border-radius: var(--style-radius-m);
+}
+
+.rk-sheets__text {
+  margin: 0 0 calc(var(--base) / 2);
+}

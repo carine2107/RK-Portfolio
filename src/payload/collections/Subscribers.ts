@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
 import { isAdmin, isAdminOrEditor } from '../access'
+import { removeFromSheets, syncToSheets } from '../hooks/sheets'
 import { GROUPS, tr } from '../i18n'
 
 const dateField = (name: string, label: Record<string, string>) =>
@@ -31,6 +32,7 @@ export const Subscribers: CollectionConfig = {
           path: '/payload/components/ExportCsvButton#ExportCsvButton',
           clientProps: { collection: 'subscribers' },
         },
+        '/payload/components/SheetsSync#SheetsSync',
       ],
     },
     description: tr(
@@ -44,6 +46,10 @@ export const Subscribers: CollectionConfig = {
     create: () => false,
     update: isAdmin,
     delete: isAdmin,
+  },
+  hooks: {
+    afterChange: [syncToSheets('subscribers')],
+    afterDelete: [removeFromSheets('subscribers')],
   },
   fields: [
     {
