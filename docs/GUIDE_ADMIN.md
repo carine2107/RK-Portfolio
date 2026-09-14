@@ -108,7 +108,43 @@ Toutes les versions sont conservées : onglet **Versions → Restaurer** pour re
 
 ---
 
-## 5. Gérer les expériences et projets
+## 5. Newsletter RK Insights
+
+**Qui s'inscrit ?** Les visiteurs, depuis la page **Newsletter** (`/newsletter`), le
+bandeau du pied de page et l'encart en fin d'article. Chaque inscription est
+**confirmée par e-mail** (double opt-in) : l'adresse reçoit un lien valable 48 h.
+Le formulaire n'apparaît que si l'envoi d'e-mails est configuré sur le serveur.
+
+**Envoyer un article** : dans l'article, cocher **Envoyer aux abonnés de la
+newsletter** (colonne de droite), puis publier.
+
+- Publication immédiate : l'envoi part quelques secondes après l'enregistrement.
+- Publication programmée : l'envoi part à la date prévue (vérification toutes les
+  10 minutes).
+- Chaque abonné confirmé reçoit l'article **dans sa langue** ; un article n'est
+  **jamais envoyé deux fois**. Une fois l'envoi fait, la date d'envoi et le nombre de
+  destinataires s'affichent dans l'article.
+- Un article sans traduction dans la langue d'un abonné ne lui est pas envoyé.
+
+**Administration → Abonnés newsletter** : liste des adresses avec leur langue et
+leur statut (_En attente de confirmation_, _Confirmé_, _Désinscrit_).
+
+- Pour retirer une adresse sur demande : passer son statut à **Désinscrit**, ou la
+  supprimer (rôle Administrator).
+- Chaque e-mail contient un lien de désinscription ; les messageries (Gmail, Outlook,
+  Apple Mail) proposent aussi leur bouton « Se désinscrire ».
+- **Protection des données** : une inscription non confirmée est supprimée après
+  7 jours, une adresse désinscrite après 30 jours. Seules l'adresse, la langue et
+  les dates de consentement / confirmation sont conservées.
+
+> Envoyer une newsletter engage la réputation de l'adresse d'expédition : utiliser
+> un fournisseur SMTP professionnel (voir `DEPLOIEMENT.md`) et n'écrire qu'aux
+> personnes inscrites via le formulaire — jamais d'import de liste achetée ou
+> recopiée.
+
+---
+
+## 6. Gérer les expériences et projets
 
 **Contenus → Expériences et projets**
 
@@ -137,7 +173,7 @@ Toutes les versions sont conservées : onglet **Versions → Restaurer** pour re
 
 ---
 
-## 6. Domaines d'expertise
+## 7. Domaines d'expertise
 
 **Contenus → Domaines d’expertise**
 
@@ -151,7 +187,7 @@ approche, expériences et articles liés.
 
 ---
 
-## 7. Livres et publications
+## 8. Livres et publications
 
 **Contenus → Livres et publications**
 
@@ -180,7 +216,7 @@ des charges :
 
 ---
 
-## 8. Médias et documents
+## 9. Médias et documents
 
 - **Médiathèque → Médiathèque** : images. Le **texte alternatif est obligatoire**
   (accessibilité et SEO) : décrire ce que montre l'image en une phrase.
@@ -200,7 +236,7 @@ le document n'est pas encore publié — il ne renvoie jamais vers un lien mort.
 
 ---
 
-## 9. Réglages du site
+## 10. Réglages du site
 
 **Administration → Réglages du site**
 
@@ -233,7 +269,7 @@ valeurs, langues, régions.
 
 ---
 
-## 10. Apparence du site
+## 11. Apparence du site
 
 **Administration → Apparence** (réservé au rôle Administrator ; les éditeurs la
 consultent sans pouvoir la modifier).
@@ -270,7 +306,7 @@ Les changements sont visibles sur le site **dès l'enregistrement**. Pour reveni
 
 ---
 
-## 11. Activités entrepreneuriales
+## 12. Activités entrepreneuriales
 
 **Contenus → Écosystème entrepreneurial** — RK Business Consulting, RK IMMO-FINANZ,
 Kenmogne Strategic Publishing, KAILI Institut, KAILI Event.
@@ -279,7 +315,7 @@ Décocher **Activité visible** masque immédiatement une activité du site sans
 
 ---
 
-## 12. Conférences & médias
+## 13. Conférences & médias
 
 **Contenus → Conférences & médias** — page publique **Conférences** (`/speaking`),
 présente dans le menu et le pied de page.
@@ -307,7 +343,7 @@ présente dans le menu et le pied de page.
 
 ---
 
-## 13. Demandes de contact
+## 14. Demandes de contact
 
 **Administration → Demandes de contact**
 
@@ -328,7 +364,7 @@ langue et l'horodatage du consentement.
 
 ---
 
-## 14. Statistiques de fréquentation
+## 15. Statistiques de fréquentation
 
 Le site est prêt pour une mesure d'audience **sans cookie** : **Umami** ou
 **Plausible**, auto-hébergés ou en offre hébergée. Tant qu'aucun outil n'est
@@ -354,6 +390,7 @@ l'administration du site) :
 | `article_view`            | ouvre un article RK Insights                                | article               |
 | `book_purchase_click`     | clique sur un bouton d'achat (Amazon…)                      | livre, lien           |
 | `book_preview_click`      | ouvre l'extrait d'un livre                                  | livre                 |
+| `newsletter_subscribe`    | envoie le formulaire d'inscription à la newsletter          | formulaire d'origine  |
 | `booking_click`           | ouvre l'outil de prise de rendez-vous                       | page d'origine        |
 | `video_play`              | lance une vidéo (Conférences & médias)                      | plateforme            |
 | `media_link_click`        | ouvre le lien externe d'une intervention (podcast, presse…) | intervention          |
@@ -366,7 +403,7 @@ Plausible, déclarer chaque événement comme « Goal » pour qu'il apparaisse.
 
 ---
 
-## 15. Pages légales
+## 16. Pages légales
 
 **Administration → Pages légales** — Impressum, confidentialité, cookies, CGV,
 livraison/retours.
@@ -382,7 +419,7 @@ nécessaire, par un professionnel du droit.
 
 ---
 
-## 16. Contenus d'exemple
+## 17. Contenus d'exemple
 
 Les entrées livrées avec le site portent la mention **« Contenu d'exemple »**
 (case _Contenu d’exemple_ dans la barre latérale) et affichent un bandeau
@@ -396,7 +433,7 @@ Liste complète des éléments encore attendus :
 
 ---
 
-## 17. Bonnes pratiques
+## 18. Bonnes pratiques
 
 - Publier en trois langues ou pas du tout : une page à moitié traduite se voit.
 - Toujours renseigner le texte alternatif des images.

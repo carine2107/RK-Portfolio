@@ -10,8 +10,8 @@ Environnement : Windows 11, Node 24.15, PostgreSQL 16 (Docker), build de
 
 | Suite                            | Périmètre                                                               | Résultat                             |
 | -------------------------------- | ----------------------------------------------------------------------- | ------------------------------------ |
-| Tests unitaires (Vitest)         | Traductions, contrastes, moteur d'apparence, validation, SEO, anti-abus | **82 / 82 réussis**                  |
-| Tests end-to-end (Playwright)    | 71 scénarios × 4 configurations                                         | **254 réussis, 30 ignorés, 0 échec** |
+| Tests unitaires (Vitest)         | Traductions, contrastes, moteur d'apparence, validation, SEO, anti-abus | **87 / 87 réussis**                  |
+| Tests end-to-end (Playwright)    | 78 scénarios × 4 configurations                                         | **282 réussis, 30 ignorés, 0 échec** |
 | Compilation TypeScript (`tsc`)   | Mode strict, tout le projet                                             | **0 erreur**                         |
 | Lint (ESLint 9 + config Next 16) | Tout le projet                                                          | **0 erreur, 0 avertissement**        |
 | Formatage (Prettier)             | `src`, `tests`, `docs`                                                  | **conforme**                         |
@@ -40,22 +40,23 @@ node tests/visual/capture.mjs test-results/visual
 
 ---
 
-## 2. Tests unitaires (82)
+## 2. Tests unitaires (87)
 
-| Fichier                  | Ce qui est vérifié                                                                                                                                                                                                                             |
-| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `messages.test.ts`       | FR et DE couvrent 100 % des clés anglaises, aucune clé en trop, aucun message vide, paramètres ICU identiques, navigation réellement traduite                                                                                                  |
-| `contrast.test.ts`       | 15 paires couleur texte/fond × 2 thèmes + anneau de focus, seuils WCAG 2.2 AA calculés depuis les design tokens du CSS                                                                                                                         |
-| `contact-schema.test.ts` | Schéma du formulaire (consentement, e-mail, pays, type de demande, longueurs), clés d'erreur traduisibles, liste de pays localisée et triée                                                                                                    |
-| `seo.test.ts`            | Canonical, hreflang FR/DE/EN + `x-default`, chemins traduits, `noindex`, Open Graph, troncature des descriptions, génération des slugs                                                                                                         |
-| `theme.test.ts`          | Moteur d'apparence : les 6 palettes et **300 palettes personnalisées aléatoires** respectent 15 paires de contraste AA dans les deux thèmes ; couleurs vides = palette Signature ; aucune saisie brute du CMS dans la feuille de style générée |
-| `url.test.ts`            | Liens externes saisis dans le CMS : seules les adresses https:// absolues sont conservées (`http:`, `javascript:`, chemins relatifs, localhost refusés) ; affichage du domaine de destination                                                  |
-| `video.test.ts`          | Liens YouTube (watch, youtu.be, embed, shorts, live, mobile) et Vimeo convertis en lecteurs sans cookie ; tout autre lien refusé (domaines imitant YouTube, `javascript:`, identifiants invalides)                                             |
-| `world-map.test.ts`      | Carte Europe–Afrique : pays d'Europe et d'Afrique présents avec leur code ISO, pays lointains exclus, taille des tracés < 80 Ko ; noms de pays localisés FR/DE/EN                                                                              |
-| `retention.test.ts`      | Date limite de conservation des demandes de contact (24 / 6 mois, désactivation à 0, valeurs invalides), calculée en UTC — indépendante du fuseau et de l'heure d'été                                                                          |
-| `rate-limit.test.ts`     | Limitation par IP : seuil, réinitialisation de fenêtre, isolation entre clients, lecture des en-têtes de proxy                                                                                                                                 |
+| Fichier                     | Ce qui est vérifié                                                                                                                                                                                                                             |
+| --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `messages.test.ts`          | FR et DE couvrent 100 % des clés anglaises, aucune clé en trop, aucun message vide, paramètres ICU identiques, navigation réellement traduite                                                                                                  |
+| `contrast.test.ts`          | 15 paires couleur texte/fond × 2 thèmes + anneau de focus, seuils WCAG 2.2 AA calculés depuis les design tokens du CSS                                                                                                                         |
+| `contact-schema.test.ts`    | Schéma du formulaire (consentement, e-mail, pays, type de demande, longueurs), clés d'erreur traduisibles, liste de pays localisée et triée                                                                                                    |
+| `seo.test.ts`               | Canonical, hreflang FR/DE/EN + `x-default`, chemins traduits, `noindex`, Open Graph, troncature des descriptions, génération des slugs                                                                                                         |
+| `theme.test.ts`             | Moteur d'apparence : les 6 palettes et **300 palettes personnalisées aléatoires** respectent 15 paires de contraste AA dans les deux thèmes ; couleurs vides = palette Signature ; aucune saisie brute du CMS dans la feuille de style générée |
+| `newsletter-tokens.test.ts` | Liens de confirmation et de désinscription signés (HMAC) : aller-retour, expiration à 48 h, lien de désinscription sans expiration, refus d'un autre usage, abonné ou secret, entrées malformées                                               |
+| `url.test.ts`               | Liens externes saisis dans le CMS : seules les adresses https:// absolues sont conservées (`http:`, `javascript:`, chemins relatifs, localhost refusés) ; affichage du domaine de destination                                                  |
+| `video.test.ts`             | Liens YouTube (watch, youtu.be, embed, shorts, live, mobile) et Vimeo convertis en lecteurs sans cookie ; tout autre lien refusé (domaines imitant YouTube, `javascript:`, identifiants invalides)                                             |
+| `world-map.test.ts`         | Carte Europe–Afrique : pays d'Europe et d'Afrique présents avec leur code ISO, pays lointains exclus, taille des tracés < 80 Ko ; noms de pays localisés FR/DE/EN                                                                              |
+| `retention.test.ts`         | Date limite de conservation des demandes de contact (24 / 6 mois, désactivation à 0, valeurs invalides), calculée en UTC — indépendante du fuseau et de l'heure d'été                                                                          |
+| `rate-limit.test.ts`        | Limitation par IP : seuil, réinitialisation de fenêtre, isolation entre clients, lecture des en-têtes de proxy                                                                                                                                 |
 
-## 3. Tests end-to-end (71 scénarios)
+## 3. Tests end-to-end (78 scénarios)
 
 ### Navigation et structure (`navigation.spec.ts`)
 
@@ -120,6 +121,17 @@ demandes restent intactes.
 - Lien configuré : ouverture dans un nouvel onglet, `rel="noopener"`, adresse https
 
 Contrôle manuel (serveur de développement, lien de test Cal.com temporaire) : bloc « Réserver un échange » sur Contact (FR) et bouton « Gespräch buchen » sur À propos (DE), destination annoncée, aucun débordement.
+
+### Newsletter (`newsletter.spec.ts`)
+
+- Page d'inscription publiée en FR / DE / EN
+- Adresse et consentement obligatoires (422) ; champ piège traité comme un succès
+- Liens de confirmation / désinscription falsifiés refusés (400), page « lien invalide »
+- **Double opt-in de bout en bout** : inscription via le formulaire → e-mail de confirmation lu dans MailHog → lien → « Inscription confirmée »
+
+Contrôle manuel (serveur de développement + MailHog) : envoi d'un article à un abonné confirmé en français (sujet, lien et texte en français, en-têtes `List-Unsubscribe` / `List-Unsubscribe-Post`), **seconde tentative d'envoi = 0** (jamais de doublon), page de désinscription sans effet avant le clic, désinscription en un clic par POST (200), GET refusé (405). Données de test supprimées.
+
+Corrections faites pendant cette étape : champ e-mail de la newsletter renommé « Adresse e-mail pour la newsletter » (deux champs portaient le même nom accessible sur la page Contact) ; test d'images rendu robuste aux réponses interrompues sous forte charge (l'adresse de l'image est revérifiée).
 
 ### Accessibilité (`accessibility.spec.ts`)
 

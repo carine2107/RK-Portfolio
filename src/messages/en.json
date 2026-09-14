@@ -340,6 +340,70 @@
       "notice": "Video hosted by {provider}. Nothing is loaded from {provider} until you press play; after that, {provider} receives your IP address."
     }
   },
+  "newsletter": {
+    "meta": {
+      "title": "RK Insights newsletter",
+      "description": "Receive new RK Insights analyses by Romial Kenmogne on finance, business and investment. Sign-up confirmed by e-mail, one-click unsubscribe."
+    },
+    "title": "RK Insights newsletter",
+    "lead": "New analyses on finance, business development and investment, straight to your inbox.",
+    "point1": "One e-mail only when a new article is published.",
+    "point2": "In your language: French, German or English.",
+    "point3": "One-click unsubscribe from every e-mail.",
+    "formTitle": "Subscribe",
+    "emailLabel": "E-mail address for the newsletter",
+    "emailPlaceholder": "you@example.com",
+    "consent": "I agree to receive the RK Insights newsletter and I have read the <link>privacy policy</link>.",
+    "submit": "Subscribe",
+    "submitting": "Subscribing…",
+    "success": {
+      "title": "Check your inbox",
+      "body": "If this address is not subscribed yet, a confirmation e-mail has just been sent. Click its link (valid for 48 hours) to complete your subscription."
+    },
+    "errors": {
+      "email": "Please enter a valid e-mail address.",
+      "consent": "Please agree to receive the newsletter.",
+      "rateLimit": "Too many attempts. Please try again in a few minutes.",
+      "unavailable": "Newsletter sign-up opens soon.",
+      "server": "The subscription could not be completed. Please try again later."
+    },
+    "unavailable": "Newsletter sign-up opens soon.",
+    "footerTitle": "RK Insights newsletter",
+    "footerBody": "New analyses as they are published. One-click unsubscribe.",
+    "articleCta": {
+      "title": "Get the next articles",
+      "body": "One e-mail for each new RK Insights analysis, in your language.",
+      "link": "Subscribe to the newsletter"
+    },
+    "readInsights": "Read RK Insights",
+    "subscribeAgain": "Subscribe again",
+    "confirm": {
+      "title": "Subscription confirmation",
+      "pending": "Confirming…",
+      "done": {
+        "title": "Subscription confirmed",
+        "body": "Thank you! You will receive the next RK Insights articles."
+      },
+      "invalid": {
+        "title": "Invalid or expired link",
+        "body": "This confirmation link is no longer valid. Subscribe again to receive a new one."
+      }
+    },
+    "unsubscribe": {
+      "title": "Unsubscribe from the newsletter",
+      "body": "You will no longer receive RK Insights e-mails.",
+      "button": "Confirm unsubscription",
+      "pending": "Unsubscribing…",
+      "done": {
+        "title": "Unsubscription confirmed",
+        "body": "Your address has been removed from the newsletter. It will be permanently deleted within 30 days."
+      },
+      "invalid": {
+        "title": "Invalid link",
+        "body": "This unsubscribe link is not valid. Please use the link in the latest e-mail you received."
+      }
+    }
+  },
   "contact": {
     "meta": {
       "title": "Work With Me — Contact",

@@ -13,6 +13,7 @@ export type AnalyticsEvent =
   | 'book_preview_click'
   | 'video_play'
   | 'booking_click'
+  | 'newsletter_subscribe'
   | 'media_link_click'
   | 'work_with_me_click'
   | 'contact_form_success'

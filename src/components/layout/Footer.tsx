@@ -1,6 +1,7 @@
 import { getTranslations } from 'next-intl/server'
 
 import { LanguageSwitcher } from '@/components/i18n/LanguageSwitcher'
+import { NewsletterForm } from '@/components/newsletter/NewsletterForm'
 import { Icon, type IconName } from '@/components/ui/Icon'
 import { Link } from '@/i18n/navigation'
 import { legalSlug } from '@/lib/cms'
@@ -17,11 +18,21 @@ const SOCIAL_ICONS: Record<string, IconName> = {
   instagram: 'instagram',
 }
 
-export async function Footer({ locale, settings }: { locale: Locale; settings: SiteSettingsView }) {
+export async function Footer({
+  locale,
+  settings,
+  newsletterEnabled = false,
+}: {
+  locale: Locale
+  settings: SiteSettingsView
+  /** Shown only when e-mail delivery is really configured. */
+  newsletterEnabled?: boolean
+}) {
   const t = await getTranslations('footer')
   const nav = await getTranslations('nav')
   const brand = await getTranslations('brand')
   const legal = await getTranslations('legal')
+  const newsletter = await getTranslations('newsletter')
 
   const legalLinks = (
     [
@@ -34,6 +45,23 @@ export async function Footer({ locale, settings }: { locale: Locale; settings: S
 
   return (
     <footer data-inverse className="bg-contrast text-on-contrast">
+      {newsletterEnabled ? (
+        <div className="border-b border-line-contrast">
+          <div className="rk-container grid gap-6 py-10 md:grid-cols-12 md:items-center md:gap-10">
+            <div className="md:col-span-5">
+              <p className="font-serif text-xl text-on-contrast">{newsletter('footerTitle')}</p>
+              <p className="mt-2 text-sm text-on-contrast-secondary">{newsletter('footerBody')}</p>
+            </div>
+            <div className="md:col-span-7">
+              <NewsletterForm
+                tone="contrast"
+                source="footer"
+                privacyHref={`/legal/${legalSlug('privacy', locale)}`}
+              />
+            </div>
+          </div>
+        </div>
+      ) : null}
       <div className="rk-container grid gap-12 py-16 md:grid-cols-12 md:py-20">
         <div className="md:col-span-5">
           <p className="font-serif text-xl tracking-[0.05em] uppercase">{brand('name')}</p>

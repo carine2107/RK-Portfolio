@@ -276,12 +276,33 @@ rollback consiste alors simplement à redéployer le tag précédent.
 
 ---
 
-## 11. Checklist de mise en ligne
+## 11. E-mails et newsletter : délivrabilité
+
+Le formulaire de contact et la newsletter partagent le compte SMTP (`SMTP_*`).
+Pour que les e-mails arrivent en boîte de réception :
+
+- utiliser un fournisseur transactionnel (Brevo, Postmark, Mailgun…) ; vérifier
+  sa **limite d'envoi quotidienne** au regard du nombre d'abonnés ;
+- publier les enregistrements DNS **SPF**, **DKIM** (fournis par le fournisseur) et
+  **DMARC** (`v=DMARC1; p=none; rua=mailto:…` pour commencer) ;
+- `EMAIL_FROM` sur le domaine du site (`no-reply@romialkenmogne.com`), jamais une
+  adresse Gmail ;
+- tester l'envoi avec mail-tester.com (score visé ≥ 9/10).
+
+Les e-mails d'article portent les en-têtes `List-Unsubscribe` et
+`List-Unsubscribe-Post` (désinscription en un clic, exigée par Gmail et Yahoo pour
+les envois en nombre). Les liens de confirmation et de désinscription sont signés
+avec `PAYLOAD_SECRET` : **changer ce secret invalide les liens déjà envoyés**.
+
+---
+
+## 12. Checklist de mise en ligne
 
 - [ ] Domaine pointé, HTTPS actif, redirection `http` → `https`
 - [ ] `NEXT_PUBLIC_SITE_URL` correct et build effectué **après** son réglage
 - [ ] `PAYLOAD_SECRET` unique, `CONTACT_RATE_LIMIT=5`
 - [ ] SMTP configuré, demande de test envoyée et **reçue**
+- [ ] SPF, DKIM et DMARC publiés ; inscription newsletter testée de bout en bout (confirmation, article, désinscription)
 - [ ] Mot de passe administrateur changé, comptes inutiles supprimés
 - [ ] Contenus « Contenu d'exemple » remplacés ou dépubliés
 - [ ] Textes juridiques validés, case « brouillon » décochée

@@ -111,11 +111,19 @@ prestataire de paiement demandent une configuration technique (sections 1, 8 et
 | 8.4 | Décision sur la bannière cookies (inutile tant qu'aucun traceur n'est installé)                            | 🟡       |
 | 8.5 | Durée de conservation des demandes de contact                                                              | 🟠       |
 
+## 8 bis. Newsletter
+
+| #    | Élément                                                                                                                                           | Priorité                  |
+| ---- | ------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------- |
+| 8b.1 | Compléter la **politique de confidentialité** : newsletter (finalité, base légale = consentement, conservation, désinscription, fournisseur SMTP) | 🔴 avant le premier envoi |
+| 8b.2 | Fournisseur SMTP professionnel + enregistrements **SPF / DKIM / DMARC** du domaine                                                                | 🔴 avant le premier envoi |
+
 ## 9. Phase 2 (hors périmètre actuel)
 
-Newsletter et double opt-in · prise de rendez-vous en ligne · page
-Speaking & Media · vidéos et podcasts · espace membres · produits digitaux ·
-formations en ligne KAILI Institut · CRM.
+Livrés depuis : carte Europe–Afrique · page Conférences & médias (vidéos) · prise de
+rendez-vous · newsletter avec double opt-in. En cours : vente directe · espace
+membres et produits digitaux. Restent hors périmètre : formations en ligne KAILI
+Institut · CRM.
 
 L'architecture est prête à les accueillir sans refonte.
 

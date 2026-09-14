@@ -58,6 +58,13 @@ onglet **Detail** (`context`, `responsibilities[]`, `resultsValidated`,
 > `resultsValidated` est coché : aucun résultat non vérifié ne peut être publié
 > par inadvertance.
 
+### `subscribers` — Abonnés newsletter
+
+`email`_ (unique), `locale`_ (`fr` | `de` | `en`), `status`\_ (`pending` |
+`confirmed` | `unsubscribed`), `consentAt`, `confirmedAt`, `unsubscribedAt`,
+`source`. Création uniquement par l'API publique ; aucun jeton stocké (liens signés
+HMAC avec `PAYLOAD_SECRET`). Purge : `pending` > 7 jours, `unsubscribed` > 30 jours.
+
 ### `insights` — Articles RK Insights
 
 `title`_, `slug`_, `excerpt`_, `coverImage`, `category`_, `author`,
@@ -66,6 +73,7 @@ onglet **Article** (`content`\*), onglet **Relations** (`relatedExpertise`,
 `relatedInsights`, `relatedBooks`), **SEO**.
 Brouillons + **programmation de publication** (`schedulePublish`) + aperçu.
 Le site n'affiche que les articles publiés dont `publishedAt` est passé.
+Newsletter : `sendNewsletter` (case à cocher), `newsletterSentAt` et `newsletterRecipients` (lecture seule) — l'article est envoyé une seule fois aux abonnés confirmés quand il est publié et que sa date est atteinte.
 
 ### `categories` — Catégories éditoriales
 
@@ -189,6 +197,8 @@ revalidation des pages (`revalidatePath`).
 | Modifier l'apparence du site      | ❌     | ❌     | ✅    |
 | Lire les demandes de contact      | ❌     | ✅     | ✅    |
 | Supprimer une demande de contact  | ❌     | ❌     | ✅    |
+| Voir les abonnés newsletter       | ❌     | ✅     | ✅    |
+| Modifier / supprimer un abonné    | ❌     | ❌     | ✅    |
 | Gérer les comptes et les rôles    | ❌     | ❌     | ✅    |
 
 Implémentation : `src/payload/access.ts`.

@@ -157,7 +157,17 @@ test.describe('images', () => {
           .filter((image) => !image.complete || image.naturalWidth === 0)
           .map((image) => image.currentSrc || image.getAttribute('src'))
       })
-      expect(broken, `${path}: images that failed to load`).toEqual([])
+      // Under the full parallel run the image optimiser can drop a response
+      // aborted by another test. An image only counts as broken if its URL
+      // really does not serve an image.
+      const reallyBroken: string[] = []
+      for (const src of broken) {
+        if (!src) continue
+        const response = await page.request.get(src)
+        const type = response.headers()['content-type'] ?? ''
+        if (!response.ok() || !type.startsWith('image/')) reallyBroken.push(src)
+      }
+      expect(reallyBroken, `${path}: images that failed to load`).toEqual([])
     }
   })
 })

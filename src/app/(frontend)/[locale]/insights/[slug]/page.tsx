@@ -24,6 +24,7 @@ import {
   getInsights,
   getSiteSettings,
 } from '@/lib/cms'
+import { emailReady } from '@/lib/email-layout'
 import { formatDate, isoDate } from '@/lib/format'
 import { absoluteUrl, metaDescription, pageMetadata } from '@/lib/seo'
 
@@ -72,6 +73,7 @@ export default async function InsightDetailPage({ params }: Props) {
   const t = await getTranslations('insights')
   const nav = await getTranslations('nav')
   const common = await getTranslations('common')
+  const newsletter = await getTranslations('newsletter')
   const [allArticles, expertise, settings] = await Promise.all([
     getInsights(locale),
     getExpertiseAreas(locale),
@@ -176,6 +178,25 @@ export default async function InsightDetailPage({ params }: Props) {
               <div className="mt-12 border-t border-line pt-8">
                 <ShareLinks url={url} title={article.title} />
               </div>
+
+              {emailReady() && !isPreview ? (
+                <aside
+                  aria-labelledby="article-newsletter"
+                  className="mt-10 rounded-card border border-line-accent bg-surface-accent p-6"
+                >
+                  <h2 id="article-newsletter" className="text-lg font-semibold text-primary">
+                    {newsletter('articleCta.title')}
+                  </h2>
+                  <p className="mt-2 text-sm text-secondary">{newsletter('articleCta.body')}</p>
+                  <Link
+                    href="/newsletter"
+                    className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-accent-text underline-offset-4 hover:underline"
+                  >
+                    {newsletter('articleCta.link')}
+                    <Icon name="arrow" className="size-4" />
+                  </Link>
+                </aside>
+              ) : null}
 
               {relatedExpertise.length > 0 ? (
                 <section aria-labelledby="article-expertise" className="mt-10">

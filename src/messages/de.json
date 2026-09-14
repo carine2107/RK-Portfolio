@@ -340,6 +340,70 @@
       "notice": "Video bereitgestellt von {provider}. Vor dem Abspielen wird nichts von {provider} geladen; danach erhält {provider} Ihre IP-Adresse."
     }
   },
+  "newsletter": {
+    "meta": {
+      "title": "RK Insights Newsletter",
+      "description": "Erhalten Sie neue RK Insights Analysen von Romial Kenmogne zu Finanzen, Business und Investitionen. Anmeldung mit E-Mail-Bestätigung, Abmeldung mit einem Klick."
+    },
+    "title": "RK Insights Newsletter",
+    "lead": "Neue Analysen zu Finanzen, Unternehmensentwicklung und Investitionen direkt in Ihr Postfach.",
+    "point1": "Eine E-Mail nur, wenn ein neuer Artikel erscheint.",
+    "point2": "In Ihrer Sprache: Französisch, Deutsch oder Englisch.",
+    "point3": "Abmeldung mit einem Klick aus jeder E-Mail.",
+    "formTitle": "Anmelden",
+    "emailLabel": "E-Mail-Adresse für den Newsletter",
+    "emailPlaceholder": "sie@beispiel.de",
+    "consent": "Ich möchte den RK Insights Newsletter erhalten und habe die <link>Datenschutzerklärung</link> gelesen.",
+    "submit": "Anmelden",
+    "submitting": "Anmeldung …",
+    "success": {
+      "title": "Bitte prüfen Sie Ihr Postfach",
+      "body": "Falls diese Adresse noch nicht angemeldet ist, wurde soeben eine Bestätigungs-E-Mail gesendet. Klicken Sie auf den Link (48 Stunden gültig), um die Anmeldung abzuschließen."
+    },
+    "errors": {
+      "email": "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
+      "consent": "Bitte stimmen Sie dem Erhalt des Newsletters zu.",
+      "rateLimit": "Zu viele Versuche. Bitte versuchen Sie es in einigen Minuten erneut.",
+      "unavailable": "Die Newsletter-Anmeldung wird in Kürze freigeschaltet.",
+      "server": "Die Anmeldung ist fehlgeschlagen. Bitte versuchen Sie es später erneut."
+    },
+    "unavailable": "Die Newsletter-Anmeldung wird in Kürze freigeschaltet.",
+    "footerTitle": "RK Insights Newsletter",
+    "footerBody": "Neue Analysen bei Erscheinen. Abmeldung mit einem Klick.",
+    "articleCta": {
+      "title": "Die nächsten Artikel erhalten",
+      "body": "Eine E-Mail bei jeder neuen RK Insights Analyse, in Ihrer Sprache.",
+      "link": "Newsletter abonnieren"
+    },
+    "readInsights": "RK Insights lesen",
+    "subscribeAgain": "Erneut anmelden",
+    "confirm": {
+      "title": "Bestätigung der Anmeldung",
+      "pending": "Bestätigung läuft …",
+      "done": {
+        "title": "Anmeldung bestätigt",
+        "body": "Vielen Dank! Sie erhalten die nächsten RK Insights Artikel."
+      },
+      "invalid": {
+        "title": "Ungültiger oder abgelaufener Link",
+        "body": "Dieser Bestätigungslink ist nicht mehr gültig. Melden Sie sich erneut an, um einen neuen zu erhalten."
+      }
+    },
+    "unsubscribe": {
+      "title": "Vom Newsletter abmelden",
+      "body": "Sie erhalten keine RK Insights E-Mails mehr.",
+      "button": "Abmeldung bestätigen",
+      "pending": "Abmeldung läuft …",
+      "done": {
+        "title": "Abmeldung bestätigt",
+        "body": "Ihre Adresse wurde aus dem Newsletter entfernt. Sie wird innerhalb von 30 Tagen endgültig gelöscht."
+      },
+      "invalid": {
+        "title": "Ungültiger Link",
+        "body": "Dieser Abmeldelink ist nicht gültig. Bitte verwenden Sie den Link aus der letzten E-Mail."
+      }
+    }
+  },
   "contact": {
     "meta": {
       "title": "Zusammenarbeiten — Kontakt",

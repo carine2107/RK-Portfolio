@@ -1,8 +1,7 @@
 import 'server-only'
 
-import nodemailer from 'nodemailer'
-
 import type { Locale } from '@/i18n/routing'
+import { createTransport, escapeHtml, wrapHtml } from '@/lib/email-layout'
 import { emailConfig, siteUrl } from '@/lib/env'
 
 export type ContactEmailData = {
@@ -101,9 +100,6 @@ const templates: Record<Locale, Template> = {
   },
 }
 
-const escapeHtml = (value: string): string =>
-  value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
-
 function detailsRows(data: ContactEmailData, template: Template): [string, string][] {
   return [
     [template.labels.name, data.name],
@@ -114,18 +110,6 @@ function detailsRows(data: ContactEmailData, template: Template): [string, strin
     [template.labels.subject, data.subject],
     [template.labels.message, data.message],
   ].filter(([, value]) => value !== '') as [string, string][]
-}
-
-function wrapHtml(title: string, body: string, footer: string): string {
-  return `<!doctype html><html><body style="margin:0;background:#f3f5f7;padding:24px;font-family:Helvetica,Arial,sans-serif;color:#10233f">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:640px;margin:0 auto;background:#ffffff;border:1px solid #dfe4ea;border-radius:8px">
-<tr><td style="padding:28px 28px 12px;border-bottom:2px solid #b8924b">
-<p style="margin:0;font-size:13px;letter-spacing:2px;color:#6f571f">ROMIAL KENMOGNE</p>
-<h1 style="margin:8px 0 0;font-size:20px;font-weight:600">${escapeHtml(title)}</h1>
-</td></tr>
-<tr><td style="padding:24px 28px">${body}</td></tr>
-<tr><td style="padding:16px 28px 24px;border-top:1px solid #dfe4ea;color:#465568;font-size:12px">${escapeHtml(footer)}</td></tr>
-</table></body></html>`
 }
 
 function detailsHtml(rows: [string, string][]): string {
@@ -146,15 +130,6 @@ function detailsText(rows: [string, string][]): string {
 /* -------------------------------------------------------------------------- */
 /* Sending                                                                    */
 /* -------------------------------------------------------------------------- */
-
-function createTransport() {
-  return nodemailer.createTransport({
-    host: emailConfig.host,
-    port: emailConfig.port,
-    secure: emailConfig.secure,
-    ...(emailConfig.user ? { auth: { user: emailConfig.user, pass: emailConfig.password } } : {}),
-  })
-}
 
 /**
  * Sends the owner notification and the visitor confirmation.

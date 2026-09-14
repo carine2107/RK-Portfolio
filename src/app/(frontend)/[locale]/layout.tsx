@@ -12,6 +12,7 @@ import { ThemeScript } from '@/components/theme/ThemeScript'
 import { Notice } from '@/components/ui/Notices'
 import { locales, routing, type Locale } from '@/i18n/routing'
 import { getAppearance, getCms, getContentSource, getSiteSettings } from '@/lib/cms'
+import { emailReady } from '@/lib/email-layout'
 import { cmsEnabled, isProduction, siteUrl } from '@/lib/env'
 
 import '../globals.css'
@@ -143,7 +144,7 @@ export default async function LocaleLayout({
           <main id="main-content" className="flex-1">
             {children}
           </main>
-          <Footer locale={locale as Locale} settings={settings} />
+          <Footer locale={locale as Locale} settings={settings} newsletterEnabled={emailReady()} />
           <Analytics />
         </NextIntlClientProvider>
       </body>

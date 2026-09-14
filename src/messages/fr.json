@@ -340,6 +340,70 @@
       "notice": "Vidéo hébergée par {provider}. Rien n’est chargé depuis {provider} avant que vous ne lanciez la lecture ; ensuite, {provider} reçoit votre adresse IP."
     }
   },
+  "newsletter": {
+    "meta": {
+      "title": "Newsletter RK Insights",
+      "description": "Recevez les nouvelles analyses RK Insights de Romial Kenmogne sur la finance, le business et l’investissement. Inscription confirmée par e-mail, désinscription en un clic."
+    },
+    "title": "Newsletter RK Insights",
+    "lead": "Les nouvelles analyses sur la finance, le développement des entreprises et l’investissement, directement dans votre boîte e-mail.",
+    "point1": "Un e-mail seulement quand un nouvel article est publié.",
+    "point2": "Dans votre langue : français, allemand ou anglais.",
+    "point3": "Désinscription en un clic depuis chaque e-mail.",
+    "formTitle": "S’inscrire",
+    "emailLabel": "Adresse e-mail pour la newsletter",
+    "emailPlaceholder": "vous@exemple.com",
+    "consent": "J’accepte de recevoir la newsletter RK Insights et j’ai lu la <link>politique de confidentialité</link>.",
+    "submit": "S’inscrire",
+    "submitting": "Inscription…",
+    "success": {
+      "title": "Vérifiez votre boîte e-mail",
+      "body": "Si cette adresse n’est pas encore inscrite, un e-mail de confirmation vient d’être envoyé. Cliquez sur son lien (valable 48 heures) pour valider l’inscription."
+    },
+    "errors": {
+      "email": "Veuillez saisir une adresse e-mail valide.",
+      "consent": "Veuillez accepter de recevoir la newsletter.",
+      "rateLimit": "Trop de tentatives. Merci de réessayer dans quelques minutes.",
+      "unavailable": "L’inscription à la newsletter ouvrira prochainement.",
+      "server": "L’inscription n’a pas pu aboutir. Merci de réessayer plus tard."
+    },
+    "unavailable": "L’inscription à la newsletter ouvrira prochainement.",
+    "footerTitle": "Newsletter RK Insights",
+    "footerBody": "Les nouvelles analyses, à leur publication. Désinscription en un clic.",
+    "articleCta": {
+      "title": "Recevoir les prochains articles",
+      "body": "Un e-mail à chaque nouvelle analyse RK Insights, dans votre langue.",
+      "link": "S’inscrire à la newsletter"
+    },
+    "readInsights": "Lire RK Insights",
+    "subscribeAgain": "S’inscrire à nouveau",
+    "confirm": {
+      "title": "Confirmation de l’inscription",
+      "pending": "Confirmation en cours…",
+      "done": {
+        "title": "Inscription confirmée",
+        "body": "Merci ! Vous recevrez les prochains articles RK Insights."
+      },
+      "invalid": {
+        "title": "Lien invalide ou expiré",
+        "body": "Ce lien de confirmation n’est plus valable. Inscrivez-vous à nouveau pour en recevoir un nouveau."
+      }
+    },
+    "unsubscribe": {
+      "title": "Se désinscrire de la newsletter",
+      "body": "Vous ne recevrez plus d’e-mails RK Insights.",
+      "button": "Confirmer la désinscription",
+      "pending": "Désinscription en cours…",
+      "done": {
+        "title": "Désinscription confirmée",
+        "body": "Votre adresse a été retirée de la newsletter. Elle sera définitivement supprimée sous 30 jours."
+      },
+      "invalid": {
+        "title": "Lien invalide",
+        "body": "Ce lien de désinscription n’est pas valable. Utilisez le lien du dernier e-mail reçu."
+      }
+    }
+  },
   "contact": {
     "meta": {
       "title": "Travailler avec moi — Contact",

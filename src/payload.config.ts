@@ -13,6 +13,7 @@ import { Books } from './payload/collections/Books'
 import { Businesses } from './payload/collections/Businesses'
 import { Engagements } from './payload/collections/Engagements'
 import { ContactSubmissions } from './payload/collections/ContactSubmissions'
+import { Subscribers } from './payload/collections/Subscribers'
 import { Credentials } from './payload/collections/Credentials'
 import { Documents } from './payload/collections/Documents'
 import { ExpertiseAreas } from './payload/collections/ExpertiseAreas'
@@ -79,6 +80,7 @@ export default buildConfig({
     Media,
     Documents,
     ContactSubmissions,
+    Subscribers,
     Users,
   ],
   globals: [SiteSettings, Appearance, HomePage, AboutPage],

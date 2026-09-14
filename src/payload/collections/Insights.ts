@@ -1,5 +1,5 @@
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
-import type { CollectionConfig } from 'payload'
+import type { CollectionAfterChangeHook, CollectionConfig } from 'payload'
 
 import { isAdminOrEditor, publishedOrSignedIn } from '../access'
 import { placeholderField, publishedAtField, seoField, slugField } from '../fields/shared'
@@ -58,6 +58,28 @@ function countWords(node: unknown): number {
   return total
 }
 
+/**
+ * Sends the article to newsletter subscribers once it is published with
+ * "Send to subscribers" ticked. Not awaited — saving must not wait for the
+ * e-mails — and started after a short delay so the saved version is committed.
+ * Scheduled articles are picked up by the background job when their date arrives.
+ */
+const newsletterOnPublish: CollectionAfterChangeHook = ({ doc, context, req }) => {
+  if (context?.newsletterClaim) return doc
+  if (!doc?.sendNewsletter || doc.newsletterSentAt || doc._status !== 'published') return doc
+  const payload = req.payload
+  setTimeout(() => {
+    import('../../lib/newsletter')
+      .then(({ sendArticleNewsletter }) => sendArticleNewsletter(payload, doc.id))
+      .catch((error: unknown) =>
+        payload.logger.error(
+          `[newsletter] Delivery failed: ${error instanceof Error ? error.message : 'unknown error'}`,
+        ),
+      )
+  }, 3000)
+  return doc
+}
+
 export const Insights: CollectionConfig = {
   slug: 'insights',
   labels: {
@@ -89,6 +111,7 @@ export const Insights: CollectionConfig = {
     delete: isAdminOrEditor,
   },
   hooks: {
+    afterChange: [newsletterOnPublish],
     beforeChange: [
       ({ data }) => {
         const words = countWords(data?.content)
@@ -181,6 +204,45 @@ export const Insights: CollectionConfig = {
           'Wird beim Speichern automatisch berechnet (Minuten).',
           'Computed on save (minutes).',
         ),
+      },
+    },
+    {
+      name: 'sendNewsletter',
+      type: 'checkbox',
+      label: tr(
+        'Envoyer aux abonnés de la newsletter',
+        'An Newsletter-Abonnenten senden',
+        'Send to newsletter subscribers',
+      ),
+      defaultValue: false,
+      admin: {
+        position: 'sidebar',
+        description: tr(
+          'À la publication (ou à la date programmée), l’article est envoyé une seule fois aux abonnés confirmés, dans leur langue.',
+          'Bei Veröffentlichung (oder zum geplanten Datum) wird der Artikel einmalig an bestätigte Abonnenten in ihrer Sprache gesendet.',
+          'On publication (or at the scheduled date) the article is sent once to confirmed subscribers, in their language.',
+        ),
+      },
+    },
+    {
+      name: 'newsletterSentAt',
+      type: 'date',
+      label: tr('Envoyé aux abonnés le', 'An Abonnenten gesendet am', 'Sent to subscribers at'),
+      admin: {
+        position: 'sidebar',
+        readOnly: true,
+        date: { pickerAppearance: 'dayAndTime' },
+        condition: (data) => Boolean(data?.newsletterSentAt),
+      },
+    },
+    {
+      name: 'newsletterRecipients',
+      type: 'number',
+      label: tr('Destinataires', 'Empfänger', 'Recipients'),
+      admin: {
+        position: 'sidebar',
+        readOnly: true,
+        condition: (data) => Boolean(data?.newsletterSentAt),
       },
     },
     placeholderField,

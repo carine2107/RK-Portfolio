@@ -79,6 +79,7 @@ export interface Config {
     media: Media;
     documents: Document;
     'contact-submissions': ContactSubmission;
+    subscribers: Subscriber;
     users: User;
     'payload-kv': PayloadKv;
     'payload-jobs': PayloadJob;
@@ -100,6 +101,7 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     documents: DocumentsSelect<false> | DocumentsSelect<true>;
     'contact-submissions': ContactSubmissionsSelect<false> | ContactSubmissionsSelect<true>;
+    subscribers: SubscribersSelect<false> | SubscribersSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
@@ -684,6 +686,12 @@ export interface Insight {
    * Computed on save (minutes).
    */
   readingTime?: number | null;
+  /**
+   * On publication (or at the scheduled date) the article is sent once to confirmed subscribers, in their language.
+   */
+  sendNewsletter?: boolean | null;
+  newsletterSentAt?: string | null;
+  newsletterRecipients?: number | null;
   /**
    * Checked for the starter content delivered with the website. Uncheck once the entry contains validated information.
    */
@@ -1352,6 +1360,27 @@ export interface ContactSubmission {
   createdAt: string;
 }
 /**
+ * RK Insights newsletter sign-ups, confirmed by e-mail (double opt-in). Only "Confirmed" subscribers receive articles. Unconfirmed sign-ups are deleted after 7 days, unsubscribed addresses after 30 days.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "subscribers".
+ */
+export interface Subscriber {
+  id: number;
+  email: string;
+  locale: 'fr' | 'de' | 'en';
+  /**
+   * Set to "Unsubscribed" to remove an address on request.
+   */
+  status: 'pending' | 'confirmed' | 'unsubscribed';
+  consentAt?: string | null;
+  confirmedAt?: string | null;
+  unsubscribedAt?: string | null;
+  source?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
@@ -1546,6 +1575,10 @@ export interface PayloadLockedDocument {
         value: number | ContactSubmission;
       } | null)
     | ({
+        relationTo: 'subscribers';
+        value: number | Subscriber;
+      } | null)
+    | ({
         relationTo: 'users';
         value: number | User;
       } | null);
@@ -1703,6 +1736,9 @@ export interface InsightsSelect<T extends boolean = true> {
   publishedAt?: T;
   featured?: T;
   readingTime?: T;
+  sendNewsletter?: T;
+  newsletterSentAt?: T;
+  newsletterRecipients?: T;
   isPlaceholder?: T;
   content?: T;
   relatedExpertise?: T;
@@ -2006,6 +2042,21 @@ export interface ContactSubmissionsSelect<T extends boolean = true> {
   status?: T;
   emailDelivered?: T;
   consentAt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "subscribers_select".
+ */
+export interface SubscribersSelect<T extends boolean = true> {
+  email?: T;
+  locale?: T;
+  status?: T;
+  consentAt?: T;
+  confirmedAt?: T;
+  unsubscribedAt?: T;
+  source?: T;
   updatedAt?: T;
   createdAt?: T;
 }
