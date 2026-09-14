@@ -74,6 +74,7 @@ export interface Config {
     books: Book;
     businesses: Business;
     engagements: Engagement;
+    campaigns: Campaign;
     credentials: Credential;
     'legal-pages': LegalPage;
     media: Media;
@@ -101,6 +102,7 @@ export interface Config {
     books: BooksSelect<false> | BooksSelect<true>;
     businesses: BusinessesSelect<false> | BusinessesSelect<true>;
     engagements: EngagementsSelect<false> | EngagementsSelect<true>;
+    campaigns: CampaignsSelect<false> | CampaignsSelect<true>;
     credentials: CredentialsSelect<false> | CredentialsSelect<true>;
     'legal-pages': LegalPagesSelect<false> | LegalPagesSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
@@ -1248,6 +1250,299 @@ export interface Engagement {
   _status?: ('draft' | 'published') | null;
 }
 /**
+ * Landing pages dedicated to a book, a programme or a mission, built from blocks. Address: /en/campaigns/<slug>. They are not in the menu: share their link (social media, e-mail, ads).
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "campaigns".
+ */
+export interface Campaign {
+  id: number;
+  title: string;
+  /**
+   * URL segment. Leave empty to generate it from the title.
+   */
+  slug: string;
+  /**
+   * Used as the description for search engines and shared links.
+   */
+  summary: string;
+  layout?:
+    | (
+        | {
+            eyebrow?: string | null;
+            /**
+             * Empty = page title. Use as the first block: it is the main heading (H1).
+             */
+            heading?: string | null;
+            lead?: string | null;
+            image?: (number | null) | Media;
+            /**
+             * Site page (e.g. /contact, /books/my-book, /products) or external https:// address. Leave empty for no button.
+             */
+            cta?: {
+              label?: string | null;
+              href?: string | null;
+            };
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'hero';
+          }
+        | {
+            heading?: string | null;
+            content: {
+              root: {
+                type: string;
+                children: {
+                  type: any;
+                  version: number;
+                  [k: string]: unknown;
+                }[];
+                direction: ('ltr' | 'rtl') | null;
+                format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                indent: number;
+                version: number;
+              };
+              [k: string]: unknown;
+            };
+            image?: (number | null) | Media;
+            imagePosition?: ('right' | 'left') | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'text';
+          }
+        | {
+            heading?: string | null;
+            intro?: string | null;
+            items?:
+              | {
+                  title: string;
+                  description?: string | null;
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'features';
+          }
+        | {
+            heading?: string | null;
+            videoUrl: string;
+            poster?: (number | null) | Media;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'video';
+          }
+        | {
+            heading?: string | null;
+            books: (number | Book)[];
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'books';
+          }
+        | {
+            heading?: string | null;
+            products: (number | Product)[];
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'products';
+          }
+        | {
+            heading?: string | null;
+            items?:
+              | {
+                  question: string;
+                  answer: string;
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'faq';
+          }
+        | {
+            heading: string;
+            body?: string | null;
+            /**
+             * Site page (e.g. /contact, /books/my-book, /products) or external https:// address. Leave empty for no button.
+             */
+            primary?: {
+              label?: string | null;
+              href?: string | null;
+            };
+            /**
+             * Site page (e.g. /contact, /books/my-book, /products) or external https:// address. Leave empty for no button.
+             */
+            secondary?: {
+              label?: string | null;
+              href?: string | null;
+            };
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'cta';
+          }
+        | {
+            /**
+             * RK Insights form (double opt-in). Hidden automatically while e-mail delivery is not configured.
+             */
+            heading?: string | null;
+            body?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'newsletter';
+          }
+      )[]
+    | null;
+  /**
+   * Optional overrides. When empty, the title and summary of the entry are used.
+   */
+  seo?: {
+    /**
+     * Recommended: 50–60 characters.
+     */
+    title?: string | null;
+    /**
+     * Recommended: 120–160 characters.
+     */
+    description?: string | null;
+    /**
+     * Social sharing image (1200×630). Falls back to the site default.
+     */
+    image?: (number | null) | Media;
+    /**
+     * Exclude this entry from search engines and from the sitemap.
+     */
+    noindex?: boolean | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * E-books, KAILI Institut courses and resources. Gross prices in EUR. Buying unlocks the product in the buyer’s member area (sign-in by e-mail link). Sold only when the shop is open and payments are configured.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "products".
+ */
+export interface Product {
+  id: number;
+  title: string;
+  /**
+   * URL segment. Leave empty to generate it from the title.
+   */
+  slug: string;
+  type: 'ebook' | 'course' | 'resource';
+  price: number;
+  available?: boolean | null;
+  summary: string;
+  cover?: (number | null) | Media;
+  languages?: ('fr' | 'de' | 'en')[] | null;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  ebookPdf?: (number | null) | ProtectedFile;
+  ebookEpub?: (number | null) | ProtectedFile;
+  resourceFile?: (number | null) | ProtectedFile;
+  /**
+   * Module and lesson titles show on the public page (syllabus); content, video and attachment only for buyers.
+   */
+  modules?:
+    | {
+        title: string;
+        lessons?:
+          | {
+              title: string;
+              durationMinutes?: number | null;
+              content?: {
+                root: {
+                  type: string;
+                  children: {
+                    type: any;
+                    version: number;
+                    [k: string]: unknown;
+                  }[];
+                  direction: ('ltr' | 'rtl') | null;
+                  format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                  indent: number;
+                  version: number;
+                };
+                [k: string]: unknown;
+              } | null;
+              videoUrl?: string | null;
+              attachment?: (number | null) | ProtectedFile;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  featured?: boolean | null;
+  /**
+   * Ascending display order.
+   */
+  order?: number | null;
+  /**
+   * Checked for the starter content delivered with the website. Uncheck once the entry contains validated information.
+   */
+  isPlaceholder?: boolean | null;
+  /**
+   * Optional overrides. When empty, the title and summary of the entry are used.
+   */
+  seo?: {
+    /**
+     * Recommended: 50–60 characters.
+     */
+    title?: string | null;
+    /**
+     * Recommended: 120–160 characters.
+     */
+    description?: string | null;
+    /**
+     * Social sharing image (1200×630). Falls back to the site default.
+     */
+    image?: (number | null) | Media;
+    /**
+     * Exclude this entry from search engines and from the sitemap.
+     */
+    noindex?: boolean | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * Sold files (PDF, EPUB, ZIP, Word, Excel, PowerPoint). Never publicly accessible: only signed-in buyers can download them.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "protected-files".
+ */
+export interface ProtectedFile {
+  id: number;
+  title: string;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
  * Diplomas and certifications. Only add entries that can be evidenced — never approximate a title.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1448,131 +1743,6 @@ export interface Order {
   note?: string | null;
   updatedAt: string;
   createdAt: string;
-}
-/**
- * E-books, KAILI Institut courses and resources. Gross prices in EUR. Buying unlocks the product in the buyer’s member area (sign-in by e-mail link). Sold only when the shop is open and payments are configured.
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "products".
- */
-export interface Product {
-  id: number;
-  title: string;
-  /**
-   * URL segment. Leave empty to generate it from the title.
-   */
-  slug: string;
-  type: 'ebook' | 'course' | 'resource';
-  price: number;
-  available?: boolean | null;
-  summary: string;
-  cover?: (number | null) | Media;
-  languages?: ('fr' | 'de' | 'en')[] | null;
-  description?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  ebookPdf?: (number | null) | ProtectedFile;
-  ebookEpub?: (number | null) | ProtectedFile;
-  resourceFile?: (number | null) | ProtectedFile;
-  /**
-   * Module and lesson titles show on the public page (syllabus); content, video and attachment only for buyers.
-   */
-  modules?:
-    | {
-        title: string;
-        lessons?:
-          | {
-              title: string;
-              durationMinutes?: number | null;
-              content?: {
-                root: {
-                  type: string;
-                  children: {
-                    type: any;
-                    version: number;
-                    [k: string]: unknown;
-                  }[];
-                  direction: ('ltr' | 'rtl') | null;
-                  format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-                  indent: number;
-                  version: number;
-                };
-                [k: string]: unknown;
-              } | null;
-              videoUrl?: string | null;
-              attachment?: (number | null) | ProtectedFile;
-              id?: string | null;
-            }[]
-          | null;
-        id?: string | null;
-      }[]
-    | null;
-  featured?: boolean | null;
-  /**
-   * Ascending display order.
-   */
-  order?: number | null;
-  /**
-   * Checked for the starter content delivered with the website. Uncheck once the entry contains validated information.
-   */
-  isPlaceholder?: boolean | null;
-  /**
-   * Optional overrides. When empty, the title and summary of the entry are used.
-   */
-  seo?: {
-    /**
-     * Recommended: 50–60 characters.
-     */
-    title?: string | null;
-    /**
-     * Recommended: 120–160 characters.
-     */
-    description?: string | null;
-    /**
-     * Social sharing image (1200×630). Falls back to the site default.
-     */
-    image?: (number | null) | Media;
-    /**
-     * Exclude this entry from search engines and from the sitemap.
-     */
-    noindex?: boolean | null;
-  };
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * Sold files (PDF, EPUB, ZIP, Word, Excel, PowerPoint). Never publicly accessible: only signed-in buyers can download them.
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "protected-files".
- */
-export interface ProtectedFile {
-  id: number;
-  title: string;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
 }
 /**
  * Accounts of digital product buyers, created at their first purchase. No password: sign-in by e-mail link. When deleting an account on request, delete its accesses too.
@@ -1788,6 +1958,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'engagements';
         value: number | Engagement;
+      } | null)
+    | ({
+        relationTo: 'campaigns';
+        value: number | Campaign;
       } | null)
     | ({
         relationTo: 'credentials';
@@ -2128,6 +2302,138 @@ export interface EngagementsSelect<T extends boolean = true> {
   videoUrl?: T;
   externalUrl?: T;
   externalLabel?: T;
+  seo?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+        noindex?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "campaigns_select".
+ */
+export interface CampaignsSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  summary?: T;
+  layout?:
+    | T
+    | {
+        hero?:
+          | T
+          | {
+              eyebrow?: T;
+              heading?: T;
+              lead?: T;
+              image?: T;
+              cta?:
+                | T
+                | {
+                    label?: T;
+                    href?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        text?:
+          | T
+          | {
+              heading?: T;
+              content?: T;
+              image?: T;
+              imagePosition?: T;
+              id?: T;
+              blockName?: T;
+            };
+        features?:
+          | T
+          | {
+              heading?: T;
+              intro?: T;
+              items?:
+                | T
+                | {
+                    title?: T;
+                    description?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        video?:
+          | T
+          | {
+              heading?: T;
+              videoUrl?: T;
+              poster?: T;
+              id?: T;
+              blockName?: T;
+            };
+        books?:
+          | T
+          | {
+              heading?: T;
+              books?: T;
+              id?: T;
+              blockName?: T;
+            };
+        products?:
+          | T
+          | {
+              heading?: T;
+              products?: T;
+              id?: T;
+              blockName?: T;
+            };
+        faq?:
+          | T
+          | {
+              heading?: T;
+              items?:
+                | T
+                | {
+                    question?: T;
+                    answer?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        cta?:
+          | T
+          | {
+              heading?: T;
+              body?: T;
+              primary?:
+                | T
+                | {
+                    label?: T;
+                    href?: T;
+                  };
+              secondary?:
+                | T
+                | {
+                    label?: T;
+                    href?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        newsletter?:
+          | T
+          | {
+              heading?: T;
+              body?: T;
+              id?: T;
+              blockName?: T;
+            };
+      };
   seo?:
     | T
     | {
@@ -3040,6 +3346,10 @@ export interface TaskSchedulePublish {
       | ({
           relationTo: 'engagements';
           value: number | Engagement;
+        } | null)
+      | ({
+          relationTo: 'campaigns';
+          value: number | Campaign;
         } | null);
     global?: string | null;
     user?: (number | null) | User;

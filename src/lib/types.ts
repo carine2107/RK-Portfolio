@@ -111,6 +111,57 @@ export type ProductView = {
   seo: SeoView
 }
 
+/** Button of a campaign block; null when not filled in or invalid. */
+export type CampaignLink = { label: string; href: string; external: boolean } | null
+
+export type CampaignBlock =
+  | {
+      id: string
+      type: 'hero'
+      eyebrow: string
+      heading: string
+      lead: string
+      image: ImageView
+      cta: CampaignLink
+    }
+  | {
+      id: string
+      type: 'text'
+      heading: string
+      content: RichContent
+      image: ImageView
+      imagePosition: 'left' | 'right'
+    }
+  | {
+      id: string
+      type: 'features'
+      heading: string
+      intro: string
+      items: { title: string; description: string }[]
+    }
+  | { id: string; type: 'video'; heading: string; videoUrl: string; poster: ImageView }
+  | { id: string; type: 'books'; heading: string; bookIds: string[] }
+  | { id: string; type: 'products'; heading: string; productIds: string[] }
+  | { id: string; type: 'faq'; heading: string; items: { question: string; answer: string }[] }
+  | {
+      id: string
+      type: 'cta'
+      heading: string
+      body: string
+      primary: CampaignLink
+      secondary: CampaignLink
+    }
+  | { id: string; type: 'newsletter'; heading: string; body: string }
+
+export type CampaignView = {
+  id: string
+  slug: string
+  title: string
+  summary: string
+  blocks: CampaignBlock[]
+  seo: SeoView
+}
+
 export type CategoryView = {
   id: string
   slug: string

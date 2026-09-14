@@ -406,7 +406,42 @@ présente dans le menu et le pied de page.
 
 ---
 
-## 14. Demandes de contact
+## 13 bis. Pages de campagne
+
+Une page de campagne est une page d’atterrissage dédiée à **un livre, une formation ou
+une mission** : on la partage sur les réseaux, par e-mail ou dans une publicité. Elle
+n’apparaît pas dans le menu du site.
+
+**Pages → Pages de campagne → Créer**
+
+1. **Titre de la page** et **résumé** (utilisé par Google et lors des partages).
+2. Onglet **Contenu** : ajouter des blocs avec **Ajouter un bloc**, puis les ordonner par
+   glisser-déposer.
+
+| Bloc                       | Usage                                                                          |
+| -------------------------- | ------------------------------------------------------------------------------ |
+| **En-tête**                | À mettre en premier : surtitre, grand titre, accroche, image et bouton         |
+| **Texte**                  | Paragraphe mis en forme, avec une image à gauche ou à droite                   |
+| **Points clés**            | 1 à 12 cartes (titre + texte) : bénéfices, programme, public visé              |
+| **Vidéo**                  | Lien YouTube ou Vimeo, chargé seulement quand le visiteur clique               |
+| **Livres**                 | Choisir un ou plusieurs livres publiés                                         |
+| **Produits numériques**    | Choisir des e-books, formations ou ressources publiés                          |
+| **Questions fréquentes**   | Questions / réponses dépliables (aussi comprises par Google)                   |
+| **Appel à l’action**       | Bande sombre avec un titre, un texte et un ou deux boutons                     |
+| **Inscription newsletter** | Formulaire RK Insights (masqué tant que l’envoi d’e-mails n’est pas configuré) |
+
+**Boutons** : _Texte du bouton_ + _Destination_. La destination est soit une page du site
+qui commence par `/` (par exemple `/contact?type=speaking`, `/books`, `/products`), soit
+une adresse complète en `https://` (ouverte dans un nouvel onglet). Le site ajoute
+lui-même la langue. Une adresse incorrecte est refusée à l’enregistrement.
+
+3. Traduire : changer la langue de contenu en haut de l’écran et remplir les textes (titre,
+   slug, résumé et textes des blocs) en français et en allemand.
+4. **Publier** (ou programmer la publication). L’adresse à partager est
+   `https://<domaine>/fr/campaigns/<slug>` (remplacer `fr` par `de` ou `en`).
+
+Pour une campagne temporaire : cocher **Exclure des moteurs de recherche** dans l’onglet
+Référencement, puis dépublier la page à la fin de la campagne.
 
 **Administration → Demandes de contact**
 

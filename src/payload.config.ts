@@ -12,6 +12,7 @@ import sharp from 'sharp'
 import { Books } from './payload/collections/Books'
 import { Businesses } from './payload/collections/Businesses'
 import { Engagements } from './payload/collections/Engagements'
+import { Campaigns } from './payload/collections/Campaigns'
 import { ContactSubmissions } from './payload/collections/ContactSubmissions'
 import { Subscribers } from './payload/collections/Subscribers'
 import { Orders } from './payload/collections/Orders'
@@ -81,6 +82,7 @@ export default buildConfig({
     Books,
     Businesses,
     Engagements,
+    Campaigns,
     Credentials,
     LegalPages,
     Media,

@@ -18,6 +18,7 @@ import {
   type Localized,
 } from '@/content/starter'
 import type { Locale } from '@/i18n/routing'
+import { resolveCampaignLink } from '@/lib/campaign-link'
 import { countryName, isCountryCode } from '@/lib/countries'
 import { cmsEnabled, siteUrl } from '@/lib/env'
 import { paymentsReady } from '@/lib/shop-config'
@@ -37,6 +38,9 @@ import type {
   AppearanceView,
   BookView,
   BusinessView,
+  CampaignBlock,
+  CampaignLink,
+  CampaignView,
   CategoryView,
   ContentSource,
   CredentialView,
@@ -415,6 +419,138 @@ export const getProducts = cache(
 
 export async function getProductBySlug(locale: Locale, slug: string): Promise<ProductView | null> {
   const all = await getProducts(locale)
+  return all.find((entry) => entry.slug === slug) ?? null
+}
+
+/* -------------------------------------------------------------------------- */
+/* Campaign pages                                                             */
+/* -------------------------------------------------------------------------- */
+
+const campaignLink = (value: unknown): CampaignLink => {
+  if (!value || typeof value !== 'object') return null
+  const group = value as Doc
+  const label = str(group.label).trim()
+  const target = resolveCampaignLink(str(group.href))
+  return label && target ? { label, ...target } : null
+}
+
+const relationIds = (value: unknown): string[] =>
+  arrayOf(value)
+    .map((entry) =>
+      entry && typeof entry === 'object' ? String((entry as Doc).id ?? '') : String(entry ?? ''),
+    )
+    .filter(Boolean)
+
+const mapCampaignBlock = (doc: Doc): CampaignBlock | null => {
+  const id = str(doc.id, String(Math.random()))
+  switch (doc.blockType) {
+    case 'hero':
+      return {
+        id,
+        type: 'hero',
+        eyebrow: str(doc.eyebrow),
+        heading: str(doc.heading),
+        lead: str(doc.lead),
+        image: image(doc.image, 'wide'),
+        cta: campaignLink(doc.cta),
+      }
+    case 'text':
+      return {
+        id,
+        type: 'text',
+        heading: str(doc.heading),
+        content: richText(doc.content),
+        image: image(doc.image, 'card'),
+        imagePosition: doc.imagePosition === 'left' ? 'left' : 'right',
+      }
+    case 'features':
+      return {
+        id,
+        type: 'features',
+        heading: str(doc.heading),
+        intro: str(doc.intro),
+        items: arrayOf(doc.items)
+          .map((item) => ({ title: str(item.title), description: str(item.description) }))
+          .filter((item) => item.title),
+      }
+    case 'video':
+      return {
+        id,
+        type: 'video',
+        heading: str(doc.heading),
+        videoUrl: str(doc.videoUrl),
+        poster: image(doc.poster, 'wide'),
+      }
+    case 'books':
+      return { id, type: 'books', heading: str(doc.heading), bookIds: relationIds(doc.books) }
+    case 'products':
+      return {
+        id,
+        type: 'products',
+        heading: str(doc.heading),
+        productIds: relationIds(doc.products),
+      }
+    case 'faq':
+      return {
+        id,
+        type: 'faq',
+        heading: str(doc.heading),
+        items: arrayOf(doc.items)
+          .map((item) => ({ question: str(item.question), answer: str(item.answer) }))
+          .filter((item) => item.question && item.answer),
+      }
+    case 'cta':
+      return {
+        id,
+        type: 'cta',
+        heading: str(doc.heading),
+        body: str(doc.body),
+        primary: campaignLink(doc.primary),
+        secondary: campaignLink(doc.secondary),
+      }
+    case 'newsletter':
+      return { id, type: 'newsletter', heading: str(doc.heading), body: str(doc.body) }
+    default:
+      return null
+  }
+}
+
+/** Published campaign pages. No starter content. */
+export const getCampaigns = cache(
+  async (locale: Locale): Promise<CampaignView[]> =>
+    withCms(
+      async (cms) => {
+        const result = await cms.find({
+          collection: 'campaigns',
+          locale,
+          depth: 1,
+          limit: 200,
+          sort: '-updatedAt',
+          where: { _status: { equals: 'published' } },
+        })
+        return result.docs.map((raw) => {
+          const doc = asDoc(raw)
+          return {
+            id: String(doc.id),
+            slug: str(doc.slug),
+            title: str(doc.title),
+            summary: str(doc.summary),
+            blocks: arrayOf(doc.layout)
+              .map(mapCampaignBlock)
+              .filter((block): block is CampaignBlock => block !== null),
+            seo: seo(doc.seo),
+          }
+        })
+      },
+      () => [],
+    ),
+)
+
+export async function getCampaignBySlug(
+  locale: Locale,
+  slug: string,
+): Promise<CampaignView | null> {
+  const all = await getCampaigns(locale)
   return all.find((entry) => entry.slug === slug) ?? null
 }
 

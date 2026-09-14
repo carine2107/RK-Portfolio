@@ -163,3 +163,16 @@ export function breadcrumbSchema(items: { label: string; path: string }[], local
     })),
   }
 }
+
+/** FAQ blocks of a campaign page. */
+export function faqSchema(items: { question: string; answer: string }[]): Json {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: items.map((item) => ({
+      '@type': 'Question',
+      name: item.question,
+      acceptedAnswer: { '@type': 'Answer', text: item.answer },
+    })),
+  }
+}

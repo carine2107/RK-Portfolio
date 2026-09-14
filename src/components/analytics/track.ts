@@ -24,6 +24,7 @@ export type AnalyticsEvent =
   | 'language_change'
   | 'theme_change'
   | 'business_click'
+  | 'campaign_cta_click'
 
 type AnalyticsPayload = Record<string, string | number | boolean>
 

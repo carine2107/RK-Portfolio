@@ -5,6 +5,7 @@ import * as migration_20260914_093610_booking_link from './20260914_093610_booki
 import * as migration_20260914_095249_newsletter from './20260914_095249_newsletter'
 import * as migration_20260914_103837_direct_sales from './20260914_103837_direct_sales'
 import * as migration_20260914_144309_digital_products from './20260914_144309_digital_products'
+import * as migration_20260914_153337_campaigns from './20260914_153337_campaigns'
 
 export const migrations = [
   {
@@ -41,5 +42,10 @@ export const migrations = [
     up: migration_20260914_144309_digital_products.up,
     down: migration_20260914_144309_digital_products.down,
     name: '20260914_144309_digital_products',
+  },
+  {
+    up: migration_20260914_153337_campaigns.up,
+    down: migration_20260914_153337_campaigns.down,
+    name: '20260914_153337_campaigns',
   },
 ]

@@ -3,6 +3,7 @@ import type { MetadataRoute } from 'next'
 import { locales, type Locale } from '@/i18n/routing'
 import {
   getBooks,
+  getCampaigns,
   getEngagements,
   getExperiences,
   getExpertiseAreas,
@@ -77,6 +78,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { prefix: '/books', fetch: getBooks, priority: 0.6, changeFrequency: 'monthly' },
     { prefix: '/speaking', fetch: getEngagements, priority: 0.5, changeFrequency: 'monthly' },
     { prefix: '/products', fetch: getProducts, priority: 0.5, changeFrequency: 'monthly' },
+    { prefix: '/campaigns', fetch: getCampaigns, priority: 0.6, changeFrequency: 'monthly' },
   ]
 
   for (const collection of collections) {

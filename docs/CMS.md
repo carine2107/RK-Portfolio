@@ -132,6 +132,29 @@ dans un cookie signé `httpOnly`.
 (progression d'une formation). Créés au paiement ; un administrateur peut en ajouter
 ou en retirer à la main.
 
+### `campaigns` — Pages de campagne
+
+`title`_, `slug`_, `summary`\_, onglet **Contenu** : `layout` (blocs, au moins un), onglet
+**SEO**. Brouillons et publication programmée. Adresse `/{langue}/campaigns/{slug}`, hors
+menu, présente dans le sitemap (sauf `noindex`). Blocs :
+
+| Bloc         | Champs                                                                                      |
+| ------------ | ------------------------------------------------------------------------------------------- |
+| `hero`       | `eyebrow`, `heading` (vide = titre de la page ; H1 en premier bloc), `lead`, `image`, `cta` |
+| `text`       | `heading`, `content`\_ (texte riche), `image`, `imagePosition` (`left` / `right`)           |
+| `features`   | `heading`, `intro`, `items[{title, description}]` (1 à 12)                                  |
+| `video`      | `heading`, `videoUrl`\_ (YouTube / Vimeo, chargée au clic), `poster`                        |
+| `books`      | `heading`, `books`\_ (livres publiés)                                                       |
+| `products`   | `heading`, `products`\_ (produits numériques publiés)                                       |
+| `faq`        | `heading`, `items[{question, answer}]` → données structurées `FAQPage`                      |
+| `cta`        | `heading`\_, `body`, `primary`, `secondary` (bande sombre)                                  |
+| `newsletter` | `heading`, `body` ; masqué tant que l'envoi d'e-mails n'est pas configuré                   |
+
+Boutons (`cta`, `primary`, `secondary`) : `{label, href}`. `href` = page du site commençant
+par `/` (le préfixe de langue est ajouté automatiquement) ou adresse `https://` (nouvel
+onglet) ; toute autre valeur est refusée à l'enregistrement (`src/lib/campaign-link.ts`).
+Clics mesurés par l'événement `campaign_cta_click`.
+
 ### `businesses` — Écosystème entrepreneurial
 
 `name`_, `slug`_, `tagline`, `description`\*, `valueProposition`, `field`,

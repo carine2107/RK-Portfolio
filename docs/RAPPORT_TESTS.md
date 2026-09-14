@@ -10,8 +10,8 @@ Environnement : Windows 11, Node 24.15, PostgreSQL 16 (Docker), build de
 
 | Suite                            | Périmètre                                                               | Résultat                             |
 | -------------------------------- | ----------------------------------------------------------------------- | ------------------------------------ |
-| Tests unitaires (Vitest)         | Traductions, contrastes, moteur d'apparence, validation, SEO, anti-abus | **99 / 99 réussis**                  |
-| Tests end-to-end (Playwright)    | 87 scénarios × 4 configurations                                         | **318 réussis, 30 ignorés, 0 échec** |
+| Tests unitaires (Vitest)         | Traductions, contrastes, moteur d'apparence, validation, SEO, anti-abus | **102 / 102 réussis**                |
+| Tests end-to-end (Playwright)    | 90 scénarios × 4 configurations                                         | **330 réussis, 30 ignorés, 0 échec** |
 | Compilation TypeScript (`tsc`)   | Mode strict, tout le projet                                             | **0 erreur**                         |
 | Lint (ESLint 9 + config Next 16) | Tout le projet                                                          | **0 erreur, 0 avertissement**        |
 | Formatage (Prettier)             | `src`, `tests`, `docs`                                                  | **conforme**                         |
@@ -40,7 +40,7 @@ node tests/visual/capture.mjs test-results/visual
 
 ---
 
-## 2. Tests unitaires (95)
+## 2. Tests unitaires (102)
 
 | Fichier                     | Ce qui est vérifié                                                                                                                                                                                                                                     |
 | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -57,8 +57,10 @@ node tests/visual/capture.mjs test-results/visual
 | `world-map.test.ts`         | Carte Europe–Afrique : pays d'Europe et d'Afrique présents avec leur code ISO, pays lointains exclus, taille des tracés < 80 Ko ; noms de pays localisés FR/DE/EN                                                                                      |
 | `retention.test.ts`         | Date limite de conservation des demandes de contact (24 / 6 mois, désactivation à 0, valeurs invalides), calculée en UTC — indépendante du fuseau et de l'heure d'été                                                                                  |
 | `rate-limit.test.ts`        | Limitation par IP : seuil, réinitialisation de fenêtre, isolation entre clients, lecture des en-têtes de proxy                                                                                                                                         |
+| `members.test.ts`           | Cookie de session de l’espace membre signé : aller-retour, identifiant modifié, signature falsifiée ou valeur absente refusés                                                                                                                          |
+| `campaign-link.test.ts`     | Boutons des pages de campagne : pages du site (préfixe de langue retiré), https externe ; http, javascript:, //hôte, espaces et mailto: refusés                                                                                                        |
 
-## 3. Tests end-to-end (82 scénarios)
+## 3. Tests end-to-end (90 scénarios)
 
 ### Navigation et structure (`navigation.spec.ts`)
 
@@ -152,7 +154,12 @@ Contrôle manuel (serveur de développement, clé Stripe et secret de webhook **
 
 Contrôle manuel (serveur de développement, clé Stripe et secret de webhook **factices**, données supprimées ensuite) : un e-book (PDF) et une formation (2 leçons, vidéo, pièce jointe) publiés ; fichier stocké dans `private/files`, jamais servi publiquement (API 403, URL directe 404) ; l'API publique ne renvoie ni le fichier ni le contenu, la vidéo ou la pièce jointe des leçons. Panier : quantité bornée à 1, pas de ligne livraison, case d'**accès immédiat / renonciation au droit de rétractation** obligatoire (422 sans elle). Webhook signé → commande payée, rejeu ignoré, signature falsifiée 400 ; membre et accès créés ; e-mails dans MailHog : confirmation acheteur, notification, **accès aux achats** avec lien. Lien → session ouverte, « Mon espace » liste les deux produits ; lien réutilisé → 400. Téléchargement du PDF 200 (`attachment`, `application/pdf`), produit non acheté → 403. Formation : progression 1/2 enregistrée, leçon vidéo (lecture au clic), pièce jointe, navigation entre leçons.
 
-### Accessibilité (`accessibility.spec.ts`)
+### Pages de campagne (`campaigns.spec.ts`, `campaign-link.test.ts`)
+
+- Destinations des boutons : pages du site (préfixe de langue saisi retiré), `https://` externe ; `http://`, `javascript:`, `//hôte`, espaces et `mailto:` refusés
+- Campagne inconnue → 404 localisée ; aucune campagne dans le menu ; brouillons non exposés par l'API du CMS
+
+Contrôle manuel (serveur de développement, page de test supprimée ensuite) : page publiée avec les 9 blocs ; lien `javascript:` refusé à l'enregistrement par le CMS ; un seul H1 (en-tête) ; bouton interne `/fr/contact?type=speaking` → `/fr/contact?type=speaking` (préfixe non doublé), bouton externe en nouvel onglet `noopener` ; vidéo non chargée avant le clic ; données structurées `FAQPage` ; formulaire newsletter affiché ; présence dans le sitemap (EN / FR / DE) ; en allemand repli sur le contenu anglais ; aucun débordement à 375 et 1440 px (en-tête sur deux colonnes, cartes en grille, boutons côte à côte).
 
 - Parcours clavier avec anneau de focus visible (outline ≠ `none`)
 - Taille des cibles tactiles : ≥ 24 px (WCAG 2.2 AA 2.5.8), ≥ 40 px pour les boutons et champs
