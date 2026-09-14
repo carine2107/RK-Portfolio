@@ -112,18 +112,24 @@ Toutes les versions sont conservées : onglet **Versions → Restaurer** pour re
 
 **Contenus → Expériences et projets**
 
-| Champ                      | Remarque                                                                                |
-| -------------------------- | --------------------------------------------------------------------------------------- |
-| **Type**                   | _Mission / poste_ ou _Projet / programme_                                               |
-| **Organisation**           | Nom uniquement — aucun logo tiers n'est affiché                                         |
-| **Rôle**, **Secteur**      | Traduits                                                                                |
-| **Région**                 | Europe / Afrique / International — alimente les filtres                                 |
-| **Pays**                   | Liste de pays                                                                           |
-| **Début / Fin**            | Laisser la date de fin vide pour une mission en cours                                   |
-| **Résumé**                 | Texte affiché dans la liste                                                             |
-| **Afficher sur l'accueil** | Affiche la fiche sur la page d'accueil                                                  |
-| **Résultats vérifiés…**    | **Case décisive** : les résultats ne s'affichent sur le site **que si elle est cochée** |
-| **Liens**                  | Expertises et articles liés                                                             |
+| Champ                      | Remarque                                                                                                                                                   |
+| -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Type**                   | _Mission / poste_ ou _Projet / programme_                                                                                                                  |
+| **Organisation**           | Nom uniquement — aucun logo tiers n'est affiché                                                                                                            |
+| **Rôle**, **Secteur**      | Traduits                                                                                                                                                   |
+| **Région**                 | Europe / Afrique / International — alimente les filtres                                                                                                    |
+| **Pays**                   | Choisir chaque pays dans la liste : il apparaît sur la **carte Europe–Afrique** et son nom s'affiche en FR/DE/EN. _Nom affiché_ facultatif (ville, région) |
+| **Début / Fin**            | Laisser la date de fin vide pour une mission en cours                                                                                                      |
+| **Résumé**                 | Texte affiché dans la liste                                                                                                                                |
+| **Afficher sur l'accueil** | Affiche la fiche sur la page d'accueil                                                                                                                     |
+| **Résultats vérifiés…**    | **Case décisive** : les résultats ne s'affichent sur le site **que si elle est cochée**                                                                    |
+| **Liens**                  | Expertises et articles liés                                                                                                                                |
+
+> **Carte des expériences** : elle s'affiche en haut de la page Expériences dès
+> qu'au moins une fiche a un pays choisi dans la liste. Les pays concernés sont
+> colorés, avec le nombre d'expériences ; un clic sur la carte ou sur la liste
+> filtre les fiches. La carte couvre l'Europe et l'Afrique : un pays hors de cette
+> zone reste dans la liste, sans forme sur la carte.
 
 > Ne jamais saisir un chiffre ou un résultat non vérifiable. Tant que la case
 > « Résultats vérifiés et validés pour publication » est décochée, le site indique simplement qu'aucun

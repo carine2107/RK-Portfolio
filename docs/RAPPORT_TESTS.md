@@ -10,7 +10,7 @@ Environnement : Windows 11, Node 24.15, PostgreSQL 16 (Docker), build de
 
 | Suite                            | Périmètre                                                               | Résultat                             |
 | -------------------------------- | ----------------------------------------------------------------------- | ------------------------------------ |
-| Tests unitaires (Vitest)         | Traductions, contrastes, moteur d'apparence, validation, SEO, anti-abus | **72 / 72 réussis**                  |
+| Tests unitaires (Vitest)         | Traductions, contrastes, moteur d'apparence, validation, SEO, anti-abus | **76 / 76 réussis**                  |
 | Tests end-to-end (Playwright)    | 60 scénarios × 4 configurations                                         | **214 réussis, 26 ignorés, 0 échec** |
 | Compilation TypeScript (`tsc`)   | Mode strict, tout le projet                                             | **0 erreur**                         |
 | Lint (ESLint 9 + config Next 16) | Tout le projet                                                          | **0 erreur, 0 avertissement**        |
@@ -39,7 +39,7 @@ node tests/visual/capture.mjs test-results/visual
 
 ---
 
-## 2. Tests unitaires (72)
+## 2. Tests unitaires (76)
 
 | Fichier                  | Ce qui est vérifié                                                                                                                                                                                                                             |
 | ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -48,6 +48,7 @@ node tests/visual/capture.mjs test-results/visual
 | `contact-schema.test.ts` | Schéma du formulaire (consentement, e-mail, pays, type de demande, longueurs), clés d'erreur traduisibles, liste de pays localisée et triée                                                                                                    |
 | `seo.test.ts`            | Canonical, hreflang FR/DE/EN + `x-default`, chemins traduits, `noindex`, Open Graph, troncature des descriptions, génération des slugs                                                                                                         |
 | `theme.test.ts`          | Moteur d'apparence : les 6 palettes et **300 palettes personnalisées aléatoires** respectent 15 paires de contraste AA dans les deux thèmes ; couleurs vides = palette Signature ; aucune saisie brute du CMS dans la feuille de style générée |
+| `world-map.test.ts`      | Carte Europe–Afrique : pays d'Europe et d'Afrique présents avec leur code ISO, pays lointains exclus, taille des tracés < 80 Ko ; noms de pays localisés FR/DE/EN                                                                              |
 | `retention.test.ts`      | Date limite de conservation des demandes de contact (24 / 6 mois, désactivation à 0, valeurs invalides), calculée en UTC — indépendante du fuseau et de l'heure d'été                                                                          |
 | `rate-limit.test.ts`     | Limitation par IP : seuil, réinitialisation de fenêtre, isolation entre clients, lecture des en-têtes de proxy                                                                                                                                 |
 

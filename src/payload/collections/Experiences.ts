@@ -2,8 +2,18 @@ import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import type { CollectionConfig } from 'payload'
 
 import { isAdminOrEditor, publishedOrSignedIn } from '../access'
+import { COUNTRY_CODES } from '../../lib/countries'
 import { orderField, placeholderField, seoField, slugField } from '../fields/shared'
 import { GROUPS, tr } from '../i18n'
+
+const names = (language: string) => new Intl.DisplayNames([language], { type: 'region' })
+const [NAMES_FR, NAMES_DE, NAMES_EN] = [names('fr'), names('de'), names('en')]
+
+/** Country list in the admin language; the site shows the name in the visitor's language. */
+const COUNTRY_OPTIONS = COUNTRY_CODES.map((code) => ({
+  value: code,
+  label: tr(NAMES_FR.of(code) ?? code, NAMES_DE.of(code) ?? code, NAMES_EN.of(code) ?? code),
+}))
 
 export const REGIONS = [
   { label: tr('Europe', 'Europa', 'Europe'), value: 'europe' },
@@ -109,13 +119,41 @@ export const Experiences: CollectionConfig = {
         singular: tr('Pays', 'Land', 'Country'),
         plural: tr('Pays', 'Länder', 'Countries'),
       },
+      admin: {
+        description: tr(
+          'Choisissez le pays : il apparaît sur la carte des expériences et son nom s’affiche automatiquement dans chaque langue.',
+          'Wählen Sie das Land: Es erscheint auf der Karte und sein Name wird in jeder Sprache automatisch angezeigt.',
+          'Pick the country: it appears on the experience map and its name is shown automatically in each language.',
+        ),
+      },
       fields: [
         {
-          name: 'name',
-          type: 'text',
-          label: tr('Pays', 'Land', 'Country'),
-          required: true,
-          localized: true,
+          type: 'row',
+          fields: [
+            {
+              name: 'code',
+              type: 'select',
+              label: tr('Pays', 'Land', 'Country'),
+              options: COUNTRY_OPTIONS,
+            },
+            {
+              name: 'name',
+              type: 'text',
+              label: tr(
+                'Nom affiché (facultatif)',
+                'Angezeigter Name (optional)',
+                'Displayed name (optional)',
+              ),
+              localized: true,
+              admin: {
+                description: tr(
+                  'Laissez vide pour le nom officiel. À remplir pour une région ou une ville.',
+                  'Leer lassen für den offiziellen Namen. Für eine Region oder Stadt ausfüllen.',
+                  'Leave empty for the official name. Fill in for a region or a city.',
+                ),
+              },
+            },
+          ],
         },
       ],
     },

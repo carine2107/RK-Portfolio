@@ -194,7 +194,8 @@
       "sector": "Branche",
       "organisation": "Organisation",
       "region": "Region",
-      "type": "Art"
+      "type": "Art",
+      "country": "Land"
     },
     "card": {
       "role": "Rolle",
@@ -210,7 +211,11 @@
     },
     "map": {
       "title": "Abgedeckte Regionen",
-      "description": "Regionen, in denen Mandate durchgeführt wurden."
+      "description": "Regionen, in denen Mandate durchgeführt wurden.",
+      "countriesTitle": "Einsatzländer",
+      "countriesDescription": "Wählen Sie ein Land auf der Karte oder in der Liste, um die zugehörigen Einträge anzuzeigen.",
+      "chipsLabel": "Nach Land filtern",
+      "count": "{count, plural, one {# Eintrag} other {# Einträge}}"
     },
     "empty": "Kein Mandat entspricht diesen Filtern.",
     "emptyAll": "Die Mandate werden derzeit im CMS veröffentlicht.",

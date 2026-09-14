@@ -228,6 +228,7 @@ Ce que le site fait réellement aujourd'hui :
 - ✅ Formulaire de contact validé, anti-spam, e-mails FR/DE/EN **testés**
 - ✅ SEO : métadonnées localisées, canonical, hreflang, sitemap, robots,
   données structurées Person / Article / Book / Organization / BreadcrumbList / WebSite
+- ✅ Carte Europe–Afrique des expériences (calculée côté serveur, sans service tiers), filtre par pays accessible au clavier
 - ✅ Apparence (palettes, couleurs, police, fond d'accueil) modifiable dans le CMS, contrastes AA garantis
 - ✅ Déploiement Docker testé sur base vierge (migrations, seed, cache)
 - ✅ Point de santé `/api/health` et suppression automatique des demandes de contact expirées

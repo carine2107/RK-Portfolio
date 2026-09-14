@@ -194,7 +194,8 @@
       "sector": "Secteur",
       "organisation": "Organisation",
       "region": "Région",
-      "type": "Type"
+      "type": "Type",
+      "country": "Pays"
     },
     "card": {
       "role": "Rôle",
@@ -210,7 +211,11 @@
     },
     "map": {
       "title": "Régions couvertes",
-      "description": "Régions dans lesquelles des missions ont été réalisées."
+      "description": "Régions dans lesquelles des missions ont été réalisées.",
+      "countriesTitle": "Pays d’intervention",
+      "countriesDescription": "Choisissez un pays, sur la carte ou dans la liste, pour afficher les expériences correspondantes.",
+      "chipsLabel": "Filtrer par pays",
+      "count": "{count, plural, one {# expérience} other {# expériences}}"
     },
     "empty": "Aucune mission ne correspond à ces filtres.",
     "emptyAll": "Les missions sont en cours de publication dans le CMS.",

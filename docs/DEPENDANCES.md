@@ -8,21 +8,24 @@ verrouillage : le projet peut être migré vers un autre hébergeur sans réécr
 
 ## 2. Dépendances d'exécution
 
-| Paquet                                       | Version | Licence    | Rôle                                                         |
-| -------------------------------------------- | ------- | ---------- | ------------------------------------------------------------ |
-| `next`                                       | 16.3.4  | MIT        | Framework applicatif (routage, rendu, optimisation d'images) |
-| `react` / `react-dom`                        | 19.3.0  | MIT        | Bibliothèque d'interface                                     |
-| `payload`                                    | 3.88.0  | MIT        | CMS headless (contenus, rôles, versions, médias)             |
-| `@payloadcms/next`                           | 3.88.0  | MIT        | Intégration de l'admin CMS dans Next.js                      |
-| `@payloadcms/db-postgres`                    | 3.88.0  | MIT        | Adaptateur PostgreSQL                                        |
-| `@payloadcms/richtext-lexical`               | 3.88.0  | MIT        | Éditeur de texte riche + rendu                               |
-| `@payloadcms/ui`, `@payloadcms/translations` | 3.88.0  | MIT        | Interface et traductions de l'admin                          |
-| `next-intl`                                  | 4.14.2  | MIT        | Internationalisation FR/DE/EN                                |
-| `zod`                                        | 4.6.1   | MIT        | Validation client et serveur                                 |
-| `nodemailer`                                 | 10.0.3  | MIT        | Envoi SMTP                                                   |
-| `sharp`                                      | 0.35.4  | Apache-2.0 | Traitement et compression d'images                           |
-| `graphql`                                    | 16.14.2 | MIT        | Dépendance de Payload (API GraphQL désactivée)               |
-| `server-only`                                | 0.0.1   | MIT        | Garde-fou serveur/client                                     |
+| Paquet                                       | Version       | Licence                                     | Rôle                                                         |
+| -------------------------------------------- | ------------- | ------------------------------------------- | ------------------------------------------------------------ |
+| `next`                                       | 16.3.4        | MIT                                         | Framework applicatif (routage, rendu, optimisation d'images) |
+| `react` / `react-dom`                        | 19.3.0        | MIT                                         | Bibliothèque d'interface                                     |
+| `payload`                                    | 3.88.0        | MIT                                         | CMS headless (contenus, rôles, versions, médias)             |
+| `@payloadcms/next`                           | 3.88.0        | MIT                                         | Intégration de l'admin CMS dans Next.js                      |
+| `@payloadcms/db-postgres`                    | 3.88.0        | MIT                                         | Adaptateur PostgreSQL                                        |
+| `@payloadcms/richtext-lexical`               | 3.88.0        | MIT                                         | Éditeur de texte riche + rendu                               |
+| `@payloadcms/ui`, `@payloadcms/translations` | 3.88.0        | MIT                                         | Interface et traductions de l'admin                          |
+| `next-intl`                                  | 4.14.2        | MIT                                         | Internationalisation FR/DE/EN                                |
+| `zod`                                        | 4.6.1         | MIT                                         | Validation client et serveur                                 |
+| `nodemailer`                                 | 10.0.3        | MIT                                         | Envoi SMTP                                                   |
+| `sharp`                                      | 0.35.4        | Apache-2.0                                  | Traitement et compression d'images                           |
+| `graphql`                                    | 16.14.2       | MIT                                         | Dépendance de Payload (API GraphQL désactivée)               |
+| `server-only`                                | 0.0.1         | MIT                                         | Garde-fou serveur/client                                     |
+| `d3-geo`, `topojson-client`                  | 3.1.1 / 3.1.0 | ISC                                         | Calcul côté serveur de la carte Europe–Afrique (SVG)         |
+| `world-atlas`                                | 2.0.2         | ISC (données Natural Earth, domaine public) | Contours des pays (1:110 M), lus côté serveur uniquement     |
+| `i18n-iso-countries`                         | 7.14.0        | MIT                                         | Correspondance codes pays numériques ↔ ISO alpha-2          |
 
 ## 3. Dépendances de développement
 

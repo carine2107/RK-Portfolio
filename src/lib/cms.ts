@@ -18,6 +18,7 @@ import {
   type Localized,
 } from '@/content/starter'
 import type { Locale } from '@/i18n/routing'
+import { countryName, isCountryCode } from '@/lib/countries'
 import { cmsEnabled, siteUrl } from '@/lib/env'
 import {
   appearanceCss,
@@ -452,6 +453,7 @@ const starterExperienceViews = (locale: Locale): ExperienceView[] =>
     sector: pick(entry.sector, locale),
     region: entry.region,
     countries: pick(entry.countries, locale),
+    countryCodes: [],
     startDate: entry.startDate,
     endDate: entry.endDate ?? null,
     summary: pick(entry.summary, locale),
@@ -465,7 +467,7 @@ const starterExperienceViews = (locale: Locale): ExperienceView[] =>
     seo: {},
   }))
 
-const mapExperience = (doc: Doc): ExperienceView => ({
+const mapExperience = (doc: Doc, locale: Locale): ExperienceView => ({
   id: String(doc.id),
   slug: str(doc.slug),
   type: (str(doc.type, 'assignment') as ExperienceView['type']) ?? 'assignment',
@@ -474,9 +476,13 @@ const mapExperience = (doc: Doc): ExperienceView => ({
   role: str(doc.role),
   sector: str(doc.sector),
   region: (str(doc.region, 'international') as ExperienceView['region']) ?? 'international',
+  // The displayed name overrides the official name of the chosen country.
   countries: arrayOf(doc.countries)
-    .map((entry) => str(entry.name))
+    .map((entry) => str(entry.name) || countryName(str(entry.code), locale))
     .filter(Boolean),
+  countryCodes: arrayOf(doc.countries)
+    .map((entry) => str(entry.code))
+    .filter(isCountryCode),
   startDate: str(doc.startDate),
   endDate: str(doc.endDate) || null,
   summary: str(doc.summary),
@@ -503,7 +509,7 @@ export const getExperiences = cache(
           where: { _status: { equals: 'published' } },
         })
         if (result.docs.length === 0) return starterExperienceViews(locale)
-        return result.docs.map((doc) => mapExperience(asDoc(doc)))
+        return result.docs.map((doc) => mapExperience(asDoc(doc), locale))
       },
       () => starterExperienceViews(locale),
     ),

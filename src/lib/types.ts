@@ -45,7 +45,10 @@ export type ExperienceView = {
   role: string
   sector: string
   region: 'europe' | 'africa' | 'international'
+  /** Display names, in the page language. */
   countries: string[]
+  /** ISO 3166-1 alpha-2 codes of the countries placed on the map. */
+  countryCodes: string[]
   startDate: string
   endDate: string | null
   summary: string

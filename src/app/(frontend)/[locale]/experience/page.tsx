@@ -8,6 +8,7 @@ import { Section } from '@/components/ui/Section'
 import type { Locale } from '@/i18n/routing'
 import { getExperiences, getExpertiseAreas, getSiteSettings } from '@/lib/cms'
 import { pageMetadata } from '@/lib/seo'
+import { getEuropeAfricaMap } from '@/lib/world-map'
 
 /**
  * Incremental static regeneration: pages are served from cache and refreshed
@@ -98,6 +99,7 @@ export default async function ExperiencePage({ params }: Props) {
             experiences={experiences}
             expertiseOptions={usedExpertise}
             locale={locale}
+            map={getEuropeAfricaMap()}
           />
         )}
       </Section>

@@ -203,6 +203,16 @@ export function isCountryCode(value: string): value is CountryCode {
   return (COUNTRY_CODES as readonly string[]).includes(value)
 }
 
+/** Name of a country in the given language ('' for an unknown code). */
+export function countryName(code: string, locale: string): string {
+  if (!isCountryCode(code)) return ''
+  try {
+    return new Intl.DisplayNames([locale], { type: 'region' }).of(code) ?? code
+  } catch {
+    return code
+  }
+}
+
 /** Localised, alphabetically sorted country list. */
 export function countryOptions(locale: string): { code: string; label: string }[] {
   let displayNames: Intl.DisplayNames | null = null

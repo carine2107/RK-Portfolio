@@ -3,11 +3,14 @@
 import { useTranslations } from 'next-intl'
 import { useMemo, useState } from 'react'
 
+import { ExperienceMap } from '@/components/experience/ExperienceMap'
 import { Icon } from '@/components/ui/Icon'
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
+import { countryName } from '@/lib/countries'
 import { formatPeriod } from '@/lib/format'
 import type { ExperienceView } from '@/lib/types'
+import type { WorldMap } from '@/lib/world-map'
 
 type Filters = {
   expertise: string
@@ -15,18 +18,29 @@ type Filters = {
   organisation: string
   region: string
   type: string
+  country: string
 }
 
-const EMPTY: Filters = { expertise: '', sector: '', organisation: '', region: '', type: '' }
+const EMPTY: Filters = {
+  expertise: '',
+  sector: '',
+  organisation: '',
+  region: '',
+  type: '',
+  country: '',
+}
 
 export function ExperienceExplorer({
   experiences,
   expertiseOptions,
   locale,
+  map,
 }: {
   experiences: ExperienceView[]
   expertiseOptions: { slug: string; title: string }[]
   locale: Locale
+  /** Base map; the map is shown only when at least one entry has a country code. */
+  map: WorldMap
 }) {
   const t = useTranslations('experience')
   const common = useTranslations('common')
@@ -44,6 +58,21 @@ export function ExperienceExplorer({
     [experiences],
   )
 
+  // Entries per country code, and each code's name in the page language.
+  const { countryCounts, countryNames } = useMemo(() => {
+    const counts: Record<string, number> = {}
+    const names: Record<string, string> = {}
+    for (const entry of experiences) {
+      entry.countryCodes.forEach((code) => {
+        counts[code] = (counts[code] ?? 0) + 1
+        // Official name: a per-entry displayed name (a city, a region) does not rename the country.
+        names[code] ??= countryName(code, locale) || code
+      })
+    }
+    return { countryCounts: counts, countryNames: names }
+  }, [experiences, locale])
+  const hasMap = Object.keys(countryCounts).length > 0
+
   const filtered = useMemo(
     () =>
       experiences.filter((entry) => {
@@ -52,6 +81,7 @@ export function ExperienceExplorer({
         if (filters.sector && entry.sector !== filters.sector) return false
         if (filters.organisation && entry.organisation !== filters.organisation) return false
         if (filters.expertise && !entry.expertiseSlugs.includes(filters.expertise)) return false
+        if (filters.country && !entry.countryCodes.includes(filters.country)) return false
         return true
       }),
     [experiences, filters],
@@ -62,8 +92,25 @@ export function ExperienceExplorer({
   const update = (key: keyof Filters) => (event: React.ChangeEvent<HTMLSelectElement>) =>
     setFilters((current) => ({ ...current, [key]: event.target.value }))
 
+  const selectCountry = (code: string) =>
+    setFilters((current) => ({ ...current, country: current.country === code ? '' : code }))
+
   return (
     <div>
+      {hasMap ? (
+        <div className="mb-6">
+          <ExperienceMap
+            width={map.width}
+            height={map.height}
+            shapes={map.shapes}
+            counts={countryCounts}
+            names={countryNames}
+            selected={filters.country}
+            onSelect={selectCountry}
+          />
+        </div>
+      ) : null}
+
       <div className="rounded-card border border-line bg-surface-subtle p-5">
         <div className="flex flex-wrap items-end gap-4">
           <Field

@@ -48,7 +48,8 @@ Versions + brouillons. Alimente `/expertise` et `/expertise/[slug]`.
 ### `experiences` — Expériences et projets
 
 `title`_, `slug`_, `type`_ (`assignment` | `project`), `organisation`_, `role`_,
-`sector`, `region`_ (`europe` | `africa` | `international`), `countries[]`,
+`sector`, `region`_ (`europe` | `africa` | `international`),
+`countries[{code, name}]` (`code` ISO 3166-1 alpha-2 → carte et nom localisé ; `name` facultatif et localisé, prioritaire à l'affichage),
 `startDate`_, `endDate`, `summary`_, `featured`, `order`, `isPlaceholder`,
 onglet **Detail** (`context`, `responsibilities[]`, `resultsValidated`,
 `results[]`), onglet **Relations** (`expertiseAreas`, `relatedInsights`), **SEO**.

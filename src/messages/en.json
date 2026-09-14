@@ -194,7 +194,8 @@
       "sector": "Sector",
       "organisation": "Organisation",
       "region": "Region",
-      "type": "Type"
+      "type": "Type",
+      "country": "Country"
     },
     "card": {
       "role": "Role",
@@ -210,7 +211,11 @@
     },
     "map": {
       "title": "Regions covered",
-      "description": "Regions where assignments have been delivered."
+      "description": "Regions where assignments have been delivered.",
+      "countriesTitle": "Countries of work",
+      "countriesDescription": "Select a country on the map or in the list to show the related entries.",
+      "chipsLabel": "Filter by country",
+      "count": "{count, plural, one {# entry} other {# entries}}"
     },
     "empty": "No assignment matches these filters.",
     "emptyAll": "Assignments are being published in the CMS.",
