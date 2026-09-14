@@ -76,7 +76,7 @@ export function articleSchema(article: InsightView, locale: Locale, authorName: 
   }
 }
 
-export function bookSchema(book: BookView, locale: Locale): Json {
+export function bookSchema(book: BookView, locale: Locale, directSaleActive = false): Json {
   return {
     '@context': 'https://schema.org',
     '@type': 'Book',
@@ -91,7 +91,8 @@ export function bookSchema(book: BookView, locale: Locale): Json {
     ...(book.pages !== null ? { numberOfPages: book.pages } : {}),
     url: absoluteUrl(locale, `/books/${book.slug}`),
     ...(book.cover?.url ? { image: `${siteUrl}${book.cover.url}` } : {}),
-    ...(book.price !== null && book.saleType === 'external'
+    ...(book.price !== null &&
+    (book.saleType === 'external' || (book.saleType === 'direct' && directSaleActive))
       ? {
           offers: {
             '@type': 'Offer',

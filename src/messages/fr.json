@@ -277,10 +277,52 @@
       "externalNote": "L’achat est assuré par une plateforme externe.",
       "directPending": "La vente directe n’est pas encore ouverte",
       "directPendingNote": "Le paiement en ligne n’est pas activé sur ce site. Utilisez le formulaire de contact pour commander ou être informé.",
-      "contact": "Se renseigner sur ce livre"
+      "contact": "Se renseigner sur ce livre",
+      "addToCart": "Ajouter au panier",
+      "added": "Ajouté au panier.",
+      "viewCart": "Voir le panier ({count})",
+      "directNote": "Livraison offerte · paiement sécurisé par carte ou PayPal"
     },
     "related": "Autres publications",
     "empty": "Les publications sont en cours de publication dans le CMS."
+  },
+  "shop": {
+    "cart": {
+      "title": "Panier",
+      "empty": "Votre panier est vide.",
+      "browse": "Voir les livres",
+      "loading": "Calcul du panier…",
+      "quantity": "Quantité",
+      "remove": "Retirer",
+      "shipping": "Livraison",
+      "freeShipping": "Offerte",
+      "total": "Total TTC",
+      "vatIncluded": "dont TVA {rate} %",
+      "itemsCount": "{count, plural, one {# article} other {# articles}}",
+      "terms": "J’ai lu et j’accepte les <terms>conditions générales de vente</terms> et la <returns>politique de livraison et de retours</returns>.",
+      "payWithCard": "Payer par carte",
+      "payWithPaypal": "Payer avec PayPal",
+      "secureNote": "Le paiement s’effectue sur la page sécurisée de Stripe ou de PayPal : aucune donnée bancaire ne transite par ce site. L’adresse de livraison y est demandée.",
+      "unavailable": "La vente directe n’est pas encore ouverte : le paiement en ligne sera activé prochainement. Votre panier est conservé.",
+      "cancelled": "Paiement annulé : votre panier est conservé.",
+      "errors": {
+        "server": "Le paiement n’a pas pu être lancé. Merci de réessayer plus tard.",
+        "terms": "Veuillez accepter les conditions générales de vente.",
+        "rateLimit": "Trop de tentatives. Merci de réessayer dans quelques minutes.",
+        "unavailable": "La vente directe n’est pas disponible pour le moment.",
+        "changed": "Un livre de votre panier n’est plus disponible à la vente directe ; il a été retiré.",
+        "payment": "Le paiement n’a pas abouti. Aucun montant n’a été débité ; vous pouvez réessayer."
+      }
+    },
+    "success": {
+      "title": "Merci pour votre commande",
+      "checking": "Confirmation du paiement en cours…",
+      "paid": "Commande {number} confirmée. Un e-mail de confirmation vient de vous être envoyé ; vous en recevrez un autre à l’expédition.",
+      "pending": "Votre paiement pour la commande {number} est en cours de traitement. Vous recevrez un e-mail dès sa confirmation.",
+      "unknown": "Nous n’avons pas pu retrouver cette commande. Si un montant a été débité, contactez-nous.",
+      "back": "Retour aux livres",
+      "contact": "Nous contacter"
+    }
   },
   "businesses": {
     "meta": {

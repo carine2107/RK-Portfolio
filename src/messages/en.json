@@ -277,10 +277,52 @@
       "externalNote": "Purchase is handled by an external retailer.",
       "directPending": "Direct sales are not open yet",
       "directPendingNote": "Online payment is not activated on this website. Use the contact form to order or to be notified.",
-      "contact": "Ask about this book"
+      "contact": "Ask about this book",
+      "addToCart": "Add to cart",
+      "added": "Added to cart.",
+      "viewCart": "View cart ({count})",
+      "directNote": "Free delivery · secure payment by card or PayPal"
     },
     "related": "Other publications",
     "empty": "Publications are being published in the CMS."
+  },
+  "shop": {
+    "cart": {
+      "title": "Cart",
+      "empty": "Your cart is empty.",
+      "browse": "Browse the books",
+      "loading": "Pricing your cart…",
+      "quantity": "Quantity",
+      "remove": "Remove",
+      "shipping": "Delivery",
+      "freeShipping": "Free",
+      "total": "Total incl. VAT",
+      "vatIncluded": "incl. {rate}% VAT",
+      "itemsCount": "{count, plural, one {# item} other {# items}}",
+      "terms": "I have read and accept the <terms>terms and conditions of sale</terms> and the <returns>delivery and returns policy</returns>.",
+      "payWithCard": "Pay by card",
+      "payWithPaypal": "Pay with PayPal",
+      "secureNote": "Payment takes place on the secure page of Stripe or PayPal: no banking data goes through this site. The delivery address is requested there.",
+      "unavailable": "Direct sales are not open yet: online payment will be activated soon. Your cart is kept.",
+      "cancelled": "Payment cancelled: your cart is kept.",
+      "errors": {
+        "server": "The payment could not be started. Please try again later.",
+        "terms": "Please accept the terms and conditions of sale.",
+        "rateLimit": "Too many attempts. Please try again in a few minutes.",
+        "unavailable": "Direct sales are not available at the moment.",
+        "changed": "A book in your cart can no longer be bought directly; it has been removed.",
+        "payment": "The payment did not go through. Nothing was charged; you can try again."
+      }
+    },
+    "success": {
+      "title": "Thank you for your order",
+      "checking": "Confirming your payment…",
+      "paid": "Order {number} confirmed. A confirmation e-mail has just been sent; you will receive another one when it ships.",
+      "pending": "Your payment for order {number} is being processed. You will receive an e-mail as soon as it is confirmed.",
+      "unknown": "We could not find this order. If an amount was charged, please contact us.",
+      "back": "Back to the books",
+      "contact": "Contact us"
+    }
   },
   "businesses": {
     "meta": {

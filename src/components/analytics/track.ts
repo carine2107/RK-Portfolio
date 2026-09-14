@@ -14,6 +14,8 @@ export type AnalyticsEvent =
   | 'video_play'
   | 'booking_click'
   | 'newsletter_subscribe'
+  | 'add_to_cart'
+  | 'begin_checkout'
   | 'media_link_click'
   | 'work_with_me_click'
   | 'contact_form_success'

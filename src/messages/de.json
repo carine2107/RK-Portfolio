@@ -277,10 +277,52 @@
       "externalNote": "Der Kauf erfolgt über einen externen Anbieter.",
       "directPending": "Der Direktverkauf ist noch nicht geöffnet",
       "directPendingNote": "Die Online-Zahlung ist auf dieser Website nicht aktiviert. Nutzen Sie das Kontaktformular für eine Bestellung oder Benachrichtigung.",
-      "contact": "Zu diesem Buch anfragen"
+      "contact": "Zu diesem Buch anfragen",
+      "addToCart": "In den Warenkorb",
+      "added": "Zum Warenkorb hinzugefügt.",
+      "viewCart": "Zum Warenkorb ({count})",
+      "directNote": "Kostenloser Versand · sichere Zahlung per Karte oder PayPal"
     },
     "related": "Weitere Publikationen",
     "empty": "Die Publikationen werden derzeit im CMS veröffentlicht."
+  },
+  "shop": {
+    "cart": {
+      "title": "Warenkorb",
+      "empty": "Ihr Warenkorb ist leer.",
+      "browse": "Zu den Büchern",
+      "loading": "Warenkorb wird berechnet …",
+      "quantity": "Menge",
+      "remove": "Entfernen",
+      "shipping": "Versand",
+      "freeShipping": "Kostenlos",
+      "total": "Gesamt (brutto)",
+      "vatIncluded": "inkl. {rate} % MwSt.",
+      "itemsCount": "{count, plural, one {# Artikel} other {# Artikel}}",
+      "terms": "Ich habe die <terms>Allgemeinen Geschäftsbedingungen</terms> und die <returns>Liefer- und Rückgabebedingungen</returns> gelesen und akzeptiere sie.",
+      "payWithCard": "Mit Karte bezahlen",
+      "payWithPaypal": "Mit PayPal bezahlen",
+      "secureNote": "Die Zahlung erfolgt auf der sicheren Seite von Stripe oder PayPal: Keine Bankdaten laufen über diese Website. Die Lieferadresse wird dort abgefragt.",
+      "unavailable": "Der Direktverkauf ist noch nicht geöffnet: Die Online-Zahlung wird in Kürze aktiviert. Ihr Warenkorb bleibt erhalten.",
+      "cancelled": "Zahlung abgebrochen: Ihr Warenkorb bleibt erhalten.",
+      "errors": {
+        "server": "Die Zahlung konnte nicht gestartet werden. Bitte versuchen Sie es später erneut.",
+        "terms": "Bitte akzeptieren Sie die Allgemeinen Geschäftsbedingungen.",
+        "rateLimit": "Zu viele Versuche. Bitte versuchen Sie es in einigen Minuten erneut.",
+        "unavailable": "Der Direktverkauf ist derzeit nicht verfügbar.",
+        "changed": "Ein Buch in Ihrem Warenkorb ist nicht mehr im Direktverkauf erhältlich und wurde entfernt.",
+        "payment": "Die Zahlung ist nicht zustande gekommen. Es wurde nichts abgebucht; Sie können es erneut versuchen."
+      }
+    },
+    "success": {
+      "title": "Vielen Dank für Ihre Bestellung",
+      "checking": "Zahlung wird bestätigt …",
+      "paid": "Bestellung {number} bestätigt. Eine Bestätigung wurde soeben per E-Mail versendet; beim Versand erhalten Sie eine weitere.",
+      "pending": "Ihre Zahlung für die Bestellung {number} wird bearbeitet. Sie erhalten eine E-Mail, sobald sie bestätigt ist.",
+      "unknown": "Wir konnten diese Bestellung nicht finden. Falls ein Betrag abgebucht wurde, kontaktieren Sie uns bitte.",
+      "back": "Zurück zu den Büchern",
+      "contact": "Kontakt aufnehmen"
+    }
   },
   "businesses": {
     "meta": {

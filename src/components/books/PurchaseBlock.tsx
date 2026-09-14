@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl'
 
 import { trackEvent } from '@/components/analytics/track'
 import { Flag } from '@/components/i18n/Flag'
+import { AddToCart } from '@/components/shop/AddToCart'
 import { buttonClasses } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
 import { Notice } from '@/components/ui/Notices'
@@ -30,7 +31,14 @@ function retailerCountry(url: string): 'fr' | 'de' | 'en' | null {
  * sale). Direct sale is intentionally NOT wired to a checkout: no payment
  * provider is configured, so the site says so instead of simulating a shop.
  */
-export function PurchaseBlock({ book }: { book: BookView }) {
+export function PurchaseBlock({
+  book,
+  shopActive = false,
+}: {
+  book: BookView
+  /** Direct sale can really be paid (shop opened and payment keys configured). */
+  shopActive?: boolean
+}) {
   const t = useTranslations('books')
 
   if (book.saleType === 'external' && book.purchaseLinks.length > 0) {
@@ -54,6 +62,15 @@ export function PurchaseBlock({ book }: { book: BookView }) {
         <p className="text-sm text-secondary">{t('buy.externalNote')}</p>
       </div>
     )
+  }
+
+  const buyable =
+    book.price !== null &&
+    (book.availability === 'available' || book.availability === 'preorder') &&
+    (book.stock === null || book.stock > 0)
+
+  if (book.saleType === 'direct' && shopActive && buyable) {
+    return <AddToCart bookId={book.id} slug={book.slug} />
   }
 
   if (book.saleType === 'direct') {

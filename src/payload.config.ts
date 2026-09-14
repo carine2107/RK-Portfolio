@@ -14,6 +14,7 @@ import { Businesses } from './payload/collections/Businesses'
 import { Engagements } from './payload/collections/Engagements'
 import { ContactSubmissions } from './payload/collections/ContactSubmissions'
 import { Subscribers } from './payload/collections/Subscribers'
+import { Orders } from './payload/collections/Orders'
 import { Credentials } from './payload/collections/Credentials'
 import { Documents } from './payload/collections/Documents'
 import { ExpertiseAreas } from './payload/collections/ExpertiseAreas'
@@ -25,6 +26,7 @@ import { Users } from './payload/collections/Users'
 import { AboutPage } from './payload/globals/AboutPage'
 import { HomePage } from './payload/globals/HomePage'
 import { Appearance } from './payload/globals/Appearance'
+import { ShopSettings } from './payload/globals/ShopSettings'
 import { SiteSettings } from './payload/globals/SiteSettings'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -81,9 +83,10 @@ export default buildConfig({
     Documents,
     ContactSubmissions,
     Subscribers,
+    Orders,
     Users,
   ],
-  globals: [SiteSettings, Appearance, HomePage, AboutPage],
+  globals: [SiteSettings, Appearance, ShopSettings, HomePage, AboutPage],
   localization: {
     locales: [
       { label: 'English', code: 'en' },

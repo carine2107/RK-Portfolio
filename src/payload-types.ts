@@ -80,6 +80,7 @@ export interface Config {
     documents: Document;
     'contact-submissions': ContactSubmission;
     subscribers: Subscriber;
+    orders: Order;
     users: User;
     'payload-kv': PayloadKv;
     'payload-jobs': PayloadJob;
@@ -102,6 +103,7 @@ export interface Config {
     documents: DocumentsSelect<false> | DocumentsSelect<true>;
     'contact-submissions': ContactSubmissionsSelect<false> | ContactSubmissionsSelect<true>;
     subscribers: SubscribersSelect<false> | SubscribersSelect<true>;
+    orders: OrdersSelect<false> | OrdersSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
@@ -116,12 +118,14 @@ export interface Config {
   globals: {
     'site-settings': SiteSetting;
     appearance: Appearance;
+    'shop-settings': ShopSetting;
     'home-page': HomePage;
     'about-page': AboutPage;
   };
   globalsSelect: {
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
     appearance: AppearanceSelect<false> | AppearanceSelect<true>;
+    'shop-settings': ShopSettingsSelect<false> | ShopSettingsSelect<true>;
     'home-page': HomePageSelect<false> | HomePageSelect<true>;
     'about-page': AboutPageSelect<false> | AboutPageSelect<true>;
   };
@@ -815,7 +819,11 @@ export interface Book {
   currency?: ('EUR' | 'USD' | 'XAF') | null;
   availability: 'available' | 'preorder' | 'comingSoon' | 'outOfStock';
   /**
-   * External = link to a retailer. Direct = handled on this website (requires a payment provider, not activated yet).
+   * Empty = not tracked. Decreases with each paid order; at 0 the book becomes "Out of stock".
+   */
+  stock?: number | null;
+  /**
+   * External = link to a retailer. Direct = cart and payment on this website (Stripe / PayPal) once the shop is opened in Shop → Settings and the payment keys are configured; until then the site announces direct sales as "coming soon".
    */
   saleType: 'external' | 'direct' | 'none';
   purchaseLinks?:
@@ -1381,6 +1389,54 @@ export interface Subscriber {
   createdAt: string;
 }
 /**
+ * Direct sale orders. "Paid" = payment confirmed by Stripe or PayPal: ship the book, then set the status to "Shipped" (the buyer gets an e-mail, with the tracking link if filled in). Refunds are made in Stripe or PayPal, then set "Refunded".
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "orders".
+ */
+export interface Order {
+  id: number;
+  number: string;
+  status: 'pending' | 'paid' | 'shipped' | 'cancelled' | 'refunded';
+  /**
+   * Optional carrier https:// link, to fill in before setting "Shipped".
+   */
+  trackingUrl?: string | null;
+  provider?: ('stripe' | 'paypal') | null;
+  providerRef?: string | null;
+  locale?: string | null;
+  customerName?: string | null;
+  customerEmail?: string | null;
+  shipping?: {
+    name?: string | null;
+    line1?: string | null;
+    line2?: string | null;
+    postalCode?: string | null;
+    city?: string | null;
+    state?: string | null;
+    country?: string | null;
+  };
+  items?:
+    | {
+        book?: (number | null) | Book;
+        title: string;
+        quantity: number;
+        unitPrice: number;
+        lineTotal: number;
+        id?: string | null;
+      }[]
+    | null;
+  total: number;
+  vatRate?: number | null;
+  vatAmount?: number | null;
+  currency?: string | null;
+  paidAt?: string | null;
+  shippedAt?: string | null;
+  note?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
@@ -1577,6 +1633,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'subscribers';
         value: number | Subscriber;
+      } | null)
+    | ({
+        relationTo: 'orders';
+        value: number | Order;
       } | null)
     | ({
         relationTo: 'users';
@@ -1794,6 +1854,7 @@ export interface BooksSelect<T extends boolean = true> {
   price?: T;
   currency?: T;
   availability?: T;
+  stock?: T;
   saleType?: T;
   purchaseLinks?:
     | T
@@ -2062,6 +2123,50 @@ export interface SubscribersSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "orders_select".
+ */
+export interface OrdersSelect<T extends boolean = true> {
+  number?: T;
+  status?: T;
+  trackingUrl?: T;
+  provider?: T;
+  providerRef?: T;
+  locale?: T;
+  customerName?: T;
+  customerEmail?: T;
+  shipping?:
+    | T
+    | {
+        name?: T;
+        line1?: T;
+        line2?: T;
+        postalCode?: T;
+        city?: T;
+        state?: T;
+        country?: T;
+      };
+  items?:
+    | T
+    | {
+        book?: T;
+        title?: T;
+        quantity?: T;
+        unitPrice?: T;
+        lineTotal?: T;
+        id?: T;
+      };
+  total?: T;
+  vatRate?: T;
+  vatAmount?: T;
+  currency?: T;
+  paidAt?: T;
+  shippedAt?: T;
+  note?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
@@ -2278,6 +2383,29 @@ export interface Appearance {
     image?: (number | null) | Media;
     intensity?: ('subtle' | 'visible') | null;
   };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Direct book sales. Payments go through Stripe (card, Apple Pay, Google Pay…) and PayPal; their keys are configured on the server. While they are missing the site shows no payment, even if the shop is enabled.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "shop-settings".
+ */
+export interface ShopSetting {
+  id: number;
+  /**
+   * Shows "Add to cart" on books set to "Direct sale" (EUR price, available or pre-order). Tick only once the terms of sale and the returns policy are validated.
+   */
+  enabled?: boolean | null;
+  /**
+   * To be confirmed by the accountant. 0 = no VAT shown (e.g. small business scheme); 7 = German reduced rate for books. Book prices are always gross prices.
+   */
+  vatRate?: number | null;
+  /**
+   * Address receiving each new paid order. Falls back to EMAIL_TO.
+   */
+  notificationEmail?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -2506,6 +2634,18 @@ export interface AppearanceSelect<T extends boolean = true> {
         image?: T;
         intensity?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "shop-settings_select".
+ */
+export interface ShopSettingsSelect<T extends boolean = true> {
+  enabled?: T;
+  vatRate?: T;
+  notificationEmail?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

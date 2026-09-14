@@ -203,16 +203,45 @@ approche, expériences et articles liés.
 | **Liens d’achat**                                      | Un ou plusieurs boutons d'achat externes (Amazon, éditeur…)  |
 | **Extrait (PDF)**                                      | Extrait facultatif                                           |
 
-**Modèle de vente** — le site est conçu pour le modèle hybride prévu au cahier
-des charges :
+**Modèle de vente** — modèle hybride du cahier des charges, choisi livre par livre :
 
-- _External retailer_ : le bouton renvoie vers la plateforme choisie ;
-- _Direct sale_ : le modèle de données est prêt mais **aucun paiement n'est
-  activé** sur le site. La fiche affiche honnêtement que la vente directe n'est
-  pas encore ouverte et propose le formulaire de contact. Activer un vrai
-  paiement nécessite un prestataire (Stripe, PayPal…), des CGV, une politique de
-  livraison et de retour — c'est une évolution à chiffrer séparément ;
-- _Information only_ : présentation sans achat.
+- _Plateforme externe_ : le bouton renvoie vers Amazon, l'éditeur ou tout autre revendeur ;
+- _Vente directe sur le site_ : panier et paiement sur le site (voir ci-dessous) ;
+- _Présentation seule_ : fiche sans achat.
+
+**Vente directe** — **Boutique → Réglages de la boutique** puis **Boutique → Commandes**.
+
+1. Prérequis (prestataire technique) : clés **Stripe** et/ou **PayPal** configurées
+   sur le serveur (`DEPLOIEMENT.md`). Sans clés, rien n'est payable, même boutique
+   ouverte : la fiche continue d'annoncer la vente directe « prochainement ».
+2. Faire valider les **conditions générales de vente** et la **politique de
+   livraison et de retours** (pages légales), ainsi que le **taux de TVA** avec le
+   comptable.
+3. Dans le livre : _Mode de vente_ = **Vente directe sur le site**, **prix TTC en
+   EUR**, disponibilité _Disponible_ ou _Précommande_, **stock** facultatif (vide =
+   non suivi ; à 0 le livre passe « Épuisé »).
+4. Dans **Réglages de la boutique** : saisir le **taux de TVA** validé (0 = aucune
+   TVA indiquée), l'adresse qui reçoit les commandes, puis cocher **Ouvrir la vente
+   directe**.
+
+Côté visiteur : bouton **Ajouter au panier** → page **Panier** (prix recalculés par
+le site, livraison offerte, acceptation des CGV) → paiement sur la page sécurisée
+de **Stripe** (carte, Apple Pay, Google Pay…) ou de **PayPal**, qui demande aussi
+l'adresse de livraison. Aucune donnée bancaire ne passe par le site.
+
+**Traiter une commande** — chaque commande payée envoie un e-mail à l'acheteur
+(confirmation) et à l'adresse des commandes (à expédier).
+
+| Statut                     | Signification / action                                                                        |
+| -------------------------- | --------------------------------------------------------------------------------------------- |
+| **En attente de paiement** | Le visiteur est sur la page de paiement ou l'a quittée : ne rien expédier                     |
+| **Payée — à expédier**     | Paiement confirmé par Stripe ou PayPal : expédier le livre à l'adresse indiquée               |
+| **Expédiée**               | Renseigner d'abord le _lien de suivi_ (facultatif) : l'acheteur reçoit un e-mail d'expédition |
+| **Annulée**                | Paiement non abouti (session expirée) ou commande annulée                                     |
+| **Remboursée**             | Rembourser **dans le tableau de bord Stripe ou PayPal**, puis passer la commande à ce statut  |
+
+Le reçu de paiement est envoyé par Stripe ou PayPal. Les montants et l'historique
+des paiements se consultent aussi dans leurs tableaux de bord.
 
 ---
 
@@ -391,6 +420,8 @@ l'administration du site) :
 | `book_purchase_click`     | clique sur un bouton d'achat (Amazon…)                      | livre, lien           |
 | `book_preview_click`      | ouvre l'extrait d'un livre                                  | livre                 |
 | `newsletter_subscribe`    | envoie le formulaire d'inscription à la newsletter          | formulaire d'origine  |
+| `add_to_cart`             | ajoute un livre au panier (vente directe)                   | livre                 |
+| `begin_checkout`          | lance le paiement depuis le panier                          | prestataire           |
 | `booking_click`           | ouvre l'outil de prise de rendez-vous                       | page d'origine        |
 | `video_play`              | lance une vidéo (Conférences & médias)                      | plateforme            |
 | `media_link_click`        | ouvre le lien externe d'une intervention (podcast, presse…) | intervention          |

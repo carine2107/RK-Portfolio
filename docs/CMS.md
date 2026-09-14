@@ -83,13 +83,23 @@ Newsletter : `sendNewsletter` (case à cocher), `newsletterSentAt` et `newslette
 
 `title`_, `slug`_, `subtitle`, `author`_, `cover`, `summary`_, `description`,
 `audience[]`, `bookLanguage[]`, `format[]`, `isbn`, `publisher`,
-`publicationDate`, `pages`, `price`, `currency`,
+`publicationDate`, `pages`, `price`, `currency`, `stock` (vente directe, vide = non suivi),
 `availability`_, `saleType`_, `purchaseLinks[]`, `previewPdf`, `relatedBooks`,
 `featured`, `order`, `isPlaceholder`, `seo`.
 
 `saleType` implémente le modèle hybride du cahier des charges :
 `external` (lien revendeur), `direct` (**modélisé mais non activé** — aucun
 paiement n'est simulé), `none` (information seule).
+
+### `orders` — Commandes (vente directe)
+
+`number`_ (`RK-AAAA-0001`, unique), `status`_ (`pending` | `paid` | `shipped` |
+`cancelled` | `refunded`), `trackingUrl`, `provider` (`stripe` | `paypal`),
+`providerRef`, `locale`, `customerName`, `customerEmail`, `shipping{…}`,
+`items[{book, title, quantity, unitPrice, lineTotal}]`, `total`, `vatRate`,
+`vatAmount`, `currency`, `paidAt`, `shippedAt`, `note`. Création par l'API de
+paiement uniquement ; passage à `paid` uniquement par webhook Stripe signé ou capture
+PayPal, une seule fois. Passer à `shipped` envoie l'e-mail d'expédition.
 
 ### `businesses` — Écosystème entrepreneurial
 
@@ -173,6 +183,11 @@ contraste WCAG AA ; la feuille générée est injectée dans le `<head>`
 main dans `globals.css` s'appliquent. L'enregistrement déclenche la
 revalidation des pages (`revalidatePath`).
 
+### `shop-settings` — Réglages de la boutique
+
+`enabled` (ouvre la vente directe ; sans effet tant que les clés de paiement
+manquent), `vatRate` (TVA incluse dans les prix, 0–30 %), `notificationEmail`.
+
 ### `home-page`
 
 `heroEyebrow`, `heroValueProposition`, `heroPortrait`, `heroKeyPoints[]`,
@@ -197,6 +212,8 @@ revalidation des pages (`revalidatePath`).
 | Modifier l'apparence du site      | ❌     | ❌     | ✅    |
 | Lire les demandes de contact      | ❌     | ✅     | ✅    |
 | Supprimer une demande de contact  | ❌     | ❌     | ✅    |
+| Voir / traiter les commandes      | ❌     | ✅     | ✅    |
+| Régler la boutique                | ❌     | ❌     | ✅    |
 | Voir les abonnés newsletter       | ❌     | ✅     | ✅    |
 | Modifier / supprimer un abonné    | ❌     | ❌     | ✅    |
 | Gérer les comptes et les rôles    | ❌     | ❌     | ✅    |

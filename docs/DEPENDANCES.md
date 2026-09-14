@@ -25,6 +25,7 @@ verrouillage : le projet peut être migré vers un autre hébergeur sans réécr
 | `server-only`                                | 0.0.1         | MIT                                         | Garde-fou serveur/client                                     |
 | `d3-geo`, `topojson-client`                  | 3.1.1 / 3.1.0 | ISC                                         | Calcul côté serveur de la carte Europe–Afrique (SVG)         |
 | `world-atlas`                                | 2.0.2         | ISC (données Natural Earth, domaine public) | Contours des pays (1:110 M), lus côté serveur uniquement     |
+| `stripe`                                     | 22.6.2        | MIT                                         | Stripe Checkout et vérification des webhooks (vente directe) |
 | `i18n-iso-countries`                         | 7.14.0        | MIT                                         | Correspondance codes pays numériques ↔ ISO alpha-2          |
 
 ## 3. Dépendances de développement

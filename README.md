@@ -239,8 +239,9 @@ Ce que le site fait réellement aujourd'hui :
 
 Ce qui est **volontairement** inactif, faute d'éléments ou de prestataire :
 
-- ⛔ Vente directe de livres (aucun prestataire de paiement configuré) — le
-  modèle de données est prêt, le site l'annonce clairement au visiteur
+- ⏸️ Vente directe de livres **construite** (panier, Stripe, PayPal, commandes,
+  e-mails) mais **fermée** tant que les clés de paiement ne sont pas configurées et
+  que la boutique n'est pas ouverte dans le CMS — le site l'annonce clairement
 - ⛔ Analytics (aucun outil imposé ; activation par variables d'environnement)
 - ⚠️ Contenus marqués « Contenu d'exemple » à remplacer par des informations
   validées avant la mise en ligne — voir `docs/ELEMENTS_A_FOURNIR.md`

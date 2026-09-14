@@ -296,12 +296,42 @@ avec `PAYLOAD_SECRET` : **changer ce secret invalide les liens déjà envoyés**
 
 ---
 
-## 12. Checklist de mise en ligne
+## 12. Vente directe : Stripe et PayPal
+
+Variables (`.env.production`) : `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`,
+`PAYPAL_CLIENT_ID`, `PAYPAL_CLIENT_SECRET`, `PAYPAL_MODE` (`live` en production).
+Un prestataire sans ses clés n'est pas proposé ; sans aucun prestataire, la boutique
+reste fermée même cochée dans le CMS.
+
+**Stripe** (comptes au nom du commanditaire) :
+
+1. Dashboard → Developers → **API keys** : clé secrète (`sk_live_…`, ou `sk_test_…`
+   sur le staging) — ou une clé restreinte limitée à _Checkout Sessions : write_.
+2. Developers → **Webhooks** → endpoint `https://<domaine>/api/shop/stripe/webhook`,
+   événements `checkout.session.completed`, `checkout.session.async_payment_succeeded`
+   et `checkout.session.expired` ; copier le **signing secret** (`whsec_…`).
+3. Settings → **Emails** : activer l'envoi automatique des reçus.
+4. Test sur le staging avec la carte `4242 4242 4242 4242` (mode test), puis vérifier
+   que la commande passe « Payée » et que les e-mails arrivent.
+
+**PayPal** : developer.paypal.com → **Apps & Credentials** → application REST (Client
+ID / Secret, en _Sandbox_ puis _Live_). Aucun webhook requis : le paiement est capturé
+au retour de l'acheteur sur le site.
+
+**Sécurité** : aucune donnée de carte ne transite par le site (pages de paiement
+hébergées) ; les montants sont recalculés côté serveur à partir du CMS ; une commande
+ne passe « Payée » que sur un webhook dont la signature est vérifiée ou une capture
+PayPal réussie, une seule fois.
+
+---
+
+## 13. Checklist de mise en ligne
 
 - [ ] Domaine pointé, HTTPS actif, redirection `http` → `https`
 - [ ] `NEXT_PUBLIC_SITE_URL` correct et build effectué **après** son réglage
 - [ ] `PAYLOAD_SECRET` unique, `CONTACT_RATE_LIMIT=5`
 - [ ] SMTP configuré, demande de test envoyée et **reçue**
+- [ ] Vente directe (si ouverte) : CGV et retours validés, TVA validée par le comptable, clés live Stripe/PayPal, webhook Stripe actif, achat test réel remboursé
 - [ ] SPF, DKIM et DMARC publiés ; inscription newsletter testée de bout en bout (confirmation, article, désinscription)
 - [ ] Mot de passe administrateur changé, comptes inutiles supprimés
 - [ ] Contenus « Contenu d'exemple » remplacés ou dépubliés

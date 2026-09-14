@@ -14,7 +14,7 @@ import { RichText } from '@/components/ui/RichText'
 import { Section } from '@/components/ui/Section'
 import type { Locale } from '@/i18n/routing'
 import { entryPaths } from '@/lib/alternates'
-import { getBookBySlug, getBooks } from '@/lib/cms'
+import { getBookBySlug, getBooks, getShopStatus } from '@/lib/cms'
 import { formatDate, formatPrice } from '@/lib/format'
 import { metaDescription, pageMetadata } from '@/lib/seo'
 
@@ -63,6 +63,7 @@ export default async function BookDetailPage({ params }: Props) {
 
   const book = await getBookBySlug(locale, slug)
   if (!book) notFound()
+  const shop = await getShopStatus()
 
   const t = await getTranslations('books')
   const nav = await getTranslations('nav')
@@ -101,7 +102,7 @@ export default async function BookDetailPage({ params }: Props) {
     <>
       <JsonLd
         data={[
-          bookSchema(book, locale),
+          bookSchema(book, locale, shop.active),
           breadcrumbSchema(
             [
               { label: nav('home'), path: '' },
@@ -148,7 +149,7 @@ export default async function BookDetailPage({ params }: Props) {
             </div>
 
             <div className="mt-8">
-              <PurchaseBlock book={book} />
+              <PurchaseBlock book={book} shopActive={shop.active} />
             </div>
 
             {book.previewUrl ? (

@@ -134,6 +134,8 @@ export type BookView = {
   price: number | null
   currency: string
   availability: 'available' | 'preorder' | 'comingSoon' | 'outOfStock'
+  /** Direct sale stock, null when not tracked. */
+  stock: number | null
   saleType: 'external' | 'direct' | 'none'
   purchaseLinks: { label: string; url: string }[]
   previewUrl: string | null

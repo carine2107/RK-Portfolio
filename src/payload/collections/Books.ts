@@ -7,8 +7,9 @@ import { GROUPS, tr } from '../i18n'
 
 /**
  * Hybrid sales model (option C of the specification): each book declares how it
- * is sold. `direct` is modelled but intentionally NOT wired to a checkout — the
- * website never simulates a payment flow that does not exist.
+ * is sold. `direct` uses the site cart and Stripe / PayPal (src/lib/shop.ts), and
+ * only once the shop is opened and payment keys are configured — the website
+ * never simulates a payment flow that does not exist.
  */
 export const Books: CollectionConfig = {
   slug: 'books',
@@ -195,6 +196,22 @@ export const Books: CollectionConfig = {
       ],
     },
     {
+      name: 'stock',
+      type: 'number',
+      label: tr('Stock (vente directe)', 'Bestand (Direktverkauf)', 'Stock (direct sale)'),
+      min: 0,
+      admin: {
+        position: 'sidebar',
+        step: 1,
+        condition: (data) => data?.saleType === 'direct',
+        description: tr(
+          'Vide = non suivi. Diminue à chaque commande payée ; à 0, le livre passe « Épuisé ».',
+          'Leer = nicht verfolgt. Sinkt mit jeder bezahlten Bestellung; bei 0 wird das Buch „Vergriffen“.',
+          'Empty = not tracked. Decreases with each paid order; at 0 the book becomes "Out of stock".',
+        ),
+      },
+    },
+    {
       name: 'saleType',
       type: 'select',
       label: tr('Mode de vente', 'Verkaufsart', 'Sale type'),
@@ -203,9 +220,9 @@ export const Books: CollectionConfig = {
       admin: {
         position: 'sidebar',
         description: tr(
-          'Externe = lien vers un revendeur. Directe = vente sur ce site (nécessite un prestataire de paiement, non activé).',
-          'Extern = Link zu einem Anbieter. Direkt = Verkauf über diese Website (Zahlungsanbieter erforderlich, nicht aktiviert).',
-          'External = link to a retailer. Direct = handled on this website (requires a payment provider, not activated yet).',
+          'Externe = lien vers un revendeur. Directe = panier et paiement sur ce site (Stripe / PayPal), une fois la boutique ouverte dans Boutique → Réglages et les clés de paiement configurées ; d’ici là, le site annonce la vente directe « prochainement ».',
+          'Extern = Link zu einem Anbieter. Direkt = Warenkorb und Zahlung auf dieser Website (Stripe / PayPal), sobald der Shop unter Shop → Einstellungen geöffnet und die Zahlungsschlüssel eingerichtet sind; bis dahin kündigt die Website den Direktverkauf als „demnächst“ an.',
+          'External = link to a retailer. Direct = cart and payment on this website (Stripe / PayPal) once the shop is opened in Shop → Settings and the payment keys are configured; until then the site announces direct sales as "coming soon".',
         ),
       },
       options: [
@@ -215,9 +232,9 @@ export const Books: CollectionConfig = {
         },
         {
           label: tr(
-            'Vente directe (non activée)',
-            'Direktverkauf (nicht aktiviert)',
-            'Direct sale (not activated)',
+            'Vente directe sur le site',
+            'Direktverkauf auf der Website',
+            'Direct sale on the website',
           ),
           value: 'direct',
         },

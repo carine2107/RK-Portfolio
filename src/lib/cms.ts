@@ -20,6 +20,7 @@ import {
 import type { Locale } from '@/i18n/routing'
 import { countryName, isCountryCode } from '@/lib/countries'
 import { cmsEnabled, siteUrl } from '@/lib/env'
+import { paymentsReady } from '@/lib/shop-config'
 import { safeHttpsUrl } from '@/lib/url'
 import { parseVideoUrl } from '@/lib/video'
 import {
@@ -346,6 +347,22 @@ export async function getEngagementBySlug(
   const all = await getEngagements(locale)
   return all.find((entry) => entry.slug === slug) ?? null
 }
+
+/* -------------------------------------------------------------------------- */
+/* Shop                                                                       */
+/* -------------------------------------------------------------------------- */
+
+/** Whether direct sales can really be paid now: shop opened AND provider keys configured. */
+export const getShopStatus = cache(
+  async (): Promise<{ active: boolean }> =>
+    withCms(
+      async (cms) => {
+        const doc = asDoc(await cms.findGlobal({ slug: 'shop-settings', depth: 0 }))
+        return { active: doc.enabled === true && paymentsReady() }
+      },
+      () => ({ active: false }),
+    ),
+)
 
 /* -------------------------------------------------------------------------- */
 /* Home & about                                                               */
@@ -731,6 +748,7 @@ const starterBookViews = (locale: Locale): BookView[] =>
     price: null,
     currency: 'EUR',
     availability: entry.availability,
+    stock: null,
     saleType: entry.saleType,
     purchaseLinks: entry.purchaseLinks.map((link) => ({
       label: pick(link.label, locale),
@@ -769,6 +787,7 @@ const mapBook = (doc: Doc): BookView => {
     price: num(doc.price),
     currency: str(doc.currency, 'EUR'),
     availability: (str(doc.availability, 'comingSoon') as BookView['availability']) ?? 'comingSoon',
+    stock: num(doc.stock),
     saleType: (str(doc.saleType, 'external') as BookView['saleType']) ?? 'external',
     purchaseLinks: arrayOf(doc.purchaseLinks)
       .map((entry) => ({ label: str(entry.label), url: str(entry.url) }))

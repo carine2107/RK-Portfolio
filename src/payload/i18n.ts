@@ -16,4 +16,5 @@ export const GROUPS = {
   administration: tr('Administration', 'Verwaltung', 'Administration'),
   library: tr('Médiathèque', 'Medien', 'Library'),
   pages: tr('Pages', 'Seiten', 'Pages'),
+  shop: tr('Boutique', 'Shop', 'Shop'),
 } as const

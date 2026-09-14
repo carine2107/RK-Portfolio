@@ -111,6 +111,16 @@ prestataire de paiement demandent une configuration technique (sections 1, 8 et
 | 8.4 | Décision sur la bannière cookies (inutile tant qu'aucun traceur n'est installé)                            | 🟡       |
 | 8.5 | Durée de conservation des demandes de contact                                                              | 🟠       |
 
+## 5 bis. Vente directe des livres
+
+| #    | Élément                                                                                                                    | Priorité                        |
+| ---- | -------------------------------------------------------------------------------------------------------------------------- | ------------------------------- |
+| 5b.1 | Comptes **Stripe** et/ou **PayPal** au nom du commanditaire, puis clés de test (staging) et live (production)              | 🔴 pour ouvrir la vente directe |
+| 5b.2 | **Taux de TVA** à appliquer (régime Kleinunternehmer ou TVA 7 % livres, OSS pour l'UE) — **validation du comptable**       | 🔴 pour ouvrir la vente directe |
+| 5b.3 | **Conditions générales de vente** et **politique de livraison et de retours** (droit de rétractation de 14 jours) validées | 🔴 pour ouvrir la vente directe |
+| 5b.4 | Prix TTC en EUR et stock disponible du livre ; délai d'expédition annoncé                                                  | 🟠                              |
+| 5b.5 | Mentions de la vente directe dans la politique de confidentialité (Stripe, PayPal, conservation des commandes)             | 🔴 pour ouvrir la vente directe |
+
 ## 8 bis. Newsletter
 
 | #    | Élément                                                                                                                                           | Priorité                  |
@@ -121,8 +131,8 @@ prestataire de paiement demandent une configuration technique (sections 1, 8 et
 ## 9. Phase 2 (hors périmètre actuel)
 
 Livrés depuis : carte Europe–Afrique · page Conférences & médias (vidéos) · prise de
-rendez-vous · newsletter avec double opt-in. En cours : vente directe · espace
-membres et produits digitaux. Restent hors périmètre : formations en ligne KAILI
+rendez-vous · newsletter avec double opt-in. Vente directe (prête, à
+activer avec les clés de paiement). En cours : espace membres et produits digitaux. Restent hors périmètre : formations en ligne KAILI
 Institut · CRM.
 
 L'architecture est prête à les accueillir sans refonte.
