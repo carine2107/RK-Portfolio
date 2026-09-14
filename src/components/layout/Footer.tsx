@@ -125,6 +125,14 @@ export async function Footer({
             </li>
             <li>
               <Link
+                href="/media"
+                className="text-on-contrast-secondary underline-offset-4 transition-colors hover:text-accent hover:underline"
+              >
+                {nav('media')}
+              </Link>
+            </li>
+            <li>
+              <Link
                 href="/products"
                 className="text-on-contrast-secondary underline-offset-4 transition-colors hover:text-accent hover:underline"
               >

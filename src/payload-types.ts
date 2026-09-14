@@ -1197,6 +1197,14 @@ export interface Engagement {
   cover?: (number | null) | Media;
   featured?: boolean | null;
   /**
+   * Areas of expertise covered: "Topic" filter of the media library and links on the page.
+   */
+  topics?: (number | ExpertiseArea)[] | null;
+  /**
+   * Length of the video or podcast (optional).
+   */
+  durationMinutes?: number | null;
+  /**
    * Checked for the starter content delivered with the website. Uncheck once the entry contains validated information.
    */
   isPlaceholder?: boolean | null;
@@ -2297,6 +2305,8 @@ export interface EngagementsSelect<T extends boolean = true> {
   languages?: T;
   cover?: T;
   featured?: T;
+  topics?: T;
+  durationMinutes?: T;
   isPlaceholder?: T;
   description?: T;
   videoUrl?: T;

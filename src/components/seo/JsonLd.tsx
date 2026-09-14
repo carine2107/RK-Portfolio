@@ -1,5 +1,6 @@
 import type { Locale } from '@/i18n/routing'
 import { absoluteUrl } from '@/lib/seo'
+import { parseVideoUrl } from '@/lib/video'
 import { siteUrl } from '@/lib/env'
 import type { BookView, EngagementView, InsightView, SiteSettingsView } from '@/lib/types'
 
@@ -148,6 +149,27 @@ export function eventSchema(entry: EngagementView, locale: Locale): Json | null 
     ...(entry.organiser ? { organizer: { '@type': 'Organization', name: entry.organiser } } : {}),
     ...(entry.cover?.url ? { image: `${siteUrl}${entry.cover.url}` } : {}),
     url,
+  }
+}
+
+/**
+ * schema.org VideoObject for an engagement with a video. Requires a cover
+ * image (Google needs a thumbnail); null otherwise.
+ */
+export function videoSchema(entry: EngagementView, locale: Locale): Json | null {
+  const video = parseVideoUrl(entry.videoUrl)
+  if (!video || !entry.cover?.url) return null
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'VideoObject',
+    name: entry.title,
+    description: entry.summary,
+    thumbnailUrl: `${siteUrl}${entry.cover.url}`,
+    uploadDate: entry.date,
+    embedUrl: video.embedUrl,
+    ...(entry.durationMinutes ? { duration: `PT${entry.durationMinutes}M` } : {}),
+    ...(entry.languages.length > 0 ? { inLanguage: entry.languages } : {}),
+    url: absoluteUrl(locale, `/speaking/${entry.slug}`),
   }
 }
 

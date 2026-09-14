@@ -82,6 +82,9 @@ export type EngagementView = {
   languages: string[]
   videoUrl: string
   hasVideo: boolean
+  /** Published areas of expertise covered, in the page language. */
+  topics: { slug: string; title: string }[]
+  durationMinutes: number | null
   externalUrl: string
   externalLabel: string
   cover: ImageView

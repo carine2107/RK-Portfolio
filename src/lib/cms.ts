@@ -315,6 +315,11 @@ const mapEngagement = (doc: Doc, locale: Locale): EngagementView => ({
     : [],
   videoUrl: str(doc.videoUrl),
   hasVideo: parseVideoUrl(str(doc.videoUrl)) !== null,
+  topics: arrayOf(doc.topics)
+    .filter((topic) => topic && typeof topic === 'object' && str(topic.slug))
+    .filter((topic) => (topic._status ?? 'published') === 'published')
+    .map((topic) => ({ slug: str(topic.slug), title: str(topic.title) })),
+  durationMinutes: num(doc.durationMinutes),
   externalUrl: str(doc.externalUrl),
   externalLabel: str(doc.externalLabel),
   cover: image(doc.cover, 'wide'),

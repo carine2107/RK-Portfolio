@@ -10,8 +10,8 @@ Environnement : Windows 11, Node 24.15, PostgreSQL 16 (Docker), build de
 
 | Suite                            | Périmètre                                                               | Résultat                             |
 | -------------------------------- | ----------------------------------------------------------------------- | ------------------------------------ |
-| Tests unitaires (Vitest)         | Traductions, contrastes, moteur d'apparence, validation, SEO, anti-abus | **102 / 102 réussis**                |
-| Tests end-to-end (Playwright)    | 90 scénarios × 4 configurations                                         | **330 réussis, 30 ignorés, 0 échec** |
+| Tests unitaires (Vitest)         | Traductions, contrastes, moteur d'apparence, validation, SEO, anti-abus | **105 / 105 réussis**                |
+| Tests end-to-end (Playwright)    | 96 scénarios × 4 configurations                                         | **354 réussis, 30 ignorés, 0 échec** |
 | Compilation TypeScript (`tsc`)   | Mode strict, tout le projet                                             | **0 erreur**                         |
 | Lint (ESLint 9 + config Next 16) | Tout le projet                                                          | **0 erreur, 0 avertissement**        |
 | Formatage (Prettier)             | `src`, `tests`, `docs`                                                  | **conforme**                         |
@@ -40,7 +40,7 @@ node tests/visual/capture.mjs test-results/visual
 
 ---
 
-## 2. Tests unitaires (102)
+## 2. Tests unitaires (105)
 
 | Fichier                     | Ce qui est vérifié                                                                                                                                                                                                                                     |
 | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -59,8 +59,9 @@ node tests/visual/capture.mjs test-results/visual
 | `rate-limit.test.ts`        | Limitation par IP : seuil, réinitialisation de fenêtre, isolation entre clients, lecture des en-têtes de proxy                                                                                                                                         |
 | `members.test.ts`           | Cookie de session de l’espace membre signé : aller-retour, identifiant modifié, signature falsifiée ou valeur absente refusés                                                                                                                          |
 | `campaign-link.test.ts`     | Boutons des pages de campagne : pages du site (préfixe de langue retiré), https externe ; http, javascript:, //hôte, espaces et mailto: refusés                                                                                                        |
+| `media-library.test.ts`     | Médiathèque : formats (interview filmée = vidéo + interview), entrées à venir et ateliers sans vidéo exclus, filtres format / thème / langue combinés                                                                                                  |
 
-## 3. Tests end-to-end (90 scénarios)
+## 3. Tests end-to-end (96 scénarios)
 
 ### Navigation et structure (`navigation.spec.ts`)
 
@@ -153,6 +154,14 @@ Contrôle manuel (serveur de développement, clé Stripe et secret de webhook **
 - Lien de connexion falsifié refusé (400, page « lien invalide ») ; téléchargement et progression sans session → 401 ; fichiers protégés inaccessibles par l'API du CMS
 
 Contrôle manuel (serveur de développement, clé Stripe et secret de webhook **factices**, données supprimées ensuite) : un e-book (PDF) et une formation (2 leçons, vidéo, pièce jointe) publiés ; fichier stocké dans `private/files`, jamais servi publiquement (API 403, URL directe 404) ; l'API publique ne renvoie ni le fichier ni le contenu, la vidéo ou la pièce jointe des leçons. Panier : quantité bornée à 1, pas de ligne livraison, case d'**accès immédiat / renonciation au droit de rétractation** obligatoire (422 sans elle). Webhook signé → commande payée, rejeu ignoré, signature falsifiée 400 ; membre et accès créés ; e-mails dans MailHog : confirmation acheteur, notification, **accès aux achats** avec lien. Lien → session ouverte, « Mon espace » liste les deux produits ; lien réutilisé → 400. Téléchargement du PDF 200 (`attachment`, `application/pdf`), produit non acheté → 403. Formation : progression 1/2 enregistrée, leçon vidéo (lecture au clic), pièce jointe, navigation entre leçons.
+
+### Médiathèque (`media.spec.ts`, `media-library.test.ts`)
+
+- Page publiée en FR / DE / EN, liée depuis le pied de page et depuis Conférences & médias ; présente dans le sitemap
+- Aucun lecteur YouTube / Vimeo chargé avant le clic
+- Classement : interview filmée = vidéo + interview ; conférence avec vidéo = vidéo ; atelier sans vidéo exclu ; entrées à venir exclues ; filtres format / thème / langue combinés
+
+Contrôle manuel (serveur de développement, fiches de test supprimées ensuite) : interview filmée (thème, français, 25 min), podcast (anglais, 40 min, lien externe) et conférence à venir → 2 résultats, conférence absente ; filtre « Podcasts » → 1 résultat (bouton `aria-pressed`), + langue « Français » → « Aucun résultat » et message vide, réinitialisation → 2 résultats ; options de thème et de langue limitées aux valeurs présentes ; fiche : durée, thème lié à la page d'expertise, `VideoObject` (durée `PT25M`, lecteur sans cookie, miniature) ; aucun débordement à 375 px.
 
 ### Pages de campagne (`campaigns.spec.ts`, `campaign-link.test.ts`)
 

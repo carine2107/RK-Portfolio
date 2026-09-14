@@ -170,6 +170,12 @@ Clics mesurés par l'événement `campaign_cta_click`.
 (`videoUrl` YouTube/Vimeo validé, `externalUrl` https, `externalLabel`), **SEO**.
 Brouillons et publication programmée. Aucun contenu de démarrage.
 
+Champs de classement : `topics` (relation multiple vers `expertise-areas`, seuls les
+domaines publiés sont affichés) et `durationMinutes`. **Médiathèque** `/media` : fiches
+passées dont le format est vidéo (`videoUrl` valide), `podcast`, `interview` ou
+`press` (`src/lib/media-library.ts`), filtrables par format, thème et langue. Une fiche
+avec vidéo et image publie un `VideoObject` (données structurées).
+
 ### `credentials` — Formations et certifications
 
 `title`_, `institution`_, `kind`\* (`education` | `credential`), `year`,

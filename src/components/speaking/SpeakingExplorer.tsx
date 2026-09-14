@@ -103,7 +103,7 @@ function EngagementGrid({ entries, locale }: { entries: EngagementView[]; locale
   )
 }
 
-function EngagementCard({ entry, locale }: { entry: EngagementView; locale: Locale }) {
+export function EngagementCard({ entry, locale }: { entry: EngagementView; locale: Locale }) {
   const t = useTranslations('speaking')
   const common = useTranslations('common')
   const place = [entry.city, entry.country].filter(Boolean).join(', ')
@@ -129,8 +129,13 @@ function EngagementCard({ entry, locale }: { entry: EngagementView; locale: Loca
       <div className="flex flex-1 flex-col p-6">
         <p className="text-xs font-semibold tracking-[0.18em] text-accent-text uppercase">
           {t(`types.${entry.type}`)}
-          {entry.hasVideo ? (
+          {entry.hasVideo && entry.type !== 'video' ? (
             <span className="ml-2 text-secondary">· {t('types.video')}</span>
+          ) : null}
+          {entry.durationMinutes ? (
+            <span className="ml-2 text-secondary">
+              · {t('minutes', { count: entry.durationMinutes })}
+            </span>
           ) : null}
         </p>
         <h3 className="mt-3 text-xl leading-snug text-primary">

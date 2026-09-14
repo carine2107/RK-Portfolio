@@ -3,7 +3,7 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 
-import { breadcrumbSchema, eventSchema, JsonLd } from '@/components/seo/JsonLd'
+import { breadcrumbSchema, eventSchema, JsonLd, videoSchema } from '@/components/seo/JsonLd'
 import { VideoEmbed } from '@/components/speaking/VideoEmbed'
 import { CtaLink } from '@/components/ui/CtaLink'
 import { ExternalLink } from '@/components/ui/ExternalLink'
@@ -65,6 +65,7 @@ export default async function EngagementPage({ params }: Props) {
   const video = parseVideoUrl(entry.videoUrl)
   const place = [entry.city, entry.country].filter(Boolean).join(', ')
   const schema = eventSchema(entry, locale)
+  const videoLd = video ? videoSchema(entry, locale) : null
 
   const facts: { label: string; value: React.ReactNode }[] = [
     {
@@ -81,6 +82,29 @@ export default async function EngagementPage({ params }: Props) {
     ...(entry.eventName ? [{ label: t('detail.event'), value: entry.eventName }] : []),
     ...(entry.organiser ? [{ label: t('detail.organiser'), value: entry.organiser }] : []),
     ...(place ? [{ label: t('detail.location'), value: place }] : []),
+    ...(entry.durationMinutes
+      ? [{ label: t('detail.duration'), value: t('minutes', { count: entry.durationMinutes }) }]
+      : []),
+    ...(entry.topics.length > 0
+      ? [
+          {
+            label: t('detail.topics'),
+            value: (
+              <span className="flex flex-wrap gap-x-3 gap-y-1">
+                {entry.topics.map((topic) => (
+                  <Link
+                    key={topic.slug}
+                    href={`/expertise/${topic.slug}`}
+                    className="text-accent-text underline-offset-4 hover:underline"
+                  >
+                    {topic.title}
+                  </Link>
+                ))}
+              </span>
+            ),
+          },
+        ]
+      : []),
     ...(entry.languages.length > 0
       ? [
           {
@@ -96,6 +120,7 @@ export default async function EngagementPage({ params }: Props) {
       <JsonLd
         data={[
           ...(schema ? [schema] : []),
+          ...(videoLd ? [videoLd] : []),
           breadcrumbSchema(
             [
               { label: nav('home'), path: '' },

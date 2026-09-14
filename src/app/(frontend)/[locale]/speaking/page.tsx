@@ -7,6 +7,7 @@ import { CtaLink } from '@/components/ui/CtaLink'
 import { Icon } from '@/components/ui/Icon'
 import { EmptyState, PageHeader } from '@/components/ui/PageHeader'
 import { Section } from '@/components/ui/Section'
+import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
 import { getEngagements, getSiteSettings } from '@/lib/cms'
 import { pageMetadata } from '@/lib/seo'
@@ -66,7 +67,15 @@ export default async function SpeakingPage({ params }: Props) {
         title={t('title')}
         lead={t('lead')}
         crumbs={[{ label: nav('home'), href: '/' }, { label: nav('speaking') }]}
-      />
+      >
+        <Link
+          href="/media"
+          className="inline-flex items-center gap-2 text-sm font-medium text-accent-text underline-offset-4 hover:underline"
+        >
+          <Icon name="play" className="size-4" />
+          {t('mediaLink')}
+        </Link>
+      </PageHeader>
 
       <Section>
         {engagements.length === 0 ? (

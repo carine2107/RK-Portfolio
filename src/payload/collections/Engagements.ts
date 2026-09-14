@@ -207,6 +207,38 @@ export const Engagements: CollectionConfig = {
       defaultValue: false,
       admin: { position: 'sidebar' },
     },
+    {
+      type: 'row',
+      fields: [
+        {
+          name: 'topics',
+          type: 'relationship',
+          relationTo: 'expertise-areas',
+          hasMany: true,
+          label: tr('Thèmes', 'Themen', 'Topics'),
+          admin: {
+            description: tr(
+              'Domaines d’expertise abordés : filtre « Thème » de la médiathèque et liens sur la fiche.',
+              'Behandelte Fachgebiete: Filter „Thema“ der Mediathek und Links auf der Detailseite.',
+              'Areas of expertise covered: "Topic" filter of the media library and links on the page.',
+            ),
+          },
+        },
+        {
+          name: 'durationMinutes',
+          type: 'number',
+          label: tr('Durée (minutes)', 'Dauer (Minuten)', 'Duration (minutes)'),
+          min: 1,
+          admin: {
+            description: tr(
+              'Durée de la vidéo ou du podcast (facultatif).',
+              'Dauer des Videos oder Podcasts (optional).',
+              'Length of the video or podcast (optional).',
+            ),
+          },
+        },
+      ],
+    },
     placeholderField,
     {
       type: 'tabs',

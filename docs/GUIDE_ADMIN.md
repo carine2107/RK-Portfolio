@@ -406,6 +406,27 @@ présente dans le menu et le pied de page.
 
 ---
 
+### Médiathèque
+
+La page **Médiathèque** (`/media`, liée depuis Conférences & médias et le pied de page)
+regroupe automatiquement, sans double saisie, les fiches de **Conférences & médias**
+déjà passées qui sont une **vidéo** (toute fiche avec un lien vidéo), un **podcast**,
+une **interview** ou un article de **presse**. Les conférences à venir restent sur la
+page Conférences & médias.
+
+Les visiteurs filtrent par **format**, **thème** et **langue**. Pour que ces filtres
+soient utiles, renseigner dans chaque fiche :
+
+- **Thèmes** : les domaines d'expertise abordés (ils deviennent aussi des liens sur la
+  fiche) ;
+- **Langue(s)** de l'intervention ;
+- **Durée (minutes)** pour une vidéo ou un podcast ;
+- une **image** : elle sert d'aperçu et permet à Google d'afficher la vidéo dans ses
+  résultats.
+
+Un podcast se publie avec le type _Podcast_ et le lien vers l'épisode (Spotify, Apple
+Podcasts, site de l'émission…) dans _Lien externe_.
+
 ## 13 bis. Pages de campagne
 
 Une page de campagne est une page d’atterrissage dédiée à **un livre, une formation ou

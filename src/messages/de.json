@@ -24,7 +24,8 @@
     "footerLabel": "Sekundäre Navigation",
     "breadcrumbLabel": "Brotkrümelnavigation",
     "products": "Digitale Produkte",
-    "account": "Mein Bereich"
+    "account": "Mein Bereich",
+    "media": "Mediathek"
   },
   "theme": {
     "label": "Farbschema",
@@ -455,12 +456,43 @@
       "location": "Ort",
       "languages": "Sprache(n)",
       "externalDefault": "Zur Ressource",
-      "back": "Alle Auftritte"
+      "back": "Alle Auftritte",
+      "duration": "Dauer",
+      "topics": "Themen"
     },
     "video": {
       "play": "Video abspielen: {title}",
       "notice": "Video bereitgestellt von {provider}. Vor dem Abspielen wird nichts von {provider} geladen; danach erhält {provider} Ihre IP-Adresse."
-    }
+    },
+    "mediaLink": "Zur Mediathek",
+    "minutes": "{count} Min."
+  },
+  "media": {
+    "meta": {
+      "title": "Mediathek: Videos, Podcasts und Interviews",
+      "description": "Videos, Podcasts, Interviews und Presseberichte mit Romial Kenmogne zu Finanzen, Unternehmen und Investitionen."
+    },
+    "title": "Mediathek",
+    "lead": "Videos, Podcasts, Interviews und Presseartikel, filterbar nach Format, Thema und Sprache.",
+    "empty": "Videos, Podcasts und Interviews werden hier in Kürze veröffentlicht.",
+    "emptyFiltered": "Keine Medien entsprechen diesen Filtern.",
+    "filters": {
+      "format": "Format",
+      "topic": "Thema",
+      "language": "Sprache"
+    },
+    "formats": {
+      "video": "Videos",
+      "podcast": "Podcasts",
+      "interview": "Interviews",
+      "press": "Presse"
+    },
+    "languages": {
+      "fr": "Französisch",
+      "de": "Deutsch",
+      "en": "Englisch"
+    },
+    "back": "Vorträge & Medien"
   },
   "newsletter": {
     "meta": {
