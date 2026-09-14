@@ -9,8 +9,16 @@ import { Button, buttonClasses } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
 import { Link } from '@/i18n/navigation'
 
-/** "Add to cart" for a book sold directly, with a link to the cart once added. */
-export function AddToCart({ bookId, slug }: { bookId: string; slug: string }) {
+/** "Add to cart" for a book or digital product sold directly, with a link to the cart once added. */
+export function AddToCart({
+  bookId,
+  slug,
+  digital = false,
+}: {
+  bookId: string
+  slug: string
+  digital?: boolean
+}) {
   const t = useTranslations('books.buy')
   const lines = useCart()
   const [added, setAdded] = useState(false)
@@ -44,7 +52,7 @@ export function AddToCart({ bookId, slug }: { bookId: string; slug: string }) {
           <Icon name="arrow" className="size-4" />
         </Link>
       ) : null}
-      <p className="text-sm text-secondary">{t('directNote')}</p>
+      <p className="text-sm text-secondary">{digital ? t('digitalNote') : t('directNote')}</p>
     </div>
   )
 }

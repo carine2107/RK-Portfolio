@@ -22,7 +22,9 @@
     "closeMenu": "Hauptmenü schließen",
     "mainLabel": "Hauptnavigation",
     "footerLabel": "Sekundäre Navigation",
-    "breadcrumbLabel": "Brotkrümelnavigation"
+    "breadcrumbLabel": "Brotkrümelnavigation",
+    "products": "Digitale Produkte",
+    "account": "Mein Bereich"
   },
   "theme": {
     "label": "Farbschema",
@@ -281,7 +283,8 @@
       "addToCart": "In den Warenkorb",
       "added": "Zum Warenkorb hinzugefügt.",
       "viewCart": "Zum Warenkorb ({count})",
-      "directNote": "Kostenloser Versand · sichere Zahlung per Karte oder PayPal"
+      "directNote": "Kostenloser Versand · sichere Zahlung per Karte oder PayPal",
+      "digitalNote": "Sichere Zahlung per Karte oder PayPal"
     },
     "related": "Weitere Publikationen",
     "empty": "Die Publikationen werden derzeit im CMS veröffentlicht."
@@ -310,18 +313,95 @@
         "terms": "Bitte akzeptieren Sie die Allgemeinen Geschäftsbedingungen.",
         "rateLimit": "Zu viele Versuche. Bitte versuchen Sie es in einigen Minuten erneut.",
         "unavailable": "Der Direktverkauf ist derzeit nicht verfügbar.",
-        "changed": "Ein Buch in Ihrem Warenkorb ist nicht mehr im Direktverkauf erhältlich und wurde entfernt.",
-        "payment": "Die Zahlung ist nicht zustande gekommen. Es wurde nichts abgebucht; Sie können es erneut versuchen."
-      }
+        "changed": "Ein Artikel in Ihrem Warenkorb ist nicht mehr im Verkauf und wurde entfernt.",
+        "payment": "Die Zahlung ist nicht zustande gekommen. Es wurde nichts abgebucht; Sie können es erneut versuchen.",
+        "waiver": "Bitte bestätigen Sie den sofortigen Zugang zu den digitalen Inhalten."
+      },
+      "waiver": "Ich verlange den sofortigen Zugang zu den digitalen Inhalten und nehme zur Kenntnis, dass mein Widerrufsrecht mit Beginn des Zugangs erlischt.",
+      "secureNoteDigital": "Die Zahlung erfolgt auf der sicheren Seite von Stripe oder PayPal: Keine Bankdaten laufen über diese Website.",
+      "single": "Menge: 1"
     },
     "success": {
       "title": "Vielen Dank für Ihre Bestellung",
       "checking": "Zahlung wird bestätigt …",
-      "paid": "Bestellung {number} bestätigt. Eine Bestätigung wurde soeben per E-Mail versendet; beim Versand erhalten Sie eine weitere.",
+      "paid": "Bestellung {number} bestätigt. Eine Bestätigung wurde soeben per E-Mail versendet.",
       "pending": "Ihre Zahlung für die Bestellung {number} wird bearbeitet. Sie erhalten eine E-Mail, sobald sie bestätigt ist.",
       "unknown": "Wir konnten diese Bestellung nicht finden. Falls ein Betrag abgebucht wurde, kontaktieren Sie uns bitte.",
       "back": "Zurück zu den Büchern",
       "contact": "Kontakt aufnehmen"
+    }
+  },
+  "products": {
+    "meta": {
+      "title": "Digitale Produkte",
+      "description": "E-Books, KAILI Institut Kurse und Download-Ressourcen von Romial Kenmogne."
+    },
+    "title": "Digitale Produkte",
+    "lead": "E-Books, KAILI Institut Kurse und Download-Ressourcen. Nach dem Kauf erreichen Sie sie in Ihrem Mitgliederbereich.",
+    "alreadyBought": "Bereits gekauft? Zu meinem Bereich",
+    "empty": "Derzeit werden keine digitalen Produkte angeboten.",
+    "types": {
+      "ebook": "E-Book",
+      "course": "Kurs",
+      "resource": "Ressource"
+    },
+    "syllabus": "Programm",
+    "lessons": "{count, plural, one {# Lektion} other {# Lektionen}}",
+    "minutes": "{count} Min.",
+    "languagesList": "Sprache(n): {list}",
+    "notForSale": "Der Online-Verkauf für dieses Produkt ist noch nicht geöffnet.",
+    "accessNote": "Sofortiger Zugang nach der Zahlung in Ihrem Mitgliederbereich (Anmeldung per E-Mail-Link, ohne Passwort).",
+    "booksCallout": "E-Books, Kurse und Ressourcen finden Sie unter den digitalen Produkten.",
+    "browse": "Digitale Produkte ansehen"
+  },
+  "account": {
+    "title": "Mein Bereich",
+    "lead": "Ihre auf der Website gekauften digitalen Produkte.",
+    "signedInAs": "Angemeldet als {email}",
+    "logout": "Abmelden",
+    "empty": "Diesem Konto ist derzeit kein digitales Produkt zugeordnet.",
+    "open": "Öffnen",
+    "login": {
+      "title": "Zu meinem Bereich",
+      "lead": "Geben Sie die beim Kauf verwendete E-Mail-Adresse ein: Wir senden Ihnen einen Anmeldelink, ohne Passwort.",
+      "email": "E-Mail-Adresse des Kaufs",
+      "submit": "Anmeldelink erhalten",
+      "submitting": "Wird gesendet…",
+      "sent": "Falls dieser Adresse ein Kauf zugeordnet ist, wurde soeben ein Anmeldelink gesendet. Er ist 15 Minuten gültig. Prüfen Sie auch Ihren Spam-Ordner.",
+      "errors": {
+        "email": "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
+        "rateLimit": "Zu viele Versuche. Bitte in einigen Minuten erneut versuchen.",
+        "unavailable": "Die Anmeldung per E-Mail ist derzeit nicht verfügbar.",
+        "server": "Ein Fehler ist aufgetreten. Bitte später erneut versuchen."
+      }
+    },
+    "verify": {
+      "title": "Anmeldung",
+      "pending": "Anmeldung läuft…",
+      "invalid": "Dieser Anmeldelink ist nicht mehr gültig (abgelaufen oder bereits verwendet).",
+      "again": "Neuen Link anfordern"
+    },
+    "product": {
+      "back": "Mein Bereich",
+      "downloads": "Downloads",
+      "pdf": "PDF herunterladen",
+      "epub": "EPUB herunterladen",
+      "resource": "Herunterladen",
+      "fileMissing": "Die Datei ist noch nicht verfügbar. Kontaktieren Sie uns bei Bedarf.",
+      "progress": "{done} / {total} Lektionen abgeschlossen",
+      "start": "Beginnen",
+      "continue": "Fortsetzen",
+      "modules": "Module",
+      "completed": "abgeschlossen"
+    },
+    "lesson": {
+      "backToCourse": "Zurück zum Kurs",
+      "attachment": "Anhang herunterladen",
+      "complete": "Als abgeschlossen markieren",
+      "undo": "Als nicht abgeschlossen markieren",
+      "navigation": "Navigation zwischen den Lektionen",
+      "previous": "Vorherige Lektion",
+      "next": "Nächste Lektion"
     }
   },
   "businesses": {

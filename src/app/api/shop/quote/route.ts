@@ -34,6 +34,7 @@ export async function POST(request: Request): Promise<NextResponse> {
       },
       items: priced.items.map((item) => ({
         bookId: item.bookId,
+        kind: item.kind,
         title: item.title,
         quantity: item.quantity,
         unitPrice: fromMinor(item.unitAmount),
@@ -44,6 +45,8 @@ export async function POST(request: Request): Promise<NextResponse> {
       vatAmount: fromMinor(priced.vatAmount),
       currency: priced.currency,
       removed: priced.removed,
+      requiresShipping: priced.requiresShipping,
+      hasDigital: priced.hasDigital,
     },
     { headers: { 'Cache-Control': 'no-store' } },
   )

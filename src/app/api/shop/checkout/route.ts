@@ -31,7 +31,13 @@ export async function POST(request: Request): Promise<NextResponse> {
     return NextResponse.json({ ok: false, reason: 'rateLimit' }, { status: 429 })
   }
 
-  let body: { lines?: unknown; locale?: unknown; provider?: unknown; acceptTerms?: unknown }
+  let body: {
+    lines?: unknown
+    locale?: unknown
+    provider?: unknown
+    acceptTerms?: unknown
+    acceptDigitalWaiver?: unknown
+  }
   try {
     body = (await request.json()) as typeof body
   } catch {
@@ -55,6 +61,9 @@ export async function POST(request: Request): Promise<NextResponse> {
   if (body.acceptTerms !== true) {
     return NextResponse.json({ ok: false, reason: 'terms' }, { status: 422 })
   }
+  if (priced.hasDigital && body.acceptDigitalWaiver !== true) {
+    return NextResponse.json({ ok: false, reason: 'waiver' }, { status: 422 })
+  }
   if (priced.removed.length > 0 || priced.items.length === 0) {
     return NextResponse.json(
       {
@@ -67,7 +76,10 @@ export async function POST(request: Request): Promise<NextResponse> {
   }
 
   try {
-    const order = await createPendingOrder(cms, priced, { locale, provider: provider as Provider })
+    const order = await createPendingOrder(cms, priced, {
+      locale,
+      provider: provider as Provider,
+    })
     const url =
       provider === 'stripe'
         ? await startStripeCheckout(cms, order, priced, locale)

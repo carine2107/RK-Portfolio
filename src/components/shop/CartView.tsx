@@ -14,12 +14,21 @@ type Quote = {
   ok: boolean
   active: boolean
   providers: { stripe: boolean; paypal: boolean }
-  items: { bookId: string; title: string; quantity: number; unitPrice: number; lineTotal: number }[]
+  items: {
+    bookId: string
+    kind: 'book' | 'product'
+    title: string
+    quantity: number
+    unitPrice: number
+    lineTotal: number
+  }[]
   total: number
   vatRate: number
   vatAmount: number
   currency: string
   removed: string[]
+  requiresShipping: boolean
+  hasDigital: boolean
 }
 
 const noSubscribe = () => () => {}
@@ -34,6 +43,7 @@ export function CartView({ termsHref, returnsHref }: { termsHref: string; return
   const search = useSyncExternalStore(noSubscribe, readSearch, () => '')
   const [quote, setQuote] = useState<Quote | null>(null)
   const [accepted, setAccepted] = useState(false)
+  const [waived, setWaived] = useState(false)
   const [busy, setBusy] = useState<'stripe' | 'paypal' | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [removedNotice, setRemovedNotice] = useState(false)
@@ -75,6 +85,10 @@ export function CartView({ termsHref, returnsHref }: { termsHref: string; return
       setError(t('errors.terms'))
       return
     }
+    if (quote?.hasDigital && !waived) {
+      setError(t('errors.waiver'))
+      return
+    }
     setBusy(provider)
     setError(null)
     trackEvent('begin_checkout', { provider })
@@ -82,7 +96,13 @@ export function CartView({ termsHref, returnsHref }: { termsHref: string; return
       const response = await fetch('/api/shop/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ lines, locale, provider, acceptTerms: true }),
+        body: JSON.stringify({
+          lines,
+          locale,
+          provider,
+          acceptTerms: true,
+          acceptDigitalWaiver: waived,
+        }),
       })
       const body = (await response.json()) as {
         ok: boolean
@@ -99,7 +119,10 @@ export function CartView({ termsHref, returnsHref }: { termsHref: string; return
         setRemovedNotice(true)
       }
       const reason =
-        body.reason === 'rateLimit' || body.reason === 'unavailable' || body.reason === 'terms'
+        body.reason === 'rateLimit' ||
+        body.reason === 'unavailable' ||
+        body.reason === 'terms' ||
+        body.reason === 'waiver'
           ? body.reason
           : body.reason === 'changed' || body.reason === 'empty'
             ? 'changed'
@@ -153,21 +176,27 @@ export function CartView({ termsHref, returnsHref }: { termsHref: string; return
                 </p>
                 <p className="mt-1 text-sm text-secondary">{format(item.unitPrice)}</p>
               </div>
-              <label className="sr-only" htmlFor={`${id}-${item.bookId}`}>
-                {t('quantity')}
-              </label>
-              <select
-                id={`${id}-${item.bookId}`}
-                value={item.quantity}
-                onChange={(event) => setCartQuantity(item.bookId, Number(event.target.value))}
-                className="min-h-11 rounded-full border border-line-strong bg-surface px-4 text-sm text-primary"
-              >
-                {Array.from({ length: MAX_QUANTITY }, (_, index) => index + 1).map((value) => (
-                  <option key={value} value={value}>
-                    {value}
-                  </option>
-                ))}
-              </select>
+              {item.kind === 'product' ? (
+                <p className="text-sm text-secondary">{t('single')}</p>
+              ) : (
+                <>
+                  <label className="sr-only" htmlFor={`${id}-${item.bookId}`}>
+                    {t('quantity')}
+                  </label>
+                  <select
+                    id={`${id}-${item.bookId}`}
+                    value={item.quantity}
+                    onChange={(event) => setCartQuantity(item.bookId, Number(event.target.value))}
+                    className="min-h-11 rounded-full border border-line-strong bg-surface px-4 text-sm text-primary"
+                  >
+                    {Array.from({ length: MAX_QUANTITY }, (_, index) => index + 1).map((value) => (
+                      <option key={value} value={value}>
+                        {value}
+                      </option>
+                    ))}
+                  </select>
+                </>
+              )}
               <p className="w-24 text-right font-medium text-primary">{format(item.lineTotal)}</p>
               <button
                 type="button"
@@ -183,10 +212,12 @@ export function CartView({ termsHref, returnsHref }: { termsHref: string; return
 
       <aside className="h-fit rounded-card border border-line bg-surface-subtle p-6 lg:col-span-5">
         <dl className="space-y-3 text-sm">
-          <div className="flex justify-between">
-            <dt className="text-secondary">{t('shipping')}</dt>
-            <dd className="text-primary">{t('freeShipping')}</dd>
-          </div>
+          {quote.requiresShipping ? (
+            <div className="flex justify-between">
+              <dt className="text-secondary">{t('shipping')}</dt>
+              <dd className="text-primary">{t('freeShipping')}</dd>
+            </div>
+          ) : null}
           <div className="flex justify-between border-t border-line pt-3 text-base font-semibold">
             <dt className="text-primary">{t('total')}</dt>
             <dd className="text-primary">{format(quote.total)}</dd>
@@ -237,6 +268,24 @@ export function CartView({ termsHref, returnsHref }: { termsHref: string; return
               </label>
             </div>
 
+            {quote.hasDigital ? (
+              <div className="flex items-start gap-3">
+                <input
+                  id={`${id}-waiver`}
+                  type="checkbox"
+                  checked={waived}
+                  onChange={(event) => {
+                    setWaived(event.target.checked)
+                    setError(null)
+                  }}
+                  className="mt-0.5 size-6 shrink-0 rounded border-line-strong accent-[var(--surface-inverse)]"
+                />
+                <label htmlFor={`${id}-waiver`} className="text-sm leading-relaxed text-secondary">
+                  {t('waiver')}
+                </label>
+              </div>
+            ) : null}
+
             {error ? (
               <p role="alert" className="text-sm text-error-text">
                 {error}
@@ -268,7 +317,9 @@ export function CartView({ termsHref, returnsHref }: { termsHref: string; return
                 {t('payWithPaypal')}
               </Button>
             ) : null}
-            <p className="text-xs text-secondary">{t('secureNote')}</p>
+            <p className="text-xs text-secondary">
+              {quote.requiresShipping ? t('secureNote') : t('secureNoteDigital')}
+            </p>
           </div>
         ) : (
           <Notice tone="warning" className="mt-6">

@@ -4,6 +4,7 @@ import * as migration_20260914_092102_speaking_media from './20260914_092102_spe
 import * as migration_20260914_093610_booking_link from './20260914_093610_booking_link'
 import * as migration_20260914_095249_newsletter from './20260914_095249_newsletter'
 import * as migration_20260914_103837_direct_sales from './20260914_103837_direct_sales'
+import * as migration_20260914_144309_digital_products from './20260914_144309_digital_products'
 
 export const migrations = [
   {
@@ -35,5 +36,10 @@ export const migrations = [
     up: migration_20260914_103837_direct_sales.up,
     down: migration_20260914_103837_direct_sales.down,
     name: '20260914_103837_direct_sales',
+  },
+  {
+    up: migration_20260914_144309_digital_products.up,
+    down: migration_20260914_144309_digital_products.down,
+    name: '20260914_144309_digital_products',
   },
 ]

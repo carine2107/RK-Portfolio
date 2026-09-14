@@ -243,6 +243,40 @@ l'adresse de livraison. Aucune donnée bancaire ne passe par le site.
 Le reçu de paiement est envoyé par Stripe ou PayPal. Les montants et l'historique
 des paiements se consultent aussi dans leurs tableaux de bord.
 
+### Produits numériques (e-books, formations, ressources)
+
+**Boutique → Produits numériques**, puis **Boutique → Fichiers protégés**, **Membres**
+et **Accès aux produits**. Vendus uniquement quand la vente directe est ouverte (voir
+ci-dessus).
+
+1. **Fichiers protégés** : téléverser le PDF / EPUB de l'e-book, la ressource (PDF,
+   ZIP, Word, Excel, PowerPoint) ou la pièce jointe d'une leçon. Ces fichiers ne sont
+   jamais publics.
+2. **Produits numériques → Créer** : titre, type (_E-book_, _Formation_, _Ressource
+   téléchargeable_), **prix TTC en EUR**, résumé, visuel, présentation, puis :
+   - _E-book_ : choisir le fichier PDF et/ou EPUB ;
+   - _Ressource_ : choisir le fichier ;
+   - _Formation_ : ajouter des **modules**, et dans chacun des **leçons** (titre,
+     durée, contenu, vidéo YouTube ou Vimeo **non listée**, pièce jointe).
+     Les titres et durées forment le programme visible par tous ; le contenu, la vidéo
+     et la pièce jointe sont réservés aux acheteurs.
+3. **Publier**. Décocher _En vente_ retire le produit de la vente sans supprimer les
+   accès déjà achetés.
+
+Faire compléter les **CGV** pour les contenus numériques : au moment de payer,
+l'acheteur doit cocher la demande d'**accès immédiat**, qui lui fait perdre son droit
+de rétractation (enregistré dans la commande).
+
+**Après le paiement** : le compte membre de l'acheteur est créé avec son adresse
+e-mail, le produit est ajouté à son espace et il reçoit un e-mail « Accédez à vos
+achats » avec un lien de connexion (valable 72 h). Ensuite, il se reconnecte depuis
+**Mon espace** (pied de page du site) en recevant un nouveau lien par e-mail : il n'y
+a pas de mot de passe. Chaque fichier peut être téléchargé 50 fois par accès.
+
+**Geste commercial ou problème** : dans **Accès aux produits → Créer**, choisir le
+membre et le produit (le membre doit exister : il est créé à son premier achat). Pour
+retirer un accès (remboursement), supprimer la ligne correspondante.
+
 ---
 
 ## 9. Médias et documents

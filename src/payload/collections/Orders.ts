@@ -31,8 +31,9 @@ const notifyShipping: CollectionAfterChangeHook = ({ doc, previousDoc, context, 
 }
 
 /**
- * Orders of the direct book sale. Created by the checkout API only; paid by a
- * verified Stripe webhook or a PayPal capture. Card data never reaches the site.
+ * Orders of the direct sale (printed books and digital products). Created by
+ * the checkout API only; paid by a verified Stripe webhook or a PayPal
+ * capture. Card data never reaches the site.
  */
 export const Orders: CollectionConfig = {
   slug: 'orders',
@@ -45,9 +46,9 @@ export const Orders: CollectionConfig = {
     useAsTitle: 'number',
     defaultColumns: ['number', 'status', 'total', 'customerEmail', 'createdAt'],
     description: tr(
-      'Commandes de la vente directe. « Payée » = paiement confirmé par Stripe ou PayPal : expédier le livre, puis passer le statut à « Expédiée » (l’acheteur reçoit un e-mail, avec le lien de suivi s’il est renseigné). Les remboursements se font dans Stripe ou PayPal, puis statut « Remboursée ».',
-      'Bestellungen aus dem Direktverkauf. „Bezahlt“ = Zahlung von Stripe oder PayPal bestätigt: Buch versenden und Status auf „Versendet“ setzen (der Käufer erhält eine E-Mail, mit Sendungslink falls angegeben). Erstattungen in Stripe oder PayPal, dann Status „Erstattet“.',
-      'Direct sale orders. "Paid" = payment confirmed by Stripe or PayPal: ship the book, then set the status to "Shipped" (the buyer gets an e-mail, with the tracking link if filled in). Refunds are made in Stripe or PayPal, then set "Refunded".',
+      'Commandes de la vente directe. « Payée » = paiement confirmé par Stripe ou PayPal : les produits numériques sont déjà accessibles à l’acheteur ; les livres imprimés sont à expédier, puis passer le statut à « Expédiée » (e-mail à l’acheteur, avec le lien de suivi s’il est renseigné). Les remboursements se font dans Stripe ou PayPal, puis statut « Remboursée ».',
+      'Bestellungen aus dem Direktverkauf. „Bezahlt“ = Zahlung von Stripe oder PayPal bestätigt: Digitale Produkte sind bereits freigeschaltet; gedruckte Bücher versenden und Status auf „Versendet“ setzen (E-Mail an den Käufer, mit Sendungslink falls angegeben). Erstattungen in Stripe oder PayPal, dann Status „Erstattet“.',
+      'Direct sale orders. "Paid" = payment confirmed by Stripe or PayPal: digital products are already unlocked for the buyer; ship printed books, then set the status to "Shipped" (e-mail to the buyer, with the tracking link if filled in). Refunds are made in Stripe or PayPal, then set "Refunded".',
     ),
   },
   access: {
@@ -78,10 +79,7 @@ export const Orders: CollectionConfig = {
           value: 'pending',
           label: tr('En attente de paiement', 'Zahlung ausstehend', 'Awaiting payment'),
         },
-        {
-          value: 'paid',
-          label: tr('Payée — à expédier', 'Bezahlt — zu versenden', 'Paid — to ship'),
-        },
+        { value: 'paid', label: tr('Payée', 'Bezahlt', 'Paid') },
         { value: 'shipped', label: tr('Expédiée', 'Versendet', 'Shipped') },
         { value: 'cancelled', label: tr('Annulée', 'Storniert', 'Cancelled') },
         { value: 'refunded', label: tr('Remboursée', 'Erstattet', 'Refunded') },
@@ -185,10 +183,21 @@ export const Orders: CollectionConfig = {
       admin: readOnly,
       fields: [
         {
-          name: 'book',
-          type: 'relationship',
-          relationTo: 'books',
-          label: tr('Livre', 'Buch', 'Book'),
+          type: 'row',
+          fields: [
+            {
+              name: 'book',
+              type: 'relationship',
+              relationTo: 'books',
+              label: tr('Livre imprimé', 'Gedrucktes Buch', 'Printed book'),
+            },
+            {
+              name: 'product',
+              type: 'relationship',
+              relationTo: 'products',
+              label: tr('Produit numérique', 'Digitales Produkt', 'Digital product'),
+            },
+          ],
         },
         {
           name: 'title',
@@ -266,6 +275,24 @@ export const Orders: CollectionConfig = {
           type: 'date',
           label: tr('Expédiée le', 'Versendet am', 'Shipped at'),
           admin: { ...readOnly, date: { pickerAppearance: 'dayAndTime' } },
+        },
+        {
+          name: 'digitalWaiverAt',
+          type: 'date',
+          label: tr(
+            'Accès immédiat accepté le',
+            'Sofortiger Zugang akzeptiert am',
+            'Immediate access accepted at',
+          ),
+          admin: {
+            ...readOnly,
+            date: { pickerAppearance: 'dayAndTime' },
+            description: tr(
+              'Consentement à l’accès immédiat aux contenus numériques et renonciation au droit de rétractation.',
+              'Zustimmung zum sofortigen Zugang zu digitalen Inhalten und Verzicht auf das Widerrufsrecht.',
+              'Consent to immediate access to digital content and waiver of the right of withdrawal.',
+            ),
+          },
         },
       ],
     },

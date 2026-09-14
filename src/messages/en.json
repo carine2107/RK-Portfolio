@@ -22,7 +22,9 @@
     "closeMenu": "Close the main menu",
     "mainLabel": "Main navigation",
     "footerLabel": "Secondary navigation",
-    "breadcrumbLabel": "Breadcrumb"
+    "breadcrumbLabel": "Breadcrumb",
+    "products": "Digital products",
+    "account": "My area"
   },
   "theme": {
     "label": "Colour theme",
@@ -281,7 +283,8 @@
       "addToCart": "Add to cart",
       "added": "Added to cart.",
       "viewCart": "View cart ({count})",
-      "directNote": "Free delivery · secure payment by card or PayPal"
+      "directNote": "Free delivery · secure payment by card or PayPal",
+      "digitalNote": "Secure payment by card or PayPal"
     },
     "related": "Other publications",
     "empty": "Publications are being published in the CMS."
@@ -310,18 +313,95 @@
         "terms": "Please accept the terms and conditions of sale.",
         "rateLimit": "Too many attempts. Please try again in a few minutes.",
         "unavailable": "Direct sales are not available at the moment.",
-        "changed": "A book in your cart can no longer be bought directly; it has been removed.",
-        "payment": "The payment did not go through. Nothing was charged; you can try again."
-      }
+        "changed": "An item in your cart is no longer for sale; it has been removed.",
+        "payment": "The payment did not go through. Nothing was charged; you can try again.",
+        "waiver": "Please confirm the request for immediate access to the digital content."
+      },
+      "waiver": "I request immediate access to the digital content and acknowledge that I lose my right of withdrawal once access begins.",
+      "secureNoteDigital": "Payment takes place on the secure page of Stripe or PayPal: no banking data goes through this site.",
+      "single": "Quantity: 1"
     },
     "success": {
       "title": "Thank you for your order",
       "checking": "Confirming your payment…",
-      "paid": "Order {number} confirmed. A confirmation e-mail has just been sent; you will receive another one when it ships.",
+      "paid": "Order {number} confirmed. A confirmation e-mail has just been sent.",
       "pending": "Your payment for order {number} is being processed. You will receive an e-mail as soon as it is confirmed.",
       "unknown": "We could not find this order. If an amount was charged, please contact us.",
       "back": "Back to the books",
       "contact": "Contact us"
+    }
+  },
+  "products": {
+    "meta": {
+      "title": "Digital products",
+      "description": "E-books, KAILI Institut courses and downloadable resources by Romial Kenmogne."
+    },
+    "title": "Digital products",
+    "lead": "E-books, KAILI Institut courses and downloadable resources. After purchase, you access them from your member area.",
+    "alreadyBought": "Already bought? Go to my area",
+    "empty": "No digital product is offered at the moment.",
+    "types": {
+      "ebook": "E-book",
+      "course": "Course",
+      "resource": "Resource"
+    },
+    "syllabus": "Syllabus",
+    "lessons": "{count, plural, one {# lesson} other {# lessons}}",
+    "minutes": "{count} min",
+    "languagesList": "Language(s): {list}",
+    "notForSale": "Online sales are not open yet for this product.",
+    "accessNote": "Immediate access after payment, in your member area (sign-in by e-mail link, no password).",
+    "booksCallout": "E-books, courses and resources are offered in the digital products.",
+    "browse": "See the digital products"
+  },
+  "account": {
+    "title": "My area",
+    "lead": "Your digital products bought on the website.",
+    "signedInAs": "Signed in as {email}",
+    "logout": "Sign out",
+    "empty": "No digital product is linked to this account yet.",
+    "open": "Open",
+    "login": {
+      "title": "Access my area",
+      "lead": "Enter the e-mail address used for your purchase: we send you a sign-in link, no password needed.",
+      "email": "Purchase e-mail address",
+      "submit": "Send me a sign-in link",
+      "submitting": "Sending…",
+      "sent": "If a purchase is linked to this address, a sign-in link has just been sent. It is valid for 15 minutes. Please also check your spam folder.",
+      "errors": {
+        "email": "Please enter a valid e-mail address.",
+        "rateLimit": "Too many attempts. Please try again in a few minutes.",
+        "unavailable": "Sign-in by e-mail is not available at the moment.",
+        "server": "Something went wrong. Please try again later."
+      }
+    },
+    "verify": {
+      "title": "Sign-in",
+      "pending": "Signing you in…",
+      "invalid": "This sign-in link is no longer valid (expired or already used).",
+      "again": "Get a new link"
+    },
+    "product": {
+      "back": "My area",
+      "downloads": "Downloads",
+      "pdf": "Download the PDF",
+      "epub": "Download the EPUB",
+      "resource": "Download",
+      "fileMissing": "The file is not available yet. Contact us if needed.",
+      "progress": "{done} / {total} lessons completed",
+      "start": "Start",
+      "continue": "Continue",
+      "modules": "Modules",
+      "completed": "completed"
+    },
+    "lesson": {
+      "backToCourse": "Back to the course",
+      "attachment": "Download the attachment",
+      "complete": "Mark as completed",
+      "undo": "Mark as not completed",
+      "navigation": "Lesson navigation",
+      "previous": "Previous lesson",
+      "next": "Next lesson"
     }
   },
   "businesses": {

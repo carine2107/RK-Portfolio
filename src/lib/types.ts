@@ -90,6 +90,27 @@ export type EngagementView = {
   seo: SeoView
 }
 
+export type ProductView = {
+  id: string
+  slug: string
+  type: 'ebook' | 'course' | 'resource'
+  title: string
+  summary: string
+  description: RichContent
+  price: number
+  available: boolean
+  languages: string[]
+  /** Public syllabus of a course: titles and durations only. */
+  modules: {
+    title: string
+    lessons: { id: string; title: string; durationMinutes: number | null }[]
+  }[]
+  cover: ImageView
+  featured: boolean
+  isPlaceholder: boolean
+  seo: SeoView
+}
+
 export type CategoryView = {
   id: string
   slug: string

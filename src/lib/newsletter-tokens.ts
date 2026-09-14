@@ -9,7 +9,7 @@ import { createHmac, timingSafeEqual } from 'crypto'
  * `server-only` so the unit tests and scripts can import it.
  */
 
-export type TokenPurpose = 'confirm' | 'unsubscribe' | 'order'
+export type TokenPurpose = 'confirm' | 'unsubscribe' | 'order' | 'login' | 'session'
 
 /** Unsubscription links never expire (they sit in every e-mail ever sent). */
 const NEVER = 0

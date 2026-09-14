@@ -26,6 +26,8 @@ services:
     volumes:
       # Mandatory: without it every redeployment would erase the uploaded media.
       - media:/app/public/media
+      # Files of the digital products (e-books, resources): never public.
+      - private:/app/private
     restart: unless-stopped
 
   postgres:
@@ -45,4 +47,5 @@ services:
 
 volumes:
   media:
+  private:
   db:

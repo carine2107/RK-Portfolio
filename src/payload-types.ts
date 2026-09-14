@@ -81,6 +81,10 @@ export interface Config {
     'contact-submissions': ContactSubmission;
     subscribers: Subscriber;
     orders: Order;
+    products: Product;
+    'protected-files': ProtectedFile;
+    members: Member;
+    entitlements: Entitlement;
     users: User;
     'payload-kv': PayloadKv;
     'payload-jobs': PayloadJob;
@@ -104,6 +108,10 @@ export interface Config {
     'contact-submissions': ContactSubmissionsSelect<false> | ContactSubmissionsSelect<true>;
     subscribers: SubscribersSelect<false> | SubscribersSelect<true>;
     orders: OrdersSelect<false> | OrdersSelect<true>;
+    products: ProductsSelect<false> | ProductsSelect<true>;
+    'protected-files': ProtectedFilesSelect<false> | ProtectedFilesSelect<true>;
+    members: MembersSelect<false> | MembersSelect<true>;
+    entitlements: EntitlementsSelect<false> | EntitlementsSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
@@ -1389,7 +1397,7 @@ export interface Subscriber {
   createdAt: string;
 }
 /**
- * Direct sale orders. "Paid" = payment confirmed by Stripe or PayPal: ship the book, then set the status to "Shipped" (the buyer gets an e-mail, with the tracking link if filled in). Refunds are made in Stripe or PayPal, then set "Refunded".
+ * Direct sale orders. "Paid" = payment confirmed by Stripe or PayPal: digital products are already unlocked for the buyer; ship printed books, then set the status to "Shipped" (e-mail to the buyer, with the tracking link if filled in). Refunds are made in Stripe or PayPal, then set "Refunded".
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "orders".
@@ -1419,6 +1427,7 @@ export interface Order {
   items?:
     | {
         book?: (number | null) | Book;
+        product?: (number | null) | Product;
         title: string;
         quantity: number;
         unitPrice: number;
@@ -1432,7 +1441,177 @@ export interface Order {
   currency?: string | null;
   paidAt?: string | null;
   shippedAt?: string | null;
+  /**
+   * Consent to immediate access to digital content and waiver of the right of withdrawal.
+   */
+  digitalWaiverAt?: string | null;
   note?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * E-books, KAILI Institut courses and resources. Gross prices in EUR. Buying unlocks the product in the buyer’s member area (sign-in by e-mail link). Sold only when the shop is open and payments are configured.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "products".
+ */
+export interface Product {
+  id: number;
+  title: string;
+  /**
+   * URL segment. Leave empty to generate it from the title.
+   */
+  slug: string;
+  type: 'ebook' | 'course' | 'resource';
+  price: number;
+  available?: boolean | null;
+  summary: string;
+  cover?: (number | null) | Media;
+  languages?: ('fr' | 'de' | 'en')[] | null;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  ebookPdf?: (number | null) | ProtectedFile;
+  ebookEpub?: (number | null) | ProtectedFile;
+  resourceFile?: (number | null) | ProtectedFile;
+  /**
+   * Module and lesson titles show on the public page (syllabus); content, video and attachment only for buyers.
+   */
+  modules?:
+    | {
+        title: string;
+        lessons?:
+          | {
+              title: string;
+              durationMinutes?: number | null;
+              content?: {
+                root: {
+                  type: string;
+                  children: {
+                    type: any;
+                    version: number;
+                    [k: string]: unknown;
+                  }[];
+                  direction: ('ltr' | 'rtl') | null;
+                  format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                  indent: number;
+                  version: number;
+                };
+                [k: string]: unknown;
+              } | null;
+              videoUrl?: string | null;
+              attachment?: (number | null) | ProtectedFile;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  featured?: boolean | null;
+  /**
+   * Ascending display order.
+   */
+  order?: number | null;
+  /**
+   * Checked for the starter content delivered with the website. Uncheck once the entry contains validated information.
+   */
+  isPlaceholder?: boolean | null;
+  /**
+   * Optional overrides. When empty, the title and summary of the entry are used.
+   */
+  seo?: {
+    /**
+     * Recommended: 50–60 characters.
+     */
+    title?: string | null;
+    /**
+     * Recommended: 120–160 characters.
+     */
+    description?: string | null;
+    /**
+     * Social sharing image (1200×630). Falls back to the site default.
+     */
+    image?: (number | null) | Media;
+    /**
+     * Exclude this entry from search engines and from the sitemap.
+     */
+    noindex?: boolean | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * Sold files (PDF, EPUB, ZIP, Word, Excel, PowerPoint). Never publicly accessible: only signed-in buyers can download them.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "protected-files".
+ */
+export interface ProtectedFile {
+  id: number;
+  title: string;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
+ * Accounts of digital product buyers, created at their first purchase. No password: sign-in by e-mail link. When deleting an account on request, delete its accesses too.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "members".
+ */
+export interface Member {
+  id: number;
+  email: string;
+  name?: string | null;
+  locale: 'fr' | 'de' | 'en';
+  lastLoginAt?: string | null;
+  loginNonce?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Who can access which digital product. Created automatically on payment; an administrator can also add or remove one.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "entitlements".
+ */
+export interface Entitlement {
+  id: number;
+  member: number | Member;
+  product: number | Product;
+  order?: (number | null) | Order;
+  grantedAt?: string | null;
+  downloads?: number | null;
+  completedLessons?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1637,6 +1816,22 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'orders';
         value: number | Order;
+      } | null)
+    | ({
+        relationTo: 'products';
+        value: number | Product;
+      } | null)
+    | ({
+        relationTo: 'protected-files';
+        value: number | ProtectedFile;
+      } | null)
+    | ({
+        relationTo: 'members';
+        value: number | Member;
+      } | null)
+    | ({
+        relationTo: 'entitlements';
+        value: number | Entitlement;
       } | null)
     | ({
         relationTo: 'users';
@@ -2149,6 +2344,7 @@ export interface OrdersSelect<T extends boolean = true> {
     | T
     | {
         book?: T;
+        product?: T;
         title?: T;
         quantity?: T;
         unitPrice?: T;
@@ -2161,7 +2357,101 @@ export interface OrdersSelect<T extends boolean = true> {
   currency?: T;
   paidAt?: T;
   shippedAt?: T;
+  digitalWaiverAt?: T;
   note?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "products_select".
+ */
+export interface ProductsSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  type?: T;
+  price?: T;
+  available?: T;
+  summary?: T;
+  cover?: T;
+  languages?: T;
+  description?: T;
+  ebookPdf?: T;
+  ebookEpub?: T;
+  resourceFile?: T;
+  modules?:
+    | T
+    | {
+        title?: T;
+        lessons?:
+          | T
+          | {
+              title?: T;
+              durationMinutes?: T;
+              content?: T;
+              videoUrl?: T;
+              attachment?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  featured?: T;
+  order?: T;
+  isPlaceholder?: T;
+  seo?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+        noindex?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "protected-files_select".
+ */
+export interface ProtectedFilesSelect<T extends boolean = true> {
+  title?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "members_select".
+ */
+export interface MembersSelect<T extends boolean = true> {
+  email?: T;
+  name?: T;
+  locale?: T;
+  lastLoginAt?: T;
+  loginNonce?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "entitlements_select".
+ */
+export interface EntitlementsSelect<T extends boolean = true> {
+  member?: T;
+  product?: T;
+  order?: T;
+  grantedAt?: T;
+  downloads?: T;
+  completedLessons?: T;
   updatedAt?: T;
   createdAt?: T;
 }

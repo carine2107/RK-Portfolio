@@ -30,6 +30,10 @@ export const isAdminOrEditor: Access = ({ req: { user } }) =>
 export const isAdminFieldLevel: FieldAccess = ({ req: { user } }) =>
   hasRole(user as MaybeUser, 'admin')
 
+/** Field readable by staff only: protected content never leaves through the public API. */
+export const isStaffFieldLevel: FieldAccess = ({ req: { user } }) =>
+  hasRole(user as MaybeUser, 'admin', 'editor')
+
 /** Administrators manage every account; an editor may only read/update itself. */
 export const isAdminOrSelf: Access = ({ req: { user } }) => {
   if (hasRole(user as MaybeUser, 'admin')) return true

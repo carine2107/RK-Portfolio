@@ -3,10 +3,12 @@ import { getTranslations, setRequestLocale } from 'next-intl/server'
 
 import { BookCard } from '@/components/cards/ContentCards'
 import { breadcrumbSchema, JsonLd } from '@/components/seo/JsonLd'
+import { buttonClasses } from '@/components/ui/Button'
 import { EmptyState, PageHeader } from '@/components/ui/PageHeader'
 import { Section } from '@/components/ui/Section'
+import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
-import { getBooks, getSiteSettings } from '@/lib/cms'
+import { getBooks, getProducts, getSiteSettings } from '@/lib/cms'
 import { pageMetadata } from '@/lib/seo'
 
 /**
@@ -38,6 +40,8 @@ export default async function BooksPage({ params }: Props) {
   const t = await getTranslations('books')
   const nav = await getTranslations('nav')
   const books = await getBooks(locale)
+  const products = await getProducts(locale)
+  const productsText = await getTranslations('products')
 
   return (
     <>
@@ -69,6 +73,15 @@ export default async function BooksPage({ params }: Props) {
             ))}
           </ul>
         )}
+
+        {products.length > 0 ? (
+          <div className="mt-12 flex flex-wrap items-center justify-between gap-4 rounded-card border border-line bg-surface-subtle p-6">
+            <p className="text-secondary">{productsText('booksCallout')}</p>
+            <Link href="/products" className={buttonClasses('secondary')}>
+              {productsText('browse')}
+            </Link>
+          </div>
+        ) : null}
       </Section>
     </>
   )

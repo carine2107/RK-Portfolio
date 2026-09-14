@@ -96,10 +96,41 @@ paiement n'est simulé), `none` (information seule).
 `number`_ (`RK-AAAA-0001`, unique), `status`_ (`pending` | `paid` | `shipped` |
 `cancelled` | `refunded`), `trackingUrl`, `provider` (`stripe` | `paypal`),
 `providerRef`, `locale`, `customerName`, `customerEmail`, `shipping{…}`,
-`items[{book, title, quantity, unitPrice, lineTotal}]`, `total`, `vatRate`,
-`vatAmount`, `currency`, `paidAt`, `shippedAt`, `note`. Création par l'API de
+`items[{book | product, title, quantity, unitPrice, lineTotal}]`, `total`, `vatRate`,
+`vatAmount`, `currency`, `paidAt`, `shippedAt`, `digitalWaiverAt` (accès immédiat aux
+contenus numériques accepté), `note`. Création par l'API de
 paiement uniquement ; passage à `paid` uniquement par webhook Stripe signé ou capture
-PayPal, une seule fois. Passer à `shipped` envoie l'e-mail d'expédition.
+PayPal, une seule fois — les produits numériques sont alors ouverts dans l'espace
+membre de l'acheteur. Passer à `shipped` envoie l'e-mail d'expédition.
+
+### `products` — Produits numériques
+
+`title`_, `slug`_, `type`_ (`ebook` | `course` | `resource`), `price`_ (TTC EUR),
+`available`, `summary`\_, `cover`, `languages[]`, `description`, `ebookPdf`,
+`ebookEpub`, `resourceFile`, `modules[{title, lessons[{title, durationMinutes,
+content, videoUrl, attachment}]}]`, `featured`, `order`, `isPlaceholder`, `seo`.
+Brouillons. Les fichiers et le contenu des leçons (texte, vidéo, pièce jointe) ne sont
+**jamais** renvoyés par l'API publique : seuls les acheteurs y accèdent, par l'espace
+membre, après contrôle de leur accès. Titres et durées des leçons = programme public.
+
+### `protected-files` — Fichiers protégés (upload)
+
+`title`. PDF, EPUB, ZIP, DOCX, XLSX, PPTX, stockés dans `private/files` (hors du
+dossier public, volume Docker `private`). Lecture réservée à l'équipe ; téléchargement
+par les acheteurs via `/api/members/download` (limite de 50 téléchargements par accès).
+
+### `members` — Membres
+
+`email`\_ (unique), `name`, `locale`, `lastLoginAt`. Créés automatiquement au premier
+achat d'un produit numérique. Connexion sans mot de passe par lien e-mail à usage
+unique (15 minutes ; 72 heures pour le lien envoyé après l'achat), session de 30 jours
+dans un cookie signé `httpOnly`.
+
+### `entitlements` — Accès aux produits
+
+`member`_, `product`_, `order`, `grantedAt`, `downloads`, `completedLessons`
+(progression d'une formation). Créés au paiement ; un administrateur peut en ajouter
+ou en retirer à la main.
 
 ### `businesses` — Écosystème entrepreneurial
 

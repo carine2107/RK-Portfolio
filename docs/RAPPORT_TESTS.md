@@ -10,8 +10,8 @@ Environnement : Windows 11, Node 24.15, PostgreSQL 16 (Docker), build de
 
 | Suite                            | Périmètre                                                               | Résultat                             |
 | -------------------------------- | ----------------------------------------------------------------------- | ------------------------------------ |
-| Tests unitaires (Vitest)         | Traductions, contrastes, moteur d'apparence, validation, SEO, anti-abus | **95 / 95 réussis**                  |
-| Tests end-to-end (Playwright)    | 82 scénarios × 4 configurations                                         | **298 réussis, 30 ignorés, 0 échec** |
+| Tests unitaires (Vitest)         | Traductions, contrastes, moteur d'apparence, validation, SEO, anti-abus | **99 / 99 réussis**                  |
+| Tests end-to-end (Playwright)    | 87 scénarios × 4 configurations                                         | **318 réussis, 30 ignorés, 0 échec** |
 | Compilation TypeScript (`tsc`)   | Mode strict, tout le projet                                             | **0 erreur**                         |
 | Lint (ESLint 9 + config Next 16) | Tout le projet                                                          | **0 erreur, 0 avertissement**        |
 | Formatage (Prettier)             | `src`, `tests`, `docs`                                                  | **conforme**                         |
@@ -142,6 +142,15 @@ Corrections faites pendant cette étape : champ e-mail de la newsletter renommé
 - Webhook Stripe non signé refusé ; référence de commande falsifiée → 404 sans information
 
 Contrôle manuel (serveur de développement, clé Stripe et secret de webhook **factices**, données restaurées ensuite) : livre passé en vente directe à 24,90 € et boutique ouverte avec TVA 7 % → « Ajouter au panier », offre dans les données structurées, panier recalculé par le serveur (24,90 €, dont TVA 1,63 €, livraison offerte), CGV obligatoires, échec propre avec la clé factice (commande en attente créée). Webhook `checkout.session.completed` signé : signature falsifiée 400, premier envoi → commande **payée**, rejeu → ignoré, adresse et TVA enregistrées, stock 5 → 4 ; e-mail de confirmation à l'acheteur (FR) et notification à l'adresse des commandes reçus dans MailHog ; page de confirmation « Commande RK-2026-0001 confirmée » et panier vidé. Le parcours PayPal (API distante) n'a pas pu être testé sans identifiants sandbox.
+
+### Produits numériques et espace membres (`members.spec.ts`)
+
+- Page Produits numériques publiée en FR / DE / EN
+- `/account` sans session → redirection vers la connexion, pages non indexées
+- Demande de lien de connexion : réponse identique qu'un compte existe ou non ; adresse invalide → 422
+- Lien de connexion falsifié refusé (400, page « lien invalide ») ; téléchargement et progression sans session → 401 ; fichiers protégés inaccessibles par l'API du CMS
+
+Contrôle manuel (serveur de développement, clé Stripe et secret de webhook **factices**, données supprimées ensuite) : un e-book (PDF) et une formation (2 leçons, vidéo, pièce jointe) publiés ; fichier stocké dans `private/files`, jamais servi publiquement (API 403, URL directe 404) ; l'API publique ne renvoie ni le fichier ni le contenu, la vidéo ou la pièce jointe des leçons. Panier : quantité bornée à 1, pas de ligne livraison, case d'**accès immédiat / renonciation au droit de rétractation** obligatoire (422 sans elle). Webhook signé → commande payée, rejeu ignoré, signature falsifiée 400 ; membre et accès créés ; e-mails dans MailHog : confirmation acheteur, notification, **accès aux achats** avec lien. Lien → session ouverte, « Mon espace » liste les deux produits ; lien réutilisé → 400. Téléchargement du PDF 200 (`attachment`, `application/pdf`), produit non acheté → 403. Formation : progression 1/2 enregistrée, leçon vidéo (lecture au clic), pièce jointe, navigation entre leçons.
 
 ### Accessibilité (`accessibility.spec.ts`)
 

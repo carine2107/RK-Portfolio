@@ -47,6 +47,7 @@ import type {
   ImageView,
   InsightView,
   LegalPageView,
+  ProductView,
   RichContent,
   SeoView,
   SiteSettingsView,
@@ -363,6 +364,59 @@ export const getShopStatus = cache(
       () => ({ active: false }),
     ),
 )
+
+const mapProduct = (doc: Doc): ProductView => ({
+  id: String(doc.id),
+  slug: str(doc.slug),
+  type: str(doc.type, 'ebook') as ProductView['type'],
+  title: str(doc.title),
+  summary: str(doc.summary),
+  description: richText(doc.description),
+  price: num(doc.price) ?? 0,
+  available: doc.available !== false,
+  languages: Array.isArray(doc.languages)
+    ? (doc.languages as unknown[]).filter((value): value is string => typeof value === 'string')
+    : [],
+  // Lesson contents, videos and files are not readable here (staff-only fields).
+  modules: arrayOf(doc.modules).map((module) => ({
+    title: str(module.title),
+    lessons: arrayOf(module.lessons).map((lesson) => ({
+      id: String(lesson.id),
+      title: str(lesson.title),
+      durationMinutes: num(lesson.durationMinutes),
+    })),
+  })),
+  cover: image(doc.cover, 'wide'),
+  featured: boolean(doc.featured),
+  isPlaceholder: boolean(doc.isPlaceholder),
+  seo: seo(doc.seo),
+})
+
+/** Published digital products. No starter content. */
+export const getProducts = cache(
+  async (locale: Locale): Promise<ProductView[]> =>
+    withCms(
+      async (cms) => {
+        const result = await cms.find({
+          collection: 'products',
+          locale,
+          depth: 1,
+          limit: 200,
+          sort: 'order',
+          where: { _status: { equals: 'published' } },
+          // Public access rules: protected fields are stripped.
+          overrideAccess: false,
+        })
+        return result.docs.map((doc) => mapProduct(asDoc(doc)))
+      },
+      () => [],
+    ),
+)
+
+export async function getProductBySlug(locale: Locale, slug: string): Promise<ProductView | null> {
+  const all = await getProducts(locale)
+  return all.find((entry) => entry.slug === slug) ?? null
+}
 
 /* -------------------------------------------------------------------------- */
 /* Home & about                                                               */

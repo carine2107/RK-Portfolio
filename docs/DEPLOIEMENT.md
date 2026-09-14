@@ -323,6 +323,14 @@ hébergées) ; les montants sont recalculés côté serveur à partir du CMS ; u
 ne passe « Payée » que sur un webhook dont la signature est vérifiée ou une capture
 PayPal réussie, une seule fois.
 
+**Produits numériques et espace membres** : les fichiers vendus (e-books, ressources,
+pièces jointes des leçons) sont stockés dans `/app/private/files`, monté sur le volume
+Docker **`private`** — à inclure dans les sauvegardes au même titre que `media`. Ils ne
+sont jamais servis publiquement. La connexion des acheteurs se fait par lien e-mail : le
+SMTP doit donc fonctionner, et **changer `PAYLOAD_SECRET` déconnecte tous les membres**
+et invalide les liens envoyés. Seules les commandes contenant un livre imprimé demandent
+une adresse de livraison.
+
 ---
 
 ## 13. Checklist de mise en ligne
@@ -331,7 +339,7 @@ PayPal réussie, une seule fois.
 - [ ] `NEXT_PUBLIC_SITE_URL` correct et build effectué **après** son réglage
 - [ ] `PAYLOAD_SECRET` unique, `CONTACT_RATE_LIMIT=5`
 - [ ] SMTP configuré, demande de test envoyée et **reçue**
-- [ ] Vente directe (si ouverte) : CGV et retours validés, TVA validée par le comptable, clés live Stripe/PayPal, webhook Stripe actif, achat test réel remboursé
+- [ ] Vente directe (si ouverte) : CGV et retours validés, TVA validée par le comptable, clés live Stripe/PayPal, webhook Stripe actif, achat test réel remboursé ; produits numériques : volume `private` sauvegardé, achat test → e-mail d'accès reçu, connexion et téléchargement vérifiés
 - [ ] SPF, DKIM et DMARC publiés ; inscription newsletter testée de bout en bout (confirmation, article, désinscription)
 - [ ] Mot de passe administrateur changé, comptes inutiles supprimés
 - [ ] Contenus « Contenu d'exemple » remplacés ou dépubliés

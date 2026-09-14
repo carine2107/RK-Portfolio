@@ -36,7 +36,7 @@ ENV NODE_ENV=production \
 # the page cache (.next) and the media library (public/media) are written at
 # run time.
 COPY --from=build --chown=node:node /app ./
-RUN mkdir -p public/media/documents && chown -R node:node public/media
+RUN mkdir -p public/media/documents private/files && chown -R node:node public/media private
 USER node
 EXPOSE 4313
 HEALTHCHECK --interval=30s --timeout=5s --start-period=60s --retries=3 \

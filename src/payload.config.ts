@@ -15,6 +15,10 @@ import { Engagements } from './payload/collections/Engagements'
 import { ContactSubmissions } from './payload/collections/ContactSubmissions'
 import { Subscribers } from './payload/collections/Subscribers'
 import { Orders } from './payload/collections/Orders'
+import { Products } from './payload/collections/Products'
+import { ProtectedFiles } from './payload/collections/ProtectedFiles'
+import { Members } from './payload/collections/Members'
+import { Entitlements } from './payload/collections/Entitlements'
 import { Credentials } from './payload/collections/Credentials'
 import { Documents } from './payload/collections/Documents'
 import { ExpertiseAreas } from './payload/collections/ExpertiseAreas'
@@ -84,6 +88,10 @@ export default buildConfig({
     ContactSubmissions,
     Subscribers,
     Orders,
+    Products,
+    ProtectedFiles,
+    Members,
+    Entitlements,
     Users,
   ],
   globals: [SiteSettings, Appearance, ShopSettings, HomePage, AboutPage],

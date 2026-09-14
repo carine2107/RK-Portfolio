@@ -123,6 +123,22 @@ export async function Footer({
                 {nav('contact')}
               </Link>
             </li>
+            <li>
+              <Link
+                href="/products"
+                className="text-on-contrast-secondary underline-offset-4 transition-colors hover:text-accent hover:underline"
+              >
+                {nav('products')}
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/account"
+                className="text-on-contrast-secondary underline-offset-4 transition-colors hover:text-accent hover:underline"
+              >
+                {nav('account')}
+              </Link>
+            </li>
           </ul>
         </nav>
 

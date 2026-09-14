@@ -41,6 +41,10 @@ yarn-error.log*
 public/media/*
 !public/media/.gitkeep
 
+# protected files of digital products (served only to buyers)
+private/files/*
+!private/files/.gitkeep
+
 # editor
 .idea
 .vscode/*

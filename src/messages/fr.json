@@ -22,7 +22,9 @@
     "closeMenu": "Fermer le menu principal",
     "mainLabel": "Navigation principale",
     "footerLabel": "Navigation secondaire",
-    "breadcrumbLabel": "Fil d’Ariane"
+    "breadcrumbLabel": "Fil d’Ariane",
+    "products": "Produits numériques",
+    "account": "Mon espace"
   },
   "theme": {
     "label": "Thème de couleurs",
@@ -281,7 +283,8 @@
       "addToCart": "Ajouter au panier",
       "added": "Ajouté au panier.",
       "viewCart": "Voir le panier ({count})",
-      "directNote": "Livraison offerte · paiement sécurisé par carte ou PayPal"
+      "directNote": "Livraison offerte · paiement sécurisé par carte ou PayPal",
+      "digitalNote": "Paiement sécurisé par carte ou PayPal"
     },
     "related": "Autres publications",
     "empty": "Les publications sont en cours de publication dans le CMS."
@@ -310,18 +313,95 @@
         "terms": "Veuillez accepter les conditions générales de vente.",
         "rateLimit": "Trop de tentatives. Merci de réessayer dans quelques minutes.",
         "unavailable": "La vente directe n’est pas disponible pour le moment.",
-        "changed": "Un livre de votre panier n’est plus disponible à la vente directe ; il a été retiré.",
-        "payment": "Le paiement n’a pas abouti. Aucun montant n’a été débité ; vous pouvez réessayer."
-      }
+        "changed": "Un article de votre panier n’est plus disponible à la vente ; il a été retiré.",
+        "payment": "Le paiement n’a pas abouti. Aucun montant n’a été débité ; vous pouvez réessayer.",
+        "waiver": "Veuillez confirmer la demande d’accès immédiat aux contenus numériques."
+      },
+      "waiver": "Je demande l’accès immédiat aux contenus numériques et reconnais perdre mon droit de rétractation dès le début de l’accès.",
+      "secureNoteDigital": "Le paiement s’effectue sur la page sécurisée de Stripe ou de PayPal : aucune donnée bancaire ne transite par ce site.",
+      "single": "Quantité : 1"
     },
     "success": {
       "title": "Merci pour votre commande",
       "checking": "Confirmation du paiement en cours…",
-      "paid": "Commande {number} confirmée. Un e-mail de confirmation vient de vous être envoyé ; vous en recevrez un autre à l’expédition.",
+      "paid": "Commande {number} confirmée. Un e-mail de confirmation vient de vous être envoyé.",
       "pending": "Votre paiement pour la commande {number} est en cours de traitement. Vous recevrez un e-mail dès sa confirmation.",
       "unknown": "Nous n’avons pas pu retrouver cette commande. Si un montant a été débité, contactez-nous.",
       "back": "Retour aux livres",
       "contact": "Nous contacter"
+    }
+  },
+  "products": {
+    "meta": {
+      "title": "Produits numériques",
+      "description": "E-books, formations KAILI Institut et ressources téléchargeables de Romial Kenmogne."
+    },
+    "title": "Produits numériques",
+    "lead": "E-books, formations KAILI Institut et ressources téléchargeables. Après l’achat, vous y accédez depuis votre espace membre.",
+    "alreadyBought": "Déjà acheté ? Accéder à mon espace",
+    "empty": "Aucun produit numérique n’est proposé pour le moment.",
+    "types": {
+      "ebook": "E-book",
+      "course": "Formation",
+      "resource": "Ressource"
+    },
+    "syllabus": "Programme",
+    "lessons": "{count, plural, one {# leçon} other {# leçons}}",
+    "minutes": "{count} min",
+    "languagesList": "Langue(s) : {list}",
+    "notForSale": "La vente en ligne n’est pas encore ouverte pour ce produit.",
+    "accessNote": "Accès immédiat après paiement, dans votre espace membre (connexion par lien e-mail, sans mot de passe).",
+    "booksCallout": "E-books, formations et ressources sont proposés dans les produits numériques.",
+    "browse": "Voir les produits numériques"
+  },
+  "account": {
+    "title": "Mon espace",
+    "lead": "Vos produits numériques achetés sur le site.",
+    "signedInAs": "Connecté avec {email}",
+    "logout": "Se déconnecter",
+    "empty": "Aucun produit numérique n’est associé à ce compte pour le moment.",
+    "open": "Ouvrir",
+    "login": {
+      "title": "Accéder à mon espace",
+      "lead": "Saisissez l’adresse e-mail utilisée lors de votre achat : nous vous envoyons un lien de connexion, sans mot de passe.",
+      "email": "Adresse e-mail de l’achat",
+      "submit": "Recevoir mon lien de connexion",
+      "submitting": "Envoi…",
+      "sent": "Si un achat est associé à cette adresse, un lien de connexion vient d’être envoyé. Il est valable 15 minutes. Pensez à vérifier vos courriers indésirables.",
+      "errors": {
+        "email": "Veuillez saisir une adresse e-mail valide.",
+        "rateLimit": "Trop de tentatives. Réessayez dans quelques minutes.",
+        "unavailable": "La connexion par e-mail n’est pas disponible pour le moment.",
+        "server": "Une erreur est survenue. Réessayez plus tard."
+      }
+    },
+    "verify": {
+      "title": "Connexion",
+      "pending": "Connexion en cours…",
+      "invalid": "Ce lien de connexion n’est plus valable (expiré ou déjà utilisé).",
+      "again": "Recevoir un nouveau lien"
+    },
+    "product": {
+      "back": "Mon espace",
+      "downloads": "Téléchargements",
+      "pdf": "Télécharger le PDF",
+      "epub": "Télécharger l’EPUB",
+      "resource": "Télécharger",
+      "fileMissing": "Le fichier n’est pas encore disponible. Contactez-nous si besoin.",
+      "progress": "{done} / {total} leçons terminées",
+      "start": "Commencer",
+      "continue": "Continuer",
+      "modules": "Modules",
+      "completed": "terminée"
+    },
+    "lesson": {
+      "backToCourse": "Retour à la formation",
+      "attachment": "Télécharger la pièce jointe",
+      "complete": "Marquer comme terminée",
+      "undo": "Marquer comme non terminée",
+      "navigation": "Navigation entre les leçons",
+      "previous": "Leçon précédente",
+      "next": "Leçon suivante"
     }
   },
   "businesses": {

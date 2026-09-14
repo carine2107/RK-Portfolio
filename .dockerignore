@@ -7,6 +7,8 @@ node_modules
 # Uploaded media live in a volume, never in the image.
 public/media/*
 !public/media/.gitkeep
+private/files/*
+!private/files/.gitkeep
 
 # Test output
 test-results

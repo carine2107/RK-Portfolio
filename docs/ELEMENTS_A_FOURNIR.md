@@ -113,13 +113,15 @@ prestataire de paiement demandent une configuration technique (sections 1, 8 et
 
 ## 5 bis. Vente directe des livres
 
-| #    | Élément                                                                                                                    | Priorité                        |
-| ---- | -------------------------------------------------------------------------------------------------------------------------- | ------------------------------- |
-| 5b.1 | Comptes **Stripe** et/ou **PayPal** au nom du commanditaire, puis clés de test (staging) et live (production)              | 🔴 pour ouvrir la vente directe |
-| 5b.2 | **Taux de TVA** à appliquer (régime Kleinunternehmer ou TVA 7 % livres, OSS pour l'UE) — **validation du comptable**       | 🔴 pour ouvrir la vente directe |
-| 5b.3 | **Conditions générales de vente** et **politique de livraison et de retours** (droit de rétractation de 14 jours) validées | 🔴 pour ouvrir la vente directe |
-| 5b.4 | Prix TTC en EUR et stock disponible du livre ; délai d'expédition annoncé                                                  | 🟠                              |
-| 5b.5 | Mentions de la vente directe dans la politique de confidentialité (Stripe, PayPal, conservation des commandes)             | 🔴 pour ouvrir la vente directe |
+| #    | Élément                                                                                                                                                   | Priorité                               |
+| ---- | --------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------- |
+| 5b.1 | Comptes **Stripe** et/ou **PayPal** au nom du commanditaire, puis clés de test (staging) et live (production)                                             | 🔴 pour ouvrir la vente directe        |
+| 5b.2 | **Taux de TVA** à appliquer (régime Kleinunternehmer ou TVA 7 % livres, OSS pour l'UE) — **validation du comptable**                                      | 🔴 pour ouvrir la vente directe        |
+| 5b.3 | **Conditions générales de vente** et **politique de livraison et de retours** (droit de rétractation de 14 jours) validées                                | 🔴 pour ouvrir la vente directe        |
+| 5b.4 | Prix TTC en EUR et stock disponible du livre ; délai d'expédition annoncé                                                                                 | 🟠                                     |
+| 5b.5 | Mentions de la vente directe dans la politique de confidentialité (Stripe, PayPal, conservation des commandes)                                            | 🔴 pour ouvrir la vente directe        |
+| 5b.6 | Produits numériques : fichiers définitifs (PDF / EPUB, ressources), contenus et vidéos **non listées** des formations KAILI Institut, prix                | 🟠 pour vendre des produits numériques |
+| 5b.7 | CGV complétées pour les contenus numériques (accès immédiat, perte du droit de rétractation) et confidentialité (espace membre, conservation des comptes) | 🔴 pour vendre des produits numériques |
 
 ## 8 bis. Newsletter
 
@@ -131,9 +133,9 @@ prestataire de paiement demandent une configuration technique (sections 1, 8 et
 ## 9. Phase 2 (hors périmètre actuel)
 
 Livrés depuis : carte Europe–Afrique · page Conférences & médias (vidéos) · prise de
-rendez-vous · newsletter avec double opt-in. Vente directe (prête, à
-activer avec les clés de paiement). En cours : espace membres et produits digitaux. Restent hors périmètre : formations en ligne KAILI
-Institut · CRM.
+rendez-vous · newsletter avec double opt-in · vente directe, espace membres et
+produits numériques (e-books, formations KAILI Institut, ressources) — prêts, à
+activer avec les clés de paiement. Reste hors périmètre : CRM.
 
 L'architecture est prête à les accueillir sans refonte.
 
