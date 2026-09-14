@@ -1,0 +1,21 @@
+# Kept out of the Docker build context.
+node_modules
+.next
+.git
+*.tsbuildinfo
+
+# Uploaded media live in a volume, never in the image.
+public/media/*
+!public/media/.gitkeep
+
+# Test output
+test-results
+playwright-report
+blob-report
+coverage
+
+# Secrets are injected at run time (env_file), never baked into the image.
+.env
+.env.*
+!.env.example
+!.env.production.example

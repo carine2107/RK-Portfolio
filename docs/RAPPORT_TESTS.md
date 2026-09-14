@@ -163,7 +163,23 @@ Vérification finale : aucun défilement horizontal sur **14 pages × 3 langues 
 
 ---
 
-## 5. Tests non automatisés — à réaliser après la mise en production
+## 5. Test de déploiement (Docker, base vierge) — 11/09/2026
+
+Pile `docker-compose.prod.yml` construite et démarrée sur une base PostgreSQL
+**vide**, dans un projet Docker isolé :
+
+| Étape                                   | Résultat                                                                                         |
+| --------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| Build de l'image sans base ni secret    | réussi ; aucune page pré-générée (pas de contenu de démarrage figé)                              |
+| Démarrage : `npm run migrate`           | migration `initial` appliquée (99 tables) sans intervention ; conteneur `healthy`                |
+| `npm run seed` dans le conteneur        | **bug trouvé et corrigé** : échec sur les pays des expériences sur base vierge ; seed relançable |
+| Pages FR / DE / EN, 404, admin, sitemap | 200 (404 attendue), contenu issu du CMS, sitemap à 69 URL                                        |
+| Cache des pages (utilisateur non root)  | `MISS` → `HIT` ; écriture du cache et des médias autorisée                                       |
+| Redémarrage                             | migrations déjà appliquées ignorées, démarrage en < 1 s                                          |
+
+La pile de test a ensuite été supprimée (conteneurs, volumes, image).
+
+## 6. Tests non automatisés — à réaliser après la mise en production
 
 Ces vérifications dépendent d'éléments encore absents (voir
 [`ELEMENTS_A_FOURNIR.md`](ELEMENTS_A_FOURNIR.md)) :
@@ -177,7 +193,7 @@ Ces vérifications dépendent d'éléments encore absents (voir
 5. **Indexation** : Search Console, soumission du sitemap, contrôle des hreflang.
 6. **Checkout** : sans objet tant que la vente directe n'est pas activée.
 
-## 6. Limites connues
+## 7. Limites connues
 
 - La limitation de débit du formulaire est **en mémoire** : elle protège une
   instance unique. Une mise à l'échelle horizontale demanderait un magasin

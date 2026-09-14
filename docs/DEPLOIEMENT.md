@@ -30,111 +30,88 @@ plateforme supportant un serveur Node persistant et un volume.
 
 ## 2. Variables d'environnement de production
 
-```env
-NODE_ENV=production
-NEXT_PUBLIC_SITE_URL=https://romialkenmogne.com
-DATABASE_URI=postgres://user:motdepasse@db:5432/romial_website
-PAYLOAD_SECRET=<48 octets aléatoires, unique par environnement>
-CMS_ENABLED=true
+Modèle complet et commenté : **`.env.production.example`** (versionné). Sur le
+serveur :
 
-EMAIL_ENABLED=true
-SMTP_HOST=smtp.fournisseur.tld
-SMTP_PORT=587
-SMTP_SECURE=false
-SMTP_USER=<identifiant SMTP>
-SMTP_PASSWORD=<mot de passe SMTP>
-EMAIL_FROM="Romial Kenmogne <no-reply@romialkenmogne.com>"
-EMAIL_TO=contact@romialkenmogne.com
-
-CONTACT_RATE_LIMIT=5
-CONTACT_RATE_WINDOW_MINUTES=15
-MEDIA_STORAGE=local
+```bash
+cp .env.production.example .env.production
+chmod 600 .env.production      # jamais versionné (.gitignore) ni copié dans l'image (.dockerignore)
 ```
+
+| Variable                                            | Rôle                                                                                                              |
+| --------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| `NEXT_PUBLIC_SITE_URL`                              | URL publique, sans barre finale. **Inscrite dans le build** : reconstruire l'image après un changement de domaine |
+| `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_DB` | Base PostgreSQL ; l'adresse de connexion de l'application en est déduite. Mot de passe en lettres et chiffres     |
+| `PAYLOAD_SECRET`                                    | 48 octets aléatoires, **différent** entre staging et production                                                   |
+| `EMAIL_ENABLED`, `SMTP_*`, `EMAIL_FROM`, `EMAIL_TO` | Envoi des e-mails du formulaire ; laisser `EMAIL_ENABLED=false` tant qu'un envoi réel n'a pas été testé           |
+| `CONTACT_RATE_LIMIT`, `CONTACT_RATE_WINDOW_MINUTES` | Anti-abus du formulaire (5 envois / 15 min)                                                                       |
+| `NEXT_PUBLIC_ANALYTICS_*`                           | Mesure d'audience facultative (inscrite dans le build)                                                            |
+| `SEED_ADMIN_EMAIL`, `SEED_ADMIN_PASSWORD`           | Premier administrateur, créé par `npm run seed` ; à retirer du fichier ensuite                                    |
 
 Points de vigilance :
 
-- `PAYLOAD_SECRET` **différent** entre staging et production. L'application
-  refuse de démarrer si le secret est absent, trop court ou laissé à sa valeur
-  d'exemple.
-- `NEXT_PUBLIC_SITE_URL` est lu **au build** : rebuilder après changement de domaine.
-- Aucun secret dans le dépôt ; utiliser les secrets du fournisseur ou un
-  fichier `.env` en `chmod 600` hors du répertoire versionné.
+- L'application **refuse de démarrer** si `PAYLOAD_SECRET` est absent, trop court
+  ou laissé à sa valeur d'exemple (le build, lui, n'en a pas besoin).
+- Aucun secret dans le dépôt ni dans l'image : ils sont injectés au démarrage.
 
 ---
 
 ## 3. Déploiement par Docker (recommandé)
 
-`Dockerfile` :
+Fichiers fournis à la racine du dépôt :
 
-```dockerfile
-FROM node:22-alpine AS deps
-WORKDIR /app
-COPY package*.json ./
-RUN npm ci
+| Fichier                   | Contenu                                                                                                                                 |
+| ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `Dockerfile`              | Image Node 22 en 3 étapes ; utilisateur non root ; au démarrage : **migrations de base** (`npm run migrate`) puis serveur ; healthcheck |
+| `docker-compose.prod.yml` | Application + PostgreSQL 16, volumes `media` et `db`, application exposée sur `127.0.0.1` uniquement (derrière le proxy)                |
+| `.dockerignore`           | Exclut secrets, médias, dépendances et résultats de tests du contexte de build                                                          |
 
-FROM node:22-alpine AS build
-WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
-COPY . .
-ARG NEXT_PUBLIC_SITE_URL
-ENV NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL
-RUN npm run build
-
-FROM node:22-alpine AS runtime
-WORKDIR /app
-ENV NODE_ENV=production
-COPY --from=build /app/.next ./.next
-COPY --from=build /app/public ./public
-COPY --from=build /app/node_modules ./node_modules
-COPY --from=build /app/package.json ./package.json
-EXPOSE 4313
-CMD ["npm", "start"]
-```
-
-`docker-compose.prod.yml` :
-
-```yaml
-services:
-  app:
-    build:
-      context: .
-      args:
-        NEXT_PUBLIC_SITE_URL: https://romialkenmogne.com
-    env_file: .env.production
-    depends_on: [postgres]
-    ports: ['4313:4313']
-    volumes:
-      - media:/app/public/media
-    restart: unless-stopped
-
-  postgres:
-    image: postgres:16-alpine
-    env_file: .env.production.db
-    volumes:
-      - db:/var/lib/postgresql/data
-    restart: unless-stopped
-
-volumes:
-  media:
-  db:
-```
-
-Mise en ligne :
+Pour alléger les commandes, définir une fois l'alias :
 
 ```bash
-docker compose -f docker-compose.prod.yml up -d --build
-docker compose -f docker-compose.prod.yml exec app npm run seed   # première fois uniquement
+alias dc='docker compose --env-file .env.production -f docker-compose.prod.yml'
+```
+
+**Première mise en ligne**
+
+```bash
+git clone git@github.com:carine2107/RK-Portfolio.git /opt/romial && cd /opt/romial
+cp .env.production.example .env.production && chmod 600 .env.production   # puis le remplir
+dc up -d --build          # construit l'image, crée les tables, démarre
+dc exec app npm run seed  # une seule fois : contenus de départ + premier administrateur
+```
+
+Photos et couverture du livre (facultatif, une fois) : copier les fichiers sur
+le serveur puis `dc exec app npm run import:assets -- "<dossier photos>" "<couverture>"`
+(voir `INSTALLATION.md`). Sinon, les téléverser depuis l'administration.
+
+**Mise à jour**
+
+```bash
+cd /opt/romial
+./backup.sh               # sauvegarde avant toute mise à jour (section 7)
+git pull
+dc up -d --build          # les migrations en attente s'appliquent au démarrage
 ```
 
 > Le volume `media` est **obligatoire** : sans lui, chaque redéploiement
 > effacerait les images téléversées depuis le CMS.
 
+L'image est construite **sans accès à la base** : les pages ne sont donc pas
+pré-générées pendant le build. Chacune est rendue depuis le CMS à sa première
+visite, puis servie depuis le cache (renouvelé toutes les 5 minutes). Le site
+n'affiche jamais le contenu de démarrage intégré au code.
+
 ### Déploiement sans Docker
+
+Serveur Node ≥ 20.9 et PostgreSQL 16 ; variables de la section 2 dans `.env`
+(avec `NODE_ENV=production` et `DATABASE_URI`).
 
 ```bash
 git pull
 npm ci
-npm run build
+npm run migrate           # applique les migrations en attente
+npm run build             # la base étant joignable, les pages sont pré-générées
 pm2 restart romial-site   # ou systemd
 ```
 
@@ -143,16 +120,24 @@ pm2 restart romial-site   # ou systemd
 ## 4. Schéma de base de données
 
 - En **développement**, Payload synchronise le schéma automatiquement.
-- En **production**, `push` est désactivé : générer et appliquer une migration
-  après toute évolution du modèle de contenu.
+- En **production**, cette synchronisation est désactivée : le schéma évolue
+  uniquement par **migrations versionnées** (`src/migrations/`). La première,
+  `initial`, crée toutes les tables d'une base vierge.
+- Le conteneur applique les migrations en attente à chaque démarrage
+  (`npm run migrate`). Sans Docker, lancer `npm run migrate` avant le build.
+
+Après toute évolution du modèle de contenu (nouveau champ, nouvelle collection) :
 
 ```bash
-npm run payload migrate:create   # sur le poste de développement, à versionner
-npm run payload migrate          # sur le serveur, avant de redémarrer l'application
+npm run migrate:create <nom>   # sur le poste de développement ; versionner le fichier créé
 ```
 
-Ordre d'un déploiement avec migration :
-sauvegarde → `migrate` → build → redémarrage.
+Ordre d'un déploiement avec migration : **sauvegarde → mise à jour du code →
+migration → redémarrage** (automatique avec Docker).
+
+> Ne jamais lancer `npm run migrate` sur la base de développement locale : elle
+> est gérée par la synchronisation automatique, et Payload demanderait une
+> confirmation pouvant entraîner une perte de données.
 
 ---
 
@@ -222,8 +207,8 @@ DATE=$(date +%F)
 DEST=/var/backups/romial
 mkdir -p "$DEST"
 
-docker compose -f /opt/romial/docker-compose.prod.yml exec -T postgres \
-  pg_dump -U romial romial_website | gzip > "$DEST/db-$DATE.sql.gz"
+docker compose --env-file /opt/romial/.env.production -f /opt/romial/docker-compose.prod.yml \
+  exec -T postgres pg_dump -U romial romial_website | gzip > "$DEST/db-$DATE.sql.gz"
 
 tar czf "$DEST/media-$DATE.tar.gz" -C /var/lib/docker/volumes/romial_media/_data .
 
@@ -240,13 +225,15 @@ Copier les archives hors du serveur (stockage objet ou poste du commanditaire).
 
 ## 8. Restauration
 
+Commandes lancées depuis `/opt/romial`, avec l'alias `dc` de la section 3.
+
 ```bash
 # 1. Arrêter l'application (la base reste démarrée)
-docker compose -f docker-compose.prod.yml stop app
+dc stop app
 
 # 2. Restaurer la base
 gunzip -c /var/backups/romial/db-2026-09-01.sql.gz | \
-  docker compose -f docker-compose.prod.yml exec -T postgres \
+  dc exec -T postgres \
   psql -U romial -d romial_website
 
 # 3. Restaurer les médias
@@ -254,7 +241,7 @@ tar xzf /var/backups/romial/media-2026-09-01.tar.gz \
   -C /var/lib/docker/volumes/romial_media/_data
 
 # 4. Redémarrer
-docker compose -f docker-compose.prod.yml start app
+dc start app
 ```
 
 Contrôles après restauration : page d'accueil dans les trois langues,
@@ -264,12 +251,12 @@ connexion à `/admin`, présence des images, envoi d'une demande de test.
 
 ## 9. Rollback
 
-| Situation                               | Action                                                                                                                      |
-| --------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| Régression applicative, schéma inchangé | `git checkout <tag-précédent> && npm ci && npm run build && redémarrage` — ou `docker compose up -d` sur l'image précédente |
-| Régression après migration de schéma    | Restaurer la sauvegarde de base **prise avant la migration**, puis redéployer la version précédente                         |
-| Contenu supprimé par erreur             | Payload conserve les versions : ouvrir l'entrée → onglet _Versions_ → _Restore_                                             |
-| Incident majeur                         | Restauration complète (section 8) puis analyse hors production                                                              |
+| Situation                               | Action                                                                                                          |
+| --------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| Régression applicative, schéma inchangé | `git checkout <tag-précédent>` puis `dc up -d --build` (sans Docker : `npm ci && npm run build` et redémarrage) |
+| Régression après migration de schéma    | Restaurer la sauvegarde de base **prise avant la migration**, puis redéployer la version précédente             |
+| Contenu supprimé par erreur             | Payload conserve les versions : ouvrir l'entrée → onglet _Versions_ → _Restore_                                 |
+| Incident majeur                         | Restauration complète (section 8) puis analyse hors production                                                  |
 
 Marquer chaque mise en production par un tag Git (`git tag -a v1.0.0`) : le
 rollback consiste alors simplement à redéployer le tag précédent.

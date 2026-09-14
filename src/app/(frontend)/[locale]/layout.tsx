@@ -11,8 +11,8 @@ import { Header } from '@/components/layout/Header'
 import { ThemeScript } from '@/components/theme/ThemeScript'
 import { Notice } from '@/components/ui/Notices'
 import { locales, routing, type Locale } from '@/i18n/routing'
-import { getAppearance, getContentSource, getSiteSettings } from '@/lib/cms'
-import { isProduction, siteUrl } from '@/lib/env'
+import { getAppearance, getCms, getContentSource, getSiteSettings } from '@/lib/cms'
+import { cmsEnabled, isProduction, siteUrl } from '@/lib/env'
 
 import '../globals.css'
 
@@ -38,7 +38,17 @@ const playfair = Playfair_Display({
   preload: false,
 })
 
-export function generateStaticParams() {
+/**
+ * Pages are pre-rendered at build time only when the CMS can be reached. A
+ * build without the database (Docker image) pre-renders nothing: pages are
+ * then rendered from the CMS on their first request and cached — never baked
+ * with the built-in starter content.
+ */
+export async function generateStaticParams() {
+  if (cmsEnabled && !(await getCms())) {
+    console.warn('[build] CMS unreachable: pages will be rendered on their first request.')
+    return []
+  }
   return locales.map((locale) => ({ locale }))
 }
 

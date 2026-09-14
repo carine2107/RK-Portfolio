@@ -4,8 +4,11 @@ import { locales, type Locale } from '@/i18n/routing'
 import { getBooks, getExperiences, getExpertiseAreas, getInsights, getLegalPages } from '@/lib/cms'
 import { siteUrl } from '@/lib/env'
 
-/** Rebuilt at most once an hour. */
-export const revalidate = 3600
+/**
+ * Computed on each request (crawlers only): always reflects the CMS, including
+ * right after a deployment whose build could not reach the database.
+ */
+export const dynamic = 'force-dynamic'
 
 type Entry = MetadataRoute.Sitemap[number]
 

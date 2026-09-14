@@ -29,7 +29,9 @@ const dirname = path.dirname(fileURLToPath(import.meta.url))
 
 const secret = process.env.PAYLOAD_SECRET ?? ''
 
-if (process.env.NODE_ENV === 'production') {
+// Checked when the server starts, not during `next build`: an image can be
+// built without secrets (Docker) and receives them at run time.
+if (process.env.NODE_ENV === 'production' && process.env.NEXT_PHASE !== 'phase-production-build') {
   if (!secret || secret === 'change-me-in-every-environment' || secret.length < 32) {
     throw new Error(
       'PAYLOAD_SECRET is missing, too short or still the default value. Set a unique 32+ character secret before starting the production server.',
@@ -93,7 +95,13 @@ export default buildConfig({
   typescript: { outputFile: path.resolve(dirname, 'payload-types.ts') },
   db: postgresAdapter({
     pool: { connectionString: process.env.DATABASE_URI ?? '' },
+    // Development: the schema follows the code automatically. Production: no
+    // push; the versioned migrations (src/migrations) are applied with
+    // `npm run migrate` before start-up (done by the production container).
+    // Not `prodMigrations`: on a database created in dev mode Payload would ask
+    // an interactive question at start-up and exit.
     push: process.env.NODE_ENV !== 'production',
+    migrationDir: path.resolve(dirname, 'migrations'),
   }),
   sharp,
   graphQL: { disable: true },

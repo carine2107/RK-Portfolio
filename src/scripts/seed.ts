@@ -232,23 +232,13 @@ async function seedExperiences(
         expertiseAreas: defaultExpertise,
         _status: 'published' as const,
       },
-      Object.fromEntries(
-        OTHER_LOCALES.map((locale) => [
-          locale,
-          {
-            title: pick(entry.title, locale),
-            slug: `${entry.key}-${locale}`,
-            role: pick(entry.role, locale),
-            sector: pick(entry.sector, locale),
-            summary: pick(entry.summary, locale),
-            responsibilities: pick(entry.responsibilities, locale).map((item) => ({ item })),
-            _status: 'published' as const,
-          },
-        ]),
-      ),
+      // Translations are written below, together with the countries.
+      {},
     )
 
-    // Countries are shared rows with a translated name: same rows, per language.
+    // Countries are shared rows with a required translated name: each language
+    // is written on the English rows, in the same update as its other fields
+    // (a translation saved without them would fail validation on a new database).
     const english = await payload.findByID({
       collection: 'experiences',
       id,
@@ -263,10 +253,17 @@ async function seedExperiences(
         locale,
         overrideAccess: true,
         data: {
+          title: pick(entry.title, locale),
+          slug: `${entry.key}-${locale}`,
+          role: pick(entry.role, locale),
+          sector: pick(entry.sector, locale),
+          summary: pick(entry.summary, locale),
+          responsibilities: pick(entry.responsibilities, locale).map((item) => ({ item })),
           countries: withRowIds(
             pick(entry.countries, locale).map((name) => ({ name })),
             english.countries,
           ),
+          _status: 'published' as const,
         } as never,
       })
     }
