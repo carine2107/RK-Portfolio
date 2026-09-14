@@ -212,6 +212,15 @@ Qualification (facultative) : `organisationType`, `budget`, `timeline`, `decisio
 `low`, modifiable). Grille de calcul et libellés : `src/lib/lead-score.ts` ; le score n'est
 jamais renvoyé au visiteur.
 
+**Export CSV** (`subscribers`, `contact-submissions`) : boutons au-dessus de la liste
+(`src/payload/components/ExportCsvButton.tsx`, `beforeListTable`) → `GET
+/api/admin/export/{collection}?lang=fr|de|en[&status=confirmed]`. Réservé à un compte
+administrateur ou éditeur connecté (401 sinon), lecture avec ses droits
+(`overrideAccess: false`), 50 000 lignes au plus ; séparateur `;`, BOM UTF-8, protection
+contre l'injection de formules (`src/lib/csv.ts`, colonnes dans `src/lib/exports.ts`).
+L'export est journalisé (collection, nombre de lignes, identifiant de l'utilisateur),
+jamais son contenu.
+
 ### `users` — Comptes
 
 `name`_, `email`_, `role`\* (`admin` | `editor`).

@@ -511,6 +511,29 @@ information mais **n’est jamais noté**.
   prise de rendez-vous** est configuré (Réglages du site), le message de confirmation lui
   propose de réserver directement un échange.
 
+### Exporter en CSV (Excel, outil d’e-mailing, CRM)
+
+En haut des listes **Abonnés newsletter** et **Demandes de contact**, le bouton
+**Exporter en CSV** télécharge toute la liste dans un fichier lisible par Excel,
+LibreOffice ou Numbers, et importable dans un outil d’e-mailing ou un CRM (Brevo,
+Mailchimp, HubSpot…).
+
+- **Abonnés newsletter** : _Exporter en CSV_ (tous les statuts) ou **Exporter les abonnés
+  confirmés** — ce second fichier est le seul à importer dans un outil d’e-mailing, car
+  seules ces personnes ont confirmé leur inscription.
+- **Demandes de contact** : toutes les demandes, avec la priorité, le score, les réponses
+  de qualification et le message.
+- Les en-têtes de colonnes suivent la langue de l’administration ; les dates sont en
+  heure UTC ; le séparateur est le point-virgule (ouverture directe dans Excel en
+  français et en allemand).
+- Un contenu saisi par un visiteur qui commence par `=`, `+`, `-` ou `@` est précédé
+  d’une apostrophe : il ne peut pas s’exécuter comme une formule dans le tableur.
+
+> **Données personnelles** : le fichier contient des noms et des adresses e-mail. Le
+> conserver en lieu sûr, ne pas l’envoyer par e-mail non chiffré, et le supprimer une fois
+> l’import terminé. Une personne désinscrite sur le site doit aussi être retirée de
+> l’outil externe.
+
 ## 15. Statistiques de fréquentation
 
 Le site est prêt pour une mesure d'audience **sans cookie** : **Umami** ou

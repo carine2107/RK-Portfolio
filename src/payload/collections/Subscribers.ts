@@ -25,6 +25,14 @@ export const Subscribers: CollectionConfig = {
     group: GROUPS.administration,
     useAsTitle: 'email',
     defaultColumns: ['email', 'locale', 'status', 'confirmedAt', 'createdAt'],
+    components: {
+      beforeListTable: [
+        {
+          path: '/payload/components/ExportCsvButton#ExportCsvButton',
+          clientProps: { collection: 'subscribers' },
+        },
+      ],
+    },
     description: tr(
       'Inscriptions à la newsletter RK Insights, avec double confirmation par e-mail. Seuls les abonnés « Confirmé » reçoivent les articles. Une inscription non confirmée est supprimée après 7 jours, un désinscrit après 30 jours.',
       'Anmeldungen zum RK Insights Newsletter mit doppelter Bestätigung per E-Mail. Nur „Bestätigt“ erhält Artikel. Unbestätigte Anmeldungen werden nach 7 Tagen, Abmeldungen nach 30 Tagen gelöscht.',

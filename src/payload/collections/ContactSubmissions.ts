@@ -27,7 +27,7 @@ export const REQUEST_TYPES = [
 export type RequestType = (typeof REQUEST_TYPES)[number]
 
 /** Same wording as the public form, so the admin reads like the site. */
-const REQUEST_TYPE_LABELS: Record<RequestType, Record<string, string>> = {
+export const REQUEST_TYPE_LABELS: Record<RequestType, Record<string, string>> = {
   consulting: tr('Mission de conseil', 'Beratungsmandat', 'Consulting assignment'),
   dueDiligence: tr(
     'Due diligence financière',
@@ -67,6 +67,14 @@ export const ContactSubmissions: CollectionConfig = {
     group: GROUPS.administration,
     useAsTitle: 'subject',
     defaultColumns: ['subject', 'name', 'priority', 'leadScore', 'status', 'createdAt'],
+    components: {
+      beforeListTable: [
+        {
+          path: '/payload/components/ExportCsvButton#ExportCsvButton',
+          clientProps: { collection: 'contact-submissions' },
+        },
+      ],
+    },
     description: tr(
       'Demandes reçues via le formulaire « Travailler avec moi », avec une priorité calculée à partir des réponses du visiteur (cliquer sur la colonne « Score » pour trier). Protection des données : une demande restée sans modification pendant 24 mois (durée réglable) est supprimée automatiquement.',
       'Anfragen über das Formular „Zusammenarbeiten“, mit einer aus den Antworten des Besuchers berechneten Priorität (Spalte „Score“ zum Sortieren anklicken). Datenschutz: Eine Anfrage, die 24 Monate lang nicht geändert wurde (Dauer einstellbar), wird automatisch gelöscht.',

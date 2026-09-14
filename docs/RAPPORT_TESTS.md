@@ -10,8 +10,8 @@ Environnement : Windows 11, Node 24.15, PostgreSQL 16 (Docker), build de
 
 | Suite                            | Périmètre                                                               | Résultat                             |
 | -------------------------------- | ----------------------------------------------------------------------- | ------------------------------------ |
-| Tests unitaires (Vitest)         | Traductions, contrastes, moteur d'apparence, validation, SEO, anti-abus | **111 / 111 réussis**                |
-| Tests end-to-end (Playwright)    | 98 scénarios × 4 configurations                                         | **362 réussis, 30 ignorés, 0 échec** |
+| Tests unitaires (Vitest)         | Traductions, contrastes, moteur d'apparence, validation, SEO, anti-abus | **118 / 118 réussis**                |
+| Tests end-to-end (Playwright)    | 101 scénarios × 4 configurations                                        | **374 réussis, 30 ignorés, 0 échec** |
 | Compilation TypeScript (`tsc`)   | Mode strict, tout le projet                                             | **0 erreur**                         |
 | Lint (ESLint 9 + config Next 16) | Tout le projet                                                          | **0 erreur, 0 avertissement**        |
 | Formatage (Prettier)             | `src`, `tests`, `docs`                                                  | **conforme**                         |
@@ -42,7 +42,7 @@ node tests/visual/capture.mjs test-results/visual
 
 ---
 
-## 2. Tests unitaires (111)
+## 2. Tests unitaires (118)
 
 | Fichier                     | Ce qui est vérifié                                                                                                                                                                                                                                     |
 | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -63,8 +63,9 @@ node tests/visual/capture.mjs test-results/visual
 | `campaign-link.test.ts`     | Boutons des pages de campagne : pages du site (préfixe de langue retiré), https externe ; http, javascript:, //hôte, espaces et mailto: refusés                                                                                                        |
 | `media-library.test.ts`     | Médiathèque : formats (interview filmée = vidéo + interview), entrées à venir et ateliers sans vidéo exclus, filtres format / thème / langue combinés                                                                                                  |
 | `lead-score.test.ts`        | Qualification des prospects : score maximal 100, demande non qualifiée 5, bornes des priorités (35 / 60), type d’organisation et valeurs inconnues non notés ; questions facultatives et valeurs hors liste refusées par le schéma                     |
+| `exports.test.ts`           | Export CSV : BOM UTF-8, séparateur « ; », CRLF, échappement des guillemets et retours à la ligne, neutralisation des formules ; collections exportables limitées ; colonnes et libellés FR / DE ; nom de fichier par langue et date                    |
 
-## 3. Tests end-to-end (98 scénarios)
+## 3. Tests end-to-end (101 scénarios)
 
 ### Navigation et structure (`navigation.spec.ts`)
 
@@ -157,6 +158,14 @@ Contrôle manuel (serveur de développement, clé Stripe et secret de webhook **
 - Lien de connexion falsifié refusé (400, page « lien invalide ») ; téléchargement et progression sans session → 401 ; fichiers protégés inaccessibles par l'API du CMS
 
 Contrôle manuel (serveur de développement, clé Stripe et secret de webhook **factices**, données supprimées ensuite) : un e-book (PDF) et une formation (2 leçons, vidéo, pièce jointe) publiés ; fichier stocké dans `private/files`, jamais servi publiquement (API 403, URL directe 404) ; l'API publique ne renvoie ni le fichier ni le contenu, la vidéo ou la pièce jointe des leçons. Panier : quantité bornée à 1, pas de ligne livraison, case d'**accès immédiat / renonciation au droit de rétractation** obligatoire (422 sans elle). Webhook signé → commande payée, rejeu ignoré, signature falsifiée 400 ; membre et accès créés ; e-mails dans MailHog : confirmation acheteur, notification, **accès aux achats** avec lien. Lien → session ouverte, « Mon espace » liste les deux produits ; lien réutilisé → 400. Téléchargement du PDF 200 (`attachment`, `application/pdf`), produit non acheté → 403. Formation : progression 1/2 enregistrée, leçon vidéo (lecture au clic), pièce jointe, navigation entre leçons.
+
+### Export CSV (`exports.spec.ts`, `exports.test.ts`)
+
+- Sans session d'administration : `/api/admin/export/{subscribers | contact-submissions | users}` → 401, corps vide
+- Fichier : BOM UTF-8, séparateur `;`, fin de ligne CRLF, guillemets et retours à la ligne échappés, formules (`=`, `+`, `-`, `@`) neutralisées
+- Colonnes et libellés dans la langue de l'administration (FR / DE), valeurs inconnues conservées, dates UTC ; seules les deux collections prévues sont exportables ; nom de fichier par langue et date
+
+Contrôle manuel (base de développement, demande de test supprimée ensuite ; l’admin n’a pas été ouvert faute de session) : export exécuté comme la route, avec les droits d’un compte de l’équipe → fichier commençant par le BOM UTF-8 (`EF BB BF`), en-têtes et libellés français (priorité « Haute », budget « Plus de 50 000 € », type « Due diligence financière »), nom `=HYPERLINK(…)` exporté en `'=HYPERLINK(…)`, organisation contenant `;` et des guillemets correctement échappée, message sur deux lignes et accents intacts ; lecture anonyme de la collection refusée (Forbidden). Bouton ajouté à la carte d’import de l’admin (`npm run generate:importmap`).
 
 ### Qualification des prospects (`contact.spec.ts`, `lead-score.test.ts`)
 
