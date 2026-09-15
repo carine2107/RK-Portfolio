@@ -66,6 +66,7 @@ Guide détaillé : [`docs/INSTALLATION.md`](docs/INSTALLATION.md).
 | `npm run seed`                    | Injecte le contenu de démarrage et crée le premier administrateur                                                                                 |
 | `npm run import:assets`           | Importe les photos et la couverture fournies par le client (voir `docs/INSTALLATION.md`)                                                          |
 | `npm run docs:pdf`                | Régénère tous les documents en PDF dans `docs/pdf/` (guide, éléments à fournir, présentation, installation, déploiement, CMS, dépendances, tests) |
+| `npm run docs:screenshots`        | Refait les captures du site public du guide (`docs/images/guide/`) sur un site démarré, avant `docs:pdf`                                          |
 | `npm run generate:types`          | Régénère `src/payload-types.ts` après modification du modèle CMS                                                                                  |
 | `npm run generate:importmap`      | Régénère la carte d'import de l'admin Payload                                                                                                     |
 | `npm run typecheck`               | Vérification TypeScript stricte                                                                                                                   |

@@ -100,7 +100,25 @@ const slug = (text: string) =>
 
 type Heading = { level: number; text: string; id: string }
 
-function render(markdown: string): { intro: string; body: string; toc: Heading[] } {
+const IMAGE_TYPES: Record<string, string> = {
+  '.jpg': 'image/jpeg',
+  '.jpeg': 'image/jpeg',
+  '.png': 'image/png',
+  '.webp': 'image/webp',
+}
+
+/** The PDF page has no base address: images are embedded in the HTML. */
+function embedImage(href: string, baseDir: string): string {
+  const file = path.resolve(baseDir, href)
+  const type = IMAGE_TYPES[path.extname(file).toLowerCase()]
+  if (!type) throw new Error(`Unsupported image type: ${href}`)
+  return `data:${type};base64,${readFileSync(file).toString('base64')}`
+}
+
+function render(
+  markdown: string,
+  baseDir: string,
+): { intro: string; body: string; toc: Heading[] } {
   const toc: Heading[] = []
   const used = new Set<string>()
 
@@ -131,6 +149,10 @@ function render(markdown: string): { intro: string; body: string; toc: Heading[]
           href.replace(/^\.?\/?/, '').endsWith(path.basename(doc.source)),
         )
         return target ? `${text} <span class="ref">(${escapeHtml(target.output)})</span>` : text
+      },
+      image({ href, text }: Tokens.Image) {
+        // Markdown image text is used as the caption.
+        return `<span class="shot"><img src="${embedImage(href, baseDir)}" alt="${escapeHtml(text)}"><span class="shot__caption">${escapeHtml(text)}</span></span>`
       },
     },
   })
@@ -179,6 +201,10 @@ td code { overflow-wrap: anywhere; }
 th:first-child, td:first-child { min-width: 22mm; }
 tbody tr:nth-child(even) td { background: #fafaf8; }
 th strong, th code { color: #fff; background: none; border: 0; }
+.shot { display: block; margin: 6pt 0 12pt; break-inside: avoid; }
+.shot img { display: block; width: 100%; max-height: 120mm; object-fit: cover; object-position: top;
+  border: 0.5pt solid var(--line); border-radius: 3pt; }
+.shot__caption { display: block; margin-top: 3pt; color: var(--muted); font-size: 8.4pt; font-style: italic; }
 
 .cover { height: 257mm; display: flex; flex-direction: column; justify-content: space-between; break-after: page; }
 .cover__band { background: var(--navy); color: #fff; margin: -18mm -16mm 0; padding: 34mm 16mm 22mm; }
@@ -258,7 +284,8 @@ async function main() {
 
   try {
     for (const doc of selected) {
-      const content = render(readFileSync(path.join(root, doc.source), 'utf8'))
+      const source = path.join(root, doc.source)
+      const content = render(readFileSync(source, 'utf8'), path.dirname(source))
       const html = documentHtml(doc, content, version)
       const output = path.join(outputDir, doc.output)
       if (keepHtml) writeFileSync(output.replace(/\.pdf$/, '.html'), html)

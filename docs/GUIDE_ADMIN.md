@@ -90,6 +90,8 @@ Chaque contenu existe en **français, allemand et anglais**.
 
 Le temps de lecture est calculé automatiquement à l'enregistrement.
 
+![Un article publié : catégorie, titre, accroche, auteur, date et temps de lecture. Le bandeau « Contenu d’exemple » disparaît quand la case est décochée (§18).](images/guide/article.jpg)
+
 > **Aperçu** — le bouton _Aperçu_ ouvre la page telle qu'elle sera publiée,
 > même si l'article est encore en brouillon. Un bandeau orange le rappelle ;
 > « Quitter l'aperçu » revient à la version publique. L'aperçu n'est visible que
@@ -273,6 +275,8 @@ achats » avec un lien de connexion (valable 72 h). Ensuite, il se reconnecte de
 **Mon espace** (pied de page du site) en recevant un nouveau lien par e-mail : il n'y
 a pas de mot de passe. Chaque fichier peut être téléchargé 50 fois par accès.
 
+![La page « Accéder à mon espace » : l’acheteur saisit l’adresse e-mail de son achat et reçoit un lien de connexion.](images/guide/espace-membre.jpg)
+
 **Geste commercial ou problème** : dans **Accès aux produits → Créer**, choisir le
 membre et le produit (le membre doit exister : il est créé à son premier achat). Pour
 retirer un accès (remboursement), supprimer la ligne correspondante.
@@ -367,6 +371,8 @@ Les changements sont visibles sur le site **dès l'enregistrement**. Pour reveni
 à l'apparence d'origine : palette **Signature**, police **Source Serif 4**, fond
 **Halo doré**.
 
+![La page d’accueil en mode clair, avec la palette et la police de titres enregistrées dans Apparence.](images/guide/accueil.jpg)
+
 ---
 
 ## 12. Activités entrepreneuriales
@@ -424,6 +430,8 @@ soient utiles, renseigner dans chaque fiche :
 
 Un podcast se publie avec le type _Podcast_ et le lien vers l'épisode (Spotify, Apple
 Podcasts, site de l'émission…) dans _Lien externe_.
+
+![La Médiathèque tant qu’aucune vidéo, aucun podcast ni aucune interview passés ne sont publiés : la page l’indique au lieu de rester vide.](images/guide/mediatheque.jpg)
 
 ---
 
@@ -502,6 +510,8 @@ un **score sur 100** et une **priorité** :
 **Priorité haute** à partir de 60, **moyenne** de 35 à 59, **basse** en dessous. Une
 question sans réponse compte 0 point ; le type d’organisation est enregistré pour
 information mais **n’est jamais noté**.
+
+![Les quatre questions facultatives, telles que le visiteur les voit dans le formulaire de contact.](images/guide/contact-qualification.jpg)
 
 - Dans **Demandes de contact**, les colonnes **Priorité** et **Score** s’affichent dans la
   liste : cliquer sur l’en-tête **Score** pour trier. Le détail des réponses est dans le
