@@ -361,6 +361,25 @@ l'outil s'ouvre dans un nouvel onglet et rien n'en est chargé sur le site avant
 le clic (pas de cookie tiers). Vider le champ retire le bouton. Les rendez-vous se
 gèrent dans l'outil choisi.
 
+**Réseaux sociaux** : tant qu'aucun profil n'est renseigné, le pied de page n'affiche
+**aucune** section « Réseaux sociaux » (ce n'est pas une panne : il n'y a rien à
+montrer). Pour ajouter un profil :
+
+1. **Administration → Réglages du site**, onglet **Réseaux sociaux** ;
+2. **Ajouter un profil**, puis choisir la **plateforme** : LinkedIn, X / Twitter,
+   Facebook, YouTube ou Instagram ;
+3. coller l'**adresse complète** du profil, par exemple
+   `https://www.linkedin.com/in/…` (copiée depuis la barre d'adresse du navigateur,
+   sur la page du profil) ;
+4. répéter pour chaque réseau, dans l'ordre souhaité, puis **Sauvegarder**.
+
+Les icônes apparaissent dans le **haut du pied de page**, colonne de gauche, sous la
+signature, sur toutes les pages et dans les trois langues ; chaque lien s'ouvre dans
+un nouvel onglet. Elles ne figurent pas dans la barre du bas (mention de crédit et
+choix de la langue). Le changement est visible sur le site dans les **5 minutes**
+(mise en cache des pages). Pour retirer un réseau, supprimer sa ligne et
+sauvegarder. Le cahier des charges recommande **LinkedIn en priorité**.
+
 **Pages → Page d’accueil** : accroche, proposition de valeur, photo du hero, points
 clés, textes d'introduction des sections, appel à l'action final.
 
