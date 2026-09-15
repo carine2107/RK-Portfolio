@@ -13,13 +13,15 @@ import {
   type Provider,
 } from '@/lib/shop'
 import { paypalReady, stripeReady } from '@/lib/shop-config'
+import { parseCustomer } from '@/lib/shop-customer'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
 /**
- * Starts a payment: prices the cart from the CMS, creates a pending order and
- * returns the provider's hosted payment page. Nothing is charged here.
+ * Starts a payment: prices the cart from the CMS, checks the customer's details,
+ * creates a pending order and returns the provider's hosted payment page.
+ * Nothing is charged here.
  */
 export async function POST(request: Request): Promise<NextResponse> {
   const key = createHash('sha256')
@@ -37,6 +39,7 @@ export async function POST(request: Request): Promise<NextResponse> {
     provider?: unknown
     acceptTerms?: unknown
     acceptDigitalWaiver?: unknown
+    customer?: unknown
   }
   try {
     body = (await request.json()) as typeof body
@@ -64,6 +67,13 @@ export async function POST(request: Request): Promise<NextResponse> {
   if (priced.hasDigital && body.acceptDigitalWaiver !== true) {
     return NextResponse.json({ ok: false, reason: 'waiver' }, { status: 422 })
   }
+  const customer = parseCustomer(body.customer, priced.requiresShipping)
+  if (!customer.ok) {
+    return NextResponse.json(
+      { ok: false, reason: 'customer', errors: customer.errors },
+      { status: 422 },
+    )
+  }
   if (priced.removed.length > 0 || priced.items.length === 0) {
     return NextResponse.json(
       {
@@ -79,11 +89,12 @@ export async function POST(request: Request): Promise<NextResponse> {
     const order = await createPendingOrder(cms, priced, {
       locale,
       provider: provider as Provider,
+      customer: customer.customer,
     })
     const url =
       provider === 'stripe'
-        ? await startStripeCheckout(cms, order, priced, locale)
-        : await startPaypalCheckout(cms, order, priced, locale)
+        ? await startStripeCheckout(cms, order, priced, locale, customer.customer)
+        : await startPaypalCheckout(cms, order, priced, locale, customer.customer)
     return NextResponse.json({ ok: true, url })
   } catch (error) {
     console.error(

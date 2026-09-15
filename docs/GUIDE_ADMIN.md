@@ -196,18 +196,18 @@ approche, expériences et articles liés.
 
 **Contenus → Livres et publications**
 
-| Champ                                                  | Rôle                                                                                       |
-| ------------------------------------------------------ | ------------------------------------------------------------------------------------------ |
-| **Couverture**                                         | Couverture, format portrait                                                                |
-| **Résumé**, **Présentation détaillée**                 | Résumé court et présentation détaillée                                                     |
-| **Public**, **Langue**, **Format**, **ISBN**           | Fiche technique                                                                            |
-| **Éditeur**, **Date de parution**, **Nombre de pages** | Fiche technique ; affichés seulement s'ils sont renseignés                                 |
-| **Prix TTC** + **Devise**                              | Prix TTC ; laisser vide si le prix est fixé par le revendeur                               |
-| **Disponibilité**                                      | Disponible / Précommande / Bientôt / Épuisé                                                |
-| **Mode de vente**                                      | _External retailer_, _Direct sale_, _Information only_                                     |
-| **Liens d’achat**                                      | Un ou plusieurs boutons d'achat externes (Amazon, éditeur…)                                |
-| **Proposer aussi l'achat direct sur le site**          | Ajoute sous les liens d'achat « Ajouter au panier » ou « Commander ici » (voir ci-dessous) |
-| **Extrait (PDF)**                                      | Extrait facultatif                                                                         |
+| Champ                                                  | Rôle                                                                        |
+| ------------------------------------------------------ | --------------------------------------------------------------------------- |
+| **Couverture**                                         | Couverture, format portrait                                                 |
+| **Résumé**, **Présentation détaillée**                 | Résumé court et présentation détaillée                                      |
+| **Public**, **Langue**, **Format**, **ISBN**           | Fiche technique                                                             |
+| **Éditeur**, **Date de parution**, **Nombre de pages** | Fiche technique ; affichés seulement s'ils sont renseignés                  |
+| **Prix TTC** + **Devise**                              | Prix TTC ; laisser vide si le prix est fixé par le revendeur                |
+| **Disponibilité**                                      | Disponible / Précommande / Bientôt / Épuisé                                 |
+| **Mode de vente**                                      | _External retailer_, _Direct sale_, _Information only_                      |
+| **Liens d’achat**                                      | Un ou plusieurs boutons d'achat externes (Amazon, éditeur…)                 |
+| **Proposer aussi l'achat direct sur le site**          | Ajoute sous les liens d'achat le bouton « Commander ici » (voir ci-dessous) |
+| **Extrait (PDF)**                                      | Extrait facultatif                                                          |
 
 **Modèle de vente** — modèle hybride du cahier des charges, choisi livre par livre :
 
@@ -216,21 +216,27 @@ approche, expériences et articles liés.
 - _Présentation seule_ : fiche sans achat.
 
 **Achat direct en plus d'Amazon** — pour un livre en _Plateforme externe_, cocher **Proposer
-aussi l'achat direct sur le site** : le livre garde ses boutons Amazon et un bouton apparaît
-en dessous. Il change tout seul selon la situation :
+aussi l'achat direct sur le site** : le livre garde ses boutons Amazon et un bouton
+**« Commander ici »** apparaît en dessous. Parcours du client :
 
-- **« Ajouter au panier »** (paiement par carte ou PayPal sur le site) dès que la boutique est
-  ouverte, les clés de paiement configurées, un **prix TTC en EUR** renseigné et le livre
-  _Disponible_ ou en _Précommande_ (stock facultatif) ; la commande arrive dans
-  **Boutique → Commandes** comme toute vente directe (voir ci-dessous) ;
-- sinon **« Commander ici »** : il ouvre le formulaire de contact avec le type **« Commande de
-  livre »** et le titre du livre déjà remplis. La demande arrive dans **Administration →
-  Demandes de contact** et se traite à la main (prix, dédicace éventuelle, livraison et
-  paiement convenus directement avec la personne).
+1. **« Commander ici »** ouvre une fenêtre : couverture, titre, prix, quantité et bouton
+   **« Ajouter au panier »** ;
+2. une fois le livre ajouté : **« Continuer mes achats »** (la fenêtre se ferme) ou **« Aller
+   au panier »** ;
+3. au **Panier**, **« Payer maintenant »** ouvre le formulaire des coordonnées : nom complet,
+   e-mail, rue et numéro, complément d'adresse (facultatif), code postal, ville, pays, puis
+   acceptation des CGV ;
+4. **« Payer maintenant »** affiche le récapitulatif (adresse modifiable) et les moyens de
+   paiement : **« Payer par carte »** (Stripe) et **« Payer avec PayPal »**. L'adresse saisie
+   est transmise à Stripe ou PayPal, qui ne la redemandent pas.
 
-Aucune modification n'est nécessaire le jour où les clés de paiement sont ajoutées : le bouton
-passe au panier dès que les conditions sont réunies. Pensez à adapter le texte de la
-présentation détaillée qui annonce la commande directe « prochainement ».
+Conditions : un **prix TTC en EUR** et le livre _Disponible_ ou en _Précommande_ (stock
+facultatif). Sans prix, la fenêtre indique que la commande directe n'est pas encore ouverte
+et renvoie vers les liens Amazon. Tant que la boutique n'est pas ouverte ou que les clés de
+paiement manquent, le panier l'annonce clairement et **aucun bouton de paiement n'apparaît** :
+rien n'est simulé. La commande payée arrive dans **Boutique → Commandes** avec le nom,
+l'e-mail et l'adresse saisis. Pensez à adapter le texte de la présentation détaillée qui
+annonce la commande directe « prochainement ».
 
 **Vente directe** — **Boutique → Réglages de la boutique** puis **Boutique → Commandes**.
 
@@ -248,9 +254,10 @@ présentation détaillée qui annonce la commande directe « prochainement ».
    directe**.
 
 Côté visiteur : bouton **Ajouter au panier** → page **Panier** (prix recalculés par
-le site, livraison offerte, acceptation des CGV) → paiement sur la page sécurisée
-de **Stripe** (carte, Apple Pay, Google Pay…) ou de **PayPal**, qui demande aussi
-l'adresse de livraison. Aucune donnée bancaire ne passe par le site.
+le site, livraison offerte) → **Payer maintenant** : coordonnées et adresse de
+livraison, acceptation des CGV → choix du paiement sur la page sécurisée de
+**Stripe** (carte, Apple Pay, Google Pay…) ou de **PayPal**. Aucune donnée bancaire
+ne passe par le site.
 
 **Traiter une commande** — chaque commande payée envoie un e-mail à l'acheteur
 (confirmation) et à l'adresse des commandes (à expédier).

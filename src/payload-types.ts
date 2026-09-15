@@ -844,7 +844,7 @@ export interface Book {
       }[]
     | null;
   /**
-   * Under the purchase links: "Add to cart" (payment by card or PayPal on the website) once the shop is open, the payment keys are configured and a gross price in EUR is set, with the book available or on pre-order. Otherwise "Order here" opens the contact form ("Book order" type) and the order is handled manually.
+   * Under the purchase links, "Order here" opens a window to add the book to the cart; in the cart the customer enters their details, then chooses card or PayPal. A gross price in EUR and an available or pre-order book are required. Payment is only offered once the shop is open and the payment keys are configured; until then the window and the cart say so clearly.
    */
   directOrderForm?: boolean | null;
   /**

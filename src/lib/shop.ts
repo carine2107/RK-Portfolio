@@ -4,7 +4,8 @@
  *
  * - The cart is priced here from the CMS (src/lib/shop-pricing.ts).
  * - Payment happens on the provider's hosted page: no card data ever reaches
- *   this site. A delivery address is collected only for printed books.
+ *   this site. The customer enters contact details on the site before paying,
+ *   plus a delivery address for printed books; they are passed to the provider.
  * - An order becomes "paid" only from a verified Stripe webhook or a completed
  *   PayPal capture, once (atomic claim on the "pending" status). Digital
  *   products are then unlocked in the buyer's member account.
@@ -15,12 +16,12 @@ import type { Payload } from 'payload'
 import Stripe from 'stripe'
 
 import { isLocale, type Locale } from '@/i18n/routing'
-import { COUNTRY_CODES } from '@/lib/countries'
 import { createTransport, emailReady, escapeHtml, wrapHtml } from '@/lib/email-layout'
 import { emailConfig, siteUrl } from '@/lib/env'
 import { findOrCreateMember, grantEntitlement, sendAccessEmail } from '@/lib/members'
 import { signToken, verifyToken } from '@/lib/newsletter-tokens'
 import { paypalApiBase, paypalConfig, stripeConfig } from '@/lib/shop-config'
+import type { CustomerDetails } from '@/lib/shop-customer'
 import {
   fromMinor,
   kindOf,
@@ -34,9 +35,6 @@ import {
 } from '@/lib/shop-pricing'
 
 const ORDER_REF_VALIDITY_MS = 30 * 24 * 60 * 60 * 1000
-
-/** Countries Stripe does not ship to or that are under sanctions. */
-const NO_SHIPPING = new Set(['BY', 'CU', 'FM', 'IR', 'KP', 'MH', 'PW', 'RU', 'SD', 'SY'])
 
 const secret = (): string => process.env.PAYLOAD_SECRET || 'development-shop-secret'
 
@@ -218,8 +216,9 @@ export async function findOrderByReference(
 export async function createPendingOrder(
   payload: Payload,
   priced: PricedOrder,
-  input: { locale: Locale; provider: Provider },
+  input: { locale: Locale; provider: Provider; customer: CustomerDetails },
 ): Promise<OrderDoc> {
+  const { customer } = input
   const year = new Date().getUTCFullYear()
   for (let attempt = 0; attempt < 5; attempt += 1) {
     const count = await payload.count({
@@ -242,6 +241,21 @@ export async function createPendingOrder(
           total: fromMinor(priced.totalAmount),
           vatRate: priced.vatRate,
           vatAmount: fromMinor(priced.vatAmount),
+          customerEmail: customer.email,
+          customerName: customer.name,
+          ...(priced.requiresShipping
+            ? {
+                shipping: {
+                  name: customer.name,
+                  line1: customer.line1,
+                  line2: customer.line2,
+                  postalCode: customer.postalCode,
+                  city: customer.city,
+                  state: '',
+                  country: customer.country,
+                },
+              }
+            : {}),
           // Consent to immediate access, required before checkout (EU withdrawal rules).
           ...(priced.hasDigital ? { digitalWaiverAt: new Date().toISOString() } : {}),
           items: priced.items.map((item) => ({
@@ -263,41 +277,36 @@ export async function createPendingOrder(
   throw new Error('Could not allocate an order number')
 }
 
-const FREE_SHIPPING: Record<Locale, string> = {
-  fr: 'Livraison offerte',
-  de: 'Kostenloser Versand',
-  en: 'Free delivery',
-}
-
 export async function startStripeCheckout(
   payload: Payload,
   order: OrderDoc,
   priced: PricedOrder,
   locale: Locale,
+  customer: CustomerDetails,
 ): Promise<string> {
   const stripe = new Stripe(stripeConfig.secretKey)
   const reference = orderReference(order.id)
+  // The delivery address was entered on the site: Stripe does not ask for it again.
   const shipping: Partial<Stripe.Checkout.SessionCreateParams> = priced.requiresShipping
     ? {
-        shipping_address_collection: {
-          allowed_countries: COUNTRY_CODES.filter(
-            (code) => !NO_SHIPPING.has(code),
-          ) as Stripe.Checkout.SessionCreateParams.ShippingAddressCollection.AllowedCountry[],
-        },
-        shipping_options: [
-          {
-            shipping_rate_data: {
-              type: 'fixed_amount',
-              fixed_amount: { amount: 0, currency: 'eur' },
-              display_name: FREE_SHIPPING[locale],
+        payment_intent_data: {
+          shipping: {
+            name: customer.name,
+            address: {
+              line1: customer.line1,
+              ...(customer.line2 ? { line2: customer.line2 } : {}),
+              postal_code: customer.postalCode,
+              city: customer.city,
+              country: customer.country,
             },
           },
-        ],
+        },
       }
     : {}
   const session = await stripe.checkout.sessions.create({
     mode: 'payment',
     locale: locale === 'de' ? 'de' : locale === 'fr' ? 'fr' : 'en',
+    customer_email: customer.email,
     client_reference_id: String(order.id),
     metadata: { orderId: String(order.id), orderNumber: order.number },
     line_items: priced.items.map((item) => ({
@@ -346,6 +355,7 @@ export async function startPaypalCheckout(
   order: OrderDoc,
   priced: PricedOrder,
   locale: Locale,
+  customer: CustomerDetails,
 ): Promise<string> {
   const reference = orderReference(order.id)
   const response = await fetch(`${paypalApiBase()}/v2/checkout/orders`, {
@@ -372,14 +382,31 @@ export async function startPaypalCheckout(
             unit_amount: money(item.unitAmount),
             category: item.kind === 'book' ? 'PHYSICAL_GOODS' : 'DIGITAL_GOODS',
           })),
+          // The delivery address was entered on the site and cannot be changed on PayPal.
+          ...(priced.requiresShipping
+            ? {
+                shipping: {
+                  type: 'SHIPPING',
+                  name: { full_name: customer.name },
+                  address: {
+                    address_line_1: customer.line1,
+                    ...(customer.line2 ? { address_line_2: customer.line2 } : {}),
+                    admin_area_2: customer.city,
+                    postal_code: customer.postalCode,
+                    country_code: customer.country,
+                  },
+                },
+              }
+            : {}),
         },
       ],
       payment_source: {
         paypal: {
+          email_address: customer.email,
           experience_context: {
             brand_name: 'Romial Kenmogne',
             locale: locale === 'de' ? 'de-DE' : locale === 'fr' ? 'fr-FR' : 'en-GB',
-            shipping_preference: priced.requiresShipping ? 'GET_FROM_FILE' : 'NO_SHIPPING',
+            shipping_preference: priced.requiresShipping ? 'SET_PROVIDED_ADDRESS' : 'NO_SHIPPING',
             user_action: 'PAY_NOW',
             return_url: `${siteUrl}/api/shop/paypal/return?ref=${encodeURIComponent(reference)}`,
             cancel_url: `${siteUrl}/${locale}/cart?cancelled=1`,
@@ -478,7 +505,21 @@ export async function markOrderPaid(
   orderId: string | number,
   details: { providerRef: string; email: string; name: string; shipping: ShippingAddress },
 ): Promise<boolean> {
+  // Details entered on the site before payment take precedence over what the
+  // provider returns (the payer's account e-mail or cardholder name may differ).
+  let entered: OrderDoc | null = null
+  try {
+    entered = (await payload.findByID({
+      collection: 'orders',
+      id: orderId,
+      depth: 0,
+      overrideAccess: true,
+    })) as unknown as OrderDoc
+  } catch {
+    entered = null
+  }
   const hasAddress = Boolean(details.shipping.line1 || details.shipping.city)
+  const keepAddress = Boolean(entered?.shipping?.line1)
   const claimed = await payload.update({
     collection: 'orders',
     where: { and: [{ id: { equals: orderId } }, { status: { equals: 'pending' } }] },
@@ -486,9 +527,9 @@ export async function markOrderPaid(
       status: 'paid',
       paidAt: new Date().toISOString(),
       providerRef: details.providerRef,
-      customerEmail: details.email.trim().toLowerCase(),
-      customerName: details.name || details.shipping.name,
-      ...(hasAddress ? { shipping: details.shipping } : {}),
+      customerEmail: entered?.customerEmail || details.email.trim().toLowerCase(),
+      customerName: entered?.customerName || details.name || details.shipping.name,
+      ...(hasAddress && !keepAddress ? { shipping: details.shipping } : {}),
     } as never,
     overrideAccess: true,
     context: { orderInternal: true },

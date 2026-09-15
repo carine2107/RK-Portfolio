@@ -284,9 +284,9 @@ export const Books: CollectionConfig = {
       admin: {
         condition: (data) => data?.saleType === 'external',
         description: tr(
-          'Sous les liens d’achat : « Ajouter au panier » (paiement par carte ou PayPal sur le site) dès que la boutique est ouverte, les clés de paiement configurées et un prix TTC en EUR renseigné, le livre étant disponible ou en précommande. Sinon, « Commander ici » ouvre le formulaire de contact (type « Commande de livre ») et la commande est traitée à la main.',
-          'Unter den Kauflinks: „In den Warenkorb“ (Zahlung per Karte oder PayPal auf der Website), sobald der Shop geöffnet, die Zahlungsschlüssel eingerichtet und ein Bruttopreis in EUR angegeben ist und das Buch verfügbar oder vorbestellbar ist. Andernfalls öffnet „Hier bestellen“ das Kontaktformular (Art „Buchbestellung“), die Bestellung wird manuell bearbeitet.',
-          'Under the purchase links: "Add to cart" (payment by card or PayPal on the website) once the shop is open, the payment keys are configured and a gross price in EUR is set, with the book available or on pre-order. Otherwise "Order here" opens the contact form ("Book order" type) and the order is handled manually.',
+          'Sous les liens d’achat, « Commander ici » ouvre une fenêtre pour ajouter le livre au panier ; au panier, le client saisit ses coordonnées puis choisit carte ou PayPal. Il faut un prix TTC en EUR et le livre disponible ou en précommande. Le paiement n’est proposé qu’une fois la boutique ouverte et les clés de paiement configurées ; d’ici là, la fenêtre et le panier l’indiquent clairement.',
+          'Unter den Kauflinks öffnet „Hier bestellen“ ein Fenster, um das Buch in den Warenkorb zu legen; im Warenkorb gibt der Kunde seine Angaben ein und wählt Karte oder PayPal. Erforderlich sind ein Bruttopreis in EUR und ein verfügbares oder vorbestellbares Buch. Die Zahlung wird erst angeboten, wenn der Shop geöffnet und die Zahlungsschlüssel eingerichtet sind; bis dahin weisen Fenster und Warenkorb deutlich darauf hin.',
+          'Under the purchase links, "Order here" opens a window to add the book to the cart; in the cart the customer enters their details, then chooses card or PayPal. A gross price in EUR and an available or pre-order book are required. Payment is only offered once the shop is open and the payment keys are configured; until then the window and the cart say so clearly.',
         ),
       },
     },

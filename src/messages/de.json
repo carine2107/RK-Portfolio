@@ -288,8 +288,17 @@
       "directNote": "Kostenloser Versand · sichere Zahlung per Karte oder PayPal",
       "digitalNote": "Sichere Zahlung per Karte oder PayPal",
       "orderHere": "Hier bestellen",
-      "orderHereNote": "Direktbestellung beim Autor: Senden Sie Ihre Anfrage über das Formular, wir melden uns mit den Einzelheiten.",
-      "orderSubject": "Bestellung: {title}"
+      "orderHereNote": "Direkt auf der Website bestellen, kostenloser Versand.",
+      "dialog": {
+        "title": "Dieses Buch bestellen",
+        "close": "Schließen",
+        "quantity": "Menge",
+        "added": "Das Buch liegt jetzt in Ihrem Warenkorb.",
+        "cartCount": "{count, plural, one {# Artikel} other {# Artikel}} im Warenkorb",
+        "continue": "Weiter einkaufen",
+        "toCart": "Zum Warenkorb",
+        "unavailable": "Die Direktbestellung dieses Buches ist noch nicht geöffnet. Sie können es bereits über die Links oben kaufen."
+      }
     },
     "related": "Weitere Publikationen",
     "empty": "Die Publikationen werden derzeit im CMS veröffentlicht."
@@ -310,7 +319,41 @@
       "terms": "Ich habe die <terms>Allgemeinen Geschäftsbedingungen</terms> und die <returns>Liefer- und Rückgabebedingungen</returns> gelesen und akzeptiere sie.",
       "payWithCard": "Mit Karte bezahlen",
       "payWithPaypal": "Mit PayPal bezahlen",
-      "secureNote": "Die Zahlung erfolgt auf der sicheren Seite von Stripe oder PayPal: Keine Bankdaten laufen über diese Website. Die Lieferadresse wird dort abgefragt.",
+      "secureNote": "Die Zahlung erfolgt auf der sicheren Seite von Stripe oder PayPal: Keine Bankdaten laufen über diese Website. Kostenloser Versand an die angegebene Adresse.",
+      "payNow": "Jetzt bezahlen",
+      "steps": {
+        "label": "Bestellschritte",
+        "cart": "Warenkorb",
+        "details": "Ihre Angaben",
+        "payment": "Zahlung"
+      },
+      "details": {
+        "title": "Ihre Angaben",
+        "intro": "Diese Angaben dienen dem Versand und der Bestellbestätigung.",
+        "introDigital": "Diese Angaben dienen der Bestellbestätigung und dem Zugang zu Ihren Inhalten.",
+        "name": "Vollständiger Name",
+        "email": "E-Mail",
+        "line1": "Straße und Hausnummer",
+        "line2": "Adresszusatz",
+        "postalCode": "PLZ",
+        "city": "Ort",
+        "country": "Land",
+        "countryPlaceholder": "Land auswählen",
+        "optional": "optional",
+        "back": "Zurück zum Warenkorb",
+        "errorsTitle": "{count, plural, one {# Feld ist zu korrigieren} other {# Felder sind zu korrigieren}}",
+        "errors": {
+          "required": "{field}: Pflichtfeld",
+          "invalid": "{field}: ungültiger Wert"
+        }
+      },
+      "payment": {
+        "title": "Zahlungsart",
+        "contact": "Bestätigung an",
+        "delivery": "Lieferung an",
+        "edit": "Angaben ändern",
+        "choose": "Wählen Sie, wie Sie bezahlen möchten:"
+      },
       "unavailable": "Der Direktverkauf ist noch nicht geöffnet: Die Online-Zahlung wird in Kürze aktiviert. Ihr Warenkorb bleibt erhalten.",
       "cancelled": "Zahlung abgebrochen: Ihr Warenkorb bleibt erhalten.",
       "errors": {

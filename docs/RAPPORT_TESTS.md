@@ -10,8 +10,8 @@ Environnement : Windows 11, Node 24.15, PostgreSQL 16 (Docker), build de
 
 | Suite                            | Périmètre                                                               | Résultat                             |
 | -------------------------------- | ----------------------------------------------------------------------- | ------------------------------------ |
-| Tests unitaires (Vitest)         | Traductions, contrastes, moteur d'apparence, validation, SEO, anti-abus | **144 / 144 réussis**                |
-| Tests end-to-end (Playwright)    | 126 scénarios × 4 configurations                                        | **444 réussis, 60 ignorés, 0 échec** |
+| Tests unitaires (Vitest)         | Traductions, contrastes, moteur d'apparence, validation, SEO, anti-abus | **149 / 149 réussis**                |
+| Tests end-to-end (Playwright)    | 127 scénarios × 4 configurations                                        | **448 réussis, 60 ignorés, 0 échec** |
 | Compilation TypeScript (`tsc`)   | Mode strict, tout le projet                                             | **0 erreur**                         |
 | Lint (ESLint 9 + config Next 16) | Tout le projet                                                          | **0 erreur, 0 avertissement**        |
 | Formatage (Prettier)             | `src`, `tests`, `docs`                                                  | **conforme**                         |
@@ -191,23 +191,31 @@ Contrôle manuel (serveur de développement, clé Stripe et secret de webhook **
 
 ### Achat direct en plus d'Amazon (`book-order.spec.ts`, `shop-pricing.test.ts`)
 
-- Fiche livre (FR), boutique fermée : bouton « Commander ici » sous les liens Amazon quand la
-  case _Proposer aussi l'achat direct sur le site_ est cochée, lien vers
-  `/fr/contact?type=bookOrder&subject=Commande : <titre>`, aucun bouton « Ajouter au panier »
-- Formulaire de contact ouvert avec le type « Commande de livre » présélectionné et le sujet
-  pré-rempli
-- Règle unique d'achat direct (`isPurchasable`) pour le bouton de la fiche, le panier et le
+- Fiche livre (FR) : « Commander ici » est un bouton (plus un lien vers le formulaire de
+  contact) qui ouvre la fenêtre « Commander ce livre » ; livre sans prix (base livrée) → la
+  fenêtre annonce que la commande directe n'est pas encore ouverte, fermeture par Échap ; livre
+  achetable → « Ajouter au panier », puis « Continuer mes achats » / « Aller au panier »
+- Panier en trois étapes (devis simulé par le test, requête de paiement interceptée : aucun
+  prestataire contacté) : « Payer maintenant » → « Vos coordonnées » (titre focalisé) ;
+  envoi vide → « 6 champs à corriger » ; CGV obligatoires ; puis « Moyen de paiement » avec
+  l'adresse récapitulée (10115 Berlin, Allemagne), « Payer par carte » et « Payer avec
+  PayPal » ; la requête de paiement contient les coordonnées ; retour « Modifier mes
+  coordonnées » avec les champs conservés
+- Coordonnées (`shop-customer.test.ts`, 5 tests) : adresse complète normalisée, champs
+  d'adresse obligatoires pour un livre imprimé, contact seul pour le numérique, valeurs
+  invalides (e-mail, code postal, pays non livrable, longueur), caractères de contrôle nettoyés
+- Règle unique d'achat direct (`isPurchasable`) pour la fenêtre de la fiche, le panier et le
   paiement : livre en vente directe, ou livre de revendeur proposant l'achat direct, avec prix
   TTC > 0 en EUR, disponible ou en précommande, stock suffisant
 
-Contrôle manuel sur le build de production (clés Stripe **factices** dans un `.env.local`
-temporaire, boutique ouverte et prix de 24,90 € posés par script, puis tout rétabli) : la
-fiche affiche les 2 boutons Amazon puis « Ajouter au panier » (plus de « Commander ici ») ; le
-clic ajoute le livre (« Ajouté au panier. », « Voir le panier (1) ») ; `POST /api/shop/quote`
-→ `active: true`, livre accepté, 2 × 24,90 € = 49,80 €, rien retiré. Après restauration
-(boutique fermée, prix vide, `.env.local` supprimé, serveur redémarré) : « Commander ici » de
-retour, aucun bouton panier, devis `active: false` avec le livre retiré. Aucun paiement réel
-n'a été tenté.
+Contrôle manuel sur le build de production (base livrée : boutique fermée, prix vide) : la
+fiche du Tome 1 affiche les 2 boutons Amazon puis le bouton « Commander ici » ; le clic ouvre
+la fenêtre modale « Commander ce livre » (titre du livre, message « La commande directe de ce
+livre n'est pas encore ouverte… », bouton « Fermer »), sans proposer de panier puisque aucun
+prix n'est renseigné. Côté serveur, `POST /api/shop/checkout` refuse toujours le paiement
+tant que la boutique est fermée (503, `shop.spec.ts`). Le refus de coordonnées invalides
+(422 `customer`) n'intervient qu'une fois la boutique ouverte : il est couvert par les tests
+unitaires de la validation, pas encore par un appel réel. Aucun paiement réel n'a été tenté.
 
 Modèle : nouvelle valeur `bookOrder` du type de demande (notée comme « Autre » dans la
 qualification) et champ `directOrderForm` des livres (aucune nouvelle colonne pour l'achat

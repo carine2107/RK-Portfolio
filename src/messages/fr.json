@@ -288,8 +288,17 @@
       "directNote": "Livraison offerte · paiement sécurisé par carte ou PayPal",
       "digitalNote": "Paiement sécurisé par carte ou PayPal",
       "orderHere": "Commander ici",
-      "orderHereNote": "Commande directe auprès de l’auteur : envoyez votre demande par le formulaire, vous serez recontacté pour les modalités.",
-      "orderSubject": "Commande : {title}"
+      "orderHereNote": "Commande directe sur le site, livraison offerte.",
+      "dialog": {
+        "title": "Commander ce livre",
+        "close": "Fermer",
+        "quantity": "Quantité",
+        "added": "Le livre a été ajouté à votre panier.",
+        "cartCount": "{count, plural, one {# article} other {# articles}} dans le panier",
+        "continue": "Continuer mes achats",
+        "toCart": "Aller au panier",
+        "unavailable": "La commande directe de ce livre n’est pas encore ouverte. Vous pouvez déjà l’acheter via les liens ci-dessus."
+      }
     },
     "related": "Autres publications",
     "empty": "Les publications sont en cours de publication dans le CMS."
@@ -310,7 +319,41 @@
       "terms": "J’ai lu et j’accepte les <terms>conditions générales de vente</terms> et la <returns>politique de livraison et de retours</returns>.",
       "payWithCard": "Payer par carte",
       "payWithPaypal": "Payer avec PayPal",
-      "secureNote": "Le paiement s’effectue sur la page sécurisée de Stripe ou de PayPal : aucune donnée bancaire ne transite par ce site. L’adresse de livraison y est demandée.",
+      "secureNote": "Le paiement s’effectue sur la page sécurisée de Stripe ou de PayPal : aucune donnée bancaire ne transite par ce site. Livraison offerte à l’adresse indiquée.",
+      "payNow": "Payer maintenant",
+      "steps": {
+        "label": "Étapes de la commande",
+        "cart": "Panier",
+        "details": "Coordonnées",
+        "payment": "Paiement"
+      },
+      "details": {
+        "title": "Vos coordonnées",
+        "intro": "Ces informations servent à la livraison et à la confirmation de commande.",
+        "introDigital": "Ces informations servent à la confirmation de commande et à l’accès à vos contenus.",
+        "name": "Nom complet",
+        "email": "E-mail",
+        "line1": "Rue et numéro",
+        "line2": "Complément d’adresse",
+        "postalCode": "Code postal",
+        "city": "Ville",
+        "country": "Pays",
+        "countryPlaceholder": "Choisir un pays",
+        "optional": "facultatif",
+        "back": "Retour au panier",
+        "errorsTitle": "{count, plural, one {# champ à corriger} other {# champs à corriger}}",
+        "errors": {
+          "required": "{field} : champ obligatoire",
+          "invalid": "{field} : valeur invalide"
+        }
+      },
+      "payment": {
+        "title": "Moyen de paiement",
+        "contact": "Confirmation envoyée à",
+        "delivery": "Livraison à",
+        "edit": "Modifier mes coordonnées",
+        "choose": "Choisissez comment payer :"
+      },
       "unavailable": "La vente directe n’est pas encore ouverte : le paiement en ligne sera activé prochainement. Votre panier est conservé.",
       "cancelled": "Paiement annulé : votre panier est conservé.",
       "errors": {

@@ -288,8 +288,17 @@
       "directNote": "Free delivery · secure payment by card or PayPal",
       "digitalNote": "Secure payment by card or PayPal",
       "orderHere": "Order here",
-      "orderHereNote": "Order directly from the author: send your request through the form and you will be contacted with the details.",
-      "orderSubject": "Order: {title}"
+      "orderHereNote": "Order directly on the website, free delivery.",
+      "dialog": {
+        "title": "Order this book",
+        "close": "Close",
+        "quantity": "Quantity",
+        "added": "The book has been added to your cart.",
+        "cartCount": "{count, plural, one {# item} other {# items}} in the cart",
+        "continue": "Continue shopping",
+        "toCart": "Go to cart",
+        "unavailable": "Direct ordering of this book is not open yet. You can already buy it through the links above."
+      }
     },
     "related": "Other publications",
     "empty": "Publications are being published in the CMS."
@@ -310,7 +319,41 @@
       "terms": "I have read and accept the <terms>terms and conditions of sale</terms> and the <returns>delivery and returns policy</returns>.",
       "payWithCard": "Pay by card",
       "payWithPaypal": "Pay with PayPal",
-      "secureNote": "Payment takes place on the secure page of Stripe or PayPal: no banking data goes through this site. The delivery address is requested there.",
+      "secureNote": "Payment takes place on the secure page of Stripe or PayPal: no banking data goes through this site. Free delivery to the address given.",
+      "payNow": "Pay now",
+      "steps": {
+        "label": "Checkout steps",
+        "cart": "Cart",
+        "details": "Your details",
+        "payment": "Payment"
+      },
+      "details": {
+        "title": "Your details",
+        "intro": "Used for delivery and for the order confirmation.",
+        "introDigital": "Used for the order confirmation and for access to your content.",
+        "name": "Full name",
+        "email": "E-mail",
+        "line1": "Street and number",
+        "line2": "Address line 2",
+        "postalCode": "Postcode",
+        "city": "City",
+        "country": "Country",
+        "countryPlaceholder": "Choose a country",
+        "optional": "optional",
+        "back": "Back to cart",
+        "errorsTitle": "{count, plural, one {# field needs attention} other {# fields need attention}}",
+        "errors": {
+          "required": "{field}: required",
+          "invalid": "{field}: invalid value"
+        }
+      },
+      "payment": {
+        "title": "Payment method",
+        "contact": "Confirmation sent to",
+        "delivery": "Deliver to",
+        "edit": "Edit my details",
+        "choose": "Choose how to pay:"
+      },
       "unavailable": "Direct sales are not open yet: online payment will be activated soon. Your cart is kept.",
       "cancelled": "Payment cancelled: your cart is kept.",
       "errors": {

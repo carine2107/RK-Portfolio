@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl'
 import { trackEvent } from '@/components/analytics/track'
 import { Flag } from '@/components/i18n/Flag'
 import { AddToCart } from '@/components/shop/AddToCart'
+import { OrderDialog } from '@/components/shop/OrderDialog'
 import { buttonClasses } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
 import { Notice } from '@/components/ui/Notices'
@@ -28,10 +29,10 @@ function retailerCountry(url: string): 'fr' | 'de' | 'en' | null {
 /**
  * Purchase area of a book: retailer links, direct sale on the site, or both.
  *
- * Direct purchase is only offered when it can really be paid (shop opened in the
- * CMS and payment keys configured) and the book is purchasable by the same rule as
- * the server-side pricing. Until then a book that offers direct purchase shows
- * "Order here", which opens the contact form: no payment is ever simulated.
+ * A retailer book that also offers direct purchase shows "Order here", which opens
+ * the add-to-cart dialog; the book is purchasable by the same rule as the
+ * server-side pricing. Payment itself is only offered in the cart once the shop is
+ * opened and payment keys are configured: no payment is ever simulated.
  */
 export function PurchaseBlock({
   book,
@@ -42,18 +43,17 @@ export function PurchaseBlock({
   shopActive?: boolean
 }) {
   const t = useTranslations('books')
-  const directPurchase =
-    shopActive &&
-    isPurchasable({
-      id: book.id,
-      title: book.title,
-      price: book.price,
-      currency: book.currency,
-      saleType: book.saleType,
-      directOrder: book.directOrderForm,
-      availability: book.availability,
-      stock: book.stock,
-    })
+  const purchasable = isPurchasable({
+    id: book.id,
+    title: book.title,
+    price: book.price,
+    currency: book.currency,
+    saleType: book.saleType,
+    directOrder: book.directOrderForm,
+    availability: book.availability,
+    stock: book.stock,
+  })
+  const directPurchase = shopActive && purchasable
 
   if (book.saleType === 'external' && book.purchaseLinks.length > 0) {
     return (
@@ -74,27 +74,9 @@ export function PurchaseBlock({
           </a>
         ))}
         <p className="text-sm text-secondary">{t('buy.externalNote')}</p>
-        {book.directOrderForm && directPurchase ? (
+        {book.directOrderForm ? (
           <div className="mt-2 border-t border-line pt-4">
-            <AddToCart bookId={book.id} slug={book.slug} />
-          </div>
-        ) : book.directOrderForm ? (
-          <div className="mt-2 flex flex-col gap-2 border-t border-line pt-4">
-            {/* Online payment not available yet: the request goes through the contact
-                form and is handled manually. */}
-            <Link
-              href={`/contact?type=bookOrder&subject=${encodeURIComponent(
-                t('buy.orderSubject', { title: book.title }),
-              )}`}
-              onClick={() =>
-                trackEvent('book_purchase_click', { book: book.slug, url: 'contact-form' })
-              }
-              className={buttonClasses('secondary', 'lg', 'w-full')}
-            >
-              {t('buy.orderHere')}
-              <Icon name="arrow" className="size-4" />
-            </Link>
-            <p className="text-sm text-secondary">{t('buy.orderHereNote')}</p>
+            <OrderDialog book={book} purchasable={purchasable} />
           </div>
         ) : null}
       </div>

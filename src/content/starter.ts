@@ -1431,7 +1431,7 @@ export type StarterBook = {
   order: number
   availability: 'available' | 'preorder' | 'comingSoon' | 'outOfStock'
   saleType: 'external' | 'direct' | 'none'
-  /** "Order here" button to the contact form (announced by the author). */
+  /** "Order here" add-to-cart dialog under the purchase links (announced by the author). */
   directOrderForm: boolean
   isPlaceholder: boolean
   title: Localized
