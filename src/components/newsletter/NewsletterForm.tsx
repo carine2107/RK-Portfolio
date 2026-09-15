@@ -6,7 +6,7 @@ import { useId, useState } from 'react'
 import { trackEvent } from '@/components/analytics/track'
 import { Button } from '@/components/ui/Button'
 import { Link } from '@/i18n/navigation'
-import { newsletterSchema, type NewsletterResponse } from '@/lib/newsletter-schema'
+import type { NewsletterResponse } from '@/lib/newsletter-schema'
 
 type Status = 'idle' | 'submitting' | 'success' | 'error'
 
@@ -42,6 +42,8 @@ export function NewsletterForm({
       source,
     }
 
+    // Loaded on submit only: the validation library stays out of every page load.
+    const { newsletterSchema } = await import('@/lib/newsletter-schema')
     const parsed = newsletterSchema.safeParse(payload)
     if (!parsed.success) {
       const field = parsed.error.issues.find((issue) => issue.path[0] === 'email')

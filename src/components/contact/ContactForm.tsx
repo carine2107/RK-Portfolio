@@ -8,12 +8,7 @@ import { Button } from '@/components/ui/Button'
 import { Notice } from '@/components/ui/Notices'
 import { Link } from '@/i18n/navigation'
 import { countryOptions } from '@/lib/countries'
-import {
-  contactSchema,
-  toFieldErrors,
-  type ContactFieldErrors,
-  type ContactResponse,
-} from '@/lib/contact-schema'
+import type { ContactFieldErrors, ContactResponse } from '@/lib/contact-schema'
 import { BUDGETS, DECISION_ROLES, ORGANISATION_TYPES, TIMELINES } from '@/lib/lead-score'
 import { REQUEST_TYPES } from '@/payload/collections/ContactSubmissions'
 
@@ -82,6 +77,8 @@ export function ContactForm({
     }
 
     // Client-side validation first: the same schema runs again on the server.
+    // Loaded on submit only, so the validation library is not part of the page load.
+    const { contactSchema, toFieldErrors } = await import('@/lib/contact-schema')
     const parsed = contactSchema.safeParse(payload)
     if (!parsed.success) {
       const fieldErrors = toFieldErrors(parsed.error)

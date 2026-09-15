@@ -68,7 +68,7 @@ export default async function BooksPage({ params }: Props) {
           <ul className={books.length === 1 ? 'grid max-w-3xl gap-6' : 'grid gap-6 lg:grid-cols-2'}>
             {books.map((book) => (
               <li key={book.id} className="flex">
-                <BookCard book={book} />
+                <BookCard book={book} headingLevel="h2" />
               </li>
             ))}
           </ul>

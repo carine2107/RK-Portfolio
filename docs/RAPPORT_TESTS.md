@@ -1,6 +1,6 @@
 # Rapport des tests exécutés
 
-Date d'exécution : **10 septembre 2026**
+Date d'exécution : **10 septembre 2026**, dernière exécution complète le **15 septembre 2026**
 Environnement : Windows 11, Node 24.15, PostgreSQL 16 (Docker), build de
 **production** (`npm run build` + `npm start`), contenu servi par le CMS.
 
@@ -10,8 +10,8 @@ Environnement : Windows 11, Node 24.15, PostgreSQL 16 (Docker), build de
 
 | Suite                            | Périmètre                                                               | Résultat                             |
 | -------------------------------- | ----------------------------------------------------------------------- | ------------------------------------ |
-| Tests unitaires (Vitest)         | Traductions, contrastes, moteur d'apparence, validation, SEO, anti-abus | **134 / 134 réussis**                |
-| Tests end-to-end (Playwright)    | 105 scénarios × 4 configurations                                        | **390 réussis, 30 ignorés, 0 échec** |
+| Tests unitaires (Vitest)         | Traductions, contrastes, moteur d'apparence, validation, SEO, anti-abus | **135 / 135 réussis**                |
+| Tests end-to-end (Playwright)    | 113 scénarios × 4 configurations                                        | **412 réussis, 40 ignorés, 0 échec** |
 | Compilation TypeScript (`tsc`)   | Mode strict, tout le projet                                             | **0 erreur**                         |
 | Lint (ESLint 9 + config Next 16) | Tout le projet                                                          | **0 erreur, 0 avertissement**        |
 | Formatage (Prettier)             | `src`, `tests`, `docs`                                                  | **conforme**                         |
@@ -26,6 +26,10 @@ Tests ignorés, tous volontaires :
 - **4** : la vérification d'un lien de prise de rendez-vous configuré est sautée tant qu'aucun lien n'est renseigné dans le CMS ;
 - **24** : l'audit de contraste axe (12 scénarios) ne tourne que sur les deux
   configurations Chromium — le contraste ne dépend pas du moteur de rendu ;
+- **8** : l'audit axe « nom accessible / titres » (4 scénarios) ne tourne lui aussi
+  que sur Chromium ;
+- **2** : le contrôle HTTP de mise en cache des pages de détail ne dépend pas du
+  navigateur et ne tourne que sur Chromium ;
 - **2** sur WebKit : Safari ne déplace pas le focus vers les liens avec la touche
   Tab tant que « Full Keyboard Access » n'est pas activé dans le système. Le
   comportement est vérifié sur Chromium et Firefox.
@@ -42,7 +46,7 @@ node tests/visual/capture.mjs test-results/visual
 
 ---
 
-## 2. Tests unitaires (134)
+## 2. Tests unitaires (135)
 
 | Fichier                     | Ce qui est vérifié                                                                                                                                                                                                                                                                                            |
 | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -66,8 +70,9 @@ node tests/visual/capture.mjs test-results/visual
 | `exports.test.ts`           | Export CSV : BOM UTF-8, séparateur « ; », CRLF, échappement des guillemets et retours à la ligne, neutralisation des formules ; collections exportables limitées ; colonnes et libellés FR / DE ; nom de fichier par langue et date                                                                           |
 | `google-sheets.test.ts`     | Google Sheets : configuration inactive tant que les 3 valeurs ne sont pas valides, clé sur une ligne restaurée, endpoints Google imposés en production ; JWT RS256 vérifié ; ajout, mise à jour en place, suppression par index sans création d’onglet, création d’onglet, jeton unique, erreurs sans données |
 | `consent.test.ts`           | Consentement Google Analytics : aucun choix par défaut, mémorisation, nouvelle demande après changement de version ou valeur corrompue, identifiant G- seul accepté, activation seulement avec un identifiant valide, suppression des seuls cookies Google sur le domaine et ses parents                      |
+| `zod-csp.test.ts`           | Bibliothèque de validation en mode sans `eval` dès qu'un schéma de formulaire est chargé (compatible avec la politique de sécurité du contenu) ; la validation fonctionne toujours                                                                                                                            |
 
-## 3. Tests end-to-end (105 scénarios)
+## 3. Tests end-to-end (113 scénarios)
 
 ### Navigation et structure (`navigation.spec.ts`)
 
@@ -227,6 +232,25 @@ Contrôle manuel (serveur de développement, page de test supprimée ensuite) : 
   mal assortie (bleu clair, rose vif, gris clair, fond crème) + image de fond : **0
   violation** après correction automatique des couleurs
 
+### Nom accessible et ordre des titres (`label-in-name.spec.ts`)
+
+- Audit **axe-core** (règles `label-content-name-mismatch` et `heading-order`) sur
+  `/fr`, `/de`, `/fr/books` et `/en/contact` : le nom lu par les assistants vocaux
+  contient le texte visible (WCAG 2.5.3), aucun niveau de titre sauté
+- À 320 px, le lien d'accueil de l'en-tête garde son nom « Romial Kenmogne — Accueil »
+
+### Politique de sécurité du contenu (`csp.spec.ts`)
+
+- Aucune violation CSP au chargement de l'accueil ni à la validation du formulaire
+  newsletter du pied de page
+- Aucune violation à la validation du formulaire de contact
+
+### Mise en cache des pages de détail (`detail-cache.spec.ts`)
+
+- Toutes les pages de détail françaises du sitemap (articles, expertises, expériences,
+  livres…) répondent 200, sont mises en cache (`s-maxage=300`) et portent leur
+  description SEO dans l'en-tête `<head>` pour un navigateur ordinaire
+
 ---
 
 ## 4. Recette visuelle
@@ -266,14 +290,55 @@ Vérification finale : aucun défilement horizontal sur **14 pages × 3 langues 
 
 ### Anomalies techniques corrigées
 
-| #   | Anomalie                                                                                            | Correction                                                         |
-| --- | --------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
-| A   | `upgrade-insecure-requests` cassait tous les assets sous WebKit en HTTP                             | Directive envoyée uniquement lorsque le site est servi en HTTPS    |
-| B   | Le honeypot déclenchait une erreur de validation 422 (et se révélait aux robots)                    | Champ accepté par le schéma, filtré silencieusement côté serveur   |
-| C   | Un champ absent produisait un message d'erreur Zod en anglais                                       | Les erreurs sont toujours ramenées à la clé de traduction du champ |
-| D   | Pages rendues statiquement au build : les modifications du CMS n'apparaissaient qu'au redéploiement | Revalidation incrémentale (300 s) sur toutes les pages publiques   |
-| E   | Rendu lent en production (jusqu'à 5 s par page)                                                     | Même correction : 10 à 30 ms après mise en cache                   |
-| F   | La 404 hors route affichait la page d'erreur par défaut de Next.js                                  | Route attrape-tout par langue → 404 localisée avec le bon statut   |
+| #   | Anomalie                                                                                            | Correction                                                                         |
+| --- | --------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| A   | `upgrade-insecure-requests` cassait tous les assets sous WebKit en HTTP                             | Directive envoyée uniquement lorsque le site est servi en HTTPS                    |
+| B   | Le honeypot déclenchait une erreur de validation 422 (et se révélait aux robots)                    | Champ accepté par le schéma, filtré silencieusement côté serveur                   |
+| C   | Un champ absent produisait un message d'erreur Zod en anglais                                       | Les erreurs sont toujours ramenées à la clé de traduction du champ                 |
+| D   | Pages rendues statiquement au build : les modifications du CMS n'apparaissaient qu'au redéploiement | Revalidation incrémentale (300 s) sur toutes les pages publiques                   |
+| E   | Rendu lent en production (jusqu'à 5 s par page)                                                     | Même correction : 10 à 30 ms après mise en cache                                   |
+| F   | La 404 hors route affichait la page d'erreur par défaut de Next.js                                  | Route attrape-tout par langue → 404 localisée avec le bon statut                   |
+| G   | Pages de détail (articles, expertises, livres…) recalculées à chaque visite malgré la revalidation  | `generateStaticParams` vide : rendu à la 1re visite puis mis en cache (voir 4 bis) |
+
+---
+
+## 4 bis. Audit Lighthouse — 15/09/2026
+
+Lighthouse 13.4.1 sur le build de production local (`npm start`), 12 pages en profil mobile
+(Moto G Power, réseau 4G lent simulé, processeur ralenti ×4) et 4 pages en profil ordinateur.
+Mesures faites en local, avec les photographies d'exemple : elles comparent un avant et un
+après, elles ne remplacent pas l'audit sur le domaine final (section 6).
+
+| Catégorie                    | Avant             | Après               |
+| ---------------------------- | ----------------- | ------------------- |
+| Performance mobile (moyenne) | 71 (de 62 à 82)   | **83** (de 75 à 91) |
+| LCP mobile (moyenne)         | 4,2 s             | 3,8 s               |
+| Temps de blocage (moyenne)   | 653 ms            | 266 ms              |
+| Performance ordinateur       | 99 – 100          | 98 – 100            |
+| Accessibilité                | 100 (livres : 98) | **100** partout     |
+| Bonnes pratiques             | 96 partout        | **100** partout     |
+| SEO                          | 100               | **100**             |
+| Décalage de mise en page     | 0                 | 0                   |
+
+Anomalies trouvées et corrigées :
+
+| #   | Anomalie                                                                                                                                                                                   | Correction                                                                                                                                                |
+| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| L1  | La bibliothèque de validation compilait ses contrôles avec `eval`, que la politique de sécurité du contenu bloque (erreur signalée dans la console)                                        | Mode sans `eval` ; tests `zod-csp.test.ts` et `csp.spec.ts`                                                                                               |
+| L2  | Cette bibliothèque était chargée sur toutes les pages alors qu'elle ne sert qu'à l'envoi des formulaires                                                                                   | Chargée seulement à l'envoi du formulaire newsletter ou contact : moins de JavaScript exécuté à l'ouverture de chaque page                                |
+| L3  | Lien d'accueil de l'en-tête et liens de langue (« DE ») : le nom lu par les assistants vocaux ne contenait pas le texte visible (WCAG 2.5.3)                                               | Nom construit à partir du texte visible ; test `label-in-name.spec.ts`                                                                                    |
+| L4  | Page Livres et page Produits : niveau de titre sauté (h1 → h3)                                                                                                                             | Titres des cartes en h2 sur ces pages                                                                                                                     |
+| L5  | Pages de détail recalculées à chaque visite : description SEO parfois envoyée après le contenu, donc ignorée par les robots hors liste de Next.js et par Lighthouse (SEO 91 sur l'article) | Pages mises en cache (anomalie G) ; aperçu des brouillons inchangé (contourne le cache pour l'éditeur seul) ; 404 conservée ; test `detail-cache.spec.ts` |
+
+Constats non corrigés, à connaître :
+
+- **Temps d'affichage mobile (LCP ≈ 3,4 à 4,1 s)** : il vient surtout du réseau lent simulé et
+  des photos d'exemple. À remesurer avec les photographies définitives et un hébergement doté
+  d'un CDN.
+- **Police de titres** : l'écran Apparence de la base locale utilise Playfair, mais la police
+  Source Serif est tout de même préchargée. Sans effet visible ; à revoir si Playfair est retenu.
+- **Textes d'interface envoyés au navigateur** : n'envoyer que ceux utilisés côté client ne
+  ferait gagner qu'environ 7 Ko (24 %) pour un risque de textes manquants ; non retenu.
 
 ---
 
@@ -319,7 +384,8 @@ Ces vérifications dépendent d'éléments encore absents (voir
 2. **Restauration d'une sauvegarde sur le serveur de production** : procédure et scripts
    testés de bout en bout en local (section 5 bis) ; à refaire une fois sur le serveur, puis
    chaque trimestre (`DEPLOIEMENT.md` §7–8).
-3. **Audit Lighthouse** sur le domaine final avec les photographies réelles.
+3. **Audit Lighthouse** sur le domaine final avec les photographies réelles (audit local
+   avant / après en section 4 bis).
 4. **Lecteur d'écran** (NVDA ou VoiceOver) sur les parcours d'accueil et de contact.
 5. **Indexation** : Search Console, soumission du sitemap, contrôle des hreflang.
 6. **Checkout** : sans objet tant que la vente directe n'est pas activée.

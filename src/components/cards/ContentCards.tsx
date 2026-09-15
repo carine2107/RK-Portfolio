@@ -161,7 +161,14 @@ export function bookTitleLang(book: BookView, locale: string): string | undefine
   return book.languages.length === 1 && only && only !== locale ? only : undefined
 }
 
-export async function BookCard({ book }: { book: BookView }) {
+export async function BookCard({
+  book,
+  headingLevel = 'h3',
+}: {
+  book: BookView
+  /** h2 when the card sits directly under the page title (books list). */
+  headingLevel?: 'h2' | 'h3'
+}) {
   const t = await getTranslations('books')
   const locale = await getLocale()
   const titleLang = bookTitleLang(book, locale)
@@ -187,7 +194,7 @@ export async function BookCard({ book }: { book: BookView }) {
         </div>
       </div>
       <div className="flex flex-1 flex-col">
-        <CardTitle>
+        <CardTitle as={headingLevel}>
           <CardLink href={`/books/${book.slug}`}>
             <span lang={titleLang}>{book.title}</span>
           </CardLink>

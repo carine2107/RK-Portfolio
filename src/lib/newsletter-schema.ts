@@ -1,6 +1,12 @@
 import { z } from 'zod'
 
 /**
+ * No `new Function`: Zod would otherwise try to compile its parsers with eval,
+ * which the site's Content-Security-Policy rightly blocks (and reports).
+ */
+z.config({ jitless: true })
+
+/**
  * Newsletter sign-up, shared by the form and the API route. Issue messages are
  * translation keys under `newsletter.errors.*`.
  */

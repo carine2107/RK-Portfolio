@@ -104,7 +104,7 @@ export function LanguageSwitcher({
                   hrefLang={locale}
                   lang={locale}
                   data-locale={locale}
-                  aria-label={t('switchTo', { language: t(locale) })}
+                  aria-label={`${label} — ${t('switchTo', { language: t(locale) })}`}
                   onClick={() => trackEvent('language_change', { from: active, to: locale })}
                   className={`inline-flex items-center gap-1.5 rounded px-1 py-1 underline-offset-4 transition-colors hover:underline ${
                     contrast

@@ -1,5 +1,11 @@
 import { z } from 'zod'
 
+/**
+ * No `new Function`: Zod would otherwise try to compile its parsers with eval,
+ * which the site's Content-Security-Policy rightly blocks (and reports).
+ */
+z.config({ jitless: true })
+
 import { REQUEST_TYPES } from '@/payload/collections/ContactSubmissions'
 import { isCountryCode } from '@/lib/countries'
 import {

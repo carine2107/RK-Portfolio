@@ -8,7 +8,15 @@ import { formatPrice } from '@/lib/format'
 import type { ProductView } from '@/lib/types'
 
 /** Card of a digital product, linking to its public page. */
-export async function ProductCard({ product }: { product: ProductView }) {
+export async function ProductCard({
+  product,
+  headingLevel = 'h3',
+}: {
+  product: ProductView
+  /** h2 when the card sits directly under the page title (products list). */
+  headingLevel?: 'h2' | 'h3'
+}) {
+  const Heading = headingLevel
   const t = await getTranslations('products')
   const locale = (await getLocale()) as Locale
 
@@ -29,11 +37,11 @@ export async function ProductCard({ product }: { product: ProductView }) {
         <p className="text-xs font-semibold tracking-[0.18em] text-accent-text uppercase">
           {t(`types.${product.type}`)}
         </p>
-        <h3 className="mt-3 text-xl leading-snug text-primary">
+        <Heading className="mt-3 text-xl leading-snug text-primary">
           <Link href={`/products/${product.slug}`} className="after:absolute after:inset-0">
             {product.title}
           </Link>
-        </h3>
+        </Heading>
         <p className="mt-3 flex-1 text-[0.95rem] leading-relaxed text-secondary">
           {product.summary}
         </p>

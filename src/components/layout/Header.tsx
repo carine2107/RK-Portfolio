@@ -81,11 +81,7 @@ export function Header() {
       ].join(' ')}
     >
       <div className="rk-container flex h-[var(--header-height)] items-center justify-between gap-3 2xl:max-w-[90rem] 2xl:gap-4">
-        <Link
-          href="/"
-          className="group flex items-center gap-2.5 rounded sm:gap-3"
-          aria-label={`${brand('name')} — ${t('home')}`}
-        >
+        <Link href="/" className="group flex items-center gap-2.5 rounded sm:gap-3">
           <span
             aria-hidden="true"
             className="flex size-10 items-center justify-center rounded-full border border-line-accent font-serif text-sm tracking-[0.08em] text-accent-text"
@@ -94,9 +90,10 @@ export function Header() {
           </span>
           {/* The geographic scope is carried by the hero and the footer: the
               header keeps only the name, so the row stays comfortable. */}
-          <span className="hidden font-serif text-[0.78rem] tracking-[0.04em] whitespace-nowrap text-primary uppercase min-[360px]:block sm:text-sm lg:text-base">
+          <span className="font-serif text-[0.78rem] tracking-[0.04em] whitespace-nowrap text-primary uppercase max-[359px]:sr-only sm:text-sm lg:text-base">
             {brand('name')}
           </span>
+          <span className="sr-only"> — {t('home')}</span>
         </Link>
 
         <nav aria-label={t('mainLabel')} className="hidden xl:block">

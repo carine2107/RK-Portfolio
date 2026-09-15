@@ -19,6 +19,15 @@ import { PRODUCT_PREFIX } from '@/lib/shop-pricing'
 
 export const revalidate = 300
 
+/**
+ * No path is rendered at build time; each one is rendered on its first visit and
+ * then cached like the list pages. Without this export `revalidate` has no effect
+ * on a dynamic segment and the page is rendered again on every request.
+ */
+export async function generateStaticParams() {
+  return []
+}
+
 type Props = { params: Promise<{ locale: Locale; slug: string }> }
 
 const LANGUAGE_NAMES: Record<string, Record<Locale, string>> = {

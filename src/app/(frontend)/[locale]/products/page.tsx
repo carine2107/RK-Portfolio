@@ -65,7 +65,7 @@ export default async function ProductsPage({ params }: Props) {
           <ul className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {products.map((product) => (
               <li key={product.id} className="flex">
-                <ProductCard product={product} />
+                <ProductCard product={product} headingLevel="h2" />
               </li>
             ))}
           </ul>
