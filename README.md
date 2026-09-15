@@ -185,6 +185,9 @@ traduction manque, si une clé est en trop ou si un paramètre ICU diverge.
   Payload (rôle administrateur ou éditeur) avant d'activer le mode brouillon de
   Next.js. La page affiche alors la version non publiée avec un bandeau et un
   bouton « Quitter l'aperçu ». Les aperçus ne sont ni mis en cache ni indexés.
+  Le bouton existe pour les articles, livres, produits numériques, expertises,
+  expériences, conférences & médias, pages de campagne, pages légales et activités
+  (`src/payload/preview.ts`).
 - L'**interface d'administration** est en français par défaut (allemand et
   anglais disponibles) : à ne pas confondre avec le sélecteur _Locale_ de la
   barre supérieure, qui choisit la langue **du contenu** en cours d'édition.
@@ -244,6 +247,7 @@ Ce que le site fait réellement aujourd'hui :
 - ✅ Déploiement Docker testé sur base vierge (migrations, seed, cache)
 - ✅ Point de santé `/api/health` et suppression automatique des demandes de contact expirées
 - ✅ Tests unitaires et E2E verts
+- ✅ Intégration continue GitHub Actions (`.github/workflows/ci.yml`) : formatage, TypeScript, lint, tests unitaires et build de production à chaque push sur `main` et à chaque pull request ; les tests end-to-end restent lancés en local (base, contenu et MailHog requis)
 
 Ce qui est **volontairement** inactif, faute d'éléments ou de prestataire :
 
