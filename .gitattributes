@@ -1,2 +1,6 @@
+# Text files are stored and checked out with LF on every OS: Prettier enforces LF,
+# and Windows checkouts with core.autocrlf would otherwise fail the format check.
+* text=auto eol=lf
+
 # Shell scripts run on Linux servers: always LF, even when checked out on Windows.
 *.sh text eol=lf
