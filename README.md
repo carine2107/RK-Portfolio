@@ -58,23 +58,23 @@ Guide détaillé : [`docs/INSTALLATION.md`](docs/INSTALLATION.md).
 
 ## 3. Scripts npm
 
-| Script                            | Rôle                                                                                                      |
-| --------------------------------- | --------------------------------------------------------------------------------------------------------- |
-| `npm run dev`                     | Serveur de développement (port 4313)                                                                      |
-| `npm run build`                   | Build de production                                                                                       |
-| `npm start`                       | Serveur de production                                                                                     |
-| `npm run seed`                    | Injecte le contenu de démarrage et crée le premier administrateur                                         |
-| `npm run import:assets`           | Importe les photos et la couverture fournies par le client (voir `docs/INSTALLATION.md`)                  |
-| `npm run guide:pdf`               | Régénère le guide administrateur en PDF (`docs/Guide_administrateur_RK.pdf`) depuis `docs/GUIDE_ADMIN.md` |
-| `npm run generate:types`          | Régénère `src/payload-types.ts` après modification du modèle CMS                                          |
-| `npm run generate:importmap`      | Régénère la carte d'import de l'admin Payload                                                             |
-| `npm run typecheck`               | Vérification TypeScript stricte                                                                           |
-| `npm run lint`                    | ESLint (config Next.js 16)                                                                                |
-| `npm run format` / `format:check` | Prettier                                                                                                  |
-| `npm test`                        | Tests unitaires (Vitest)                                                                                  |
-| `npm run test:e2e`                | Tests end-to-end (Playwright)                                                                             |
-| `npm run verify`                  | format + types + lint + tests unitaires                                                                   |
-| `npm run db:up` / `db:down`       | Démarre / arrête PostgreSQL et MailHog                                                                    |
+| Script                            | Rôle                                                                                                                                              |
+| --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm run dev`                     | Serveur de développement (port 4313)                                                                                                              |
+| `npm run build`                   | Build de production                                                                                                                               |
+| `npm start`                       | Serveur de production                                                                                                                             |
+| `npm run seed`                    | Injecte le contenu de démarrage et crée le premier administrateur                                                                                 |
+| `npm run import:assets`           | Importe les photos et la couverture fournies par le client (voir `docs/INSTALLATION.md`)                                                          |
+| `npm run docs:pdf`                | Régénère tous les documents en PDF dans `docs/pdf/` (guide, éléments à fournir, présentation, installation, déploiement, CMS, dépendances, tests) |
+| `npm run generate:types`          | Régénère `src/payload-types.ts` après modification du modèle CMS                                                                                  |
+| `npm run generate:importmap`      | Régénère la carte d'import de l'admin Payload                                                                                                     |
+| `npm run typecheck`               | Vérification TypeScript stricte                                                                                                                   |
+| `npm run lint`                    | ESLint (config Next.js 16)                                                                                                                        |
+| `npm run format` / `format:check` | Prettier                                                                                                                                          |
+| `npm test`                        | Tests unitaires (Vitest)                                                                                                                          |
+| `npm run test:e2e`                | Tests end-to-end (Playwright)                                                                                                                     |
+| `npm run verify`                  | format + types + lint + tests unitaires                                                                                                           |
+| `npm run db:up` / `db:down`       | Démarre / arrête PostgreSQL et MailHog                                                                                                            |
 
 ---
 

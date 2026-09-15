@@ -293,6 +293,22 @@ Pile `docker-compose.prod.yml` construite et démarrée sur une base PostgreSQL
 
 La pile de test a ensuite été supprimée (conteneurs, volumes, image).
 
+## 5 bis. Test de sauvegarde et de restauration — 15/09/2026
+
+Pile `docker-compose.prod.yml` construite et démarrée dans un projet Docker **isolé** (base et volumes neufs, port distinct), contenu de démarrage chargé, puis scripts `ops/backup.sh` et `ops/restore.sh` exécutés tels qu'ils seront utilisés sur le serveur :
+
+| Étape                               | Résultat                                                                                                                                                                                                                                                                                          |
+| ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Marqueurs avant sauvegarde          | demande de contact qualifiée (score 45, priorité moyenne), fichier dans `public/media`, fichier dans `private/files`                                                                                                                                                                              |
+| `ops/backup.sh`                     | base (dump 844 Ko), archive des médias et fichiers vendus, empreintes SHA-256 ; aucun fichier `.partial` restant                                                                                                                                                                                  |
+| Dégâts volontaires                  | marqueur supprimé, demande créée après la sauvegarde, fichiers supprimés, fichier parasite ajouté                                                                                                                                                                                                 |
+| Sauvegarde altérée (1 octet ajouté) | **refusée** à la vérification des empreintes, site toujours en ligne                                                                                                                                                                                                                              |
+| Sans taper « RESTAURER »            | restauration **annulée**                                                                                                                                                                                                                                                                          |
+| `ops/restore.sh <horodatage> --yes` | site arrêté, base remplacée (`pg_restore --clean`, une transaction), fichiers remplacés, site redémarré et `/api/health` OK en 12 s                                                                                                                                                               |
+| Vérifications                       | nombre de demandes, articles et comptes identiques ; marqueur revenu avec son score et sa priorité ; demande postérieure disparue ; fichiers média et vendu restaurés, fichier parasite supprimé, propriétaire `node` (1000:1000) conservé ; `/fr`, `/de/contact`, `/en/insights`, `/admin` → 200 |
+
+Défaut trouvé et corrigé pendant le test : lancés depuis Git Bash sous Windows, les scripts transmettaient à Docker un chemin au format Unix (`/d/...`) ; ils utilisent désormais le chemin Windows lorsqu'il existe (sans effet sur un serveur Linux). La pile de test, ses volumes, son image et le fichier d'environnement temporaire ont été supprimés.
+
 ## 6. Tests non automatisés — à réaliser après la mise en production
 
 Ces vérifications dépendent d'éléments encore absents (voir
@@ -300,8 +316,9 @@ Ces vérifications dépendent d'éléments encore absents (voir
 
 1. **Envoi d'e-mail réel** avec le compte SMTP définitif (testé ici via MailHog :
    notification propriétaire + confirmation visiteur, en français, reçues).
-2. **Restauration d'une sauvegarde** sur le serveur de production
-   (procédure documentée dans `DEPLOIEMENT.md` §8).
+2. **Restauration d'une sauvegarde sur le serveur de production** : procédure et scripts
+   testés de bout en bout en local (section 5 bis) ; à refaire une fois sur le serveur, puis
+   chaque trimestre (`DEPLOIEMENT.md` §7–8).
 3. **Audit Lighthouse** sur le domaine final avec les photographies réelles.
 4. **Lecteur d'écran** (NVDA ou VoiceOver) sur les parcours d'accueil et de contact.
 5. **Indexation** : Search Console, soumission du sitemap, contrôle des hreflang.

@@ -15,13 +15,13 @@ L'application est un **serveur Node.js unique** qui sert à la fois :
 
 Elle a besoin de :
 
-| Composant                              | Rôle                                        | Remarque                                                                                                                                                   |
-| -------------------------------------- | ------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Node.js ≥ 20.9                         | Exécution                                   | `npm start` (port 4313 par défaut)                                                                                                                         |
-| PostgreSQL 16                          | Contenus, utilisateurs, demandes de contact | Sauvegarde quotidienne                                                                                                                                     |
-| Volume disque persistant               | Médias (`public/media`)                     | **Indispensable** : un hébergement à système de fichiers éphémère (Vercel, Netlify) perdrait les images téléversées → utiliser un stockage objet ou un VPS |
-| SMTP                                   | E-mails du formulaire                       | Fournisseur au choix                                                                                                                                       |
-| Reverse proxy (Nginx / Apache / Caddy) | HTTPS, compression, cache statique          | Certificat Let's Encrypt                                                                                                                                   |
+| Composant                              | Rôle                                                   | Remarque                                                                                                                                                   |
+| -------------------------------------- | ------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Node.js ≥ 20.9                         | Exécution                                              | `npm start` (port 4313 par défaut)                                                                                                                         |
+| PostgreSQL 16                          | Contenus, utilisateurs, demandes de contact            | Sauvegarde quotidienne                                                                                                                                     |
+| Volume disque persistant               | Médias (`public/media`) et fichiers vendus (`private`) | **Indispensable** : un hébergement à système de fichiers éphémère (Vercel, Netlify) perdrait les images téléversées → utiliser un stockage objet ou un VPS |
+| SMTP                                   | E-mails du formulaire                                  | Fournisseur au choix                                                                                                                                       |
+| Reverse proxy (Nginx / Apache / Caddy) | HTTPS, compression, cache statique                     | Certificat Let's Encrypt                                                                                                                                   |
 
 Hébergement recommandé : **VPS Linux** (2 vCPU / 4 Go) avec Docker, ou toute
 plateforme supportant un serveur Node persistant et un volume.
@@ -64,7 +64,7 @@ Fichiers fournis à la racine du dépôt :
 | Fichier                   | Contenu                                                                                                                                 |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
 | `Dockerfile`              | Image Node 22 en 3 étapes ; utilisateur non root ; au démarrage : **migrations de base** (`npm run migrate`) puis serveur ; healthcheck |
-| `docker-compose.prod.yml` | Application + PostgreSQL 16, volumes `media` et `db`, application exposée sur `127.0.0.1` uniquement (derrière le proxy)                |
+| `docker-compose.prod.yml` | Application + PostgreSQL 16, volumes `media`, `private` et `db`, application exposée sur `127.0.0.1` uniquement (derrière le proxy)     |
 | `.dockerignore`           | Exclut secrets, médias, dépendances et résultats de tests du contexte de build                                                          |
 
 Pour alléger les commandes, définir une fois l'alias :
@@ -90,7 +90,7 @@ le serveur puis `dc exec app npm run import:assets -- "<dossier photos>" "<couve
 
 ```bash
 cd /opt/romial
-./backup.sh               # sauvegarde avant toute mise à jour (section 7)
+ops/backup.sh             # sauvegarde avant toute mise à jour (section 7)
 git pull
 dc up -d --build          # les migrations en attente s'appliquent au démarrage
 ```
@@ -198,55 +198,61 @@ Le staging sert à la recette du commanditaire avant chaque mise en production.
 
 ## 7. Sauvegarde
 
-Deux éléments à sauvegarder : **la base** et **les médias**.
+Trois éléments à sauvegarder : **la base**, **les médias** (volume `media`) et
+**les fichiers vendus** (volume `private` : e-books, ressources, pièces jointes des
+leçons). Le script fourni `ops/backup.sh` sauvegarde les trois, sans supposer le nom
+des volumes sur le disque (il les lit à travers le conteneur de l'application) :
 
 ```bash
-#!/usr/bin/env bash
-# /opt/romial/backup.sh — à programmer quotidiennement (cron 03:00)
-set -euo pipefail
-DATE=$(date +%F)
-DEST=/var/backups/romial
-mkdir -p "$DEST"
-
-docker compose --env-file /opt/romial/.env.production -f /opt/romial/docker-compose.prod.yml \
-  exec -T postgres pg_dump -U romial romial_website | gzip > "$DEST/db-$DATE.sql.gz"
-
-tar czf "$DEST/media-$DATE.tar.gz" -C /var/lib/docker/volumes/romial_media/_data .
-
-find "$DEST" -name '*.gz' -mtime +30 -delete
+chmod +x /opt/romial/ops/*.sh
+/opt/romial/ops/backup.sh      # test manuel
+crontab -e                     # puis ajouter la ligne suivante (root)
+0 3 * * * /opt/romial/ops/backup.sh >> /var/log/romial-backup.log 2>&1
 ```
 
-| Élément         | Fréquence       | Rétention | Vérification                             |
-| --------------- | --------------- | --------- | ---------------------------------------- |
-| Base PostgreSQL | quotidienne     | 30 jours  | restauration testée **chaque trimestre** |
-| Médias          | quotidienne     | 30 jours  | idem                                     |
-| Dépôt Git       | à chaque commit | illimitée | miroir distant                           |
+Chaque sauvegarde produit, dans `/var/backups/romial` (variable `BACKUP_DIR`) :
 
-Copier les archives hors du serveur (stockage objet ou poste du commanditaire).
+| Fichier                         | Contenu                                                             |
+| ------------------------------- | ------------------------------------------------------------------- |
+| `db-AAAA-MM-JJ_HHMM.dump`       | Base PostgreSQL (`pg_dump`, format personnalisé, sans propriétaire) |
+| `files-AAAA-MM-JJ_HHMM.tar.gz`  | `public/media` et `private` (propriétaire et droits conservés)      |
+| `backup-AAAA-MM-JJ_HHMM.sha256` | Empreintes SHA-256, vérifiées avant toute restauration              |
+
+Une sauvegarde interrompue ne laisse que des fichiers `.partial`, jamais une sauvegarde
+apparemment complète. Au-delà de `RETENTION_DAYS` (30 jours par défaut), les anciennes
+sauvegardes sont supprimées.
+
+| Élément                   | Fréquence       | Rétention | Vérification                             |
+| ------------------------- | --------------- | --------- | ---------------------------------------- |
+| Base PostgreSQL           | quotidienne     | 30 jours  | restauration testée **chaque trimestre** |
+| Médias et fichiers vendus | quotidienne     | 30 jours  | idem                                     |
+| Dépôt Git                 | à chaque commit | illimitée | miroir distant                           |
+
+**Copier les sauvegardes hors du serveur** chaque jour (stockage objet, autre machine
+ou poste du commanditaire) : une sauvegarde restée sur le serveur disparaît avec lui.
+Elles contiennent des données personnelles (demandes de contact, abonnés, commandes) :
+stockage chiffré et accès restreint.
 
 ## 8. Restauration
 
-Commandes lancées depuis `/opt/romial`, avec l'alias `dc` de la section 3.
-
 ```bash
-# 1. Arrêter l'application (la base reste démarrée)
-dc stop app
-
-# 2. Restaurer la base
-gunzip -c /var/backups/romial/db-2026-09-01.sql.gz | \
-  dc exec -T postgres \
-  psql -U romial -d romial_website
-
-# 3. Restaurer les médias
-tar xzf /var/backups/romial/media-2026-09-01.tar.gz \
-  -C /var/lib/docker/volumes/romial_media/_data
-
-# 4. Redémarrer
-dc start app
+/opt/romial/ops/restore.sh                    # liste les sauvegardes disponibles
+/opt/romial/ops/restore.sh 2026-09-15_0300    # restaure, après avoir tapé RESTAURER
 ```
 
-Contrôles après restauration : page d'accueil dans les trois langues,
-connexion à `/admin`, présence des images, envoi d'une demande de test.
+Le script vérifie les empreintes (une sauvegarde altérée est refusée), arrête le site,
+**remplace** la base (`pg_restore --clean`, en une seule transaction : en cas d'erreur,
+la base reste dans son état précédent), remplace les médias et les fichiers vendus,
+redémarre le site puis attend que `/api/health` réponde.
+
+- Restaurer avec la **version du site** en service au moment de la sauvegarde (tag Git,
+  section 9), surtout après une migration de schéma.
+- Sur un **nouveau serveur** : installer le site (section 3, sans `npm run seed`),
+  copier les trois fichiers dans `/var/backups/romial`, puis lancer `ops/restore.sh`.
+
+Contrôles après restauration : page d'accueil dans les trois langues, connexion à
+`/admin`, présence des images, téléchargement d'un produit acheté, envoi d'une demande
+de test. Test de restauration réel : voir `RAPPORT_TESTS.md`.
 
 ---
 
