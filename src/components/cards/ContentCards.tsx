@@ -27,14 +27,21 @@ const EXPERTISE_ICONS: Record<string, IconName> = {
   people: 'people',
 }
 
-export function ExpertiseCard({ area }: { area: ExpertiseView }) {
+export function ExpertiseCard({
+  area,
+  headingLevel = 'h3',
+}: {
+  area: ExpertiseView
+  /** h2 when the card sits directly under the page title (expertise list). */
+  headingLevel?: 'h2' | 'h3'
+}) {
   return (
     <Card className="justify-between">
       <div>
         <span className="mb-5 inline-flex size-11 items-center justify-center rounded-full border border-line-accent text-accent-text transition-colors group-hover:bg-surface-accent">
           <Icon name={EXPERTISE_ICONS[area.icon] ?? 'chart'} className="size-5" />
         </span>
-        <CardTitle>
+        <CardTitle as={headingLevel}>
           <CardLink href={`/expertise/${area.slug}`}>{area.title}</CardLink>
         </CardTitle>
         <CardBody>{area.summary}</CardBody>
@@ -216,14 +223,21 @@ export async function BookCard({
   )
 }
 
-export async function BusinessCard({ business }: { business: BusinessView }) {
+export async function BusinessCard({
+  business,
+  headingLevel = 'h3',
+}: {
+  business: BusinessView
+  /** h2 when the card sits directly under the page title (businesses list). */
+  headingLevel?: 'h2' | 'h3'
+}) {
   const t = await getTranslations('businesses')
 
   return (
     <Card tone="outline" className="w-full">
       <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-2">
         <div className="min-w-0">
-          <CardTitle>{business.name}</CardTitle>
+          <CardTitle as={headingLevel}>{business.name}</CardTitle>
           {business.tagline ? (
             <p className="mt-1 text-sm text-accent-text">{business.tagline}</p>
           ) : null}

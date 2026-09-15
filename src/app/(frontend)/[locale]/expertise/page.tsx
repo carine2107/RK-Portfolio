@@ -66,7 +66,7 @@ export default async function ExpertisePage({ params }: Props) {
           <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {areas.map((area) => (
               <li key={area.id} className="flex">
-                <ExpertiseCard area={area} />
+                <ExpertiseCard area={area} headingLevel="h2" />
               </li>
             ))}
           </ul>

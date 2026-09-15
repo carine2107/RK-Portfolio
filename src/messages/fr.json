@@ -703,6 +703,7 @@
       "description": "La page demandée n’existe pas."
     },
     "code": "404",
+    "navLabel": "Rubriques du site",
     "title": "Cette page n’existe pas",
     "body": "La page a peut-être été déplacée ou l’adresse mal saisie. Voici les sections principales du site.",
     "cta": "Retour à l’accueil"

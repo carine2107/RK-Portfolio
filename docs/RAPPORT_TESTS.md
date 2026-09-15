@@ -8,15 +8,15 @@ Environnement : Windows 11, Node 24.15, PostgreSQL 16 (Docker), build de
 
 ## 1. Synthèse
 
-| Suite                            | Périmètre                                                               | Résultat                             |
-| -------------------------------- | ----------------------------------------------------------------------- | ------------------------------------ |
-| Tests unitaires (Vitest)         | Traductions, contrastes, moteur d'apparence, validation, SEO, anti-abus | **139 / 139 réussis**                |
-| Tests end-to-end (Playwright)    | 115 scénarios × 4 configurations                                        | **416 réussis, 44 ignorés, 0 échec** |
-| Compilation TypeScript (`tsc`)   | Mode strict, tout le projet                                             | **0 erreur**                         |
-| Lint (ESLint 9 + config Next 16) | Tout le projet                                                          | **0 erreur, 0 avertissement**        |
-| Formatage (Prettier)             | `src`, `tests`, `docs`                                                  | **conforme**                         |
-| Build de production              | `next build`                                                            | **réussi**                           |
-| Recette visuelle                 | 11 pages × 3 langues × 2 thèmes × 5 largeurs (99 captures)              | **conforme après corrections**       |
+| Suite                            | Périmètre                                                               | Résultat                                                                     |
+| -------------------------------- | ----------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| Tests unitaires (Vitest)         | Traductions, contrastes, moteur d'apparence, validation, SEO, anti-abus | **139 / 139 réussis**                                                        |
+| Tests end-to-end (Playwright)    | 123 scénarios × 4 configurations                                        | **431 réussis, 60 ignorés, 1 échec transitoire** (réussi au nouveau passage) |
+| Compilation TypeScript (`tsc`)   | Mode strict, tout le projet                                             | **0 erreur**                                                                 |
+| Lint (ESLint 9 + config Next 16) | Tout le projet                                                          | **0 erreur, 0 avertissement**                                                |
+| Formatage (Prettier)             | `src`, `tests`, `docs`                                                  | **conforme**                                                                 |
+| Build de production              | `next build`                                                            | **réussi**                                                                   |
+| Recette visuelle                 | 11 pages × 3 langues × 2 thèmes × 5 largeurs (99 captures)              | **conforme après corrections**                                               |
 
 Configurations end-to-end : **Chromium 1280 px**, **mobile 375 px**,
 **Firefox**, **WebKit**.
@@ -32,9 +32,18 @@ Tests ignorés, tous volontaires :
   navigateur et ne tourne que sur Chromium ;
 - **4** : les contrôles HTTP de l'aperçu des brouillons (2 scénarios) ne tournent eux
   aussi que sur Chromium ;
+- **16** : l'audit d'accessibilité approfondi (8 scénarios : axe complet sur 6 pages,
+  anneau de focus des cartes) ne tourne que sur Chromium ;
 - **2** sur WebKit : Safari ne déplace pas le focus vers les liens avec la touche
   Tab tant que « Full Keyboard Access » n'est pas activé dans le système. Le
   comportement est vérifié sur Chromium et Firefox.
+
+Échec transitoire du dernier passage complet (15/09/2026) : le contrôle de mise en cache des pages
+de détail (Chromium 1280 px) a reçu une page sans en-tête `Cache-Control`, juste après un
+redémarrage du serveur, au moment où cinq requêtes du CMS échouaient sous la charge des tests
+(voir « Limites connues »). Relancé sur le serveur chaud avec l'aperçu et l'audit
+d'accessibilité : 22 / 22 réussis ; les 15 pages de détail répondaient alors toutes avec
+`s-maxage=300`.
 
 Limite d’envoi du formulaire : une suite complète envoie une vingtaine de demandes de contact. Le limiteur (en mémoire, `CONTACT_RATE_LIMIT=50` par 15 minutes en local) peut répondre 429 si l’on enchaîne plusieurs suites : redémarrer le serveur entre deux passages rapprochés.
 
@@ -75,7 +84,7 @@ node tests/visual/capture.mjs test-results/visual
 | `zod-csp.test.ts`           | Bibliothèque de validation en mode sans `eval` dès qu'un schéma de formulaire est chargé (compatible avec la politique de sécurité du contenu) ; la validation fonctionne toujours                                                                                                                            |
 | `preview-url.test.ts`       | Bouton Aperçu du CMS : adresse `/api/preview` avec la langue et le chemin de la page (slug encodé), bouton masqué tant que le contenu n'a pas de slug, page de liste pour les activités                                                                                                                       |
 
-## 3. Tests end-to-end (115 scénarios)
+## 3. Tests end-to-end (123 scénarios)
 
 ### Navigation et structure (`navigation.spec.ts`)
 
@@ -254,6 +263,41 @@ Contrôle manuel (serveur de développement, page de test supprimée ensuite) : 
   livres…) répondent 200, sont mises en cache (`s-maxage=300`) et portent leur
   description SEO dans l'en-tête `<head>` pour un navigateur ordinaire
 
+### Audit d'accessibilité approfondi (`a11y-audit.spec.ts`) — 15/09/2026
+
+Audit outillé sur le build de production : règles **axe-core complètes** (WCAG 2.0 / 2.1 / 2.2
+A et AA + bonnes pratiques) sur les **32 pages** françaises du sitemap, la connexion à l'espace
+membre, le panier, la 404, l'accueil allemand et le contact anglais ; même audit en **mode sombre
+à 375 px** sur 13 modèles de page ; **parcours complet au clavier** (Tab) sur ces 13 modèles,
+avec contrôle de l'indicateur de focus ; menu mobile au clavier.
+
+| #   | Anomalie                                                                                                                                                                     | Correction                                                                                                          |
+| --- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| AC1 | Cartes cliquables (expertises, articles, expériences, livres) : **aucun indicateur de focus** au clavier (WCAG 2.4.7) — l'anneau n'était prévu que sur un cas jamais utilisé | Anneau de focus tracé autour de la carte quand son lien reçoit le focus clavier ; aucun anneau au clic de la souris |
+| AC2 | Pages Expertises et Entreprises : titres des cartes en h3 directement sous le h1                                                                                             | Titres en h2 sur ces deux pages (h3 conservé sur l'accueil, sous les titres de section)                             |
+| AC3 | Page 404 : sa navigation portait le même nom que la navigation principale de l'en-tête                                                                                       | Nom propre « Rubriques du site » (FR / DE / EN)                                                                     |
+
+Contrôles sans anomalie : menu mobile (ouverture au clavier, fermeture par Échap, focus rendu au
+bouton), contraste en mode sombre, noms accessibles, champs de formulaire. Les alertes « focus hors
+de l'écran » du premier passage venaient du défilement animé de la page pendant la mesure ; avec
+les animations réduites, chaque élément focalisé est visible.
+
+Tests ajoutés : axe complet sur l'accueil, Expertises, Entreprises, RK Insights, Contact et la 404 ;
+anneau de focus d'une carte au clavier ; absence d'anneau au clic.
+
+Constat non corrigé : les **pages 404** (adresse inconnue, livre ou article inexistant) sont
+envoyées par le serveur sous forme d'une coquille vide (`<html id="__next_error__">`, sans langue,
+sans titre ni contenu), puis complétées par JavaScript. Le statut HTTP 404 et le `noindex` sont
+corrects et la page 404 traduite s'affiche dès que JavaScript s'exécute ; un visiteur sans
+JavaScript ou un lecteur d'écran avant ce rendu trouve une page vide. C'est le fonctionnement de
+Next.js 16 quand une page appelle `notFound()` sans limite `Suspense` (une page `loading.tsx`
+donnerait un statut 200). Une racine de mise en page intermédiaire a été essayée sans effet ; la
+correction demande de revoir la production des 404 et fait l'objet d'un chantier séparé. Le test
+axe de la 404 audite la page une fois rendue.
+
+Non couvert par l'outil : l'écoute réelle avec un **lecteur d'écran** (NVDA ou VoiceOver), qui reste
+à faire (section 6).
+
 ### Aperçu des brouillons (`draft-preview.spec.ts`, `preview-url.test.ts`)
 
 - Avec le cookie du mode brouillon, toutes les pages de détail du sitemap et la page
@@ -413,6 +457,12 @@ Ces vérifications dépendent d'éléments encore absents (voir
 - La limitation de débit du formulaire est **en mémoire** : elle protège une
   instance unique. Une mise à l'échelle horizontale demanderait un magasin
   partagé (Redis) — l'interface de `src/lib/rate-limit.ts` ne changerait pas.
+- Sous la charge de la suite end-to-end (plusieurs navigateurs en parallèle), quelques requêtes du
+  CMS échouent ponctuellement ; le site sert alors le contenu de démarrage pour la page concernée,
+  qui peut être mise en cache jusqu'à 5 minutes. Cause (connexions à la base) à analyser dans un
+  chantier séparé.
+- Les pages 404 sont rendues par JavaScript à partir d'une coquille vide envoyée par le serveur
+  (statut 404 et `noindex` corrects) : voir l'audit d'accessibilité, section 3.
 - Le mode aperçu couvre toutes les pages publiques issues du CMS, sauf l'accueil, la
   page À propos et les formations et qualifications (réglages globaux sans brouillon ou
   contenus sans page propre) : ces modifications sont visibles à la publication.

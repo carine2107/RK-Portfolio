@@ -4,20 +4,18 @@ import { Link } from '@/i18n/navigation'
 
 type CardProps = {
   children: ReactNode
-  href?: string
   className?: string
   tone?: 'raised' | 'outline'
   as?: 'article' | 'div' | 'li'
 }
 
 /**
- * Sober card used across the site. When `href` is given the whole card becomes
+ * Sober card used across the site. A `CardLink` inside makes the whole card
  * clickable through a stretched link — the visible link text stays the
  * accessible name, so nothing is conveyed by the card surface alone.
  */
 export function Card({
   children,
-  href,
   className = '',
   tone = 'raised',
   as: Element = 'article',
@@ -27,7 +25,9 @@ export function Card({
     tone === 'raised'
       ? 'border-line bg-surface-raised shadow-card hover:border-line-accent hover:shadow-raised'
       : 'border-line bg-transparent hover:border-line-accent',
-    href ? 'focus-within:outline focus-within:outline-2 focus-within:outline-offset-2' : '',
+    // The stretched link covers the card, so its focus ring is drawn around the
+    // card (WCAG 2.4.7). Keyboard focus only: a mouse click draws no ring.
+    'has-[[data-card-link]:focus-visible]:outline-2 has-[[data-card-link]:focus-visible]:outline-offset-2 has-[[data-card-link]:focus-visible]:outline-(--focus-ring) has-[[data-card-link]:focus-visible]:outline-solid',
     className,
   ]
     .filter(Boolean)
@@ -40,6 +40,7 @@ export function CardLink({ href, children }: { href: string; children: ReactNode
   return (
     <Link
       href={href}
+      data-card-link=""
       className="after:absolute after:inset-0 after:content-[''] focus-visible:outline-none"
     >
       {children}

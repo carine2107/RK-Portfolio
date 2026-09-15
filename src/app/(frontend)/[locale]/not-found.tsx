@@ -25,7 +25,8 @@ export default async function NotFound() {
           </Link>
         </div>
 
-        <nav aria-label={nav('mainLabel')} className="mt-12 border-t border-line pt-8">
+        {/* Its own name: the header navigation is already the "main" one. */}
+        <nav aria-label={t('navLabel')} className="mt-12 border-t border-line pt-8">
           <ul className="flex flex-wrap justify-center gap-x-6 gap-y-3 text-sm">
             {NAV_ITEMS.map((item) => (
               <li key={item.key}>

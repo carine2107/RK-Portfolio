@@ -703,6 +703,7 @@
       "description": "The requested page does not exist."
     },
     "code": "404",
+    "navLabel": "Site sections",
     "title": "This page does not exist",
     "body": "The page may have been moved or the address mistyped. Here are the main sections of the site.",
     "cta": "Back to home"

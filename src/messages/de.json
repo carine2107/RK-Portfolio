@@ -703,6 +703,7 @@
       "description": "Die angeforderte Seite existiert nicht."
     },
     "code": "404",
+    "navLabel": "Bereiche der Website",
     "title": "Diese Seite existiert nicht",
     "body": "Die Seite wurde möglicherweise verschoben oder die Adresse falsch eingegeben. Hier sind die Hauptbereiche der Website.",
     "cta": "Zurück zur Startseite"
