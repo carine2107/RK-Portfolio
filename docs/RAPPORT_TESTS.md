@@ -10,7 +10,7 @@ Environnement : Windows 11, Node 24.15, PostgreSQL 16 (Docker), build de
 
 | Suite                            | Périmètre                                                               | Résultat                             |
 | -------------------------------- | ----------------------------------------------------------------------- | ------------------------------------ |
-| Tests unitaires (Vitest)         | Traductions, contrastes, moteur d'apparence, validation, SEO, anti-abus | **139 / 139 réussis**                |
+| Tests unitaires (Vitest)         | Traductions, contrastes, moteur d'apparence, validation, SEO, anti-abus | **143 / 143 réussis**                |
 | Tests end-to-end (Playwright)    | 125 scénarios × 4 configurations                                        | **440 réussis, 60 ignorés, 0 échec** |
 | Compilation TypeScript (`tsc`)   | Mode strict, tout le projet                                             | **0 erreur**                         |
 | Lint (ESLint 9 + config Next 16) | Tout le projet                                                          | **0 erreur, 0 avertissement**        |
@@ -38,7 +38,11 @@ Tests ignorés, tous volontaires :
   Tab tant que « Full Keyboard Access » n'est pas activé dans le système. Le
   comportement est vérifié sur Chromium et Firefox.
 
-Le dernier passage complet (15/09/2026, menu de langue et bouton jour / nuit) n'a eu aucun échec.
+Le dernier passage complet (15/09/2026, message de refus des vidéos dans la médiathèque) n'a eu
+aucun échec. Un premier lancement avait été interrompu par un arrêt brutal du serveur Node
+(code 0xC0000409, sans message) déjà observé une fois dans la journée avant cette modification ;
+un contrôle dédié (45 s au repos, dépôt refusé d'une vidéo et d'un PDF, puis 60 s) a montré que le
+refus des fichiers n'en est pas la cause. Ce plantage intermittent est suivi à part.
 Échec transitoire lors du passage précédent (15/09/2026) : le contrôle de mise en cache des pages
 de détail (Chromium 1280 px) a reçu une page sans en-tête `Cache-Control`, juste après un
 redémarrage du serveur, au moment où cinq requêtes du CMS échouaient sous la charge des tests
@@ -58,7 +62,7 @@ node tests/visual/capture.mjs test-results/visual
 
 ---
 
-## 2. Tests unitaires (139)
+## 2. Tests unitaires (143)
 
 | Fichier                     | Ce qui est vérifié                                                                                                                                                                                                                                                                                            |
 | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -84,6 +88,15 @@ node tests/visual/capture.mjs test-results/visual
 | `consent.test.ts`           | Consentement Google Analytics : aucun choix par défaut, mémorisation, nouvelle demande après changement de version ou valeur corrompue, identifiant G- seul accepté, activation seulement avec un identifiant valide, suppression des seuls cookies Google sur le domaine et ses parents                      |
 | `zod-csp.test.ts`           | Bibliothèque de validation en mode sans `eval` dès qu'un schéma de formulaire est chargé (compatible avec la politique de sécurité du contenu) ; la validation fonctionne toujours                                                                                                                            |
 | `preview-url.test.ts`       | Bouton Aperçu du CMS : adresse `/api/preview` avec la langue et le chemin de la page (slug encodé), bouton masqué tant que le contenu n'a pas de slug, page de liste pour les activités                                                                                                                       |
+| `upload-messages.test.ts`   | Médiathèque : les cinq formats d'image acceptés ; une vidéo est refusée avec un message qui renvoie vers YouTube ou Vimeo et le champ Vidéo, dans la langue de l'administration ; tout autre fichier indique les formats acceptés ; repli sur le français                                                     |
+
+Contrôle manuel (API locale du CMS, rien n'est enregistré) : dépôt d'un fichier `video/mp4` dans la
+médiathèque → refus 400 avec le message « Les vidéos ne se déposent pas dans la médiathèque… » ;
+dépôt d'un PDF → « Format non accepté : seules les images JPG, PNG, WebP, AVIF ou SVG… ». Même
+contrôle sur le build de production par l'API REST utilisée par l'administration
+(`POST /api/cms/media`) : vidéo MP4 → 400 et message français, PDF demandé en anglais → 400 et
+« Unsupported format: only JPG, PNG, WebP, AVIF or SVG images can be added. ». Le message
+générique de Payload (« The following field is invalid: file ») n'apparaît plus.
 
 ## 3. Tests end-to-end (125 scénarios)
 

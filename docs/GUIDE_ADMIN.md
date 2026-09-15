@@ -288,10 +288,13 @@ retirer un accès (remboursement), supprimer la ligne correspondante.
 
 ## 9. Médias et documents
 
-- **Médiathèque → Médiathèque** : images. Le **texte alternatif est obligatoire**
-  (accessibilité et SEO) : décrire ce que montre l'image en une phrase.
-  Les images sont converties en WebP et déclinées automatiquement en cinq
+- **Médiathèque → Médiathèque** : images (JPG, PNG, WebP, AVIF ou SVG). Le **texte
+  alternatif est obligatoire** (accessibilité et SEO) : décrire ce que montre l'image en une
+  phrase. Les images sont converties en WebP et déclinées automatiquement en cinq
   tailles ; inutile de les redimensionner avant l'envoi (10 Mo maximum).
+  **Les vidéos ne se déposent pas dans la médiathèque** : elles se publient sur YouTube ou
+  Vimeo, puis leur lien se colle dans la fiche (voir §13). Un fichier vidéo déposé ici est
+  refusé avec un message qui l'explique.
 - **Médiathèque → Documents (PDF)** : CV international, International Expert
   Profile, extraits de livres. Choisir le bon **Type de document**.
 
@@ -392,17 +395,22 @@ Décocher **Activité visible** masque immédiatement une activité du site sans
 **Contenus → Conférences & médias** — page publique **Conférences** (`/speaking`),
 présente dans le menu et le pied de page.
 
-| Champ                                | Rôle                                                                                                  |
-| ------------------------------------ | ----------------------------------------------------------------------------------------------------- |
-| **Type**                             | Conférence, atelier, table ronde, interview, podcast, vidéo, presse                                   |
-| **Date** / **Fin**                   | Une date future range l'intervention dans « À venir », une date passée dans « Interventions passées » |
-| **Résumé**, **Description**          | Traduits (FR / DE / EN)                                                                               |
-| **Événement**, **Organisateur**      | Nom de l'événement ou de l'émission, organisateur ou média                                            |
-| **Ville**, **Pays**                  | Laisser la ville vide pour une intervention en ligne                                                  |
-| **Image**                            | Photo réelle de l'intervention ou visuel de l'événement ; sert d'aperçu de la vidéo                   |
-| **Vidéo (YouTube ou Vimeo)**         | Coller le lien de la vidéo : elle ne se charge **qu'au clic** du visiteur, en mode sans cookie        |
-| **Lien externe** + **Texte du lien** | Podcast, article de presse, page de l'événement                                                       |
+| Champ                                | Rôle                                                                                                                                                  |
+| ------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Type**                             | Conférence, atelier, table ronde, interview, podcast, vidéo, presse                                                                                   |
+| **Date** / **Fin**                   | Une date future range l'intervention dans « À venir », une date passée dans « Interventions passées »                                                 |
+| **Résumé**, **Description**          | Traduits (FR / DE / EN)                                                                                                                               |
+| **Événement**, **Organisateur**      | Nom de l'événement ou de l'émission, organisateur ou média                                                                                            |
+| **Ville**, **Pays**                  | Laisser la ville vide pour une intervention en ligne                                                                                                  |
+| **Image**                            | Photo réelle de l'intervention ou visuel de l'événement (JPG, PNG ou WebP) ; sert d'aperçu de la vidéo. Pas de fichier vidéo ici                      |
+| **Vidéo (YouTube ou Vimeo)**         | Onglet _Vidéo et liens_ : coller le lien de la vidéo publiée sur YouTube ou Vimeo ; elle ne se charge **qu'au clic** du visiteur, en mode sans cookie |
+| **Lien externe** + **Texte du lien** | Podcast, article de presse, page de l'événement                                                                                                       |
 
+- **Ajouter une vidéo** : la publier d'abord sur YouTube ou Vimeo (en « non répertoriée » si
+  elle ne doit pas apparaître sur la chaîne), copier son lien, puis le coller dans l'onglet
+  _Vidéo et liens_ de la fiche. Un fichier vidéo (MP4, MOV…) ne se dépose pas dans le champ
+  **Image** : il est refusé avec le message « Les vidéos ne se déposent pas dans la
+  médiathèque… ».
 - Brouillon, aperçu et **publication programmée** comme pour les articles.
 - Tant qu'aucune intervention n'est publiée, la page l'indique et propose
   seulement le bouton **Proposer une intervention**.

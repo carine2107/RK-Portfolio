@@ -196,9 +196,9 @@ export const Engagements: CollectionConfig = {
       label: tr('Image', 'Bild', 'Image'),
       admin: {
         description: tr(
-          'Photo réelle de l’intervention ou visuel de l’événement (paysage). Sert aussi d’aperçu avant la lecture de la vidéo.',
-          'Echtes Foto des Auftritts oder Veranstaltungsbild (Querformat). Dient auch als Vorschau vor dem Abspielen des Videos.',
-          'Real photo of the engagement or event visual (landscape). Also used as the preview before the video plays.',
+          'Photo réelle de l’intervention ou visuel de l’événement (paysage, JPG, PNG ou WebP). Sert aussi d’aperçu avant la lecture de la vidéo. Une vidéo ne se dépose pas ici : collez son lien YouTube ou Vimeo dans l’onglet « Vidéo et liens ».',
+          'Echtes Foto des Auftritts oder Veranstaltungsbild (Querformat, JPG, PNG oder WebP). Dient auch als Vorschau vor dem Abspielen des Videos. Ein Video wird nicht hier hochgeladen: YouTube- oder Vimeo-Link im Reiter „Video und Links“ einfügen.',
+          'Real photo of the engagement or event visual (landscape, JPG, PNG or WebP). Also used as the preview before the video plays. A video is not uploaded here: paste its YouTube or Vimeo link in the "Video & links" tab.',
         ),
       },
     },
@@ -271,9 +271,9 @@ export const Engagements: CollectionConfig = {
               validate: videoValidation,
               admin: {
                 description: tr(
-                  'Lien de la vidéo. Elle ne se charge qu’au clic du visiteur, en mode sans cookie.',
-                  'Link zum Video. Es wird erst nach Klick des Besuchers geladen, ohne Cookies.',
-                  'Video link. It loads only when the visitor clicks, in no-cookie mode.',
+                  'Publiez d’abord la vidéo sur YouTube ou Vimeo (« non répertoriée » si elle ne doit pas apparaître sur la chaîne), puis collez son lien ici. Elle ne se charge qu’au clic du visiteur, en mode sans cookie.',
+                  'Video zuerst auf YouTube oder Vimeo veröffentlichen (bei Bedarf „nicht gelistet“), dann den Link hier einfügen. Es wird erst nach Klick des Besuchers geladen, ohne Cookies.',
+                  'First publish the video on YouTube or Vimeo (unlisted if it must not appear on the channel), then paste its link here. It loads only when the visitor clicks, in no-cookie mode.',
                 ),
               },
             },

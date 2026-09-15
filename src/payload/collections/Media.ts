@@ -1,7 +1,8 @@
-import type { CollectionConfig } from 'payload'
+import { APIError, type CollectionConfig } from 'payload'
 
 import { anyone, isAdminOrEditor } from '../access'
 import { GROUPS, tr } from '../i18n'
+import { adminLanguage, IMAGE_MIME_TYPES, unsupportedImageMessage } from '../upload-messages'
 
 /** Image library. Alternative text is required in every language for accessibility. */
 export const Media: CollectionConfig = {
@@ -13,9 +14,9 @@ export const Media: CollectionConfig = {
   admin: {
     group: GROUPS.library,
     description: tr(
-      'Photographies et illustrations. Chaque image doit avoir un texte alternatif.',
-      'Fotos und Illustrationen. Jedes Bild braucht einen Alternativtext.',
-      'Photographs and illustrations. Every image needs an alternative text.',
+      'Photographies et illustrations (JPG, PNG, WebP, AVIF ou SVG). Chaque image doit avoir un texte alternatif. Les vidéos ne se déposent pas ici : publiez-les sur YouTube ou Vimeo et collez leur lien dans la fiche.',
+      'Fotos und Illustrationen (JPG, PNG, WebP, AVIF oder SVG). Jedes Bild braucht einen Alternativtext. Videos werden nicht hier hochgeladen: auf YouTube oder Vimeo veröffentlichen und den Link im Eintrag einfügen.',
+      'Photographs and illustrations (JPG, PNG, WebP, AVIF or SVG). Every image needs an alternative text. Videos are not uploaded here: publish them on YouTube or Vimeo and paste their link into the entry.',
     ),
     defaultColumns: ['filename', 'alt', 'updatedAt'],
   },
@@ -25,9 +26,23 @@ export const Media: CollectionConfig = {
     update: isAdminOrEditor,
     delete: isAdminOrEditor,
   },
+  hooks: {
+    // Runs before Payload's own file check, whose message does not say what to do.
+    beforeOperation: [
+      ({ args, operation, req }) => {
+        if (operation !== 'create' && operation !== 'update') return args
+        const message = unsupportedImageMessage(
+          req.file?.mimetype,
+          adminLanguage(req.i18n?.language),
+        )
+        if (message) throw new APIError(message, 400, null, true)
+        return args
+      },
+    ],
+  },
   upload: {
     staticDir: 'public/media',
-    mimeTypes: ['image/jpeg', 'image/png', 'image/webp', 'image/avif', 'image/svg+xml'],
+    mimeTypes: IMAGE_MIME_TYPES,
     formatOptions: {
       format: 'webp',
       options: { quality: 82 },
