@@ -20,6 +20,16 @@ propriétaire est [`GUIDE_ADMIN.md`](GUIDE_ADMIN.md).
 | `order`         | listes ordonnées              | Tri croissant                                                                  |
 | `_status`       | collections versionnées       | `draft` / `published`                                                          |
 
+**Aperçu des brouillons** : le bouton _Aperçu_ (`admin.preview`, fonction commune
+`previewUrl` de `src/payload/preview.ts`) existe sur `insights`, `books`, `products`,
+`expertise-areas`, `experiences`, `engagements`, `campaigns`, `legal-pages` (page de détail)
+et `businesses` (page Entreprises). Il ouvre `/api/preview`, qui active le mode brouillon de
+Next.js pour un compte administrateur ou éditeur connecté ; les pages lisent alors la
+dernière version non publiée (`getDraft*BySlug`, `getDraftBusinesses` dans
+`src/lib/cms.ts`), avec repli sur la version publiée, affichent un bandeau et ne sont ni
+mises en cache ni indexées. Pas d'aperçu sur `home-page` et `about-page` (globals sans
+brouillons) ni sur `credentials` (sans page propre).
+
 Localisation du **contenu** : `en` (par défaut), `fr`, `de`, avec
 `fallback: true`.
 Langue de l'**interface** d'administration : `fr`, `de` et `en`
@@ -71,7 +81,8 @@ HMAC avec `PAYLOAD_SECRET`). Purge : `pending` > 7 jours, `unsubscribed` > 30 jo
 `publishedAt`, `featured`, `readingTime` (calculé), `isPlaceholder`,
 onglet **Article** (`content`\*), onglet **Relations** (`relatedExpertise`,
 `relatedInsights`, `relatedBooks`), **SEO**.
-Brouillons + **programmation de publication** (`schedulePublish`) + aperçu.
+Brouillons + **programmation de publication** (`schedulePublish`) + aperçu (voir
+« Aperçu des brouillons »).
 Le site n'affiche que les articles publiés dont `publishedAt` est passé.
 Newsletter : `sendNewsletter` (case à cocher), `newsletterSentAt` et `newsletterRecipients` (lecture seule) — l'article est envoyé une seule fois aux abonnés confirmés quand il est publié et que sa date est atteinte.
 
@@ -191,9 +202,17 @@ Création/suppression réservées aux administrateurs.
 ### `media` — Médiathèque (upload)
 
 `alt`\* (localisé, **obligatoire**), `credit`.
-Conversion WebP (qualité 82) et cinq déclinaisons : `thumbnail` 400×300,
-`card` 768×512, `portrait` 800×1000, `wide` 1600×900, `og` 1200×630.
-Types acceptés : JPEG, PNG, WebP, AVIF, SVG. Limite 10 Mo.
+Conversion WebP (qualité 82) et six déclinaisons : `thumbnail` 400×300,
+`card` 768×512, `portrait` 800×1000, `wide` 1600×900, `og` 1200×630, `book` 900 de large
+(proportions d'origine, les couvertures ne sont jamais recadrées).
+Types acceptés : JPEG, PNG, WebP, AVIF, SVG (`IMAGE_MIME_TYPES`). Limite 10 Mo.
+
+**Vidéos** : aucune vidéo n'est téléversée ; elles sont ajoutées par lien YouTube ou Vimeo
+(`videoUrl` des conférences & médias, des blocs vidéo de campagne et des leçons). Un hook
+`beforeOperation` (`src/payload/upload-messages.ts`) refuse tout autre fichier **avant** le
+contrôle de Payload, avec un message dans la langue de l'administration (FR / DE / EN) : une
+vidéo renvoie vers YouTube / Vimeo et le champ _Vidéo_, tout autre fichier rappelle les
+formats acceptés (réponse 400, au lieu de « The following field is invalid: file »).
 
 ### `documents` — Documents PDF (upload)
 

@@ -123,9 +123,15 @@ Première connexion à l'administration : identifiants du seed, puis
 ## 7. Vérifications
 
 ```bash
-npm run verify      # format + types + lint + tests unitaires
+npm run verify      # format (src, tests, docs) + types + lint + tests unitaires
 npm run test:e2e    # tests end-to-end (démarre le serveur si besoin)
 ```
+
+**Intégration continue** : à chaque push sur `main` et à chaque pull request, GitHub Actions
+(`.github/workflows/ci.yml`) vérifie le formatage, TypeScript, le lint, les tests unitaires et
+le build de production, sur Node 22, sans base de données ni secret (comme la construction de
+l'image Docker). Les tests end-to-end, qui demandent la base, le contenu et MailHog, restent
+lancés en local avant chaque livraison.
 
 Captures d'écran de recette (3 langues × 2 thèmes × 5 largeurs) :
 
@@ -147,10 +153,12 @@ En développement, le schéma de base est synchronisé automatiquement
 
 ## 9. Problèmes fréquents
 
-| Symptôme                                 | Cause probable                              | Solution                                                        |
-| ---------------------------------------- | ------------------------------------------- | --------------------------------------------------------------- |
-| `EADDRINUSE :4313`                       | Port déjà pris                              | Changer le port dans `package.json` et `NEXT_PUBLIC_SITE_URL`   |
-| Le site affiche « contenu de démarrage » | Base inaccessible                           | `docker compose up -d`, vérifier `DATABASE_URI`                 |
-| Aucun e-mail reçu                        | `EMAIL_ENABLED=false` ou SMTP invalide      | Vérifier les variables `SMTP_*`, consulter les logs serveur     |
-| `PAYLOAD_SECRET` refusé au démarrage     | Secret manquant ou trop court en production | Générer un secret de 48 octets                                  |
-| Formulaire : « Trop de demandes »        | Limitation de débit atteinte                | Attendre la fenêtre, ou augmenter `CONTACT_RATE_LIMIT` en local |
+| Symptôme                                                                   | Cause probable                                    | Solution                                                                                                                                                                                                     |
+| -------------------------------------------------------------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `EADDRINUSE :4313`                                                         | Port déjà pris                                    | Changer le port dans `package.json` et `NEXT_PUBLIC_SITE_URL`                                                                                                                                                |
+| Le site affiche « contenu de démarrage »                                   | Base inaccessible                                 | `docker compose up -d`, vérifier `DATABASE_URI`                                                                                                                                                              |
+| Aucun e-mail reçu                                                          | `EMAIL_ENABLED=false` ou SMTP invalide            | Vérifier les variables `SMTP_*`, consulter les logs serveur                                                                                                                                                  |
+| `PAYLOAD_SECRET` refusé au démarrage                                       | Secret manquant ou trop court en production       | Générer un secret de 48 octets                                                                                                                                                                               |
+| Formulaire : « Trop de demandes »                                          | Limitation de débit atteinte                      | Attendre la fenêtre, ou augmenter `CONTACT_RATE_LIMIT` en local                                                                                                                                              |
+| `format:check` signale tous les fichiers (Windows)                         | Fins de ligne CRLF au clonage (`core.autocrlf`)   | `.gitattributes` impose LF. **Après avoir commité ou mis de côté (`git stash`) vos modifications** — la commande suivante efface tout changement non enregistré : `git rm --cached -r . && git reset --hard` |
+| Script Payload bloqué sur « Pulling schema from database… » (`ECONNRESET`) | Synchronisation automatique du schéma interrompue | Relancer ; si le schéma est déjà à jour, préfixer la commande par `PAYLOAD_MIGRATING=true` (saute cette synchronisation, n'applique aucune migration)                                                        |
