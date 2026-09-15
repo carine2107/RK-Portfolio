@@ -41,7 +41,10 @@ traduite. Toute nouvelle collection ou tout nouveau champ doit utiliser ce
 helper.
 Le sélecteur de langue de contenu (composant `localizer` de Payload) est masqué
 par CSS (`src/app/(payload)/custom.scss`) sur les écrans sans champ traduit —
-compte, `users`, `contact-submissions` — où il n'aurait aucun effet. L'avatar est l'avatar interne de Payload
+compte, `users`, `contact-submissions`, `subscribers`, `orders`, `members`, `entitlements`,
+`protected-files`, globals `appearance` et `shop-settings` — où il n'aurait aucun effet (liste à
+tenir à jour). Les langues y sont nommées dans la langue de l'interface (`label` objet
+`{ fr, de, en }` dans `payload.config.ts`). L'avatar est l'avatar interne de Payload
 (`admin.avatar: 'default'`) : pas d'appel à Gravatar.
 
 ---

@@ -99,9 +99,11 @@ export default buildConfig({
   globals: [SiteSettings, Appearance, ShopSettings, HomePage, AboutPage],
   localization: {
     locales: [
-      { label: 'English', code: 'en' },
-      { label: 'Français', code: 'fr' },
-      { label: 'Deutsch', code: 'de' },
+      // Named in the language of the admin interface, so a French interface
+      // reads "Anglais" rather than mixing in "English".
+      { label: { fr: 'Anglais', de: 'Englisch', en: 'English' }, code: 'en' },
+      { label: { fr: 'Français', de: 'Französisch', en: 'French' }, code: 'fr' },
+      { label: { fr: 'Allemand', de: 'Deutsch', en: 'German' }, code: 'de' },
     ],
     defaultLocale: 'en',
     // A missing translation falls back to English instead of rendering nothing.

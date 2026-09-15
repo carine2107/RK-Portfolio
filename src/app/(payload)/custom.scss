@@ -13,22 +13,33 @@
  * The locale selector in the header switches the language of the *content*
  * being edited. Payload displays it on every screen, including those where no
  * field is translated — where it looks broken because nothing happens.
- * It is hidden on those screens only: the account page, the two collections
- * and the global that hold no translated field (users, contact requests,
- * appearance).
+ * It is hidden on those screens only: the account page, and the collections
+ * and globals that hold no translated field. Keep this list in sync when a
+ * collection or global without `localized` fields is added.
  */
-.account .app-header .localizer,
-.account .app-header .localizer-label,
-.template-default__wrap:has(.collection-list--users) .app-header .localizer,
-.template-default__wrap:has(.collection-list--users) .app-header .localizer-label,
-.template-default__wrap:has(.collection-edit--users) .app-header .localizer,
-.template-default__wrap:has(.collection-edit--users) .app-header .localizer-label,
-.template-default__wrap:has(.collection-list--contact-submissions) .app-header .localizer,
-.template-default__wrap:has(.collection-list--contact-submissions) .app-header .localizer-label,
-.template-default__wrap:has(.collection-edit--contact-submissions) .app-header .localizer,
-.template-default__wrap:has(.collection-edit--contact-submissions) .app-header .localizer-label,
-.template-default__wrap:has(.global-edit--appearance) .app-header .localizer,
-.template-default__wrap:has(.global-edit--appearance) .app-header .localizer-label {
+.account .app-header :is(.localizer, .localizer-label),
+.template-default__wrap:has(
+    :is(
+      .collection-list--users,
+      .collection-edit--users,
+      .collection-list--contact-submissions,
+      .collection-edit--contact-submissions,
+      .collection-list--subscribers,
+      .collection-edit--subscribers,
+      .collection-list--orders,
+      .collection-edit--orders,
+      .collection-list--members,
+      .collection-edit--members,
+      .collection-list--entitlements,
+      .collection-edit--entitlements,
+      .collection-list--protected-files,
+      .collection-edit--protected-files,
+      .global-edit--appearance,
+      .global-edit--shop-settings
+    )
+  )
+  .app-header
+  :is(.localizer, .localizer-label) {
   display: none;
 }
 

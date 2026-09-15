@@ -27,9 +27,9 @@ export const ShopSettings: GlobalConfig = {
       defaultValue: false,
       admin: {
         description: tr(
-          'Affiche « Ajouter au panier » sur les livres en « Vente directe » (prix en EUR, disponibles ou en précommande). À cocher seulement après validation des conditions générales de vente et de la politique de retours.',
-          'Zeigt „In den Warenkorb“ bei Büchern im „Direktverkauf“ (Preis in EUR, verfügbar oder vorbestellbar). Erst nach Freigabe der AGB und der Rückgabebedingungen aktivieren.',
-          'Shows "Add to cart" on books set to "Direct sale" (EUR price, available or pre-order). Tick only once the terms of sale and the returns policy are validated.',
+          'Permet le paiement en ligne des livres en « Vente directe » et des livres proposant « Commander ici » (prix en EUR, disponibles ou en précommande). Les boutons de paiement n’apparaissent au panier qu’une fois les clés Stripe ou PayPal configurées. À cocher seulement après validation des conditions générales de vente et de la politique de retours.',
+          'Ermöglicht die Online-Zahlung für Bücher im „Direktverkauf“ und für Bücher mit „Hier bestellen“ (Preis in EUR, verfügbar oder vorbestellbar). Die Zahlungsschaltflächen erscheinen im Warenkorb erst, wenn die Stripe- oder PayPal-Schlüssel eingerichtet sind. Erst nach Freigabe der AGB und der Rückgabebedingungen aktivieren.',
+          'Enables online payment for books set to "Direct sale" and books offering "Order here" (EUR price, available or pre-order). Payment buttons only appear in the cart once the Stripe or PayPal keys are configured. Tick only once the terms of sale and the returns policy are validated.',
         ),
       },
     },

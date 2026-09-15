@@ -27,17 +27,21 @@ saisir un mot de passe solide. Ne jamais partager un compte entre deux personnes
 
 ## 2. Deux réglages de langue à ne pas confondre
 
-| Réglage                                               | Où                                           | Ce qu'il change                                                           |
-| ----------------------------------------------------- | -------------------------------------------- | ------------------------------------------------------------------------- |
-| **Locale** (en haut à droite : « Locale : Français ») | Barre supérieure de l'administration         | La **langue du contenu** que vous êtes en train de rédiger (FR / DE / EN) |
-| **Language**                                          | Votre compte → _Payload Settings → Language_ | La **langue de l'interface** d'administration (boutons, menus, messages)  |
+| Réglage                                                                           | Où                                           | Ce qu'il change                                                           |
+| --------------------------------------------------------------------------------- | -------------------------------------------- | ------------------------------------------------------------------------- |
+| **Paramètres régionaux** (en haut à droite : « Paramètres régionaux : Français ») | Barre supérieure de l'administration         | La **langue du contenu** que vous êtes en train de rédiger (FR / DE / EN) |
+| **Language**                                                                      | Votre compte → _Payload Settings → Language_ | La **langue de l'interface** d'administration (boutons, menus, messages)  |
 
-Autrement dit : passer la _Locale_ en français ne traduit pas les boutons de
-l'interface — c'est le réglage _Language_ qui s'en charge.
+Autrement dit : passer les _Paramètres régionaux_ en français ne traduit pas les
+boutons de l'interface — c'est le réglage _Language_ qui s'en charge.
 
-Le sélecteur _Locale_ n'apparaît que là où il sert : il est masqué sur votre
-compte, sur les utilisateurs et sur les demandes de contact, qui ne contiennent
-aucun champ traduit.
+Les langues y sont nommées dans la langue de l'interface (« Anglais », « Français »,
+« Allemand » quand l'administration est en français).
+
+Le sélecteur _Paramètres régionaux_ n'apparaît que là où il sert : il est masqué sur votre
+compte et sur les écrans qui ne contiennent aucun champ traduit (utilisateurs, demandes
+de contact, abonnés newsletter, apparence, réglages de la boutique, commandes, membres,
+accès aux produits, fichiers protégés).
 
 L'administration est **entièrement traduite en français, allemand et anglais** :
 menus, noms de collections, libellés de champs, options et textes d'aide. Elle
@@ -49,8 +53,8 @@ Français**.
 
 Chaque contenu existe en **français, allemand et anglais**.
 
-- En haut de l'écran d'édition, un **sélecteur de langue** (`English`,
-  `Français`, `Deutsch`) change la langue en cours d'édition.
+- En haut de l'écran d'édition, le sélecteur **Paramètres régionaux** (`Anglais`,
+  `Français`, `Allemand`) change la langue en cours d'édition.
 - On enregistre **par langue** : rédiger en anglais, enregistrer, passer au
   français, traduire, enregistrer, puis l'allemand.
 - Les champs non traduits (dates, prix, liens, ISBN, images) sont communs.
