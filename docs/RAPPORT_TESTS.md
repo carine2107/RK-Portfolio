@@ -11,7 +11,7 @@ Environnement : Windows 11, Node 24.15, PostgreSQL 16 (Docker), build de
 | Suite                            | Périmètre                                                               | Résultat                             |
 | -------------------------------- | ----------------------------------------------------------------------- | ------------------------------------ |
 | Tests unitaires (Vitest)         | Traductions, contrastes, moteur d'apparence, validation, SEO, anti-abus | **149 / 149 réussis**                |
-| Tests end-to-end (Playwright)    | 127 scénarios × 4 configurations                                        | **448 réussis, 60 ignorés, 0 échec** |
+| Tests end-to-end (Playwright)    | 131 scénarios × 4 configurations                                        | **456 réussis, 68 ignorés, 0 échec** |
 | Compilation TypeScript (`tsc`)   | Mode strict, tout le projet                                             | **0 erreur**                         |
 | Lint (ESLint 9 + config Next 16) | Tout le projet                                                          | **0 erreur, 0 avertissement**        |
 | Formatage (Prettier)             | `src`, `tests`, `docs`                                                  | **conforme**                         |
@@ -32,6 +32,8 @@ Tests ignorés, tous volontaires :
   navigateur et ne tourne que sur Chromium ;
 - **4** : les contrôles HTTP de l'aperçu des brouillons (2 scénarios) ne tournent eux
   aussi que sur Chromium ;
+- **8** : les contrôles de la 404 envoyée par le serveur (4 scénarios, réponse HTTP brute) ne
+  tournent eux aussi que sur Chromium ;
 - **16** : l'audit d'accessibilité approfondi (8 scénarios : axe complet sur 6 pages,
   anneau de focus des cartes) ne tourne que sur Chromium ;
 - **2** sur WebKit : Safari ne déplace pas le focus vers les liens avec la touche
@@ -339,15 +341,20 @@ les animations réduites, chaque élément focalisé est visible.
 Tests ajoutés : axe complet sur l'accueil, Expertises, Entreprises, RK Insights, Contact et la 404 ;
 anneau de focus d'une carte au clavier ; absence d'anneau au clic.
 
-Constat non corrigé : les **pages 404** (adresse inconnue, livre ou article inexistant) sont
-envoyées par le serveur sous forme d'une coquille vide (`<html id="__next_error__">`, sans langue,
-sans titre ni contenu), puis complétées par JavaScript. Le statut HTTP 404 et le `noindex` sont
-corrects et la page 404 traduite s'affiche dès que JavaScript s'exécute ; un visiteur sans
-JavaScript ou un lecteur d'écran avant ce rendu trouve une page vide. C'est le fonctionnement de
-Next.js 16 quand une page appelle `notFound()` sans limite `Suspense` (une page `loading.tsx`
-donnerait un statut 200). Une racine de mise en page intermédiaire a été essayée sans effet ; la
-correction demande de revoir la production des 404 et fait l'objet d'un chantier séparé. Le test
-axe de la 404 audite la page une fois rendue.
+Constat, corrigé en partie le 15 septembre 2026 : les **pages 404** étaient envoyées par le
+serveur sous forme d'une coquille vide (`<html id="__next_error__">`, sans langue, sans titre ni
+contenu), puis complétées par JavaScript.
+
+- **Adresse inconnue** (`/fr/cette-page-nexiste-pas`) : corrigé. La page attrape-tout
+  `[...rest]` est supprimée et une page `src/app/global-not-found.tsx` (option
+  `experimental.globalNotFound`) rend côté serveur un document complet dans la langue du visiteur
+  (langue négociée par le proxy) : en-tête, contenu 404, pied de page, statut 404 et `noindex`.
+  Vérifié en FR, EN et DE sur la réponse brute du serveur (`not-found.spec.ts`).
+- **Fiche inexistante** (livre, article… : `notFound()` dans la page) : non corrigé, par choix.
+  Next.js 16 sort alors du rendu serveur (une page `loading.tsx` donnerait un statut 200). La seule
+  correction complète serait un contrôle d'existence dans le proxy, au prix d'une requête à la base
+  à chaque affichage de fiche ; l'utilisatrice a préféré garder la situation actuelle. Statut 404 et
+  `noindex` restent corrects, la 404 traduite s'affiche dès que JavaScript s'exécute.
 
 Non couvert par l'outil : l'écoute réelle avec un **lecteur d'écran** (NVDA ou VoiceOver), qui reste
 à faire (section 6).
@@ -413,7 +420,7 @@ Vérification finale : aucun défilement horizontal sur **14 pages × 3 langues 
 | C   | Un champ absent produisait un message d'erreur Zod en anglais                                       | Les erreurs sont toujours ramenées à la clé de traduction du champ                 |
 | D   | Pages rendues statiquement au build : les modifications du CMS n'apparaissaient qu'au redéploiement | Revalidation incrémentale (300 s) sur toutes les pages publiques                   |
 | E   | Rendu lent en production (jusqu'à 5 s par page)                                                     | Même correction : 10 à 30 ms après mise en cache                                   |
-| F   | La 404 hors route affichait la page d'erreur par défaut de Next.js                                  | Route attrape-tout par langue → 404 localisée avec le bon statut                   |
+| F   | La 404 hors route affichait la page d'erreur par défaut de Next.js                                  | 404 globale rendue côté serveur (`global-not-found.tsx`) → localisée, bon statut   |
 | G   | Pages de détail (articles, expertises, livres…) recalculées à chaque visite malgré la revalidation  | `generateStaticParams` vide : rendu à la 1re visite puis mis en cache (voir 4 bis) |
 
 ---
@@ -515,8 +522,9 @@ Ces vérifications dépendent d'éléments encore absents (voir
   CMS échouent ponctuellement ; le site sert alors le contenu de démarrage pour la page concernée,
   qui peut être mise en cache jusqu'à 5 minutes. Cause (connexions à la base) à analyser dans un
   chantier séparé.
-- Les pages 404 sont rendues par JavaScript à partir d'une coquille vide envoyée par le serveur
-  (statut 404 et `noindex` corrects) : voir l'audit d'accessibilité, section 3.
+- La 404 d'une **fiche inexistante** (livre, article…) est rendue par JavaScript à partir d'une
+  coquille vide envoyée par le serveur (statut 404 et `noindex` corrects) ; celle d'une adresse
+  inconnue est complète dès le serveur : voir l'audit d'accessibilité, section 3.
 - Le mode aperçu couvre toutes les pages publiques issues du CMS, sauf l'accueil, la
   page À propos et les formations et qualifications (réglages globaux sans brouillon ou
   contenus sans page propre) : ces modifications sont visibles à la publication.

@@ -130,8 +130,15 @@ npm run test:e2e    # tests end-to-end (démarre le serveur si besoin)
 **Intégration continue** : à chaque push sur `main` et à chaque pull request, GitHub Actions
 (`.github/workflows/ci.yml`) vérifie le formatage, TypeScript, le lint, les tests unitaires et
 le build de production, sur Node 22, sans base de données ni secret (comme la construction de
-l'image Docker). Les tests end-to-end, qui demandent la base, le contenu et MailHog, restent
-lancés en local avant chaque livraison.
+l'image Docker).
+
+Un second job (`e2e`) lance les tests end-to-end sur Chromium et en largeur mobile, contre le
+build de production : il démarre une base PostgreSQL et un MailHog **jetables**, crée le schéma
+avec les migrations (`npm run migrate`), charge le contenu de départ (`npm run seed`), construit
+le site puis exécute `npx playwright test`. Les valeurs de ce job (mot de passe de la base,
+`PAYLOAD_SECRET`, compte administrateur) n'existent que dans ce job et ne servent à aucun site
+réel. En cas d'échec, le rapport Playwright est joint au run pendant 7 jours. Firefox et WebKit
+restent lancés en local (`E2E_ALL_BROWSERS=1`) avant chaque livraison.
 
 Captures d'écran de recette (3 langues × 2 thèmes × 5 largeurs) :
 

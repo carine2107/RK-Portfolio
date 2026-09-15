@@ -1,8 +1,12 @@
 # Continuous integration: every push to main and every pull request is checked
 # (formatting, TypeScript, lint, unit tests) and built for production.
 #
-# Like the Docker image, the build runs without a database or secrets: pages are
-# rendered from the CMS on their first request once the site is deployed.
+# Like the Docker image, the `verify` build runs without a database or secrets:
+# pages are rendered from the CMS on their first request once the site is deployed.
+#
+# The `e2e` job runs the end-to-end suite against a production build backed by a
+# throwaway PostgreSQL database (migrations + starter content) and MailHog. The
+# values below only exist inside that job: they are not secrets of any real site.
 name: CI
 
 on:
@@ -49,3 +53,82 @@ jobs:
 
       - name: Production build
         run: npm run build
+
+  e2e:
+    name: End-to-end tests (Chromium, mobile)
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: romial
+          POSTGRES_PASSWORD: romial
+          POSTGRES_DB: romial_website
+        ports:
+          - 5437:5432
+        options: >-
+          --health-cmd "pg_isready -U romial -d romial_website"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 20
+      mailhog:
+        image: mailhog/mailhog:latest
+        ports:
+          - 1026:1025
+          - 8026:8025
+    env:
+      NEXT_TELEMETRY_DISABLED: 1
+      NEXT_PUBLIC_SITE_URL: http://localhost:4313
+      DATABASE_URI: postgres://romial:romial@localhost:5437/romial_website
+      PAYLOAD_SECRET: ci-e2e-only-throwaway-secret-0f6b1c2d9e8a7b6c5d4e3f2a1b0c9d8e
+      CMS_ENABLED: 'true'
+      EMAIL_ENABLED: 'true'
+      SMTP_HOST: localhost
+      SMTP_PORT: 1026
+      SMTP_SECURE: 'false'
+      EMAIL_FROM: 'Romial Kenmogne <no-reply@example.com>'
+      EMAIL_TO: contact@example.com
+      # A full run sends many contact requests from one address.
+      CONTACT_RATE_LIMIT: 1000
+      SEED_ADMIN_EMAIL: admin@example.com
+      SEED_ADMIN_PASSWORD: ci-e2e-only-throwaway-password
+      E2E_PROD: '1'
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Database schema (migrations)
+        run: npm run migrate
+
+      - name: Starter content
+        run: npm run seed
+        env:
+          # The schema comes from the migrations: no development schema push.
+          PAYLOAD_MIGRATING: 'true'
+
+      - name: Production build
+        run: npm run build
+
+      - name: Playwright browser
+        run: npx playwright install --with-deps chromium
+
+      - name: End-to-end tests
+        run: npx playwright test
+
+      - name: Keep the report of a failed run
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: |
+            playwright-report
+            test-results
+          retention-days: 7

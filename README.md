@@ -88,9 +88,9 @@ src/
 │   │   ├── page.tsx             Accueil
 │   │   ├── about/ expertise/ experience/ insights/ books/ businesses/
 │   │   ├── contact/ legal/[slug]/
-│   │   ├── [...rest]/           Catch-all → 404 localisée
-│   │   ├── not-found.tsx  error.tsx
+│   │   ├── not-found.tsx  error.tsx   404 d'une fiche inexistante, erreurs
 │   │   └── globals.css          Design tokens + thème clair/sombre
+│   ├── global-not-found.tsx     404 localisée des adresses inconnues (rendue côté serveur)
 │   ├── (payload)/               Administration CMS (généré par Payload)
 │   ├── api/contact/route.ts     Endpoint du formulaire
 │   ├── sitemap.ts  robots.ts
@@ -247,7 +247,7 @@ Ce que le site fait réellement aujourd'hui :
 - ✅ Déploiement Docker testé sur base vierge (migrations, seed, cache)
 - ✅ Point de santé `/api/health` et suppression automatique des demandes de contact expirées
 - ✅ Tests unitaires et E2E verts
-- ✅ Intégration continue GitHub Actions (`.github/workflows/ci.yml`) : formatage, TypeScript, lint, tests unitaires et build de production à chaque push sur `main` et à chaque pull request ; les tests end-to-end restent lancés en local (base, contenu et MailHog requis)
+- ✅ Intégration continue GitHub Actions (`.github/workflows/ci.yml`) : formatage, TypeScript, lint, tests unitaires et build de production à chaque push sur `main` et à chaque pull request, plus les tests end-to-end (Chromium et mobile) sur une base PostgreSQL et un MailHog jetables remplis avec le contenu de départ ; Firefox et WebKit restent lancés en local
 
 Ce qui est **volontairement** inactif, faute d'éléments ou de prestataire :
 

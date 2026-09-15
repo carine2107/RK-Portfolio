@@ -56,6 +56,7 @@ export async function upsertBook(
     author: 'Romial Kenmogne',
     availability: book.availability,
     saleType: book.saleType,
+    directOrderForm: book.directOrderForm,
     currency: 'EUR' as const,
     featured: true,
     order: book.order,
