@@ -3,6 +3,7 @@ import type { CollectionConfig } from 'payload'
 import { isAdminOrEditor, publishedOrSignedIn } from '../access'
 import { orderField, placeholderField, seoField, slugField } from '../fields/shared'
 import { GROUPS, tr } from '../i18n'
+import { previewUrl } from '../preview'
 
 export const Businesses: CollectionConfig = {
   slug: 'businesses',
@@ -13,6 +14,7 @@ export const Businesses: CollectionConfig = {
   admin: {
     group: GROUPS.content,
     useAsTitle: 'name',
+    preview: previewUrl('/businesses', false),
     defaultColumns: ['name', 'active', 'order', '_status'],
     description: tr(
       'RK Business Consulting, RK IMMO-FINANZ, Kenmogne Strategic Publishing, KAILI Institut, KAILI Event. Décochez « Activité visible » pour masquer une activité temporairement.',

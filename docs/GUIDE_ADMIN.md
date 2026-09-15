@@ -95,7 +95,10 @@ Le temps de lecture est calculé automatiquement à l'enregistrement.
 > **Aperçu** — le bouton _Aperçu_ ouvre la page telle qu'elle sera publiée,
 > même si l'article est encore en brouillon. Un bandeau orange le rappelle ;
 > « Quitter l'aperçu » revient à la version publique. L'aperçu n'est visible que
-> par une personne connectée à l'administration.
+> par une personne connectée à l'administration. Le même bouton existe pour les
+> livres, les produits numériques, les domaines d'expertise, les expériences, les
+> conférences & médias, les pages de campagne, les pages légales et les activités
+> (aperçu de la page Entreprises). Il apparaît une fois le contenu enregistré.
 >
 > **Délai d'affichage** — une modification publiée apparaît sur le site public
 > dans les **5 minutes** au plus (le site met les pages en cache pour rester
@@ -669,7 +672,7 @@ Liste complète des éléments encore attendus :
 - Toujours renseigner le texte alternatif des images.
 - Vérifier titres, fonctions, organisations, dates, pays et résultats **avant**
   publication : le site n'invente rien, il affiche ce qui est saisi.
-- Utiliser l'aperçu avant de publier un article.
+- Utiliser l'aperçu avant de publier un contenu.
 - Ne pas publier de logo ou de témoignage tiers sans autorisation écrite.
 - Prévenir le prestataire technique avant toute modification du modèle de
   contenu (ajout de champ, nouvelle collection).

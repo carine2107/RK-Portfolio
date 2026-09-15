@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 
@@ -10,10 +11,17 @@ import { Notice, PlaceholderNotice } from '@/components/ui/Notices'
 import { PageHeader } from '@/components/ui/PageHeader'
 import { RichText } from '@/components/ui/RichText'
 import { Section } from '@/components/ui/Section'
+import { PreviewBanner } from '@/components/ui/PreviewBanner'
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
 import { entryPaths } from '@/lib/alternates'
-import { getExperienceBySlug, getExperiences, getExpertiseAreas, getInsights } from '@/lib/cms'
+import {
+  getExperienceBySlug,
+  getExperiences,
+  getExpertiseAreas,
+  getInsights,
+  getDraftExperienceBySlug,
+} from '@/lib/cms'
 import { formatPeriod } from '@/lib/format'
 import { metaDescription, pageMetadata } from '@/lib/seo'
 
@@ -56,7 +64,11 @@ export default async function ExperienceDetailPage({ params }: Props) {
   const { locale, slug } = await params
   setRequestLocale(locale)
 
-  const entry = await getExperienceBySlug(locale, slug)
+  // In draft mode (CMS preview) the unpublished version is shown when there is one.
+  const { isEnabled: isPreview } = await draftMode()
+  const entry =
+    (isPreview ? await getDraftExperienceBySlug(locale, slug) : null) ??
+    (await getExperienceBySlug(locale, slug))
   if (!entry) notFound()
 
   const t = await getTranslations('experience')
@@ -74,6 +86,7 @@ export default async function ExperienceDetailPage({ params }: Props) {
 
   return (
     <>
+      {isPreview ? <PreviewBanner /> : null}
       <JsonLd
         data={breadcrumbSchema(
           [

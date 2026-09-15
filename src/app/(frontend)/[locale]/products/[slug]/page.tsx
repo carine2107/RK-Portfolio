@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import type { Metadata } from 'next'
+import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 
@@ -9,10 +10,17 @@ import { Notice, PlaceholderNotice } from '@/components/ui/Notices'
 import { PageHeader } from '@/components/ui/PageHeader'
 import { RichText } from '@/components/ui/RichText'
 import { Section } from '@/components/ui/Section'
+import { PreviewBanner } from '@/components/ui/PreviewBanner'
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
 import { entryPaths } from '@/lib/alternates'
-import { getProductBySlug, getProducts, getShopStatus, getSiteSettings } from '@/lib/cms'
+import {
+  getProductBySlug,
+  getProducts,
+  getShopStatus,
+  getSiteSettings,
+  getDraftProductBySlug,
+} from '@/lib/cms'
 import { formatPrice } from '@/lib/format'
 import { metaDescription, pageMetadata } from '@/lib/seo'
 import { PRODUCT_PREFIX } from '@/lib/shop-pricing'
@@ -56,7 +64,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function ProductPage({ params }: Props) {
   const { locale, slug } = await params
   setRequestLocale(locale)
-  const product = await getProductBySlug(locale, slug)
+  // In draft mode (CMS preview) the unpublished version is shown when there is one.
+  const { isEnabled: isPreview } = await draftMode()
+  const product =
+    (isPreview ? await getDraftProductBySlug(locale, slug) : null) ??
+    (await getProductBySlug(locale, slug))
   if (!product) notFound()
 
   const t = await getTranslations('products')
@@ -66,6 +78,7 @@ export default async function ProductPage({ params }: Props) {
 
   return (
     <>
+      {isPreview ? <PreviewBanner /> : null}
       <JsonLd
         data={breadcrumbSchema(
           [

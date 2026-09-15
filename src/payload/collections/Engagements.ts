@@ -6,6 +6,7 @@ import { isAdminOrEditor, publishedOrSignedIn } from '../access'
 import { COUNTRY_OPTIONS } from '../fields/countries'
 import { placeholderField, seoField, slugField } from '../fields/shared'
 import { GROUPS, tr } from '../i18n'
+import { previewUrl } from '../preview'
 
 export const ENGAGEMENT_TYPES = [
   'conference',
@@ -72,6 +73,7 @@ export const Engagements: CollectionConfig = {
   admin: {
     group: GROUPS.content,
     useAsTitle: 'title',
+    preview: previewUrl('/speaking'),
     defaultColumns: ['title', 'type', 'date', '_status'],
     description: tr(
       'Conférences, ateliers, tables rondes, interviews, podcasts, vidéos et articles de presse. Page publique : Conférences & médias.',

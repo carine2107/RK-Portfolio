@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import type { Metadata } from 'next'
+import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 
@@ -12,9 +13,10 @@ import { PlaceholderNotice } from '@/components/ui/Notices'
 import { PageHeader } from '@/components/ui/PageHeader'
 import { RichText } from '@/components/ui/RichText'
 import { Section } from '@/components/ui/Section'
+import { PreviewBanner } from '@/components/ui/PreviewBanner'
 import type { Locale } from '@/i18n/routing'
 import { entryPaths } from '@/lib/alternates'
-import { getBookBySlug, getBooks, getShopStatus } from '@/lib/cms'
+import { getBookBySlug, getBooks, getShopStatus, getDraftBookBySlug } from '@/lib/cms'
 import { formatDate, formatPrice } from '@/lib/format'
 import { metaDescription, pageMetadata } from '@/lib/seo'
 
@@ -70,7 +72,11 @@ export default async function BookDetailPage({ params }: Props) {
   const { locale, slug } = await params
   setRequestLocale(locale)
 
-  const book = await getBookBySlug(locale, slug)
+  // In draft mode (CMS preview) the unpublished version is shown when there is one.
+  const { isEnabled: isPreview } = await draftMode()
+  const book =
+    (isPreview ? await getDraftBookBySlug(locale, slug) : null) ??
+    (await getBookBySlug(locale, slug))
   if (!book) notFound()
   const shop = await getShopStatus()
 
@@ -109,6 +115,7 @@ export default async function BookDetailPage({ params }: Props) {
 
   return (
     <>
+      {isPreview ? <PreviewBanner /> : null}
       <JsonLd
         data={[
           bookSchema(book, locale, shop.active),

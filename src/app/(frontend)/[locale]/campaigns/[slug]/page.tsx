@@ -1,10 +1,12 @@
 import type { Metadata } from 'next'
+import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 
 import { CampaignBlocks } from '@/components/campaign/CampaignBlocks'
 import { breadcrumbSchema, faqSchema, JsonLd } from '@/components/seo/JsonLd'
 import { PageHeader } from '@/components/ui/PageHeader'
+import { PreviewBanner } from '@/components/ui/PreviewBanner'
 import type { Locale } from '@/i18n/routing'
 import { entryPaths } from '@/lib/alternates'
 import {
@@ -14,6 +16,7 @@ import {
   getProducts,
   getSiteSettings,
   legalSlug,
+  getDraftCampaignBySlug,
 } from '@/lib/cms'
 import { emailReady } from '@/lib/email-layout'
 import { metaDescription, pageMetadata } from '@/lib/seo'
@@ -62,7 +65,11 @@ export default async function CampaignPage({ params }: Props) {
   const { locale, slug } = await params
   setRequestLocale(locale)
 
-  const campaign = await getCampaignBySlug(locale, slug)
+  // In draft mode (CMS preview) the unpublished version is shown when there is one.
+  const { isEnabled: isPreview } = await draftMode()
+  const campaign =
+    (isPreview ? await getDraftCampaignBySlug(locale, slug) : null) ??
+    (await getCampaignBySlug(locale, slug))
   if (!campaign) notFound()
 
   const nav = await getTranslations('nav')
@@ -77,6 +84,7 @@ export default async function CampaignPage({ params }: Props) {
 
   return (
     <>
+      {isPreview ? <PreviewBanner /> : null}
       <JsonLd
         data={[
           breadcrumbSchema(

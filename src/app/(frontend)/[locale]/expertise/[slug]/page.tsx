@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 
@@ -10,9 +11,16 @@ import { PageHeader } from '@/components/ui/PageHeader'
 import { PlaceholderNotice } from '@/components/ui/Notices'
 import { RichText, richTextToPlainText } from '@/components/ui/RichText'
 import { Section } from '@/components/ui/Section'
+import { PreviewBanner } from '@/components/ui/PreviewBanner'
 import type { Locale } from '@/i18n/routing'
 import { entryPaths } from '@/lib/alternates'
-import { getExperiences, getExpertiseAreas, getExpertiseBySlug, getInsights } from '@/lib/cms'
+import {
+  getExperiences,
+  getExpertiseAreas,
+  getExpertiseBySlug,
+  getInsights,
+  getDraftExpertiseBySlug,
+} from '@/lib/cms'
 import { metaDescription, pageMetadata } from '@/lib/seo'
 
 /**
@@ -55,7 +63,11 @@ export default async function ExpertiseDetailPage({ params }: Props) {
   const { locale, slug } = await params
   setRequestLocale(locale)
 
-  const area = await getExpertiseBySlug(locale, slug)
+  // In draft mode (CMS preview) the unpublished version is shown when there is one.
+  const { isEnabled: isPreview } = await draftMode()
+  const area =
+    (isPreview ? await getDraftExpertiseBySlug(locale, slug) : null) ??
+    (await getExpertiseBySlug(locale, slug))
   if (!area) notFound()
 
   const t = await getTranslations('expertise')
@@ -71,6 +83,7 @@ export default async function ExpertiseDetailPage({ params }: Props) {
 
   return (
     <>
+      {isPreview ? <PreviewBanner /> : null}
       <JsonLd
         data={breadcrumbSchema(
           [

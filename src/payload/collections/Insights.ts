@@ -4,6 +4,7 @@ import type { CollectionAfterChangeHook, CollectionConfig } from 'payload'
 import { isAdminOrEditor, publishedOrSignedIn } from '../access'
 import { placeholderField, publishedAtField, seoField, slugField } from '../fields/shared'
 import { GROUPS, tr } from '../i18n'
+import { previewUrl } from '../preview'
 
 export const Categories: CollectionConfig = {
   slug: 'categories',
@@ -95,13 +96,7 @@ export const Insights: CollectionConfig = {
       'Redaktionsbereich. Als Entwurf speichern, Vorschau ansehen, dann veröffentlichen oder planen.',
       'Editorial hub. Save as draft, preview, then publish or schedule.',
     ),
-    preview: (doc, { locale }) => {
-      const slug = typeof doc?.slug === 'string' ? doc.slug : ''
-      const base = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:4313'
-      return `${base}/api/preview?locale=${locale ?? 'en'}&path=${encodeURIComponent(
-        `/insights/${slug}`,
-      )}`
-    },
+    preview: previewUrl('/insights'),
   },
   versions: { drafts: { autosave: false, schedulePublish: true }, maxPerDoc: 30 },
   access: {

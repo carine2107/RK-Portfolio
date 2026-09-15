@@ -5,6 +5,7 @@ import { isAdminOrEditor, publishedOrSignedIn } from '../access'
 import { COUNTRY_OPTIONS } from '../fields/countries'
 import { orderField, placeholderField, seoField, slugField } from '../fields/shared'
 import { GROUPS, tr } from '../i18n'
+import { previewUrl } from '../preview'
 
 export const REGIONS = [
   { label: tr('Europe', 'Europa', 'Europe'), value: 'europe' },
@@ -21,6 +22,7 @@ export const Experiences: CollectionConfig = {
   admin: {
     group: GROUPS.content,
     useAsTitle: 'title',
+    preview: previewUrl('/experience'),
     defaultColumns: ['title', 'organisation', 'type', 'region', '_status'],
     description: tr(
       'Missions et projets. Ne renseignez des résultats qu’une fois vérifiés.',

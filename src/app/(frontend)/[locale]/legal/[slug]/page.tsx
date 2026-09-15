@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 
@@ -7,9 +8,10 @@ import { Notice } from '@/components/ui/Notices'
 import { PageHeader } from '@/components/ui/PageHeader'
 import { RichText, richTextToPlainText } from '@/components/ui/RichText'
 import { Section } from '@/components/ui/Section'
+import { PreviewBanner } from '@/components/ui/PreviewBanner'
 import { Link } from '@/i18n/navigation'
 import { locales, type Locale } from '@/i18n/routing'
-import { getLegalPageBySlug, getLegalPages, legalSlug } from '@/lib/cms'
+import { getLegalPageBySlug, getLegalPages, legalSlug, getDraftLegalPageBySlug } from '@/lib/cms'
 import { formatDate } from '@/lib/format'
 import { metaDescription, pageMetadata, type LocalePaths } from '@/lib/seo'
 
@@ -62,7 +64,11 @@ export default async function LegalPage({ params }: Props) {
   const { locale, slug } = await params
   setRequestLocale(locale)
 
-  const page = await getLegalPageBySlug(locale, slug)
+  // In draft mode (CMS preview) the unpublished version is shown when there is one.
+  const { isEnabled: isPreview } = await draftMode()
+  const page =
+    (isPreview ? await getDraftLegalPageBySlug(locale, slug) : null) ??
+    (await getLegalPageBySlug(locale, slug))
   if (!page) notFound()
 
   const t = await getTranslations('legal')
@@ -71,6 +77,7 @@ export default async function LegalPage({ params }: Props) {
 
   return (
     <>
+      {isPreview ? <PreviewBanner /> : null}
       <JsonLd
         data={breadcrumbSchema(
           [

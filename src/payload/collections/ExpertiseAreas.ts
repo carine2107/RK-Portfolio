@@ -4,6 +4,7 @@ import type { CollectionConfig } from 'payload'
 import { isAdminOrEditor, publishedOrSignedIn } from '../access'
 import { orderField, placeholderField, seoField, slugField } from '../fields/shared'
 import { GROUPS, tr } from '../i18n'
+import { previewUrl } from '../preview'
 
 export const ExpertiseAreas: CollectionConfig = {
   slug: 'expertise-areas',
@@ -14,6 +15,7 @@ export const ExpertiseAreas: CollectionConfig = {
   admin: {
     group: GROUPS.content,
     useAsTitle: 'title',
+    preview: previewUrl('/expertise'),
     defaultColumns: ['title', 'order', '_status'],
     description: tr(
       'Les domaines d’intervention listés sur la page Expertises et sur l’accueil.',

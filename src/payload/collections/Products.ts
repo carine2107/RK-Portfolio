@@ -5,6 +5,7 @@ import { parseVideoUrl } from '../../lib/video'
 import { isAdminOrEditor, isStaffFieldLevel, publishedOrSignedIn } from '../access'
 import { orderField, placeholderField, seoField, slugField } from '../fields/shared'
 import { GROUPS, tr } from '../i18n'
+import { previewUrl } from '../preview'
 
 export const PRODUCT_TYPES = ['ebook', 'course', 'resource'] as const
 export type ProductType = (typeof PRODUCT_TYPES)[number]
@@ -29,6 +30,7 @@ export const Products: CollectionConfig = {
   admin: {
     group: GROUPS.shop,
     useAsTitle: 'title',
+    preview: previewUrl('/products'),
     defaultColumns: ['title', 'type', 'price', '_status'],
     description: tr(
       'E-books, formations KAILI Institut et ressources. Prix TTC en EUR. L’achat donne accès au produit dans l’espace membre de l’acheteur (connexion par lien e-mail). Vendus uniquement quand la boutique est ouverte et les paiements configurés.',

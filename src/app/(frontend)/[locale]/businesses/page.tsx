@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { draftMode } from 'next/headers'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 
 import { BusinessCard } from '@/components/cards/ContentCards'
@@ -7,8 +8,9 @@ import { CtaLink } from '@/components/ui/CtaLink'
 import { Icon } from '@/components/ui/Icon'
 import { EmptyState, PageHeader } from '@/components/ui/PageHeader'
 import { Section } from '@/components/ui/Section'
+import { PreviewBanner } from '@/components/ui/PreviewBanner'
 import type { Locale } from '@/i18n/routing'
-import { getBusinesses, getSiteSettings } from '@/lib/cms'
+import { getBusinesses, getSiteSettings, getDraftBusinesses } from '@/lib/cms'
 import { pageMetadata } from '@/lib/seo'
 
 /**
@@ -40,10 +42,13 @@ export default async function BusinessesPage({ params }: Props) {
   const t = await getTranslations('businesses')
   const nav = await getTranslations('nav')
   const brand = await getTranslations('brand')
-  const businesses = await getBusinesses(locale)
+  // In draft mode (CMS preview) unpublished changes are shown.
+  const { isEnabled: isPreview } = await draftMode()
+  const businesses = isPreview ? await getDraftBusinesses(locale) : await getBusinesses(locale)
 
   return (
     <>
+      {isPreview ? <PreviewBanner /> : null}
       <JsonLd
         data={[
           ...businesses.map((business) =>

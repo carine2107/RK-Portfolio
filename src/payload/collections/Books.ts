@@ -4,6 +4,7 @@ import type { CollectionConfig } from 'payload'
 import { isAdminOrEditor, publishedOrSignedIn } from '../access'
 import { orderField, placeholderField, seoField, slugField } from '../fields/shared'
 import { GROUPS, tr } from '../i18n'
+import { previewUrl } from '../preview'
 
 /**
  * Hybrid sales model (option C of the specification): each book declares how it
@@ -20,6 +21,7 @@ export const Books: CollectionConfig = {
   admin: {
     group: GROUPS.content,
     useAsTitle: 'title',
+    preview: previewUrl('/books'),
     defaultColumns: ['title', 'saleType', 'availability', '_status'],
   },
   versions: { drafts: { autosave: false }, maxPerDoc: 20 },

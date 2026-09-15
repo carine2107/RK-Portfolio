@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import type { Metadata } from 'next'
+import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 
@@ -12,10 +13,16 @@ import { PlaceholderNotice } from '@/components/ui/Notices'
 import { PageHeader } from '@/components/ui/PageHeader'
 import { RichText } from '@/components/ui/RichText'
 import { Section } from '@/components/ui/Section'
+import { PreviewBanner } from '@/components/ui/PreviewBanner'
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/i18n/routing'
 import { entryPaths } from '@/lib/alternates'
-import { getEngagementBySlug, getEngagements, getSiteSettings } from '@/lib/cms'
+import {
+  getEngagementBySlug,
+  getEngagements,
+  getSiteSettings,
+  getDraftEngagementBySlug,
+} from '@/lib/cms'
 import { formatDate, isoDate } from '@/lib/format'
 import { metaDescription, pageMetadata } from '@/lib/seo'
 import { parseVideoUrl } from '@/lib/video'
@@ -66,7 +73,11 @@ export default async function EngagementPage({ params }: Props) {
   const { locale, slug } = await params
   setRequestLocale(locale)
 
-  const entry = await getEngagementBySlug(locale, slug)
+  // In draft mode (CMS preview) the unpublished version is shown when there is one.
+  const { isEnabled: isPreview } = await draftMode()
+  const entry =
+    (isPreview ? await getDraftEngagementBySlug(locale, slug) : null) ??
+    (await getEngagementBySlug(locale, slug))
   if (!entry) notFound()
 
   const t = await getTranslations('speaking')
@@ -126,6 +137,7 @@ export default async function EngagementPage({ params }: Props) {
 
   return (
     <>
+      {isPreview ? <PreviewBanner /> : null}
       <JsonLd
         data={[
           ...(schema ? [schema] : []),

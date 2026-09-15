@@ -10,8 +10,8 @@ Environnement : Windows 11, Node 24.15, PostgreSQL 16 (Docker), build de
 
 | Suite                            | Périmètre                                                               | Résultat                             |
 | -------------------------------- | ----------------------------------------------------------------------- | ------------------------------------ |
-| Tests unitaires (Vitest)         | Traductions, contrastes, moteur d'apparence, validation, SEO, anti-abus | **135 / 135 réussis**                |
-| Tests end-to-end (Playwright)    | 113 scénarios × 4 configurations                                        | **412 réussis, 40 ignorés, 0 échec** |
+| Tests unitaires (Vitest)         | Traductions, contrastes, moteur d'apparence, validation, SEO, anti-abus | **139 / 139 réussis**                |
+| Tests end-to-end (Playwright)    | 115 scénarios × 4 configurations                                        | **416 réussis, 44 ignorés, 0 échec** |
 | Compilation TypeScript (`tsc`)   | Mode strict, tout le projet                                             | **0 erreur**                         |
 | Lint (ESLint 9 + config Next 16) | Tout le projet                                                          | **0 erreur, 0 avertissement**        |
 | Formatage (Prettier)             | `src`, `tests`, `docs`                                                  | **conforme**                         |
@@ -30,6 +30,8 @@ Tests ignorés, tous volontaires :
   que sur Chromium ;
 - **2** : le contrôle HTTP de mise en cache des pages de détail ne dépend pas du
   navigateur et ne tourne que sur Chromium ;
+- **4** : les contrôles HTTP de l'aperçu des brouillons (2 scénarios) ne tournent eux
+  aussi que sur Chromium ;
 - **2** sur WebKit : Safari ne déplace pas le focus vers les liens avec la touche
   Tab tant que « Full Keyboard Access » n'est pas activé dans le système. Le
   comportement est vérifié sur Chromium et Firefox.
@@ -46,7 +48,7 @@ node tests/visual/capture.mjs test-results/visual
 
 ---
 
-## 2. Tests unitaires (135)
+## 2. Tests unitaires (139)
 
 | Fichier                     | Ce qui est vérifié                                                                                                                                                                                                                                                                                            |
 | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -71,8 +73,9 @@ node tests/visual/capture.mjs test-results/visual
 | `google-sheets.test.ts`     | Google Sheets : configuration inactive tant que les 3 valeurs ne sont pas valides, clé sur une ligne restaurée, endpoints Google imposés en production ; JWT RS256 vérifié ; ajout, mise à jour en place, suppression par index sans création d’onglet, création d’onglet, jeton unique, erreurs sans données |
 | `consent.test.ts`           | Consentement Google Analytics : aucun choix par défaut, mémorisation, nouvelle demande après changement de version ou valeur corrompue, identifiant G- seul accepté, activation seulement avec un identifiant valide, suppression des seuls cookies Google sur le domaine et ses parents                      |
 | `zod-csp.test.ts`           | Bibliothèque de validation en mode sans `eval` dès qu'un schéma de formulaire est chargé (compatible avec la politique de sécurité du contenu) ; la validation fonctionne toujours                                                                                                                            |
+| `preview-url.test.ts`       | Bouton Aperçu du CMS : adresse `/api/preview` avec la langue et le chemin de la page (slug encodé), bouton masqué tant que le contenu n'a pas de slug, page de liste pour les activités                                                                                                                       |
 
-## 3. Tests end-to-end (113 scénarios)
+## 3. Tests end-to-end (115 scénarios)
 
 ### Navigation et structure (`navigation.spec.ts`)
 
@@ -251,6 +254,21 @@ Contrôle manuel (serveur de développement, page de test supprimée ensuite) : 
   livres…) répondent 200, sont mises en cache (`s-maxage=300`) et portent leur
   description SEO dans l'en-tête `<head>` pour un navigateur ordinaire
 
+### Aperçu des brouillons (`draft-preview.spec.ts`, `preview-url.test.ts`)
+
+- Avec le cookie du mode brouillon, toutes les pages de détail du sitemap et la page
+  Entreprises affichent le bandeau d'aperçu et ne sont pas mises en cache (`no-store`) ;
+  le visiteur suivant ne voit jamais le bandeau
+- Contenu inexistant → 404, même en mode aperçu
+
+Contrôle manuel (build de production, cookie du mode brouillon du build, données de test
+supprimées ensuite) : campagne, produit numérique et conférence **jamais publiés** → 404
+pour un visiteur, affichés avec leur titre de brouillon et le bandeau en aperçu ; livre
+publié modifié en brouillon → titre publié pour le visiteur, titre du brouillon en aperçu ;
+livre republié ensuite avec son titre d'origine. Le bouton Aperçu lui-même n'a pas été
+cliqué dans l'administration (pas de session d'administrateur) : la route `/api/preview`,
+déjà utilisée pour les articles, est inchangée.
+
 ---
 
 ## 4. Recette visuelle
@@ -395,8 +413,9 @@ Ces vérifications dépendent d'éléments encore absents (voir
 - La limitation de débit du formulaire est **en mémoire** : elle protège une
   instance unique. Une mise à l'échelle horizontale demanderait un magasin
   partagé (Redis) — l'interface de `src/lib/rate-limit.ts` ne changerait pas.
-- Le mode aperçu couvre les articles RK Insights ; les autres collections
-  s'aperçoivent en publiant puis en dépubliant si nécessaire.
+- Le mode aperçu couvre toutes les pages publiques issues du CMS, sauf l'accueil, la
+  page À propos et les formations et qualifications (réglages globaux sans brouillon ou
+  contenus sans page propre) : ces modifications sont visibles à la publication.
 - Les tests visuels ne sont **pas** comparés automatiquement : les captures sont
   destinées à une relecture humaine, afin qu'un changement de design volontaire
   ne fasse pas échouer la chaîne d'intégration.

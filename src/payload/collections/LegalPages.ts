@@ -4,6 +4,7 @@ import type { CollectionConfig } from 'payload'
 import { isAdmin, isAdminOrEditor, publishedOrSignedIn } from '../access'
 import { seoField, slugField } from '../fields/shared'
 import { GROUPS, tr } from '../i18n'
+import { previewUrl } from '../preview'
 
 export const LEGAL_PAGE_TYPES = [
   { label: tr('Impressum / mentions légales', 'Impressum', 'Imprint'), value: 'imprint' },
@@ -28,6 +29,7 @@ export const LegalPages: CollectionConfig = {
   admin: {
     group: GROUPS.administration,
     useAsTitle: 'title',
+    preview: previewUrl('/legal'),
     defaultColumns: ['title', 'type', 'needsLegalReview', '_status'],
     description: tr(
       'Trames à compléter. Le texte final doit être validé par le propriétaire et, si nécessaire, par un professionnel du droit.',

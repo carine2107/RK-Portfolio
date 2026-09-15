@@ -2,7 +2,7 @@ import 'server-only'
 
 import config from '@payload-config'
 import { cache } from 'react'
-import { getPayload, type Payload, type Where } from 'payload'
+import { getPayload, type CollectionSlug, type Payload, type Where } from 'payload'
 
 import {
   starterAbout,
@@ -520,6 +520,17 @@ const mapCampaignBlock = (doc: Doc): CampaignBlock | null => {
   }
 }
 
+const mapCampaign = (doc: Doc): CampaignView => ({
+  id: String(doc.id),
+  slug: str(doc.slug),
+  title: str(doc.title),
+  summary: str(doc.summary),
+  blocks: arrayOf(doc.layout)
+    .map(mapCampaignBlock)
+    .filter((block): block is CampaignBlock => block !== null),
+  seo: seo(doc.seo),
+})
+
 /** Published campaign pages. No starter content. */
 export const getCampaigns = cache(
   async (locale: Locale): Promise<CampaignView[]> =>
@@ -533,19 +544,7 @@ export const getCampaigns = cache(
           sort: '-updatedAt',
           where: { _status: { equals: 'published' } },
         })
-        return result.docs.map((raw) => {
-          const doc = asDoc(raw)
-          return {
-            id: String(doc.id),
-            slug: str(doc.slug),
-            title: str(doc.title),
-            summary: str(doc.summary),
-            blocks: arrayOf(doc.layout)
-              .map(mapCampaignBlock)
-              .filter((block): block is CampaignBlock => block !== null),
-            seo: seo(doc.seo),
-          }
-        })
+        return result.docs.map((doc) => mapCampaign(asDoc(doc)))
       },
       () => [],
     ),
@@ -1039,6 +1038,21 @@ const starterBusinessViews = (locale: Locale): BusinessView[] =>
     isPlaceholder: true,
   }))
 
+const mapBusiness = (record: Doc): BusinessView => ({
+  id: String(record.id),
+  slug: str(record.slug),
+  name: str(record.name),
+  tagline: str(record.tagline),
+  description: str(record.description),
+  valueProposition: str(record.valueProposition),
+  field: str(record.field),
+  audience: str(record.audience),
+  website: str(record.website),
+  contactEmail: str(record.contactEmail),
+  logo: image(record.logo),
+  isPlaceholder: boolean(record.isPlaceholder),
+})
+
 export const getBusinesses = cache(
   async (locale: Locale): Promise<BusinessView[]> =>
     withCms(
@@ -1052,23 +1066,7 @@ export const getBusinesses = cache(
           where: { and: [{ _status: { equals: 'published' } }, { active: { equals: true } }] },
         })
         if (result.docs.length === 0) return starterBusinessViews(locale)
-        return result.docs.map((doc) => {
-          const record = asDoc(doc)
-          return {
-            id: String(record.id),
-            slug: str(record.slug),
-            name: str(record.name),
-            tagline: str(record.tagline),
-            description: str(record.description),
-            valueProposition: str(record.valueProposition),
-            field: str(record.field),
-            audience: str(record.audience),
-            website: str(record.website),
-            contactEmail: str(record.contactEmail),
-            logo: image(record.logo),
-            isPlaceholder: boolean(record.isPlaceholder),
-          }
-        })
+        return result.docs.map((doc) => mapBusiness(asDoc(doc)))
       },
       () => starterBusinessViews(locale),
     ),
@@ -1153,6 +1151,16 @@ const starterLegalViews = (locale: Locale): LegalPageView[] =>
     seo: {},
   }))
 
+const mapLegalPage = (record: Doc): LegalPageView => ({
+  slug: str(record.slug),
+  type: (str(record.type, 'imprint') as LegalPageView['type']) ?? 'imprint',
+  title: str(record.title),
+  content: richText(record.content),
+  needsLegalReview: record.needsLegalReview !== false,
+  lastUpdated: str(record.lastUpdated) || null,
+  seo: seo(record.seo),
+})
+
 export const getLegalPages = cache(
   async (locale: Locale): Promise<LegalPageView[]> =>
     withCms(
@@ -1164,18 +1172,7 @@ export const getLegalPages = cache(
           where: { _status: { equals: 'published' } },
         })
         if (result.docs.length === 0) return starterLegalViews(locale)
-        return result.docs.map((doc) => {
-          const record = asDoc(doc)
-          return {
-            slug: str(record.slug),
-            type: (str(record.type, 'imprint') as LegalPageView['type']) ?? 'imprint',
-            title: str(record.title),
-            content: richText(record.content),
-            needsLegalReview: record.needsLegalReview !== false,
-            lastUpdated: str(record.lastUpdated) || null,
-            seo: seo(record.seo),
-          }
-        })
+        return result.docs.map((doc) => mapLegalPage(asDoc(doc)))
       },
       () => starterLegalViews(locale),
     ),
@@ -1202,34 +1199,82 @@ export async function getLegalPageByType(
 /* -------------------------------------------------------------------------- */
 
 /**
- * Reads a single entry including its unpublished draft. Used only when Next.js
- * draft mode is enabled, which the `/api/preview` route grants exclusively to a
- * signed-in administrator or editor.
+ * Reads entries including their unpublished draft. Used only when Next.js draft
+ * mode is enabled, which the `/api/preview` route grants exclusively to a
+ * signed-in administrator or editor. The mappers are the public ones: fields
+ * reserved to buyers (lesson contents, files) are never rendered.
  */
-export async function getDraftInsightBySlug(
+async function findDrafts(
+  collection: CollectionSlug,
   locale: Locale,
-  slug: string,
-): Promise<InsightView | null> {
+  where: Where,
+  options: { limit?: number; sort?: string } = {},
+): Promise<Doc[]> {
   const cms = await getCms()
-  if (!cms) return null
+  if (!cms) return []
 
   try {
     const result = await cms.find({
-      collection: 'insights',
+      collection,
       locale,
       depth: 1,
-      limit: 1,
+      limit: options.limit ?? 1,
+      sort: options.sort,
       draft: true,
       overrideAccess: true,
-      where: { slug: { equals: slug } },
+      where,
     })
-    const doc = result.docs[0]
-    return doc ? mapInsight(asDoc(doc)) : null
+    return result.docs.map(asDoc)
   } catch (error) {
     console.warn(
       '[cms] Draft preview failed:',
       error instanceof Error ? error.message : 'unknown error',
     )
-    return null
+    return []
   }
+}
+
+async function draftBySlug<T>(
+  collection: CollectionSlug,
+  locale: Locale,
+  slug: string,
+  map: (doc: Doc) => T,
+): Promise<T | null> {
+  const [doc] = await findDrafts(collection, locale, { slug: { equals: slug } })
+  return doc ? map(doc) : null
+}
+
+export const getDraftInsightBySlug = (locale: Locale, slug: string) =>
+  draftBySlug('insights', locale, slug, mapInsight)
+
+export const getDraftBookBySlug = (locale: Locale, slug: string) =>
+  draftBySlug('books', locale, slug, mapBook)
+
+export const getDraftExpertiseBySlug = (locale: Locale, slug: string) =>
+  draftBySlug('expertise-areas', locale, slug, mapExpertise)
+
+export const getDraftExperienceBySlug = (locale: Locale, slug: string) =>
+  draftBySlug('experiences', locale, slug, (doc) => mapExperience(doc, locale))
+
+export const getDraftEngagementBySlug = (locale: Locale, slug: string) =>
+  draftBySlug('engagements', locale, slug, (doc) => mapEngagement(doc, locale))
+
+export const getDraftProductBySlug = (locale: Locale, slug: string) =>
+  draftBySlug('products', locale, slug, mapProduct)
+
+export const getDraftCampaignBySlug = (locale: Locale, slug: string) =>
+  draftBySlug('campaigns', locale, slug, mapCampaign)
+
+export const getDraftLegalPageBySlug = (locale: Locale, slug: string) =>
+  draftBySlug('legal-pages', locale, slug, mapLegalPage)
+
+/** Visible ventures including unpublished changes (the page has no detail pages). */
+export async function getDraftBusinesses(locale: Locale): Promise<BusinessView[]> {
+  const docs = await findDrafts(
+    'businesses',
+    locale,
+    { active: { equals: true } },
+    { limit: 20, sort: 'order' },
+  )
+  return docs.length > 0 ? docs.map(mapBusiness) : getBusinesses(locale)
 }

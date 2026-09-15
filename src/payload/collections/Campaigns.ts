@@ -6,6 +6,7 @@ import { parseVideoUrl } from '../../lib/video'
 import { isAdminOrEditor, publishedOrSignedIn } from '../access'
 import { seoField, slugField } from '../fields/shared'
 import { GROUPS, tr } from '../i18n'
+import { previewUrl } from '../preview'
 
 type Lang = 'fr' | 'de' | 'en'
 const language = (req: { i18n?: { language?: string } }): Lang =>
@@ -329,6 +330,7 @@ export const Campaigns: CollectionConfig = {
   admin: {
     group: GROUPS.pages,
     useAsTitle: 'title',
+    preview: previewUrl('/campaigns'),
     defaultColumns: ['title', 'slug', '_status', 'updatedAt'],
     description: tr(
       'Pages d’atterrissage dédiées à un livre, un programme ou une mission, composées de blocs. Adresse : /fr/campaigns/<slug>. Elles n’apparaissent pas dans le menu : partagez leur lien (réseaux, e-mail, publicité).',
