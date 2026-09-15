@@ -27,6 +27,8 @@ export type CatalogBook = {
   price: number | null
   currency: string
   saleType: string
+  /** Book sold by a retailer that also offers direct purchase on the site. */
+  directOrder?: boolean
   availability: string
   /** null = not tracked (unlimited). */
   stock: number | null
@@ -65,9 +67,13 @@ export const kindOf = (id: string): ItemKind => (id.startsWith(PRODUCT_PREFIX) ?
 export const recordId = (id: string): string =>
   id.startsWith(PRODUCT_PREFIX) ? id.slice(PRODUCT_PREFIX.length) : id
 
+/**
+ * Sold directly on the site: a direct-sale book, or a book kept at its retailers
+ * that also offers direct purchase ("Offer direct purchase on the site").
+ */
 export function isPurchasable(book: CatalogBook): boolean {
   return (
-    book.saleType === 'direct' &&
+    (book.saleType === 'direct' || (book.saleType === 'external' && book.directOrder === true)) &&
     book.currency === SHOP_CURRENCY &&
     typeof book.price === 'number' &&
     book.price > 0 &&

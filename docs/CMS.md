@@ -98,10 +98,13 @@ Newsletter : `sendNewsletter` (case à cocher), `newsletterSentAt` et `newslette
 `availability`_, `saleType`_, `purchaseLinks[]`, `directOrderForm`, `previewPdf`,
 `relatedBooks`, `featured`, `order`, `isPlaceholder`, `seo`.
 
-`directOrderForm` (mode `external` uniquement) : bouton « Commander ici » sous les liens
-d'achat, vers `/contact?type=bookOrder&subject=Commande : <titre>` — le formulaire de contact
-est pré-rempli (type « Commande de livre », sujet). Aucun paiement en ligne : la demande
-arrive dans `contact-submissions` et se traite à la main.
+`directOrderForm` (mode `external` uniquement, libellé « Proposer aussi l'achat direct sur le
+site ») : le livre garde ses liens d'achat et propose en plus l'achat direct. Sous les liens,
+**« Ajouter au panier »** quand la vente directe peut être payée (boutique ouverte, clés de
+paiement configurées) et que le livre est achetable selon la règle du serveur (`isPurchasable`
+de `src/lib/shop-pricing.ts` : prix TTC > 0 en EUR, disponible ou en précommande, stock) ;
+sinon **« Commander ici »** vers `/contact?type=bookOrder&subject=Commande : <titre>` (formulaire
+pré-rempli, traitement manuel). Le panier et le paiement appliquent la même règle.
 
 `saleType` implémente le modèle hybride du cahier des charges :
 `external` (lien revendeur), `direct` (**modélisé mais non activé** — aucun

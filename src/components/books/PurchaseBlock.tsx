@@ -9,6 +9,7 @@ import { buttonClasses } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
 import { Notice } from '@/components/ui/Notices'
 import { Link } from '@/i18n/navigation'
+import { isPurchasable } from '@/lib/shop-pricing'
 import type { BookView } from '@/lib/types'
 
 /** Country of a retailer, read from its domain (amazon.de, amazon.fr, amazon.co.uk). */
@@ -25,11 +26,12 @@ function retailerCountry(url: string): 'fr' | 'de' | 'en' | null {
 }
 
 /**
- * Purchase area of a book.
+ * Purchase area of a book: retailer links, direct sale on the site, or both.
  *
- * The data model supports the hybrid sales model (external retailer / direct
- * sale). Direct sale is intentionally NOT wired to a checkout: no payment
- * provider is configured, so the site says so instead of simulating a shop.
+ * Direct purchase is only offered when it can really be paid (shop opened in the
+ * CMS and payment keys configured) and the book is purchasable by the same rule as
+ * the server-side pricing. Until then a book that offers direct purchase shows
+ * "Order here", which opens the contact form: no payment is ever simulated.
  */
 export function PurchaseBlock({
   book,
@@ -40,6 +42,18 @@ export function PurchaseBlock({
   shopActive?: boolean
 }) {
   const t = useTranslations('books')
+  const directPurchase =
+    shopActive &&
+    isPurchasable({
+      id: book.id,
+      title: book.title,
+      price: book.price,
+      currency: book.currency,
+      saleType: book.saleType,
+      directOrder: book.directOrderForm,
+      availability: book.availability,
+      stock: book.stock,
+    })
 
   if (book.saleType === 'external' && book.purchaseLinks.length > 0) {
     return (
@@ -60,10 +74,14 @@ export function PurchaseBlock({
           </a>
         ))}
         <p className="text-sm text-secondary">{t('buy.externalNote')}</p>
-        {book.directOrderForm ? (
+        {book.directOrderForm && directPurchase ? (
+          <div className="mt-2 border-t border-line pt-4">
+            <AddToCart bookId={book.id} slug={book.slug} />
+          </div>
+        ) : book.directOrderForm ? (
           <div className="mt-2 flex flex-col gap-2 border-t border-line pt-4">
-            {/* No online payment: the request goes through the contact form and is
-                handled manually, until direct sales open with payment keys. */}
+            {/* Online payment not available yet: the request goes through the contact
+                form and is handled manually. */}
             <Link
               href={`/contact?type=bookOrder&subject=${encodeURIComponent(
                 t('buy.orderSubject', { title: book.title }),
@@ -83,12 +101,7 @@ export function PurchaseBlock({
     )
   }
 
-  const buyable =
-    book.price !== null &&
-    (book.availability === 'available' || book.availability === 'preorder') &&
-    (book.stock === null || book.stock > 0)
-
-  if (book.saleType === 'direct' && shopActive && buyable) {
+  if (book.saleType === 'direct' && directPurchase) {
     return <AddToCart bookId={book.id} slug={book.slug} />
   }
 

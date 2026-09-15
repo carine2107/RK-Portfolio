@@ -205,7 +205,9 @@ export const Books: CollectionConfig = {
       admin: {
         position: 'sidebar',
         step: 1,
-        condition: (data) => data?.saleType === 'direct',
+        condition: (data) =>
+          data?.saleType === 'direct' ||
+          (data?.saleType === 'external' && data?.directOrderForm === true),
         description: tr(
           'Vide = non suivi. Diminue à chaque commande payée ; à 0, le livre passe « Épuisé ».',
           'Leer = nicht verfolgt. Sinkt mit jeder bezahlten Bestellung; bei 0 wird das Buch „Vergriffen“.',
@@ -274,17 +276,17 @@ export const Books: CollectionConfig = {
       name: 'directOrderForm',
       type: 'checkbox',
       label: tr(
-        'Proposer la commande directe par formulaire',
-        'Direktbestellung per Formular anbieten',
-        'Offer direct ordering through the form',
+        'Proposer aussi l’achat direct sur le site',
+        'Zusätzlich Direktkauf auf der Website anbieten',
+        'Also offer direct purchase on the website',
       ),
       defaultValue: false,
       admin: {
         condition: (data) => data?.saleType === 'external',
         description: tr(
-          'Ajoute un bouton « Commander ici » sous les liens d’achat. Il ouvre le formulaire de contact avec le type « Commande de livre » et le titre du livre ; aucun paiement en ligne, la commande est traitée à la main.',
-          'Fügt unter den Kauflinks einen Button „Hier bestellen“ hinzu. Er öffnet das Kontaktformular mit der Art „Buchbestellung“ und dem Buchtitel; keine Online-Zahlung, die Bestellung wird manuell bearbeitet.',
-          'Adds an "Order here" button under the purchase links. It opens the contact form with the "Book order" type and the book title; no online payment, the order is handled manually.',
+          'Sous les liens d’achat : « Ajouter au panier » (paiement par carte ou PayPal sur le site) dès que la boutique est ouverte, les clés de paiement configurées et un prix TTC en EUR renseigné, le livre étant disponible ou en précommande. Sinon, « Commander ici » ouvre le formulaire de contact (type « Commande de livre ») et la commande est traitée à la main.',
+          'Unter den Kauflinks: „In den Warenkorb“ (Zahlung per Karte oder PayPal auf der Website), sobald der Shop geöffnet, die Zahlungsschlüssel eingerichtet und ein Bruttopreis in EUR angegeben ist und das Buch verfügbar oder vorbestellbar ist. Andernfalls öffnet „Hier bestellen“ das Kontaktformular (Art „Buchbestellung“), die Bestellung wird manuell bearbeitet.',
+          'Under the purchase links: "Add to cart" (payment by card or PayPal on the website) once the shop is open, the payment keys are configured and a gross price in EUR is set, with the book available or on pre-order. Otherwise "Order here" opens the contact form ("Book order" type) and the order is handled manually.',
         ),
       },
     },

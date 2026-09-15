@@ -100,6 +100,22 @@ describe('order pricing', () => {
     expect(order.removed).toEqual(['external', 'soon', 'free', 'xaf', 'empty', 'missing'])
   })
 
+  it('sells a retailer book directly only when direct purchase is offered', () => {
+    const catalog = [
+      book({ id: 'retailer-only', saleType: 'external' }),
+      book({ id: 'retailer-and-site', saleType: 'external', directOrder: true }),
+      book({ id: 'site-no-price', saleType: 'external', directOrder: true, price: null }),
+      book({ id: 'info-only', saleType: 'none', directOrder: true }),
+    ]
+    const order = priceOrder(
+      catalog.map((entry) => ({ bookId: entry.id, quantity: 1 })),
+      catalog,
+      0,
+    )
+    expect(order.items.map((item) => item.bookId)).toEqual(['retailer-and-site'])
+    expect(order.removed).toEqual(['retailer-only', 'site-no-price', 'info-only'])
+  })
+
   it('never sells more than the stock', () => {
     const order = priceOrder([{ bookId: '1', quantity: 5 }], [book({ stock: 2 })], 0)
     expect(order.items[0]?.quantity).toBe(2)

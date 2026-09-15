@@ -844,7 +844,7 @@ export interface Book {
       }[]
     | null;
   /**
-   * Adds an "Order here" button under the purchase links. It opens the contact form with the "Book order" type and the book title; no online payment, the order is handled manually.
+   * Under the purchase links: "Add to cart" (payment by card or PayPal on the website) once the shop is open, the payment keys are configured and a gross price in EUR is set, with the book available or on pre-order. Otherwise "Order here" opens the contact form ("Book order" type) and the order is handled manually.
    */
   directOrderForm?: boolean | null;
   /**

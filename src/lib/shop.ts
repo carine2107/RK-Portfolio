@@ -140,6 +140,7 @@ async function loadCatalog(
         price: typeof book.price === 'number' ? book.price : null,
         currency: typeof book.currency === 'string' ? book.currency : 'EUR',
         saleType: typeof book.saleType === 'string' ? book.saleType : 'external',
+        directOrder: book.directOrderForm === true,
         availability: typeof book.availability === 'string' ? book.availability : 'comingSoon',
         stock: typeof book.stock === 'number' ? book.stock : null,
       })

@@ -10,7 +10,7 @@ Environnement : Windows 11, Node 24.15, PostgreSQL 16 (Docker), build de
 
 | Suite                            | Périmètre                                                               | Résultat                             |
 | -------------------------------- | ----------------------------------------------------------------------- | ------------------------------------ |
-| Tests unitaires (Vitest)         | Traductions, contrastes, moteur d'apparence, validation, SEO, anti-abus | **143 / 143 réussis**                |
+| Tests unitaires (Vitest)         | Traductions, contrastes, moteur d'apparence, validation, SEO, anti-abus | **144 / 144 réussis**                |
 | Tests end-to-end (Playwright)    | 126 scénarios × 4 configurations                                        | **444 réussis, 60 ignorés, 0 échec** |
 | Compilation TypeScript (`tsc`)   | Mode strict, tout le projet                                             | **0 erreur**                         |
 | Lint (ESLint 9 + config Next 16) | Tout le projet                                                          | **0 erreur, 0 avertissement**        |
@@ -38,7 +38,8 @@ Tests ignorés, tous volontaires :
   Tab tant que « Full Keyboard Access » n'est pas activé dans le système. Le
   comportement est vérifié sur Chromium et Firefox.
 
-Le dernier passage complet (15/09/2026, bouton « Commander ici » des livres) n'a eu aucun échec.
+Le dernier passage complet (15/09/2026, achat direct en plus d'Amazon sur la fiche livre) n'a eu
+aucun échec.
 Lors du passage précédent (message de refus des vidéos), un premier lancement avait été interrompu par un arrêt brutal du serveur Node
 (code 0xC0000409, sans message) déjà observé une fois dans la journée avant cette modification ;
 un contrôle dédié (45 s au repos, dépôt refusé d'une vidéo et d'un PDF, puis 60 s) a montré que le
@@ -62,33 +63,33 @@ node tests/visual/capture.mjs test-results/visual
 
 ---
 
-## 2. Tests unitaires (143)
+## 2. Tests unitaires (144)
 
-| Fichier                     | Ce qui est vérifié                                                                                                                                                                                                                                                                                            |
-| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `messages.test.ts`          | FR et DE couvrent 100 % des clés anglaises, aucune clé en trop, aucun message vide, paramètres ICU identiques, navigation réellement traduite                                                                                                                                                                 |
-| `contrast.test.ts`          | 15 paires couleur texte/fond × 2 thèmes + anneau de focus, seuils WCAG 2.2 AA calculés depuis les design tokens du CSS                                                                                                                                                                                        |
-| `contact-schema.test.ts`    | Schéma du formulaire (consentement, e-mail, pays, type de demande, longueurs), clés d'erreur traduisibles, liste de pays localisée et triée                                                                                                                                                                   |
-| `seo.test.ts`               | Canonical, hreflang FR/DE/EN + `x-default`, chemins traduits, `noindex`, Open Graph, troncature des descriptions, génération des slugs                                                                                                                                                                        |
-| `theme.test.ts`             | Moteur d'apparence : les 6 palettes et **300 palettes personnalisées aléatoires** respectent 15 paires de contraste AA dans les deux thèmes ; couleurs vides = palette Signature ; aucune saisie brute du CMS dans la feuille de style générée                                                                |
-| `shop-pricing.test.ts`      | Vente directe : prix toujours issus du CMS, TVA incluse extraite (49,80 € à 7 % → 3,26 €), livres non vendables retirés (externe, bientôt, prix nul, devise ≠ EUR, stock 0, inexistant), stock respecté, lignes du panier assainies, taux de TVA borné                                                        |
-| `stripe-webhook.test.ts`    | Signature des webhooks Stripe : événement signé accepté ; signature absente, secret différent, contenu modifié ou horodatage ancien refusés                                                                                                                                                                   |
-| `newsletter-tokens.test.ts` | Liens de confirmation et de désinscription signés (HMAC) : aller-retour, expiration à 48 h, lien de désinscription sans expiration, refus d'un autre usage, abonné ou secret, entrées malformées                                                                                                              |
-| `url.test.ts`               | Liens externes saisis dans le CMS : seules les adresses https:// absolues sont conservées (`http:`, `javascript:`, chemins relatifs, localhost refusés) ; affichage du domaine de destination                                                                                                                 |
-| `video.test.ts`             | Liens YouTube (watch, youtu.be, embed, shorts, live, mobile) et Vimeo convertis en lecteurs sans cookie ; tout autre lien refusé (domaines imitant YouTube, `javascript:`, identifiants invalides)                                                                                                            |
-| `world-map.test.ts`         | Carte Europe–Afrique : pays d'Europe et d'Afrique présents avec leur code ISO, pays lointains exclus, taille des tracés < 80 Ko ; noms de pays localisés FR/DE/EN                                                                                                                                             |
-| `retention.test.ts`         | Date limite de conservation des demandes de contact (24 / 6 mois, désactivation à 0, valeurs invalides), calculée en UTC — indépendante du fuseau et de l'heure d'été                                                                                                                                         |
-| `rate-limit.test.ts`        | Limitation par IP : seuil, réinitialisation de fenêtre, isolation entre clients, lecture des en-têtes de proxy                                                                                                                                                                                                |
-| `members.test.ts`           | Cookie de session de l’espace membre signé : aller-retour, identifiant modifié, signature falsifiée ou valeur absente refusés                                                                                                                                                                                 |
-| `campaign-link.test.ts`     | Boutons des pages de campagne : pages du site (préfixe de langue retiré), https externe ; http, javascript:, //hôte, espaces et mailto: refusés                                                                                                                                                               |
-| `media-library.test.ts`     | Médiathèque : formats (interview filmée = vidéo + interview), entrées à venir et ateliers sans vidéo exclus, filtres format / thème / langue combinés                                                                                                                                                         |
-| `lead-score.test.ts`        | Qualification des prospects : score maximal 100, demande non qualifiée 5, bornes des priorités (35 / 60), type d’organisation et valeurs inconnues non notés ; questions facultatives et valeurs hors liste refusées par le schéma                                                                            |
-| `exports.test.ts`           | Export CSV : BOM UTF-8, séparateur « ; », CRLF, échappement des guillemets et retours à la ligne, neutralisation des formules ; collections exportables limitées ; colonnes et libellés FR / DE ; nom de fichier par langue et date                                                                           |
-| `google-sheets.test.ts`     | Google Sheets : configuration inactive tant que les 3 valeurs ne sont pas valides, clé sur une ligne restaurée, endpoints Google imposés en production ; JWT RS256 vérifié ; ajout, mise à jour en place, suppression par index sans création d’onglet, création d’onglet, jeton unique, erreurs sans données |
-| `consent.test.ts`           | Consentement Google Analytics : aucun choix par défaut, mémorisation, nouvelle demande après changement de version ou valeur corrompue, identifiant G- seul accepté, activation seulement avec un identifiant valide, suppression des seuls cookies Google sur le domaine et ses parents                      |
-| `zod-csp.test.ts`           | Bibliothèque de validation en mode sans `eval` dès qu'un schéma de formulaire est chargé (compatible avec la politique de sécurité du contenu) ; la validation fonctionne toujours                                                                                                                            |
-| `preview-url.test.ts`       | Bouton Aperçu du CMS : adresse `/api/preview` avec la langue et le chemin de la page (slug encodé), bouton masqué tant que le contenu n'a pas de slug, page de liste pour les activités                                                                                                                       |
-| `upload-messages.test.ts`   | Médiathèque : les cinq formats d'image acceptés ; une vidéo est refusée avec un message qui renvoie vers YouTube ou Vimeo et le champ Vidéo, dans la langue de l'administration ; tout autre fichier indique les formats acceptés ; repli sur le français                                                     |
+| Fichier                     | Ce qui est vérifié                                                                                                                                                                                                                                                                                                                                   |
+| --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `messages.test.ts`          | FR et DE couvrent 100 % des clés anglaises, aucune clé en trop, aucun message vide, paramètres ICU identiques, navigation réellement traduite                                                                                                                                                                                                        |
+| `contrast.test.ts`          | 15 paires couleur texte/fond × 2 thèmes + anneau de focus, seuils WCAG 2.2 AA calculés depuis les design tokens du CSS                                                                                                                                                                                                                               |
+| `contact-schema.test.ts`    | Schéma du formulaire (consentement, e-mail, pays, type de demande, longueurs), clés d'erreur traduisibles, liste de pays localisée et triée                                                                                                                                                                                                          |
+| `seo.test.ts`               | Canonical, hreflang FR/DE/EN + `x-default`, chemins traduits, `noindex`, Open Graph, troncature des descriptions, génération des slugs                                                                                                                                                                                                               |
+| `theme.test.ts`             | Moteur d'apparence : les 6 palettes et **300 palettes personnalisées aléatoires** respectent 15 paires de contraste AA dans les deux thèmes ; couleurs vides = palette Signature ; aucune saisie brute du CMS dans la feuille de style générée                                                                                                       |
+| `shop-pricing.test.ts`      | Vente directe : prix toujours issus du CMS, TVA incluse extraite (49,80 € à 7 % → 3,26 €), livres non vendables retirés (externe, bientôt, prix nul, devise ≠ EUR, stock 0, inexistant), livre de revendeur vendu sur le site seulement si l'achat direct est proposé et un prix fixé, stock respecté, lignes du panier assainies, taux de TVA borné |
+| `stripe-webhook.test.ts`    | Signature des webhooks Stripe : événement signé accepté ; signature absente, secret différent, contenu modifié ou horodatage ancien refusés                                                                                                                                                                                                          |
+| `newsletter-tokens.test.ts` | Liens de confirmation et de désinscription signés (HMAC) : aller-retour, expiration à 48 h, lien de désinscription sans expiration, refus d'un autre usage, abonné ou secret, entrées malformées                                                                                                                                                     |
+| `url.test.ts`               | Liens externes saisis dans le CMS : seules les adresses https:// absolues sont conservées (`http:`, `javascript:`, chemins relatifs, localhost refusés) ; affichage du domaine de destination                                                                                                                                                        |
+| `video.test.ts`             | Liens YouTube (watch, youtu.be, embed, shorts, live, mobile) et Vimeo convertis en lecteurs sans cookie ; tout autre lien refusé (domaines imitant YouTube, `javascript:`, identifiants invalides)                                                                                                                                                   |
+| `world-map.test.ts`         | Carte Europe–Afrique : pays d'Europe et d'Afrique présents avec leur code ISO, pays lointains exclus, taille des tracés < 80 Ko ; noms de pays localisés FR/DE/EN                                                                                                                                                                                    |
+| `retention.test.ts`         | Date limite de conservation des demandes de contact (24 / 6 mois, désactivation à 0, valeurs invalides), calculée en UTC — indépendante du fuseau et de l'heure d'été                                                                                                                                                                                |
+| `rate-limit.test.ts`        | Limitation par IP : seuil, réinitialisation de fenêtre, isolation entre clients, lecture des en-têtes de proxy                                                                                                                                                                                                                                       |
+| `members.test.ts`           | Cookie de session de l’espace membre signé : aller-retour, identifiant modifié, signature falsifiée ou valeur absente refusés                                                                                                                                                                                                                        |
+| `campaign-link.test.ts`     | Boutons des pages de campagne : pages du site (préfixe de langue retiré), https externe ; http, javascript:, //hôte, espaces et mailto: refusés                                                                                                                                                                                                      |
+| `media-library.test.ts`     | Médiathèque : formats (interview filmée = vidéo + interview), entrées à venir et ateliers sans vidéo exclus, filtres format / thème / langue combinés                                                                                                                                                                                                |
+| `lead-score.test.ts`        | Qualification des prospects : score maximal 100, demande non qualifiée 5, bornes des priorités (35 / 60), type d’organisation et valeurs inconnues non notés ; questions facultatives et valeurs hors liste refusées par le schéma                                                                                                                   |
+| `exports.test.ts`           | Export CSV : BOM UTF-8, séparateur « ; », CRLF, échappement des guillemets et retours à la ligne, neutralisation des formules ; collections exportables limitées ; colonnes et libellés FR / DE ; nom de fichier par langue et date                                                                                                                  |
+| `google-sheets.test.ts`     | Google Sheets : configuration inactive tant que les 3 valeurs ne sont pas valides, clé sur une ligne restaurée, endpoints Google imposés en production ; JWT RS256 vérifié ; ajout, mise à jour en place, suppression par index sans création d’onglet, création d’onglet, jeton unique, erreurs sans données                                        |
+| `consent.test.ts`           | Consentement Google Analytics : aucun choix par défaut, mémorisation, nouvelle demande après changement de version ou valeur corrompue, identifiant G- seul accepté, activation seulement avec un identifiant valide, suppression des seuls cookies Google sur le domaine et ses parents                                                             |
+| `zod-csp.test.ts`           | Bibliothèque de validation en mode sans `eval` dès qu'un schéma de formulaire est chargé (compatible avec la politique de sécurité du contenu) ; la validation fonctionne toujours                                                                                                                                                                   |
+| `preview-url.test.ts`       | Bouton Aperçu du CMS : adresse `/api/preview` avec la langue et le chemin de la page (slug encodé), bouton masqué tant que le contenu n'a pas de slug, page de liste pour les activités                                                                                                                                                              |
+| `upload-messages.test.ts`   | Médiathèque : les cinq formats d'image acceptés ; une vidéo est refusée avec un message qui renvoie vers YouTube ou Vimeo et le champ Vidéo, dans la langue de l'administration ; tout autre fichier indique les formats acceptés ; repli sur le français                                                                                            |
 
 Contrôle manuel (API locale du CMS, rien n'est enregistré) : dépôt d'un fichier `video/mp4` dans la
 médiathèque → refus 400 avec le message « Les vidéos ne se déposent pas dans la médiathèque… » ;
@@ -188,19 +189,31 @@ Corrections faites pendant cette étape : champ e-mail de la newsletter renommé
 
 Contrôle manuel (serveur de développement, clé Stripe et secret de webhook **factices**, données restaurées ensuite) : livre passé en vente directe à 24,90 € et boutique ouverte avec TVA 7 % → « Ajouter au panier », offre dans les données structurées, panier recalculé par le serveur (24,90 €, dont TVA 1,63 €, livraison offerte), CGV obligatoires, échec propre avec la clé factice (commande en attente créée). Webhook `checkout.session.completed` signé : signature falsifiée 400, premier envoi → commande **payée**, rejeu → ignoré, adresse et TVA enregistrées, stock 5 → 4 ; e-mail de confirmation à l'acheteur (FR) et notification à l'adresse des commandes reçus dans MailHog ; page de confirmation « Commande RK-2026-0001 confirmée » et panier vidé. Le parcours PayPal (API distante) n'a pas pu être testé sans identifiants sandbox.
 
-### Commande de livre par formulaire (`book-order.spec.ts`)
+### Achat direct en plus d'Amazon (`book-order.spec.ts`, `shop-pricing.test.ts`)
 
-- Fiche livre (FR) : bouton « Commander ici » sous les liens Amazon quand la case
-  _Proposer la commande directe par formulaire_ est cochée, lien vers
-  `/fr/contact?type=bookOrder&subject=Commande : <titre>`, toujours aucun bouton « Ajouter au
-  panier »
+- Fiche livre (FR), boutique fermée : bouton « Commander ici » sous les liens Amazon quand la
+  case _Proposer aussi l'achat direct sur le site_ est cochée, lien vers
+  `/fr/contact?type=bookOrder&subject=Commande : <titre>`, aucun bouton « Ajouter au panier »
 - Formulaire de contact ouvert avec le type « Commande de livre » présélectionné et le sujet
   pré-rempli
+- Règle unique d'achat direct (`isPurchasable`) pour le bouton de la fiche, le panier et le
+  paiement : livre en vente directe, ou livre de revendeur proposant l'achat direct, avec prix
+  TTC > 0 en EUR, disponible ou en précommande, stock suffisant
+
+Contrôle manuel sur le build de production (clés Stripe **factices** dans un `.env.local`
+temporaire, boutique ouverte et prix de 24,90 € posés par script, puis tout rétabli) : la
+fiche affiche les 2 boutons Amazon puis « Ajouter au panier » (plus de « Commander ici ») ; le
+clic ajoute le livre (« Ajouté au panier. », « Voir le panier (1) ») ; `POST /api/shop/quote`
+→ `active: true`, livre accepté, 2 × 24,90 € = 49,80 €, rien retiré. Après restauration
+(boutique fermée, prix vide, `.env.local` supprimé, serveur redémarré) : « Commander ici » de
+retour, aucun bouton panier, devis `active: false` avec le livre retiré. Aucun paiement réel
+n'a été tenté.
 
 Modèle : nouvelle valeur `bookOrder` du type de demande (notée comme « Autre » dans la
-qualification) et champ `directOrderForm` des livres ; migration
-`20260915_134311_book_order` (ajout de la valeur d'énumération et de la colonne, valeur par
-défaut « non ») ; base locale synchronisée et case cochée pour le livre existant.
+qualification) et champ `directOrderForm` des livres (aucune nouvelle colonne pour l'achat
+direct : la même case) ; migration `20260915_134311_book_order` (valeur d'énumération et
+colonne, valeur par défaut « non ») ; base locale synchronisée et case cochée pour le livre
+existant.
 
 ### Produits numériques et espace membres (`members.spec.ts`)
 
