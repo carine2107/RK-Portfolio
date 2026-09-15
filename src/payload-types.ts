@@ -281,7 +281,7 @@ export interface ExpertiseArea {
   _status?: ('draft' | 'published') | null;
 }
 /**
- * Photographs and illustrations. Every image needs an alternative text.
+ * Photographs and illustrations (JPG, PNG, WebP, AVIF or SVG). Every image needs an alternative text. Videos are not uploaded here: publish them on YouTube or Vimeo and paste their link into the entry.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media".
@@ -1192,7 +1192,7 @@ export interface Engagement {
     | null;
   languages?: ('fr' | 'en' | 'de')[] | null;
   /**
-   * Real photo of the engagement or event visual (landscape). Also used as the preview before the video plays.
+   * Real photo of the engagement or event visual (landscape, JPG, PNG or WebP). Also used as the preview before the video plays. A video is not uploaded here: paste its YouTube or Vimeo link in the "Video & links" tab.
    */
   cover?: (number | null) | Media;
   featured?: boolean | null;
@@ -1224,7 +1224,7 @@ export interface Engagement {
     [k: string]: unknown;
   } | null;
   /**
-   * Video link. It loads only when the visitor clicks, in no-cookie mode.
+   * First publish the video on YouTube or Vimeo (unlisted if it must not appear on the channel), then paste its link here. It loads only when the visitor clicks, in no-cookie mode.
    */
   videoUrl?: string | null;
   /**
