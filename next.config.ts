@@ -83,6 +83,11 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  experimental: {
+    // Server-rendered 404 for unmatched URLs (src/app/global-not-found.tsx): the
+    // root layout is in the dynamic [locale] segment.
+    globalNotFound: true,
+  },
   images: {
     formats: ['image/avif', 'image/webp'],
     remotePatterns: [],

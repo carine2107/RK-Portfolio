@@ -29,8 +29,8 @@ test.describe('accessibility audit', () => {
   for (const path of PAGES) {
     test(`${path}: no axe violation (WCAG 2.2 AA and best practices)`, async ({ page }) => {
       await page.goto(path, { waitUntil: 'load' })
-      // A 404 is sent by Next.js as an empty shell completed by JavaScript (see
-      // RAPPORT_TESTS, known limits): audit the page once it is rendered.
+      // Audit the page once its main heading is rendered (an unknown detail entry
+      // is still completed by JavaScript, see RAPPORT_TESTS, known limits).
       await page.locator('html[lang] main h1').first().waitFor()
       await page.addScriptTag({ path: axePath })
 

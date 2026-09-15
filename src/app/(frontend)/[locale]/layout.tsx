@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from 'next'
-import { Inter, Playfair_Display, Source_Serif_4 } from 'next/font/google'
 import { hasLocale, NextIntlClientProvider } from 'next-intl'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { notFound } from 'next/navigation'
@@ -16,29 +15,8 @@ import { emailReady } from '@/lib/email-layout'
 import { analyticsConfig, analyticsEnabled } from '@/lib/env'
 import { cmsEnabled, isProduction, siteUrl } from '@/lib/env'
 
+import { fontVariables } from '../fonts'
 import '../globals.css'
-
-const display = Source_Serif_4({
-  subsets: ['latin'],
-  variable: '--font-display',
-  display: 'swap',
-  weight: ['400', '600'],
-})
-
-const body = Inter({
-  subsets: ['latin'],
-  variable: '--font-body',
-  display: 'swap',
-})
-
-/** Alternative heading font (Appearance global). Not preloaded: only downloaded when used. */
-const playfair = Playfair_Display({
-  subsets: ['latin'],
-  variable: '--font-playfair',
-  display: 'swap',
-  weight: ['400', '600'],
-  preload: false,
-})
 
 /**
  * Pages are pre-rendered at build time only when the CMS can be reached. A
@@ -111,11 +89,7 @@ export default async function LocaleLayout({
   const cms = await getTranslations({ locale, namespace: 'cms' })
 
   return (
-    <html
-      lang={locale}
-      suppressHydrationWarning
-      className={`${display.variable} ${body.variable} ${playfair.variable}`}
-    >
+    <html lang={locale} suppressHydrationWarning className={fontVariables}>
       <head>
         <ThemeScript />
         {/* Colours and fonts chosen in the CMS (Appearance). Generated from
