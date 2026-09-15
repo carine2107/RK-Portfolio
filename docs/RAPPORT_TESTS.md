@@ -11,7 +11,7 @@ Environnement : Windows 11, Node 24.15, PostgreSQL 16 (Docker), build de
 | Suite                            | Périmètre                                                               | Résultat                             |
 | -------------------------------- | ----------------------------------------------------------------------- | ------------------------------------ |
 | Tests unitaires (Vitest)         | Traductions, contrastes, moteur d'apparence, validation, SEO, anti-abus | **143 / 143 réussis**                |
-| Tests end-to-end (Playwright)    | 125 scénarios × 4 configurations                                        | **440 réussis, 60 ignorés, 0 échec** |
+| Tests end-to-end (Playwright)    | 126 scénarios × 4 configurations                                        | **444 réussis, 60 ignorés, 0 échec** |
 | Compilation TypeScript (`tsc`)   | Mode strict, tout le projet                                             | **0 erreur**                         |
 | Lint (ESLint 9 + config Next 16) | Tout le projet                                                          | **0 erreur, 0 avertissement**        |
 | Formatage (Prettier)             | `src`, `tests`, `docs`                                                  | **conforme**                         |
@@ -38,8 +38,8 @@ Tests ignorés, tous volontaires :
   Tab tant que « Full Keyboard Access » n'est pas activé dans le système. Le
   comportement est vérifié sur Chromium et Firefox.
 
-Le dernier passage complet (15/09/2026, message de refus des vidéos dans la médiathèque) n'a eu
-aucun échec. Un premier lancement avait été interrompu par un arrêt brutal du serveur Node
+Le dernier passage complet (15/09/2026, bouton « Commander ici » des livres) n'a eu aucun échec.
+Lors du passage précédent (message de refus des vidéos), un premier lancement avait été interrompu par un arrêt brutal du serveur Node
 (code 0xC0000409, sans message) déjà observé une fois dans la journée avant cette modification ;
 un contrôle dédié (45 s au repos, dépôt refusé d'une vidéo et d'un PDF, puis 60 s) a montré que le
 refus des fichiers n'en est pas la cause. Ce plantage intermittent est suivi à part.
@@ -98,7 +98,7 @@ contrôle sur le build de production par l'API REST utilisée par l'administrati
 « Unsupported format: only JPG, PNG, WebP, AVIF or SVG images can be added. ». Le message
 générique de Payload (« The following field is invalid: file ») n'apparaît plus.
 
-## 3. Tests end-to-end (125 scénarios)
+## 3. Tests end-to-end (126 scénarios)
 
 ### Navigation et structure (`navigation.spec.ts`)
 
@@ -187,6 +187,20 @@ Corrections faites pendant cette étape : champ e-mail de la newsletter renommé
 - Webhook Stripe non signé refusé ; référence de commande falsifiée → 404 sans information
 
 Contrôle manuel (serveur de développement, clé Stripe et secret de webhook **factices**, données restaurées ensuite) : livre passé en vente directe à 24,90 € et boutique ouverte avec TVA 7 % → « Ajouter au panier », offre dans les données structurées, panier recalculé par le serveur (24,90 €, dont TVA 1,63 €, livraison offerte), CGV obligatoires, échec propre avec la clé factice (commande en attente créée). Webhook `checkout.session.completed` signé : signature falsifiée 400, premier envoi → commande **payée**, rejeu → ignoré, adresse et TVA enregistrées, stock 5 → 4 ; e-mail de confirmation à l'acheteur (FR) et notification à l'adresse des commandes reçus dans MailHog ; page de confirmation « Commande RK-2026-0001 confirmée » et panier vidé. Le parcours PayPal (API distante) n'a pas pu être testé sans identifiants sandbox.
+
+### Commande de livre par formulaire (`book-order.spec.ts`)
+
+- Fiche livre (FR) : bouton « Commander ici » sous les liens Amazon quand la case
+  _Proposer la commande directe par formulaire_ est cochée, lien vers
+  `/fr/contact?type=bookOrder&subject=Commande : <titre>`, toujours aucun bouton « Ajouter au
+  panier »
+- Formulaire de contact ouvert avec le type « Commande de livre » présélectionné et le sujet
+  pré-rempli
+
+Modèle : nouvelle valeur `bookOrder` du type de demande (notée comme « Autre » dans la
+qualification) et champ `directOrderForm` des livres ; migration
+`20260915_134311_book_order` (ajout de la valeur d'énumération et de la colonne, valeur par
+défaut « non ») ; base locale synchronisée et case cochée pour le livre existant.
 
 ### Produits numériques et espace membres (`members.spec.ts`)
 

@@ -948,6 +948,7 @@ const starterBookViews = (locale: Locale): BookView[] =>
       label: pick(link.label, locale),
       url: link.url,
     })),
+    directOrderForm: entry.directOrderForm,
     previewUrl: null,
     relatedBookSlugs: [],
     featured: true,
@@ -986,6 +987,7 @@ const mapBook = (doc: Doc): BookView => {
     purchaseLinks: arrayOf(doc.purchaseLinks)
       .map((entry) => ({ label: str(entry.label), url: str(entry.url) }))
       .filter((entry) => entry.url),
+    directOrderForm: boolean(doc.directOrderForm),
     previewUrl: preview ? toRelativeUrl(str(preview.url)) || null : null,
     relatedBookSlugs: relationSlugs(doc.relatedBooks),
     featured: boolean(doc.featured),

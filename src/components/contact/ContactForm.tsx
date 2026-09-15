@@ -43,9 +43,11 @@ export function ContactForm({
   const countries = useMemo(() => countryOptions(locale), [locale])
 
   // "/contact?type=speaking" preselects the request type (links from the
-  // Speaking & Media pages). Read after hydration so the page stays static.
+  // Speaking & Media pages); "&subject=…" prefills an empty subject (order link of
+  // a book page). Read after hydration so the page stays static.
   useEffect(() => {
-    const type = new URLSearchParams(window.location.search).get('type')
+    const params = new URLSearchParams(window.location.search)
+    const type = params.get('type')
     const select = formRef.current?.elements.namedItem('requestType')
     if (
       type &&
@@ -53,6 +55,11 @@ export function ContactForm({
       REQUEST_TYPES.some((value) => value === type)
     ) {
       select.value = type
+    }
+    const subject = params.get('subject')?.trim().slice(0, 200)
+    const subjectField = formRef.current?.elements.namedItem('subject')
+    if (subject && subjectField instanceof HTMLInputElement && !subjectField.value) {
+      subjectField.value = subject
     }
   }, [])
 

@@ -8,6 +8,7 @@ import * as migration_20260914_144309_digital_products from './20260914_144309_d
 import * as migration_20260914_153337_campaigns from './20260914_153337_campaigns'
 import * as migration_20260914_154535_engagement_topics from './20260914_154535_engagement_topics'
 import * as migration_20260914_173556_contact_qualification from './20260914_173556_contact_qualification'
+import * as migration_20260915_134311_book_order from './20260915_134311_book_order'
 
 export const migrations = [
   {
@@ -59,5 +60,10 @@ export const migrations = [
     up: migration_20260914_173556_contact_qualification.up,
     down: migration_20260914_173556_contact_qualification.down,
     name: '20260914_173556_contact_qualification',
+  },
+  {
+    up: migration_20260915_134311_book_order.up,
+    down: migration_20260915_134311_book_order.down,
+    name: '20260915_134311_book_order',
   },
 ]

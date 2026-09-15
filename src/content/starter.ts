@@ -1431,6 +1431,8 @@ export type StarterBook = {
   order: number
   availability: 'available' | 'preorder' | 'comingSoon' | 'outOfStock'
   saleType: 'external' | 'direct' | 'none'
+  /** "Order here" button to the contact form (announced by the author). */
+  directOrderForm: boolean
   isPlaceholder: boolean
   title: Localized
   subtitle: Localized
@@ -1470,6 +1472,7 @@ export const starterBooks: StarterBook[] = [
     order: 10,
     availability: 'available',
     saleType: 'external',
+    directOrderForm: true,
     isPlaceholder: false,
     title: { fr: BOOK_TITLE, de: BOOK_TITLE, en: BOOK_TITLE },
     subtitle: { fr: BOOK_SUBTITLE, de: BOOK_SUBTITLE, en: BOOK_SUBTITLE },

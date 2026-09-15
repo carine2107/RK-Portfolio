@@ -60,6 +60,25 @@ export function PurchaseBlock({
           </a>
         ))}
         <p className="text-sm text-secondary">{t('buy.externalNote')}</p>
+        {book.directOrderForm ? (
+          <div className="mt-2 flex flex-col gap-2 border-t border-line pt-4">
+            {/* No online payment: the request goes through the contact form and is
+                handled manually, until direct sales open with payment keys. */}
+            <Link
+              href={`/contact?type=bookOrder&subject=${encodeURIComponent(
+                t('buy.orderSubject', { title: book.title }),
+              )}`}
+              onClick={() =>
+                trackEvent('book_purchase_click', { book: book.slug, url: 'contact-form' })
+              }
+              className={buttonClasses('secondary', 'lg', 'w-full')}
+            >
+              {t('buy.orderHere')}
+              <Icon name="arrow" className="size-4" />
+            </Link>
+            <p className="text-sm text-secondary">{t('buy.orderHereNote')}</p>
+          </div>
+        ) : null}
       </div>
     )
   }

@@ -196,23 +196,34 @@ approche, expériences et articles liés.
 
 **Contenus → Livres et publications**
 
-| Champ                                                  | Rôle                                                         |
-| ------------------------------------------------------ | ------------------------------------------------------------ |
-| **Couverture**                                         | Couverture, format portrait                                  |
-| **Résumé**, **Présentation détaillée**                 | Résumé court et présentation détaillée                       |
-| **Public**, **Langue**, **Format**, **ISBN**           | Fiche technique                                              |
-| **Éditeur**, **Date de parution**, **Nombre de pages** | Fiche technique ; affichés seulement s'ils sont renseignés   |
-| **Prix TTC** + **Devise**                              | Prix TTC ; laisser vide si le prix est fixé par le revendeur |
-| **Disponibilité**                                      | Disponible / Précommande / Bientôt / Épuisé                  |
-| **Mode de vente**                                      | _External retailer_, _Direct sale_, _Information only_       |
-| **Liens d’achat**                                      | Un ou plusieurs boutons d'achat externes (Amazon, éditeur…)  |
-| **Extrait (PDF)**                                      | Extrait facultatif                                           |
+| Champ                                                  | Rôle                                                                        |
+| ------------------------------------------------------ | --------------------------------------------------------------------------- |
+| **Couverture**                                         | Couverture, format portrait                                                 |
+| **Résumé**, **Présentation détaillée**                 | Résumé court et présentation détaillée                                      |
+| **Public**, **Langue**, **Format**, **ISBN**           | Fiche technique                                                             |
+| **Éditeur**, **Date de parution**, **Nombre de pages** | Fiche technique ; affichés seulement s'ils sont renseignés                  |
+| **Prix TTC** + **Devise**                              | Prix TTC ; laisser vide si le prix est fixé par le revendeur                |
+| **Disponibilité**                                      | Disponible / Précommande / Bientôt / Épuisé                                 |
+| **Mode de vente**                                      | _External retailer_, _Direct sale_, _Information only_                      |
+| **Liens d’achat**                                      | Un ou plusieurs boutons d'achat externes (Amazon, éditeur…)                 |
+| **Proposer la commande directe par formulaire**        | Ajoute le bouton « Commander ici » sous les liens d'achat (voir ci-dessous) |
+| **Extrait (PDF)**                                      | Extrait facultatif                                                          |
 
 **Modèle de vente** — modèle hybride du cahier des charges, choisi livre par livre :
 
 - _Plateforme externe_ : le bouton renvoie vers Amazon, l'éditeur ou tout autre revendeur ;
 - _Vente directe sur le site_ : panier et paiement sur le site (voir ci-dessous) ;
 - _Présentation seule_ : fiche sans achat.
+
+**Commande par formulaire** (sans paiement en ligne) — pour un livre en _Plateforme externe_,
+cocher **Proposer la commande directe par formulaire** : un bouton **« Commander ici »**
+apparaît sous les boutons Amazon. Il ouvre le formulaire de contact avec le type
+**« Commande de livre »** et le titre du livre déjà remplis. La demande arrive dans
+**Administration → Demandes de contact** (type « Commande de livre ») et se traite à la main :
+confirmer le prix, la dédicace éventuelle, la livraison et le paiement directement avec la
+personne. Quand la vente directe en ligne sera ouverte (clés de paiement), le livre pourra
+passer en _Vente directe sur le site_. Pensez à adapter le texte de la présentation détaillée
+qui annonce la commande directe « prochainement ».
 
 **Vente directe** — **Boutique → Réglages de la boutique** puis **Boutique → Commandes**.
 

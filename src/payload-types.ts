@@ -844,6 +844,10 @@ export interface Book {
       }[]
     | null;
   /**
+   * Adds an "Order here" button under the purchase links. It opens the contact form with the "Book order" type and the book title; no online payment, the order is handled manually.
+   */
+  directOrderForm?: boolean | null;
+  /**
    * Optional.
    */
   previewPdf?: (number | null) | Document;
@@ -1659,6 +1663,7 @@ export interface ContactSubmission {
     | 'training'
     | 'speaking'
     | 'partnership'
+    | 'bookOrder'
     | 'other';
   subject: string;
   message: string;
@@ -2252,6 +2257,7 @@ export interface BooksSelect<T extends boolean = true> {
         url?: T;
         id?: T;
       };
+  directOrderForm?: T;
   previewPdf?: T;
   relatedBooks?: T;
   featured?: T;

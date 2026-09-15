@@ -213,6 +213,8 @@ export type BookView = {
   stock: number | null
   saleType: 'external' | 'direct' | 'none'
   purchaseLinks: { label: string; url: string }[]
+  /** "Order here" button to the contact form, under the purchase links. */
+  directOrderForm: boolean
   previewUrl: string | null
   relatedBookSlugs: string[]
   featured: boolean

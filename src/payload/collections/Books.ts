@@ -271,6 +271,24 @@ export const Books: CollectionConfig = {
       ],
     },
     {
+      name: 'directOrderForm',
+      type: 'checkbox',
+      label: tr(
+        'Proposer la commande directe par formulaire',
+        'Direktbestellung per Formular anbieten',
+        'Offer direct ordering through the form',
+      ),
+      defaultValue: false,
+      admin: {
+        condition: (data) => data?.saleType === 'external',
+        description: tr(
+          'Ajoute un bouton « Commander ici » sous les liens d’achat. Il ouvre le formulaire de contact avec le type « Commande de livre » et le titre du livre ; aucun paiement en ligne, la commande est traitée à la main.',
+          'Fügt unter den Kauflinks einen Button „Hier bestellen“ hinzu. Er öffnet das Kontaktformular mit der Art „Buchbestellung“ und dem Buchtitel; keine Online-Zahlung, die Bestellung wird manuell bearbeitet.',
+          'Adds an "Order here" button under the purchase links. It opens the contact form with the "Book order" type and the book title; no online payment, the order is handled manually.',
+        ),
+      },
+    },
+    {
       name: 'previewPdf',
       type: 'upload',
       relationTo: 'documents',

@@ -286,7 +286,10 @@
       "added": "Zum Warenkorb hinzugefügt.",
       "viewCart": "Zum Warenkorb ({count})",
       "directNote": "Kostenloser Versand · sichere Zahlung per Karte oder PayPal",
-      "digitalNote": "Sichere Zahlung per Karte oder PayPal"
+      "digitalNote": "Sichere Zahlung per Karte oder PayPal",
+      "orderHere": "Hier bestellen",
+      "orderHereNote": "Direktbestellung beim Autor: Senden Sie Ihre Anfrage über das Formular, wir melden uns mit den Einzelheiten.",
+      "orderSubject": "Bestellung: {title}"
     },
     "related": "Weitere Publikationen",
     "empty": "Die Publikationen werden derzeit im CMS veröffentlicht."
@@ -600,6 +603,7 @@
       "training": "Training / Mentoring",
       "speaking": "Speaking / Medien",
       "partnership": "Partnerschaft",
+      "bookOrder": "Buchbestellung",
       "other": "Sonstiges"
     },
     "submit": "Anfrage senden",

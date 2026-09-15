@@ -95,8 +95,13 @@ Newsletter : `sendNewsletter` (case à cocher), `newsletterSentAt` et `newslette
 `title`_, `slug`_, `subtitle`, `author`_, `cover`, `summary`_, `description`,
 `audience[]`, `bookLanguage[]`, `format[]`, `isbn`, `publisher`,
 `publicationDate`, `pages`, `price`, `currency`, `stock` (vente directe, vide = non suivi),
-`availability`_, `saleType`_, `purchaseLinks[]`, `previewPdf`, `relatedBooks`,
-`featured`, `order`, `isPlaceholder`, `seo`.
+`availability`_, `saleType`_, `purchaseLinks[]`, `directOrderForm`, `previewPdf`,
+`relatedBooks`, `featured`, `order`, `isPlaceholder`, `seo`.
+
+`directOrderForm` (mode `external` uniquement) : bouton « Commander ici » sous les liens
+d'achat, vers `/contact?type=bookOrder&subject=Commande : <titre>` — le formulaire de contact
+est pré-rempli (type « Commande de livre », sujet). Aucun paiement en ligne : la demande
+arrive dans `contact-submissions` et se traite à la main.
 
 `saleType` implémente le modèle hybride du cahier des charges :
 `external` (lien revendeur), `direct` (**modélisé mais non activé** — aucun
@@ -220,7 +225,8 @@ formats acceptés (réponse 400, au lieu de « The following field is invalid: f
 
 ### `contact-submissions` — Demandes de contact
 
-`name`_, `organisation`, `email`_, `country`_, `requestType`_, `subject`_,
+`name`_, `organisation`, `email`_, `country`_, `requestType`_ (dont `bookOrder` : commande
+de livre depuis le bouton « Commander ici »), `subject`_,
 `message`_, `locale`, `status`, `emailDelivered`, `consentAt`.
 **Création interdite via l'API publique** : seule la route `/api/contact` écrit
 dans cette collection (API locale avec `overrideAccess`). Lecture réservée aux

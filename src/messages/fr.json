@@ -286,7 +286,10 @@
       "added": "Ajouté au panier.",
       "viewCart": "Voir le panier ({count})",
       "directNote": "Livraison offerte · paiement sécurisé par carte ou PayPal",
-      "digitalNote": "Paiement sécurisé par carte ou PayPal"
+      "digitalNote": "Paiement sécurisé par carte ou PayPal",
+      "orderHere": "Commander ici",
+      "orderHereNote": "Commande directe auprès de l’auteur : envoyez votre demande par le formulaire, vous serez recontacté pour les modalités.",
+      "orderSubject": "Commande : {title}"
     },
     "related": "Autres publications",
     "empty": "Les publications sont en cours de publication dans le CMS."
@@ -600,6 +603,7 @@
       "training": "Formation / mentorat",
       "speaking": "Conférence / médias",
       "partnership": "Partenariat",
+      "bookOrder": "Commande de livre",
       "other": "Autre"
     },
     "submit": "Envoyer ma demande",

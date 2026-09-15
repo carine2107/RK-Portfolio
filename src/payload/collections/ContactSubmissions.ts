@@ -22,6 +22,7 @@ export const REQUEST_TYPES = [
   'training',
   'speaking',
   'partnership',
+  'bookOrder',
   'other',
 ] as const
 
@@ -45,6 +46,7 @@ export const REQUEST_TYPE_LABELS: Record<RequestType, Record<string, string>> = 
   training: tr('Formation / mentorat', 'Training / Mentoring', 'Training / mentoring'),
   speaking: tr('Conférence / médias', 'Speaking / Medien', 'Speaking / media'),
   partnership: tr('Partenariat', 'Partnerschaft', 'Partnership'),
+  bookOrder: tr('Commande de livre', 'Buchbestellung', 'Book order'),
   other: tr('Autre', 'Sonstiges', 'Other'),
 }
 

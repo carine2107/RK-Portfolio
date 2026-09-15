@@ -286,7 +286,10 @@
       "added": "Added to cart.",
       "viewCart": "View cart ({count})",
       "directNote": "Free delivery · secure payment by card or PayPal",
-      "digitalNote": "Secure payment by card or PayPal"
+      "digitalNote": "Secure payment by card or PayPal",
+      "orderHere": "Order here",
+      "orderHereNote": "Order directly from the author: send your request through the form and you will be contacted with the details.",
+      "orderSubject": "Order: {title}"
     },
     "related": "Other publications",
     "empty": "Publications are being published in the CMS."
@@ -600,6 +603,7 @@
       "training": "Training / mentoring",
       "speaking": "Speaking / media",
       "partnership": "Partnership",
+      "bookOrder": "Book order",
       "other": "Other"
     },
     "submit": "Send my request",
