@@ -69,6 +69,13 @@ export default buildConfig({
     // Built-in avatar: Gravatar would send a hash of the user's e-mail to a
     // third party and is blocked by the Content-Security-Policy anyway.
     avatar: 'default',
+    // Romial Kenmogne monogram on the login screen and in the navigation.
+    components: {
+      graphics: {
+        Logo: '/payload/components/AdminGraphics#AdminLogo',
+        Icon: '/payload/components/AdminGraphics#AdminIcon',
+      },
+    },
     meta: {
       titleSuffix: ' · RK CMS',
       robots: 'noindex, nofollow',

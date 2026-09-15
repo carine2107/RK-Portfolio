@@ -31,12 +31,12 @@ prestataire de paiement demandent une configuration technique (sections 1, 8 et
 
 ## 2. Identité visuelle et médias
 
-| #   | Élément                                                                 | Priorité | Où l'utiliser                                                                     |
-| --- | ----------------------------------------------------------------------- | -------- | --------------------------------------------------------------------------------- |
-| 2.1 | ✅ **Photographies professionnelles** — reçues le 11/09/2026 (3 photos) | —        | Hero d’accueil (RK.jpeg), page À propos (RK1.jpeg), médiathèque (RK2.jpeg)        |
-| 2.2 | **Logo / monogramme définitif** (SVG ou PNG transparent)                | 🟠       | En-tête, pied de page, favicon. Un monogramme « RK » sobre est utilisé par défaut |
-| 2.3 | Image de partage social 1200 × 630 px                                   | 🟡       | Réglages du site → SEO defaults (une image générique est fournie)                 |
-| 2.4 | Photos d'illustration pour les articles                                 | 🟡       | Couvertures RK Insights                                                           |
+| #   | Élément                                                                                                                                                     | Priorité | Où l'utiliser                                                                                      |
+| --- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | -------------------------------------------------------------------------------------------------- |
+| 2.1 | ✅ **Photographies professionnelles** — reçues le 11/09/2026 (3 photos)                                                                                     | —        | Hero d’accueil (RK.jpeg), page À propos (RK1.jpeg), médiathèque (RK2.jpeg)                         |
+| 2.2 | ✅ **Logo** — monogramme lié « RK » retenu le 15/09/2026 (proposition A, palette Marine & or), blason pour les icônes ; à faire valider par Romial Kenmogne | 🟡       | En-tête, pied de page, favicon, image de partage, admin, guide PDF — fichiers dans `public/brand/` |
+| 2.3 | Image de partage social 1200 × 630 px                                                                                                                       | 🟡       | Réglages du site → SEO defaults (une image générique est fournie)                                  |
+| 2.4 | Photos d'illustration pour les articles                                                                                                                     | 🟡       | Couvertures RK Insights                                                                            |
 
 ## 3. Contenus professionnels
 

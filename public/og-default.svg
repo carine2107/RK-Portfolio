@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
   <rect width="1200" height="630" fill="#10233F"/>
   <rect x="72" y="72" width="1056" height="486" fill="none" stroke="#B8924B" stroke-width="1.5" opacity="0.5"/>
-  <text x="112" y="250" font-family="Georgia, 'Times New Roman', serif" font-size="34" letter-spacing="6" fill="#B8924B">RK</text>
+  <g id="rk-mark"><g fill="none" stroke-width="6.5" stroke-linejoin="miter" transform="translate(104 176) scale(0.8)"><path d="M21.5 18V82" stroke="#f3efe6"/><path d="M21.5 21.25H36.5a14.5 14.5 0 0 1 0 29H21.5" stroke="#f3efe6"/><path d="M34.5 50.25 55.5 82" stroke="#f3efe6"/><path d="M57.5 18V82" stroke="#f3efe6"/><path d="M64 44 79.5 82" stroke="#f3efe6"/><path d="M57.5 54 79.5 18" stroke="#d0aa63"/></g></g>
   <text x="112" y="330" font-family="Georgia, 'Times New Roman', serif" font-size="62" fill="#FFFFFF">Romial Kenmogne</text>
   <text x="112" y="382" font-family="Helvetica, Arial, sans-serif" font-size="26" fill="#C3CDDB">Business &amp; Financial Consultant | Project Manager</text>
   <text x="112" y="470" font-family="Georgia, 'Times New Roman', serif" font-size="24" fill="#B8924B">Understand Money. Build Businesses. Invest. Create Wealth.</text>

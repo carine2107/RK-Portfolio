@@ -25,6 +25,8 @@ import { ExportCsvButton as ExportCsvButton_4995377b0f92c9a970ca897b01637845 } f
 import { SheetsSync as SheetsSync_5e34b55f82c6ba016a34cfe0f82c3667 } from '../../../payload/components/SheetsSync'
 import { ColorField as ColorField_45df064d6b2bdb77d37f43651fe02d71 } from '../../../payload/components/ColorField'
 import { AppearancePreview as AppearancePreview_5b458903790aaf97e98fe43cd6263a3e } from '../../../payload/components/AppearancePreview'
+import { AdminIcon as AdminIcon_c810f9cb2a58162fb52e987f16590396 } from '../../../payload/components/AdminGraphics'
+import { AdminLogo as AdminLogo_c810f9cb2a58162fb52e987f16590396 } from '../../../payload/components/AdminGraphics'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 
 /** @type import('payload').ImportMap */
@@ -56,5 +58,7 @@ export const importMap = {
   "/payload/components/SheetsSync#SheetsSync": SheetsSync_5e34b55f82c6ba016a34cfe0f82c3667,
   "/payload/components/ColorField#ColorField": ColorField_45df064d6b2bdb77d37f43651fe02d71,
   "/payload/components/AppearancePreview#AppearancePreview": AppearancePreview_5b458903790aaf97e98fe43cd6263a3e,
+  "/payload/components/AdminGraphics#AdminIcon": AdminIcon_c810f9cb2a58162fb52e987f16590396,
+  "/payload/components/AdminGraphics#AdminLogo": AdminLogo_c810f9cb2a58162fb52e987f16590396,
   "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1
 }

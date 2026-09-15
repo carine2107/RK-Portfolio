@@ -8,6 +8,7 @@ import { LanguageSwitcher } from '@/components/i18n/LanguageSwitcher'
 import { ThemeToggle } from '@/components/theme/ThemeToggle'
 import { buttonClasses } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
+import { BrandMark } from '@/components/brand/BrandMark'
 import { Link, usePathname } from '@/i18n/navigation'
 
 import { CONTACT_HREF, NAV_ITEMS } from './nav-items'
@@ -86,12 +87,7 @@ export function Header() {
           className="group flex items-center gap-2.5 rounded sm:gap-3"
           aria-label={`${brand('name')} — ${t('home')}`}
         >
-          <span
-            aria-hidden="true"
-            className="flex size-10 items-center justify-center rounded-full border border-line-accent font-serif text-sm tracking-[0.08em] text-accent-text"
-          >
-            RK
-          </span>
+          <BrandMark className="size-10 shrink-0 text-primary" />
           {/* The geographic scope is carried by the hero and the footer: the
               header keeps only the name, so the row stays comfortable. */}
           <span className="hidden font-serif text-[0.78rem] tracking-[0.04em] whitespace-nowrap text-primary uppercase min-[360px]:block sm:text-sm lg:text-base">
