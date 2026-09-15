@@ -121,10 +121,10 @@ export function Header() {
             a component whose own classes set a display value is a coin toss. */}
         <div className="flex items-center gap-1.5 sm:gap-2 md:gap-3">
           <div className="hidden md:flex">
-            <LanguageSwitcher />
+            <LanguageSwitcher variant="dropdown" />
           </div>
           <div className="hidden md:flex">
-            <ThemeToggle size="sm" />
+            <ThemeToggle />
           </div>
           {/* Full label only from 1536 px, where the header row widens (2xl:max-w):
               with seven sections the 1216 px content width is too tight for it. */}
@@ -202,7 +202,7 @@ export function Header() {
             </Link>
 
             <div className="flex items-center justify-between gap-4 border-t border-line pt-5">
-              <LanguageSwitcher />
+              <LanguageSwitcher variant="dropdown" placement="above" />
               <ThemeToggle />
             </div>
           </div>

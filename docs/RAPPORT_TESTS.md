@@ -8,15 +8,15 @@ Environnement : Windows 11, Node 24.15, PostgreSQL 16 (Docker), build de
 
 ## 1. Synthèse
 
-| Suite                            | Périmètre                                                               | Résultat                                                                     |
-| -------------------------------- | ----------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
-| Tests unitaires (Vitest)         | Traductions, contrastes, moteur d'apparence, validation, SEO, anti-abus | **139 / 139 réussis**                                                        |
-| Tests end-to-end (Playwright)    | 123 scénarios × 4 configurations                                        | **431 réussis, 60 ignorés, 1 échec transitoire** (réussi au nouveau passage) |
-| Compilation TypeScript (`tsc`)   | Mode strict, tout le projet                                             | **0 erreur**                                                                 |
-| Lint (ESLint 9 + config Next 16) | Tout le projet                                                          | **0 erreur, 0 avertissement**                                                |
-| Formatage (Prettier)             | `src`, `tests`, `docs`                                                  | **conforme**                                                                 |
-| Build de production              | `next build`                                                            | **réussi**                                                                   |
-| Recette visuelle                 | 11 pages × 3 langues × 2 thèmes × 5 largeurs (99 captures)              | **conforme après corrections**                                               |
+| Suite                            | Périmètre                                                               | Résultat                             |
+| -------------------------------- | ----------------------------------------------------------------------- | ------------------------------------ |
+| Tests unitaires (Vitest)         | Traductions, contrastes, moteur d'apparence, validation, SEO, anti-abus | **139 / 139 réussis**                |
+| Tests end-to-end (Playwright)    | 125 scénarios × 4 configurations                                        | **440 réussis, 60 ignorés, 0 échec** |
+| Compilation TypeScript (`tsc`)   | Mode strict, tout le projet                                             | **0 erreur**                         |
+| Lint (ESLint 9 + config Next 16) | Tout le projet                                                          | **0 erreur, 0 avertissement**        |
+| Formatage (Prettier)             | `src`, `tests`, `docs`                                                  | **conforme**                         |
+| Build de production              | `next build`                                                            | **réussi**                           |
+| Recette visuelle                 | 11 pages × 3 langues × 2 thèmes × 5 largeurs (99 captures)              | **conforme après corrections**       |
 
 Configurations end-to-end : **Chromium 1280 px**, **mobile 375 px**,
 **Firefox**, **WebKit**.
@@ -38,7 +38,8 @@ Tests ignorés, tous volontaires :
   Tab tant que « Full Keyboard Access » n'est pas activé dans le système. Le
   comportement est vérifié sur Chromium et Firefox.
 
-Échec transitoire du dernier passage complet (15/09/2026) : le contrôle de mise en cache des pages
+Le dernier passage complet (15/09/2026, menu de langue et bouton jour / nuit) n'a eu aucun échec.
+Échec transitoire lors du passage précédent (15/09/2026) : le contrôle de mise en cache des pages
 de détail (Chromium 1280 px) a reçu une page sans en-tête `Cache-Control`, juste après un
 redémarrage du serveur, au moment où cinq requêtes du CMS échouaient sous la charge des tests
 (voir « Limites connues »). Relancé sur le serveur chaud avec l'aperçu et l'audit
@@ -84,7 +85,7 @@ node tests/visual/capture.mjs test-results/visual
 | `zod-csp.test.ts`           | Bibliothèque de validation en mode sans `eval` dès qu'un schéma de formulaire est chargé (compatible avec la politique de sécurité du contenu) ; la validation fonctionne toujours                                                                                                                            |
 | `preview-url.test.ts`       | Bouton Aperçu du CMS : adresse `/api/preview` avec la langue et le chemin de la page (slug encodé), bouton masqué tant que le contenu n'a pas de slug, page de liste pour les activités                                                                                                                       |
 
-## 3. Tests end-to-end (123 scénarios)
+## 3. Tests end-to-end (125 scénarios)
 
 ### Navigation et structure (`navigation.spec.ts`)
 
@@ -98,14 +99,19 @@ node tests/visual/capture.mjs test-results/visual
 
 ### Multilingue et thème (`i18n-theme.spec.ts`)
 
-- Bascule EN → FR en restant sur la page équivalente
+- Bascule EN → FR par le menu déroulant de langue, en restant sur la page équivalente
+- Menu de langue : fermé par défaut, ouvre les trois langues sous leur propre nom (Français,
+  Deutsch, English) avec la langue en cours signalée ; Échap le referme et rend le focus au
+  bouton
 - **Suivi du slug traduit** d'un article (EN → DE)
 - Persistance de la langue pendant la navigation
 - Canonical + `hreflang` (fr, de, en, x-default) présents
 - Absence de mélange de langues sur une page
-- Thème sombre : application, persistance entre pages et après rechargement
-- Respect de `prefers-color-scheme` par défaut
-- Sélecteur de thème utilisable au clavier
+- Bouton jour / nuit : un clic passe en sombre (`aria-pressed`), persistance entre pages et
+  après rechargement, un nouveau clic revient au clair
+- Respect de `prefers-color-scheme` par défaut ; depuis un système en sombre, un clic passe
+  en clair
+- Bouton jour / nuit utilisable au clavier, nom accessible « Dark mode »
 
 ### Contenus (`content.spec.ts`)
 

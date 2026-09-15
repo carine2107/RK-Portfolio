@@ -6,9 +6,33 @@ test.describe('language switching', () => {
   test('switches from English to French and stays on the equivalent page', async ({ page }) => {
     await page.goto('/en/expertise')
     const switcher = await languageSwitcher(page)
-    await switcher.getByText('FR').click()
+    await switcher.getByRole('button', { name: /EN/ }).click()
+    await switcher.getByRole('link', { name: 'Français' }).click()
     await expect(page).toHaveURL(/\/fr\/expertise$/)
     await expect(page.locator('html')).toHaveAttribute('lang', 'fr')
+  })
+
+  test('the language menu opens, lists the three languages and closes with Escape', async ({
+    page,
+  }) => {
+    await page.goto('/fr')
+    const switcher = await languageSwitcher(page)
+    const button = switcher.getByRole('button', { name: /FR/ })
+    await expect(button).toHaveAttribute('aria-expanded', 'false')
+    await expect(switcher.getByRole('link')).toHaveCount(0)
+
+    await button.click()
+    await expect(button).toHaveAttribute('aria-expanded', 'true')
+    await expect(switcher.getByRole('link')).toHaveText(['Français', 'Deutsch', 'English'])
+    await expect(switcher.getByRole('link', { name: 'Français' })).toHaveAttribute(
+      'aria-current',
+      'true',
+    )
+
+    await page.keyboard.press('Escape')
+    await expect(button).toHaveAttribute('aria-expanded', 'false')
+    await expect(button).toBeFocused()
+    await expect(switcher.getByRole('link')).toHaveCount(0)
   })
 
   test('follows the translated slug of an article', async ({ page }) => {
@@ -20,10 +44,12 @@ test.describe('language switching', () => {
     // The switcher reads the hreflang alternates once hydrated; a click fired
     // before that lands on the untranslated fallback path (/de/insights/<English
     // slug>). Wait until the link carries the German slug.
-    const germanLink = (await languageSwitcher(page)).locator('a[hreflang="de"]')
+    const switcher = await languageSwitcher(page)
+    const germanLink = switcher.locator('a[hreflang="de"]')
     await expect(germanLink).toHaveAttribute('href', /^\/de\/insights\/.+/)
     await expect(germanLink).not.toHaveAttribute('href', new RegExp(`/${englishSlug}$`))
     const germanPath = await germanLink.getAttribute('href')
+    await switcher.getByRole('button', { name: /EN/ }).click()
     await germanLink.click()
 
     await expect(page).toHaveURL(new RegExp(`${germanPath}$`))
@@ -64,8 +90,10 @@ test.describe('theme', () => {
     await page.goto('/en')
 
     const toggle = await themeToggle(page)
-    await toggle.locator('[data-theme-option="dark"]').click()
+    await expect(toggle).toHaveAttribute('aria-pressed', 'false')
+    await toggle.click()
     await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark')
+    await expect(toggle).toHaveAttribute('aria-pressed', 'true')
 
     await page.goto('/en/about')
     await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark')
@@ -74,7 +102,8 @@ test.describe('theme', () => {
     await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark')
 
     const toggleAgain = await themeToggle(page)
-    await toggleAgain.locator('[data-theme-option="light"]').click()
+    await expect(toggleAgain).toHaveAttribute('aria-pressed', 'true')
+    await toggleAgain.click()
     await expect(page.locator('html')).toHaveAttribute('data-theme', 'light')
     await page.reload()
     await expect(page.locator('html')).toHaveAttribute('data-theme', 'light')
@@ -88,13 +117,24 @@ test.describe('theme', () => {
     await context.close()
   })
 
-  test('the theme control is reachable and operable with the keyboard', async ({ page }) => {
+  test('the theme button is reachable and operable with the keyboard', async ({ page }) => {
     await page.goto('/en')
     const toggle = await themeToggle(page)
-    const darkOption = toggle.locator('[data-theme-option="dark"]')
-    await darkOption.focus()
-    await expect(darkOption).toBeFocused()
+    await expect(toggle).toHaveAccessibleName('Dark mode')
+    await toggle.focus()
+    await expect(toggle).toBeFocused()
     await page.keyboard.press('Enter')
     await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark')
+  })
+
+  test('from a dark system preference, one click switches to light', async ({ browser }) => {
+    const context = await browser.newContext({ colorScheme: 'dark' })
+    const page = await context.newPage()
+    await page.goto('/en')
+    const toggle = await themeToggle(page)
+    await expect(toggle).toHaveAttribute('aria-pressed', 'true')
+    await toggle.click()
+    await expect(page.locator('html')).toHaveAttribute('data-theme', 'light')
+    await context.close()
   })
 })

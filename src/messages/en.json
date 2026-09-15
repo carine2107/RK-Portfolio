@@ -31,6 +31,7 @@
     "label": "Colour theme",
     "light": "Light",
     "dark": "Dark",
+    "darkMode": "Dark mode",
     "system": "System",
     "current": "Current theme: {theme}"
   },

@@ -629,7 +629,7 @@ l'administration du site) :
 | `media_link_click`        | ouvre le lien externe d'une intervention (podcast, presse…) | intervention          |
 | `business_click`          | ouvre le site d'une activité de l'écosystème                | activité              |
 | `language_change`         | change de langue                                            | langues               |
-| `theme_change`            | passe en mode clair / sombre / système                      | thème                 |
+| `theme_change`            | passe en mode clair / sombre                                | thème                 |
 
 Aucune donnée personnelle n'est transmise (ni nom, ni e-mail, ni message). Avec
 Plausible, déclarer chaque événement comme « Goal » pour qu'il apparaisse.

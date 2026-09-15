@@ -50,6 +50,16 @@ export function getServerThemePreference(): ThemePreference {
   return 'system'
 }
 
+/** Theme actually displayed (`data-theme`), whatever the stored preference. */
+export function getResolvedTheme(): 'light' | 'dark' {
+  if (typeof document === 'undefined') return 'light'
+  return document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light'
+}
+
+export function getServerResolvedTheme(): 'light' | 'dark' {
+  return 'light'
+}
+
 export function applyPreference(preference: ThemePreference): void {
   const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
   const resolved = resolveTheme(preference, prefersDark)
