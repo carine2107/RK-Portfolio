@@ -8,6 +8,10 @@
 # proxy (HTTPS), see docs/DEPLOIEMENT.md.
 services:
   app:
+    # Image published by GitHub (APP_IMAGE=ghcr.io/carine2107/rk-portfolio:latest):
+    #   docker compose ... pull app && docker compose ... up -d --no-build
+    # Without APP_IMAGE, `up -d --build` builds it on the server as before.
+    image: ${APP_IMAGE:-rk-portfolio-app:local}
     build:
       context: .
       args:

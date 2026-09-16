@@ -250,6 +250,7 @@ Ce que le site fait réellement aujourd'hui :
 - ✅ Point de santé `/api/health` et suppression automatique des demandes de contact expirées
 - ✅ Tests unitaires et E2E verts
 - ✅ Intégration continue GitHub Actions (`.github/workflows/ci.yml`) : formatage, TypeScript, lint, tests unitaires et build de production à chaque push sur `main` et à chaque pull request, plus les tests end-to-end (Chromium et mobile) sur une base PostgreSQL et un MailHog jetables remplis avec le contenu de départ ; Firefox et WebKit restent lancés en local
+- ✅ Image Docker de production construite après chaque CI verte (`.github/workflows/docker.yml`), publiée sur GHCR dès que la variable de dépôt `NEXT_PUBLIC_SITE_URL` est renseignée ; pas de déploiement automatique tant que l'hébergement n'est pas choisi
 
 Ce qui est **volontairement** inactif, faute d'éléments ou de prestataire :
 

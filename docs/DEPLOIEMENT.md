@@ -98,6 +98,44 @@ dc up -d --build          # les migrations en attente s'appliquent au démarrage
 > Le volume `media` est **obligatoire** : sans lui, chaque redéploiement
 > effacerait les images téléversées depuis le CMS.
 
+### Image construite par GitHub (sans build sur le serveur)
+
+Le workflow **Docker image** (`.github/workflows/docker.yml`) construit l'image après
+chaque CI verte sur `main` et pour chaque tag `v*`. Il la **publie** sur le registre
+GitHub, `ghcr.io/carine2107/rk-portfolio`, avec les étiquettes `latest`,
+`sha-<7 caractères du commit>` et, pour un tag `v1.2.0`, `1.2.0`. Aucun déploiement n'est
+lancé : le serveur récupère l'image quand on le décide.
+
+**Activer la publication** (une fois, dans GitHub : _Settings → Secrets and variables →
+Actions → Variables_) :
+
+| Variable de dépôt                                                                                     | Valeur                                               |
+| ----------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
+| `NEXT_PUBLIC_SITE_URL`                                                                                | Adresse définitive, ex. `https://romialkenmogne.com` |
+| `NEXT_PUBLIC_ANALYTICS_PROVIDER`, `NEXT_PUBLIC_ANALYTICS_SCRIPT_URL`, `NEXT_PUBLIC_ANALYTICS_SITE_ID` | Facultatif, comme dans `.env.production`             |
+
+Ce ne sont pas des secrets : ces valeurs sont visibles dans le code du navigateur. Tant que
+`NEXT_PUBLIC_SITE_URL` est vide, le workflow vérifie seulement que l'image se construit (une
+image sans la bonne adresse aurait de mauvaises URL canoniques et un mauvais sitemap).
+Après un changement de domaine, relancer le workflow (_Actions → Docker image → Run
+workflow_).
+
+**Accès au registre** : un paquet GHCR est **privé** à sa création. Soit le rendre public
+(_Packages → rk-portfolio → Package settings → Change visibility_ : l'image ne contient aucun
+secret), soit connecter le serveur une fois avec un jeton GitHub limité à `read:packages` :
+`docker login ghcr.io -u <compte>` (le jeton est demandé comme mot de passe).
+
+**Mise à jour avec l'image publiée** : renseigner `APP_IMAGE` dans `.env.production`
+(`ghcr.io/carine2107/rk-portfolio:latest`), puis :
+
+```bash
+cd /opt/romial
+ops/backup.sh
+git pull                  # docker-compose.prod.yml et scripts ops à jour
+dc pull app
+dc up -d --no-build       # les migrations en attente s'appliquent au démarrage
+```
+
 L'image est construite **sans accès à la base** : les pages ne sont donc pas
 pré-générées pendant le build. Chacune est rendue depuis le CMS à sa première
 visite, puis servie depuis le cache (renouvelé toutes les 5 minutes). Le site
@@ -258,12 +296,12 @@ de test. Test de restauration réel : voir `RAPPORT_TESTS.md`.
 
 ## 9. Rollback
 
-| Situation                               | Action                                                                                                          |
-| --------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
-| Régression applicative, schéma inchangé | `git checkout <tag-précédent>` puis `dc up -d --build` (sans Docker : `npm ci && npm run build` et redémarrage) |
-| Régression après migration de schéma    | Restaurer la sauvegarde de base **prise avant la migration**, puis redéployer la version précédente             |
-| Contenu supprimé par erreur             | Payload conserve les versions : ouvrir l'entrée → onglet _Versions_ → _Restore_                                 |
-| Incident majeur                         | Restauration complète (section 8) puis analyse hors production                                                  |
+| Situation                               | Action                                                                                                                                                                                                                                                                           |
+| --------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Régression applicative, schéma inchangé | Image publiée : `APP_IMAGE=ghcr.io/carine2107/rk-portfolio:sha-<commit précédent>` puis `dc pull app && dc up -d --no-build` ; image construite sur le serveur : `git checkout <tag-précédent>` puis `dc up -d --build` (sans Docker : `npm ci && npm run build` et redémarrage) |
+| Régression après migration de schéma    | Restaurer la sauvegarde de base **prise avant la migration**, puis redéployer la version précédente                                                                                                                                                                              |
+| Contenu supprimé par erreur             | Payload conserve les versions : ouvrir l'entrée → onglet _Versions_ → _Restore_                                                                                                                                                                                                  |
+| Incident majeur                         | Restauration complète (section 8) puis analyse hors production                                                                                                                                                                                                                   |
 
 Marquer chaque mise en production par un tag Git (`git tag -a v1.0.0`) : le
 rollback consiste alors simplement à redéployer le tag précédent.

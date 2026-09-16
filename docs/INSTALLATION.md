@@ -140,6 +140,11 @@ le site puis exécute `npx playwright test`. Les valeurs de ce job (mot de passe
 réel. En cas d'échec, le rapport Playwright est joint au run pendant 7 jours. Firefox et WebKit
 restent lancés en local (`E2E_ALL_BROWSERS=1`) avant chaque livraison.
 
+**Image Docker** : après une CI verte sur `main`, le workflow _Docker image_
+(`.github/workflows/docker.yml`) construit l'image de production. Il la publie sur
+`ghcr.io/carine2107/rk-portfolio` dès que la variable de dépôt `NEXT_PUBLIC_SITE_URL` est
+renseignée (voir `DEPLOIEMENT.md` §3). Aucun déploiement automatique n'est configuré.
+
 Captures d'écran de recette (3 langues × 2 thèmes × 5 largeurs) :
 
 ```bash

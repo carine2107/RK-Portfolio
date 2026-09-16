@@ -1,0 +1,109 @@
+# Production Docker image.
+#
+# After a green CI run on main (and for version tags v*), the image is built from
+# the Dockerfile. It is published to the GitHub Container Registry
+# (ghcr.io/carine2107/rk-portfolio) only once the repository variable
+# NEXT_PUBLIC_SITE_URL is set (Settings → Secrets and variables → Actions →
+# Variables): that address is written into the image at build time, so an image
+# built without it would point to the wrong domain. Until then, each run only
+# checks that the image builds.
+#
+# No deployment happens here: the server pulls the image (docs/DEPLOIEMENT.md §3).
+name: Docker image
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [main]
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+concurrency:
+  group: docker-${{ github.event.workflow_run.head_branch || github.ref }}
+  cancel-in-progress: true
+
+env:
+  IMAGE: ghcr.io/carine2107/rk-portfolio
+
+jobs:
+  image:
+    name: Build (and publish) the image
+    # After CI: only when it succeeded.
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # The commit CI validated, not the latest one on the branch.
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+
+      - name: Tags and publication
+        id: settings
+        env:
+          SITE_URL: ${{ vars.NEXT_PUBLIC_SITE_URL }}
+          HEAD_SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
+          EVENT: ${{ github.event_name }}
+          REF: ${{ github.ref }}
+        run: |
+          tags="${IMAGE}:sha-${HEAD_SHA::7}"
+          if [ "$EVENT" = "workflow_run" ] || [ "$REF" = "refs/heads/main" ]; then
+            tags="${tags},${IMAGE}:latest"
+          fi
+          if [[ "$REF" == refs/tags/v* ]]; then
+            tags="${tags},${IMAGE}:${REF#refs/tags/v}"
+          fi
+          echo "tags=${tags}" >> "$GITHUB_OUTPUT"
+          if [ -n "$SITE_URL" ]; then
+            echo "publish=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "publish=false" >> "$GITHUB_OUTPUT"
+            echo "::notice title=Image not published::Set the repository variable NEXT_PUBLIC_SITE_URL to publish the image to ghcr.io. This run only checks that the image builds."
+          fi
+
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Log in to the GitHub Container Registry
+        if: steps.settings.outputs.publish == 'true'
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: ${{ steps.settings.outputs.publish == 'true' }}
+          tags: ${{ steps.settings.outputs.tags }}
+          labels: |
+            org.opencontainers.image.title=Romial Kenmogne website
+            org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
+            org.opencontainers.image.revision=${{ github.event.workflow_run.head_sha || github.sha }}
+          build-args: |
+            NEXT_PUBLIC_SITE_URL=${{ vars.NEXT_PUBLIC_SITE_URL || 'http://localhost:4313' }}
+            NEXT_PUBLIC_ANALYTICS_PROVIDER=${{ vars.NEXT_PUBLIC_ANALYTICS_PROVIDER }}
+            NEXT_PUBLIC_ANALYTICS_SCRIPT_URL=${{ vars.NEXT_PUBLIC_ANALYTICS_SCRIPT_URL }}
+            NEXT_PUBLIC_ANALYTICS_SITE_ID=${{ vars.NEXT_PUBLIC_ANALYTICS_SITE_ID }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Summary
+        env:
+          PUBLISH: ${{ steps.settings.outputs.publish }}
+          TAGS: ${{ steps.settings.outputs.tags }}
+        run: |
+          if [ "$PUBLISH" = "true" ]; then
+            echo "### Image published" >> "$GITHUB_STEP_SUMMARY"
+            echo "$TAGS" | tr ',' '\n' | sed 's/^/- `/; s/$/`/' >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "### Image built, not published" >> "$GITHUB_STEP_SUMMARY"
+            echo "Set the repository variable \`NEXT_PUBLIC_SITE_URL\` to publish it to ghcr.io." >> "$GITHUB_STEP_SUMMARY"
+          fi
