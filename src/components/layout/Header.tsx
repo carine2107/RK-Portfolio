@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { trackEvent } from '@/components/analytics/track'
+import { BrandMark } from '@/components/brand/BrandMark'
 import { LanguageSwitcher } from '@/components/i18n/LanguageSwitcher'
 import { ThemeToggle } from '@/components/theme/ThemeToggle'
 import { buttonClasses } from '@/components/ui/Button'
@@ -82,12 +83,7 @@ export function Header() {
     >
       <div className="rk-container flex h-[var(--header-height)] items-center justify-between gap-3 2xl:max-w-[90rem] 2xl:gap-4">
         <Link href="/" className="group flex items-center gap-2.5 rounded sm:gap-3">
-          <span
-            aria-hidden="true"
-            className="flex size-10 items-center justify-center rounded-full border border-line-accent font-serif text-sm tracking-[0.08em] text-accent-text"
-          >
-            RK
-          </span>
+          <BrandMark className="size-10 shrink-0 text-primary sm:size-11" />
           {/* The geographic scope is carried by the hero and the footer: the
               header keeps only the name, so the row stays comfortable. */}
           <span className="font-serif text-[0.78rem] tracking-[0.04em] whitespace-nowrap text-primary uppercase max-[359px]:sr-only sm:text-sm lg:text-base">

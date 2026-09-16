@@ -36,7 +36,10 @@ export async function generateMetadata(): Promise<Metadata> {
     metadataBase: new URL(siteUrl),
     title: `${t('title')} · ${brand('name')}`,
     icons: {
-      icon: [{ url: '/icon.svg', type: 'image/svg+xml' }],
+      icon: [
+        { url: '/favicon.png', sizes: '48x48', type: 'image/png' },
+        { url: '/icon-512.png', sizes: '512x512', type: 'image/png' },
+      ],
       apple: [{ url: '/apple-icon.png' }],
     },
   }

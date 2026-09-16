@@ -17,17 +17,17 @@ Ce qui bloque la mise en ligne relève du **contenu**, des **textes juridiques**
 remplacement du compte administrateur d'exemple. La mise à jour de sécurité du CMS est
 faite (1.1).
 
-| Domaine                           | État                                                                   |
-| --------------------------------- | ---------------------------------------------------------------------- |
-| Sécurité (en-têtes, API, secrets) | ✅ solide, Payload 3.89 installé · 🔴 compte administrateur à revoir   |
-| Performances                      | ✅ mobile 83 en moyenne, ordinateur 98 – 100 (Lighthouse, 15/09)       |
-| Référencement                     | ✅ sitemap, robots, hreflang, métadonnées · 🟠 image de partage en SVG |
-| Accessibilité                     | ✅ WCAG 2.2 AA (axe) sans violation sur les pages auditées             |
-| Tests                             | ✅ 456 E2E sur 4 navigateurs, CI GitHub verte avec E2E                 |
-| Contenus                          | 🔴 14 contenus d'exemple publiés, dont une conférence « test »         |
-| Textes juridiques                 | 🔴 les 5 pages attendent une validation juridique                      |
-| Coordonnées                       | 🔴 e-mail et adresse vides (Impressum obligatoire)                     |
-| Infrastructure                    | 🔴 domaine, hébergement, HTTPS, SMTP à mettre en place                 |
+| Domaine                           | État                                                                         |
+| --------------------------------- | ---------------------------------------------------------------------------- |
+| Sécurité (en-têtes, API, secrets) | ✅ solide, Payload 3.89 installé · 🔴 compte administrateur à revoir         |
+| Performances                      | ✅ mobile 83 en moyenne, ordinateur 98 – 100 (Lighthouse, 15/09)             |
+| Référencement                     | ✅ sitemap, robots, hreflang, métadonnées, image de partage PNG avec le logo |
+| Accessibilité                     | ✅ WCAG 2.2 AA (axe) sans violation sur les pages auditées                   |
+| Tests                             | ✅ 456 E2E sur 4 navigateurs, CI GitHub verte avec E2E                       |
+| Contenus                          | 🔴 14 contenus d'exemple publiés, dont une conférence « test »               |
+| Textes juridiques                 | 🔴 les 5 pages attendent une validation juridique                            |
+| Coordonnées                       | 🔴 e-mail et adresse vides (Impressum obligatoire)                           |
+| Infrastructure                    | 🔴 domaine, hébergement, HTTPS, SMTP à mettre en place                       |
 
 ---
 
@@ -112,7 +112,7 @@ demandes mais n'envoie aucun e-mail, et la newsletter reste masquée. Le jour J,
 | #   | Constat                                                                                                                                                                                                                                   | Action                                                                                                                |
 | --- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
 | 2.1 | **Boutique ouverte** dans l'administration (case cochée), **TVA à 19 %**, aucune adresse de notification des commandes. Aucun paiement n'est proposé tant que les clés manquent, mais la case ne doit pas rester cochée sans CGV validées | Décocher jusqu'à l'ouverture réelle ; faire valider le taux par le comptable (les livres relèvent en principe de 7 %) |
-| 2.2 | **Image de partage social** absente : l'image générique est un SVG, que LinkedIn et Facebook n'affichent pas                                                                                                                              | Fournir une image JPG ou PNG 1200 × 630 (Réglages du site → SEO par défaut)                                           |
+| 2.2 | ✅ **Image de partage social** : depuis le 16/09, image par défaut en PNG 1200 × 630 avec le nouveau logo (l'ancienne, en SVG, n'était pas affichée par LinkedIn et Facebook)                                                             | Facultatif : la remplacer par une photo ou un visuel propre (Réglages du site → SEO par défaut)                       |
 | 2.3 | **International Expert Profile** et **CV** non téléversés : les boutons de téléchargement restent masqués                                                                                                                                 | Téléverser les PDF (Réglages du site → Marque)                                                                        |
 | 2.4 | **Réseaux sociaux** : aucun profil, la section du pied de page est masquée                                                                                                                                                                | Ajouter au moins LinkedIn (guide administrateur §10)                                                                  |
 | 2.5 | **Échecs ponctuels de requêtes au CMS** sous forte charge (`ECONNRESET`) : le site sert alors le contenu de démarrage, qui peut rester en cache 5 minutes                                                                                 | Chantier « fiabiliser le CMS » : limiter les connexions, ne pas mettre en cache le contenu de secours                 |
@@ -122,8 +122,10 @@ demandes mais n'envoie aucun e-mail, et la newsletter reste masquée. Le jour J,
 ## 3. Confort 🟡
 
 - Lien de prise de rendez-vous non renseigné (bouton masqué).
-- Logo : le monogramme « RK » du site est utilisé ; aucun logo n'est téléversé dans
-  Réglages du site (décision du 15/09 : conserver le monogramme).
+- Logo : nouveau logo (anneau marine et or, R et K) intégré le 16/09 dans l'en-tête, le
+  pied de page, les icônes, l'image de partage, l'administration et les PDF. Les lettres
+  utilisent la police Playfair Display : pour l'impression professionnelle, prévoir une
+  version vectorisée (lettres converties en tracés) par un graphiste.
 - Prix, éditeur, date de parution et nombre de pages du livre facultatifs.
 - La 404 d'une **fiche** inexistante est complétée par JavaScript (statut 404 et `noindex`
   corrects) ; limite connue et acceptée.
@@ -186,7 +188,7 @@ demandes mais n'envoie aucun e-mail, et la newsletter reste masquée. Le jour J,
 1. **Technique** : ~~mise à jour Payload 3.89 (1.1)~~ faite ; reste le compte
    administrateur définitif (1.2).
 2. **Contenus (commanditaire)** : retirer la fiche « test », remplacer ou dépublier les
-   contenus d'exemple (1.3), coordonnées (1.5), réseaux sociaux, PDF et image de partage
+   contenus d'exemple (1.3), coordonnées (1.5), réseaux sociaux et PDF
    (2.2 → 2.4).
 3. **Juridique (commanditaire + juriste)** : 5 pages légales (1.4) ; décocher la boutique
    tant que la vente directe n'est pas prête (2.1).

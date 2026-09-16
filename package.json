@@ -31,7 +31,8 @@
     "verify": "npm run format:check && npm run typecheck && npm run lint && npm run test",
     "import:assets": "cross-env NODE_OPTIONS=--no-deprecation tsx src/scripts/import-client-assets.ts",
     "docs:pdf": "cross-env NODE_OPTIONS=--no-deprecation tsx src/scripts/build-docs-pdf.ts",
-    "docs:screenshots": "cross-env NODE_OPTIONS=--no-deprecation tsx src/scripts/capture-guide-screenshots.ts"
+    "docs:screenshots": "cross-env NODE_OPTIONS=--no-deprecation tsx src/scripts/capture-guide-screenshots.ts",
+    "brand:assets": "cross-env NODE_OPTIONS=--no-deprecation tsx src/scripts/build-brand-assets.ts"
   },
   "dependencies": {
     "@payloadcms/db-postgres": "3.89.0",

@@ -37,12 +37,12 @@ de [`DEPLOIEMENT.md`](DEPLOIEMENT.md) (section 13).
 
 ## 2. Identité visuelle et médias
 
-| #   | Élément                                                                      | Priorité | Où l'utiliser                                                                                                                        |
-| --- | ---------------------------------------------------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| 2.1 | ✅ **Photographies professionnelles** — reçues le 11/09/2026 (3 photos)      | —        | Hero d’accueil (RK.jpeg), page À propos (RK1.jpeg), médiathèque (RK2.jpeg)                                                           |
-| 2.2 | ✅ **Logo** — décision du 15/09/2026 : conserver le monogramme « RK » actuel | —        | En-tête, pied de page, favicon                                                                                                       |
-| 2.3 | **Image de partage social** 1200 × 630 px, en **JPG ou PNG**                 | 🟠       | Réglages du site → SEO par défaut. L'image générique fournie est un SVG, que LinkedIn et Facebook n'affichent pas dans leurs aperçus |
-| 2.4 | Photos d'illustration pour les articles                                      | 🟡       | Couvertures RK Insights                                                                                                              |
+| #   | Élément                                                                                         | Priorité | Où l'utiliser                                                                                                                                                       |
+| --- | ----------------------------------------------------------------------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2.1 | ✅ **Photographies professionnelles** — reçues le 11/09/2026 (3 photos)                         | —        | Hero d’accueil (RK.jpeg), page À propos (RK1.jpeg), médiathèque (RK2.jpeg)                                                                                          |
+| 2.2 | ✅ **Logo** — choisi le 16/09/2026 : anneau marine et or, R marine et K doré (Playfair Display) | —        | En-tête, pied de page, icônes, image de partage, administration, couvertures PDF (`npm run brand:assets`)                                                           |
+| 2.3 | Image de partage social personnalisée 1200 × 630 px (facultatif)                                | 🟡       | Réglages du site → SEO par défaut. Une image par défaut en PNG avec le logo est fournie (`public/og-default.png`) ; une photo ou un visuel propre peut la remplacer |
+| 2.4 | Photos d'illustration pour les articles                                                         | 🟡       | Couvertures RK Insights                                                                                                                                             |
 
 ## 3. Contenus professionnels
 

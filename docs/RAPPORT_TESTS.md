@@ -10,8 +10,8 @@ Environnement : Windows 11, Node 24.15, PostgreSQL 16 (Docker), build de
 
 | Suite                            | Périmètre                                                               | Résultat                             |
 | -------------------------------- | ----------------------------------------------------------------------- | ------------------------------------ |
-| Tests unitaires (Vitest)         | Traductions, contrastes, moteur d'apparence, validation, SEO, anti-abus | **149 / 149 réussis**                |
-| Tests end-to-end (Playwright)    | 131 scénarios × 4 configurations                                        | **456 réussis, 68 ignorés, 0 échec** |
+| Tests unitaires (Vitest)         | Traductions, contrastes, moteur d'apparence, validation, SEO, anti-abus | **152 / 152 réussis**                |
+| Tests end-to-end (Playwright)    | 132 scénarios × 4 configurations                                        | **460 réussis, 68 ignorés, 0 échec** |
 | Compilation TypeScript (`tsc`)   | Mode strict, tout le projet                                             | **0 erreur**                         |
 | Lint (ESLint 9 + config Next 16) | Tout le projet                                                          | **0 erreur, 0 avertissement**        |
 | Formatage (Prettier)             | `src`, `tests`, `docs`                                                  | **conforme**                         |

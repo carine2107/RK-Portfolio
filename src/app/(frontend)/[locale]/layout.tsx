@@ -64,7 +64,10 @@ export async function generateMetadata({
     creator: t('name'),
     robots: { index: true, follow: true },
     icons: {
-      icon: [{ url: '/icon.svg', type: 'image/svg+xml' }],
+      icon: [
+        { url: '/favicon.png', sizes: '48x48', type: 'image/png' },
+        { url: '/icon-512.png', sizes: '512x512', type: 'image/png' },
+      ],
       apple: [{ url: '/apple-icon.png' }],
     },
   }

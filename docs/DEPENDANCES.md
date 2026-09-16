@@ -61,13 +61,17 @@ verrouillage : le projet peut être migré vers un autre hébergeur sans réécr
 
 ## 5. Polices et médias
 
-- Polices **Source Serif 4** et **Inter** (SIL Open Font License), téléchargées
-  au moment du build et **servies depuis le domaine du site** : aucun appel à un
-  service tiers, aucun cookie, aucune donnée envoyée à Google.
+- Polices **Source Serif 4**, **Inter** et **Playfair Display** (lettres du logo),
+  sous SIL Open Font License, téléchargées au moment du build et **servies depuis le
+  domaine du site** : aucun appel à un service tiers, aucun cookie, aucune donnée
+  envoyée à Google.
 - Icônes : SVG dessinés dans le projet (`src/components/ui/Icon.tsx`), aucune
   bibliothèque externe.
-- Image de partage social par défaut et monogramme : SVG du projet, remplaçables
-  depuis le CMS.
+- Logo : dessiné en SVG dans les pages (`src/components/brand/BrandMark.tsx`) ; icônes
+  du navigateur, image de partage social par défaut (`public/og-default.png`, remplaçable
+  depuis le CMS) et fichiers `public/brand/` générés en PNG par `npm run brand:assets`,
+  sans nouvelle dépendance (Chromium de Playwright ; la police est chargée depuis Google
+  Fonts sur le poste qui lance la commande, pas sur le site).
 
 ## 6. Mise à jour et sécurité
 

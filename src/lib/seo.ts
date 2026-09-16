@@ -77,7 +77,7 @@ export function pageMetadata({
 }: PageMetadataInput): Metadata {
   const alternates = buildAlternates(locale, path, paths)
   const url = alternates.canonical as string
-  const ogImage = image ?? '/og-default.svg'
+  const ogImage = image ?? '/og-default.png'
 
   return {
     title,

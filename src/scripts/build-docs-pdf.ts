@@ -215,8 +215,7 @@ th strong, th code { color: #fff; background: none; border: 0; }
 
 .cover { height: 257mm; display: flex; flex-direction: column; justify-content: space-between; break-after: page; }
 .cover__band { background: var(--navy); color: #fff; margin: -18mm -16mm 0; padding: 34mm 16mm 22mm; }
-.cover__mark { display: inline-flex; width: 16mm; height: 16mm; border: 1.2pt solid var(--gold); border-radius: 50%;
-  align-items: center; justify-content: center; font-family: Georgia, serif; color: var(--gold); font-size: 15pt; letter-spacing: 1pt; }
+.cover__mark { display: block; width: 22mm; height: 22mm; }
 .cover__eyebrow { margin: 12mm 0 3mm; color: var(--gold); text-transform: uppercase; letter-spacing: 2.5pt; font-size: 9pt; }
 .cover h1 { color: #fff; font-size: 30pt; margin: 0; }
 .cover__subtitle { margin: 4mm 0 0; font-size: 13pt; color: #dfe6ee; }
@@ -255,7 +254,8 @@ function documentHtml(
 <body>
 <section class="cover">
   <div class="cover__band">
-    <span class="cover__mark">RK</span>
+    <img class="cover__mark" alt="" src="data:image/png;base64,${readFileSync(path.join(root, 'public/brand/rk-logo-inverse.png')).toString('base64')}">
+
     <p class="cover__eyebrow">${escapeHtml(doc.eyebrow)}</p>
     <h1>${escapeHtml(doc.title)}</h1>
     <p class="cover__subtitle">${escapeHtml(doc.subtitle)}</p>

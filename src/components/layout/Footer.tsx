@@ -1,5 +1,6 @@
 import { getTranslations } from 'next-intl/server'
 
+import { BrandMark } from '@/components/brand/BrandMark'
 import { LanguageSwitcher } from '@/components/i18n/LanguageSwitcher'
 import { ConsentSettingsButton } from '@/components/analytics/GoogleAnalytics'
 import { NewsletterForm } from '@/components/newsletter/NewsletterForm'
@@ -68,7 +69,10 @@ export async function Footer({
       ) : null}
       <div className="rk-container grid gap-12 py-16 md:grid-cols-12 md:py-20">
         <div className="md:col-span-5">
-          <p className="font-serif text-xl tracking-[0.05em] uppercase">{brand('name')}</p>
+          <div className="flex items-center gap-4">
+            <BrandMark className="size-14 shrink-0 text-on-contrast" />
+            <p className="font-serif text-xl tracking-[0.05em] uppercase">{brand('name')}</p>
+          </div>
           <p className="mt-2 text-sm text-on-contrast-secondary">{settings.headline}</p>
           <p
             lang="en"

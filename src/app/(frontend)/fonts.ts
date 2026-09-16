@@ -17,13 +17,13 @@ export const body = Inter({
   display: 'swap',
 })
 
-/** Alternative heading font (Appearance global). Not preloaded: only downloaded when used. */
+/** Font of the logo letters (and alternative heading font of the Appearance global). */
 export const playfair = Playfair_Display({
   subsets: ['latin'],
   variable: '--font-playfair',
   display: 'swap',
   weight: ['400', '600'],
-  preload: false,
+  preload: true,
 })
 
 export const fontVariables = `${display.variable} ${body.variable} ${playfair.variable}`
