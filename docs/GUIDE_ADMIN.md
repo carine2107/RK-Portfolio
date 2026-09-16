@@ -350,9 +350,8 @@ le document n'est pas encore publié — il ne renvoie jamais vers un lien mort.
 | **SEO par défaut**  | Titre et description par défaut, image de partage social (1200 × 630)                                                          |
 
 La **mention de bas de page** (« © by Nana-Consulting. Tous droits réservés. »)
-s'affiche tout en bas de chaque page. Vider le champ _Crédit du pied de page_ la
-remplace par « © {année} Romial Kenmogne. Tous droits réservés. » ; renseigner
-l'URL du crédit transforme « © by Nana-Consulting » en lien.
+s'affiche tout en bas de chaque page. Elle est **fixe** : le champ _Crédit du pied de page_
+est affiché en lecture seule et ne peut être modifié ni supprimé depuis l'administration.
 
 **Prise de rendez-vous** : coller dans _Lien de prise de rendez-vous_ l'adresse de
 la page de réservation (Cal.com, Calendly, Microsoft Bookings…). Un bouton

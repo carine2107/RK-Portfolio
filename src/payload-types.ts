@@ -2917,7 +2917,7 @@ export interface SiteSetting {
    */
   cvDocument?: (number | null) | Document;
   /**
-   * Notice shown at the very bottom of every page ("© by [name]. All rights reserved."). Empty: "© year Romial Kenmogne" instead.
+   * Notice shown at the very bottom of every page ("© by Nana-Consulting. All rights reserved."). Not editable.
    */
   creditName?: string | null;
   /**

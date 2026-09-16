@@ -280,8 +280,9 @@ Session 8 h, verrouillage après 5 échecs pendant 10 minutes, cookies
 ### `site-settings`
 
 - **Brand** : `name`, `headline` (localisé), `signature`, `logo`,
-  `expertProfile`, `cvDocument`, `creditName` (crédit « © by … » du pied de
-  page, vide = masqué), `creditUrl` (lien facultatif)
+  `expertProfile`, `cvDocument`, `creditName` (crédit « © by Nana-Consulting » du pied de
+  page : lecture seule dans l'administration, `access.update` refusé à tous), `creditUrl`
+  (masqué et verrouillé de la même façon)
 - **Contact** : `email`, `phone`, `address`, `notificationEmail`,
   `spokenLanguages`, `bookingUrl` (https, outil de rendez-vous externe), `bookingLabel`
 - **Social** : `social[{platform, url}]`

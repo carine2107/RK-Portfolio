@@ -92,11 +92,15 @@ export const SiteSettings: GlobalConfig = {
               type: 'text',
               label: tr('Crédit du pied de page', 'Fußzeilen-Credit', 'Footer credit'),
               defaultValue: 'Nana-Consulting',
+              // Fixed credit of the site's maker: shown in the admin, never editable
+              // (neither in the form nor through the API).
+              access: { create: () => false, update: () => false },
               admin: {
+                readOnly: true,
                 description: tr(
-                  'Mention « © by [nom]. Tous droits réservés. » affichée tout en bas de chaque page. Vide : « © année Romial Kenmogne » à la place.',
-                  'Hinweis „© by [Name]. Alle Rechte vorbehalten.“ ganz unten auf jeder Seite. Leer: stattdessen „© Jahr Romial Kenmogne“.',
-                  'Notice shown at the very bottom of every page ("© by [name]. All rights reserved."). Empty: "© year Romial Kenmogne" instead.',
+                  'Mention « © by Nana-Consulting. Tous droits réservés. » affichée tout en bas de chaque page. Non modifiable.',
+                  'Hinweis „© by Nana-Consulting. Alle Rechte vorbehalten.“ ganz unten auf jeder Seite. Nicht änderbar.',
+                  'Notice shown at the very bottom of every page ("© by Nana-Consulting. All rights reserved."). Not editable.',
                 ),
               },
             },
@@ -104,7 +108,10 @@ export const SiteSettings: GlobalConfig = {
               name: 'creditUrl',
               type: 'text',
               label: tr('Lien du crédit', 'Link des Credits', 'Credit link'),
+              // Locked with the credit: hidden and not editable.
+              access: { create: () => false, update: () => false },
               admin: {
+                hidden: true,
                 description: tr(
                   'Adresse complète, facultative : transforme le crédit en lien.',
                   'Vollständige Adresse, optional: macht den Credit zu einem Link.',
