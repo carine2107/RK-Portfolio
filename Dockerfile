@@ -26,6 +26,10 @@ ENV NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL \
     NEXT_PUBLIC_ANALYTICS_SITE_ID=$NEXT_PUBLIC_ANALYTICS_SITE_ID \
     NEXT_TELEMETRY_DISABLED=1
 RUN npm run build
+# The application without its dependencies nor the build cache, shipped in its
+# own layer below.
+RUN mkdir /out \
+ && tar --exclude=./node_modules --exclude=./.next/cache -cf - . | tar -xf - -C /out
 
 FROM node:22-alpine AS runtime
 WORKDIR /app
@@ -35,7 +39,10 @@ ENV NODE_ENV=production \
 # `npm run import:assets` run from them. The `node` user owns the app because
 # the page cache (.next) and the media library (public/media) are written at
 # run time.
-COPY --from=build --chown=node:node /app ./
+# Dependencies first, in their own layer: it only changes with package-lock.json,
+# so a deployment usually downloads just the much smaller application layer.
+COPY --from=deps --chown=node:node /app/node_modules ./node_modules
+COPY --from=build --chown=node:node /out ./
 RUN mkdir -p public/media/documents private/files && chown -R node:node public/media private
 USER node
 EXPOSE 4313

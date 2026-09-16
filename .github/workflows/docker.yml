@@ -124,7 +124,7 @@ jobs:
       (github.event_name == 'workflow_run' ||
        (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'))
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
     steps:
       - name: Deploy over SSH
         id: deploy
