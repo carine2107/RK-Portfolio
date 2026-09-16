@@ -12,11 +12,11 @@ verrouillage : le projet peut être migré vers un autre hébergeur sans réécr
 | -------------------------------------------- | ------------- | ------------------------------------------- | ------------------------------------------------------------ |
 | `next`                                       | 16.3.4        | MIT                                         | Framework applicatif (routage, rendu, optimisation d'images) |
 | `react` / `react-dom`                        | 19.3.0        | MIT                                         | Bibliothèque d'interface                                     |
-| `payload`                                    | 3.88.0        | MIT                                         | CMS headless (contenus, rôles, versions, médias)             |
-| `@payloadcms/next`                           | 3.88.0        | MIT                                         | Intégration de l'admin CMS dans Next.js                      |
-| `@payloadcms/db-postgres`                    | 3.88.0        | MIT                                         | Adaptateur PostgreSQL                                        |
-| `@payloadcms/richtext-lexical`               | 3.88.0        | MIT                                         | Éditeur de texte riche + rendu                               |
-| `@payloadcms/ui`, `@payloadcms/translations` | 3.88.0        | MIT                                         | Interface et traductions de l'admin                          |
+| `payload`                                    | 3.89.0        | MIT                                         | CMS headless (contenus, rôles, versions, médias)             |
+| `@payloadcms/next`                           | 3.89.0        | MIT                                         | Intégration de l'admin CMS dans Next.js                      |
+| `@payloadcms/db-postgres`                    | 3.89.0        | MIT                                         | Adaptateur PostgreSQL                                        |
+| `@payloadcms/richtext-lexical`               | 3.89.0        | MIT                                         | Éditeur de texte riche + rendu                               |
+| `@payloadcms/ui`, `@payloadcms/translations` | 3.89.0        | MIT                                         | Interface et traductions de l'admin                          |
 | `next-intl`                                  | 4.14.2        | MIT                                         | Internationalisation FR/DE/EN                                |
 | `zod`                                        | 4.6.1         | MIT                                         | Validation client et serveur                                 |
 | `nodemailer`                                 | 10.0.3        | MIT                                         | Envoi SMTP                                                   |

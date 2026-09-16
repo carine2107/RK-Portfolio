@@ -34,11 +34,11 @@
     "docs:screenshots": "cross-env NODE_OPTIONS=--no-deprecation tsx src/scripts/capture-guide-screenshots.ts"
   },
   "dependencies": {
-    "@payloadcms/db-postgres": "3.88.0",
-    "@payloadcms/next": "3.88.0",
-    "@payloadcms/richtext-lexical": "3.88.0",
-    "@payloadcms/translations": "3.88.0",
-    "@payloadcms/ui": "3.88.0",
+    "@payloadcms/db-postgres": "3.89.0",
+    "@payloadcms/next": "3.89.0",
+    "@payloadcms/richtext-lexical": "3.89.0",
+    "@payloadcms/translations": "3.89.0",
+    "@payloadcms/ui": "3.89.0",
     "d3-geo": "3.1.1",
     "dotenv": "^17.4.2",
     "graphql": "16.14.2",
@@ -46,7 +46,7 @@
     "next": "16.3.4",
     "next-intl": "4.14.2",
     "nodemailer": "10.0.3",
-    "payload": "3.88.0",
+    "payload": "3.89.0",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "server-only": "^0.0.1",
@@ -81,5 +81,8 @@
     "tsx": "4.23.13",
     "typescript": "5.9.3",
     "vitest": "5.0.0"
+  },
+  "overrides": {
+    "dompurify": "3.4.15"
   }
 }

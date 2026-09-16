@@ -3025,7 +3025,7 @@ export interface Appearance {
 export interface ShopSetting {
   id: number;
   /**
-   * Shows "Add to cart" on books set to "Direct sale" (EUR price, available or pre-order). Tick only once the terms of sale and the returns policy are validated.
+   * Enables online payment for books set to "Direct sale" and books offering "Order here" (EUR price, available or pre-order). Payment buttons only appear in the cart once the Stripe or PayPal keys are configured. Tick only once the terms of sale and the returns policy are validated.
    */
   enabled?: boolean | null;
   /**
