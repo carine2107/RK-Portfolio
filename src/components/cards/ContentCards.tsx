@@ -235,31 +235,33 @@ export async function BusinessCard({
 
   return (
     <Card tone="outline" className="w-full">
-      <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-2">
-        {business.logo ? (
-          // White tile in both themes: company logos are designed for a light
-          // background and would disappear on the dark theme.
-          <div className="basis-full">
-            <div className="inline-flex h-20 items-center rounded-card bg-white px-4 py-2 shadow-card ring-1 ring-black/5">
-              {/* Decorative: the company name follows right after. */}
-              <Image
-                src={business.logo.url}
-                alt=""
-                width={business.logo.width ?? 320}
-                height={business.logo.height ?? 160}
-                sizes="12rem"
-                className="h-full w-auto max-w-48 object-contain"
-              />
-            </div>
-          </div>
-        ) : null}
-        <div className="min-w-0">
+      <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-3">
+        <div className="min-w-0 flex-1">
           <CardTitle as={headingLevel}>{business.name}</CardTitle>
           {business.tagline ? (
             <p className="mt-1 text-sm text-accent-text">{business.tagline}</p>
           ) : null}
         </div>
-        {business.isPlaceholder ? <PlaceholderBadge /> : null}
+        {business.logo || business.isPlaceholder ? (
+          <div className="flex shrink-0 flex-col items-end gap-2">
+            {business.logo ? (
+              // White tile in both themes: company logos are designed for a light
+              // background and would disappear on the dark theme.
+              <div className="flex h-16 items-center rounded-card bg-white px-3 py-1.5 shadow-card ring-1 ring-black/5">
+                {/* Decorative: the company name is right next to it. */}
+                <Image
+                  src={business.logo.url}
+                  alt=""
+                  width={business.logo.width ?? 320}
+                  height={business.logo.height ?? 160}
+                  sizes="10rem"
+                  className="h-full w-auto max-w-40 object-contain"
+                />
+              </div>
+            ) : null}
+            {business.isPlaceholder ? <PlaceholderBadge /> : null}
+          </div>
+        ) : null}
       </div>
       <CardBody>{business.description}</CardBody>
       <dl className="mt-5 grid gap-3 text-sm sm:grid-cols-2">
