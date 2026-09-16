@@ -1,14 +1,15 @@
-# Production Docker image.
+# Production Docker image and deployment.
 #
 # After a green CI run on main (and for version tags v*), the image is built from
 # the Dockerfile. It is published to the GitHub Container Registry
 # (ghcr.io/carine2107/rk-portfolio) only once the repository variable
 # NEXT_PUBLIC_SITE_URL is set (Settings → Secrets and variables → Actions →
-# Variables): that address is written into the image at build time, so an image
-# built without it would point to the wrong domain. Until then, each run only
-# checks that the image builds.
+# Variables): that address is written into the image at build time.
 #
-# No deployment happens here: the server pulls the image (docs/DEPLOIEMENT.md §3).
+# For main, the published image is then deployed to the server over SSH: the
+# deploy key can only run ops/deploy.sh (backup, pull, restart, health check,
+# rollback). Until the DEPLOY_* secrets exist, the deploy job only says so.
+# See docs/DEPLOIEMENT.md §3.
 name: Docker image
 
 on:
@@ -24,9 +25,10 @@ permissions:
   contents: read
   packages: write
 
+# Queued, never cancelled: a new push must not interrupt a deployment.
 concurrency:
   group: docker-${{ github.event.workflow_run.head_branch || github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 env:
   IMAGE: ghcr.io/carine2107/rk-portfolio
@@ -38,6 +40,9 @@ jobs:
     if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    outputs:
+      published: ${{ steps.settings.outputs.publish }}
+      tag: ${{ steps.settings.outputs.sha_tag }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -52,7 +57,9 @@ jobs:
           EVENT: ${{ github.event_name }}
           REF: ${{ github.ref }}
         run: |
-          tags="${IMAGE}:sha-${HEAD_SHA::7}"
+          sha_tag="sha-${HEAD_SHA::7}"
+          echo "sha_tag=${sha_tag}" >> "$GITHUB_OUTPUT"
+          tags="${IMAGE}:${sha_tag}"
           if [ "$EVENT" = "workflow_run" ] || [ "$REF" = "refs/heads/main" ]; then
             tags="${tags},${IMAGE}:latest"
           fi
@@ -107,3 +114,55 @@ jobs:
             echo "### Image built, not published" >> "$GITHUB_STEP_SUMMARY"
             echo "Set the repository variable \`NEXT_PUBLIC_SITE_URL\` to publish it to ghcr.io." >> "$GITHUB_STEP_SUMMARY"
           fi
+
+  deploy:
+    name: Deploy to production
+    needs: image
+    # Published images of main only: after CI, or run by hand on main.
+    if: >-
+      needs.image.outputs.published == 'true' &&
+      (github.event_name == 'workflow_run' ||
+       (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Deploy over SSH
+        id: deploy
+        env:
+          SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          KNOWN_HOSTS: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
+          HOST: ${{ secrets.DEPLOY_HOST }}
+          USER_NAME: ${{ secrets.DEPLOY_USER }}
+          PORT: ${{ secrets.DEPLOY_PORT }}
+          TAG: ${{ needs.image.outputs.tag }}
+        run: |
+          if [ -z "$SSH_KEY" ] || [ -z "$KNOWN_HOSTS" ] || [ -z "$HOST" ] || [ -z "$USER_NAME" ]; then
+            echo "deployed=false" >> "$GITHUB_OUTPUT"
+            echo "::notice title=Not deployed::Add the secrets DEPLOY_SSH_KEY, DEPLOY_KNOWN_HOSTS, DEPLOY_HOST and DEPLOY_USER to deploy automatically (docs/DEPLOIEMENT.md §3)."
+            exit 0
+          fi
+          install -d -m 700 ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          printf '%s\n' "$KNOWN_HOSTS" > ~/.ssh/known_hosts
+          ssh -i ~/.ssh/deploy_key -p "${PORT:-22}" \
+            -o BatchMode=yes -o StrictHostKeyChecking=yes -o ConnectTimeout=20 \
+            "$USER_NAME@$HOST" "deploy $TAG"
+          echo "deployed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Check the public site
+        if: steps.deploy.outputs.deployed == 'true'
+        env:
+          SITE_URL: ${{ vars.NEXT_PUBLIC_SITE_URL }}
+          TAG: ${{ needs.image.outputs.tag }}
+        run: |
+          for attempt in $(seq 1 12); do
+            if curl -fsS --max-time 10 "$SITE_URL/api/health"; then
+              echo
+              echo "### Deployed \`$TAG\` to $SITE_URL" >> "$GITHUB_STEP_SUMMARY"
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "::error title=Site not responding::$SITE_URL/api/health did not answer after the deployment."
+          exit 1

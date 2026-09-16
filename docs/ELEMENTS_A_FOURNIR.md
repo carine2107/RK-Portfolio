@@ -27,13 +27,13 @@ de [`DEPLOIEMENT.md`](DEPLOIEMENT.md) (section 13).
 
 ## 1. Domaine, hébergement, comptes
 
-| #   | Élément                                                                          | Priorité | Où l'utiliser                           |
-| --- | -------------------------------------------------------------------------------- | -------- | --------------------------------------- |
-| 1.1 | **Nom de domaine définitif** (`romialkenmogne.com` à vérifier)                   | 🔴       | `NEXT_PUBLIC_SITE_URL`, DNS             |
-| 1.2 | **Hébergement** (VPS ou plateforme Node avec volume persistant)                  | 🔴       | Voir [`DEPLOIEMENT.md`](DEPLOIEMENT.md) |
-| 1.3 | Certificat HTTPS (Let's Encrypt suffit)                                          | 🔴       | Reverse proxy                           |
-| 1.4 | Compte **Google Search Console**                                                 | 🟠       | Soumission du sitemap                   |
-| 1.5 | Titulaire des comptes (domaine, hébergement, e-mail) **au nom du commanditaire** | 🔴       | Propriété et réversibilité              |
+| #   | Élément                                                                                           | Priorité | Où l'utiliser                           |
+| --- | ------------------------------------------------------------------------------------------------- | -------- | --------------------------------------- |
+| 1.1 | ✅ **Nom de domaine** : `romialkenmogne.com` (confirmé le 16/09/2026 ; DNS à pointer vers le VPS) | —        | `NEXT_PUBLIC_SITE_URL`, DNS             |
+| 1.2 | **Hébergement** (VPS ou plateforme Node avec volume persistant)                                   | 🔴       | Voir [`DEPLOIEMENT.md`](DEPLOIEMENT.md) |
+| 1.3 | Certificat HTTPS (Let's Encrypt suffit)                                                           | 🔴       | Reverse proxy                           |
+| 1.4 | Compte **Google Search Console**                                                                  | 🟠       | Soumission du sitemap                   |
+| 1.5 | Titulaire des comptes (domaine, hébergement, e-mail) **au nom du commanditaire**                  | 🔴       | Propriété et réversibilité              |
 
 ## 2. Identité visuelle et médias
 

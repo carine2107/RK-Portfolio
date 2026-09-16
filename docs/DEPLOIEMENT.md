@@ -141,6 +141,51 @@ pré-générées pendant le build. Chacune est rendue depuis le CMS à sa premi�
 visite, puis servie depuis le cache (renouvelé toutes les 5 minutes). Le site
 n'affiche jamais le contenu de démarrage intégré au code.
 
+### Déploiement automatique (GitHub → serveur)
+
+Pour `main`, le workflow _Docker image_ enchaîne : CI verte → image publiée
+(`sha-<commit>`) → job **Deploy to production**, qui se connecte au serveur en SSH et
+lance `ops/deploy.sh` :
+
+1. `git pull --ff-only` (fichier Compose et scripts `ops/` à jour) ;
+2. sauvegarde complète (`ops/backup.sh`, dans `/var/backups/romial`) ;
+3. récupération de l'image du commit et redémarrage de l'application (migrations au
+   démarrage) ;
+4. attente de `/api/health` (3 minutes au plus) ; **en cas d'échec, l'image précédente est
+   relancée** et le job GitHub échoue ;
+5. l'image déployée est retenue dans `APP_IMAGE` de `.env.production`.
+
+GitHub vérifie ensuite `https://<domaine>/api/health` depuis l'extérieur. Un nouvel envoi
+n'interrompt jamais un déploiement en cours : il attend son tour.
+
+**Clé de déploiement** (une fois, sur le serveur, compte qui fait tourner Docker) :
+
+```bash
+sudo install -d -o "$USER" -g "$USER" -m 700 /var/backups/romial
+ssh-keygen -t ed25519 -N "" -C "github-actions romialkenmogne deploy" -f ~/.ssh/romial_deploy
+printf 'command="/opt/romial/ops/deploy.sh",no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty %s\n' \
+  "$(cat ~/.ssh/romial_deploy.pub)" >> ~/.ssh/authorized_keys
+```
+
+La clé est **limitée à `ops/deploy.sh`** (commande forcée) : elle ne donne accès à aucun
+shell, et le script refuse toute demande autre que `deploy sha-<7 caractères>`.
+
+**Secrets GitHub** (_Settings → Secrets and variables → Actions → Secrets_) :
+
+| Secret               | Valeur                                                                                           |
+| -------------------- | ------------------------------------------------------------------------------------------------ |
+| `DEPLOY_HOST`        | Adresse IP ou nom du serveur                                                                     |
+| `DEPLOY_USER`        | Compte SSH (celui qui a créé la clé)                                                             |
+| `DEPLOY_SSH_KEY`     | Contenu complet de `~/.ssh/romial_deploy` (clé **privée**), puis supprimer ce fichier du serveur |
+| `DEPLOY_KNOWN_HOSTS` | Résultat de `ssh-keyscan -t ed25519 <adresse du serveur>` (empreinte publique)                   |
+| `DEPLOY_PORT`        | Facultatif, si SSH n'écoute pas sur le port 22                                                   |
+
+Tant que ces secrets manquent, le job l'indique et ne déploie rien.
+
+**Déployer ou revenir en arrière à la main** : _Actions → Docker image → Run workflow_
+(branche `main`) redéploie le dernier commit ; sur le serveur, `ops/deploy.sh sha-<commit>`
+remet en ligne n'importe quelle image publiée (voir section 9).
+
 ### Déploiement sans Docker
 
 Serveur Node ≥ 20.9 et PostgreSQL 16 ; variables de la section 2 dans `.env`
@@ -296,12 +341,12 @@ de test. Test de restauration réel : voir `RAPPORT_TESTS.md`.
 
 ## 9. Rollback
 
-| Situation                               | Action                                                                                                                                                                                                                                                                           |
-| --------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Régression applicative, schéma inchangé | Image publiée : `APP_IMAGE=ghcr.io/carine2107/rk-portfolio:sha-<commit précédent>` puis `dc pull app && dc up -d --no-build` ; image construite sur le serveur : `git checkout <tag-précédent>` puis `dc up -d --build` (sans Docker : `npm ci && npm run build` et redémarrage) |
-| Régression après migration de schéma    | Restaurer la sauvegarde de base **prise avant la migration**, puis redéployer la version précédente                                                                                                                                                                              |
-| Contenu supprimé par erreur             | Payload conserve les versions : ouvrir l'entrée → onglet _Versions_ → _Restore_                                                                                                                                                                                                  |
-| Incident majeur                         | Restauration complète (section 8) puis analyse hors production                                                                                                                                                                                                                   |
+| Situation                               | Action                                                                                                                                                                                                                                            |
+| --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Régression applicative, schéma inchangé | Image publiée : `ops/deploy.sh sha-<commit précédent>` (sauvegarde, image, contrôle de santé) ; image construite sur le serveur : `git checkout <tag-précédent>` puis `dc up -d --build` (sans Docker : `npm ci && npm run build` et redémarrage) |
+| Régression après migration de schéma    | Restaurer la sauvegarde de base **prise avant la migration**, puis redéployer la version précédente                                                                                                                                               |
+| Contenu supprimé par erreur             | Payload conserve les versions : ouvrir l'entrée → onglet _Versions_ → _Restore_                                                                                                                                                                   |
+| Incident majeur                         | Restauration complète (section 8) puis analyse hors production                                                                                                                                                                                    |
 
 Marquer chaque mise en production par un tag Git (`git tag -a v1.0.0`) : le
 rollback consiste alors simplement à redéployer le tag précédent.
