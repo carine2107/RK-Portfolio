@@ -237,15 +237,21 @@ export async function BusinessCard({
     <Card tone="outline" className="w-full">
       <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-2">
         {business.logo ? (
-          // Decorative: the company name follows right after.
-          <Image
-            src={business.logo.url}
-            alt=""
-            width={business.logo.width ?? 320}
-            height={business.logo.height ?? 160}
-            sizes="10rem"
-            className="h-14 w-auto max-w-40 basis-full object-contain object-left"
-          />
+          // White tile in both themes: company logos are designed for a light
+          // background and would disappear on the dark theme.
+          <div className="basis-full">
+            <div className="inline-flex h-20 items-center rounded-card bg-white px-4 py-2 shadow-card ring-1 ring-black/5">
+              {/* Decorative: the company name follows right after. */}
+              <Image
+                src={business.logo.url}
+                alt=""
+                width={business.logo.width ?? 320}
+                height={business.logo.height ?? 160}
+                sizes="12rem"
+                className="h-full w-auto max-w-48 object-contain"
+              />
+            </div>
+          </div>
         ) : null}
         <div className="min-w-0">
           <CardTitle as={headingLevel}>{business.name}</CardTitle>
