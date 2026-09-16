@@ -70,10 +70,12 @@ main() {
   log "Sauvegarde avant déploiement"
   "$root/ops/backup.sh"
 
+  # `docker pull`, not `docker compose pull`: without a terminal (SSH from
+  # GitHub), the latter kept running after the download had finished.
   log "Récupération de l'image"
-  APP_IMAGE="$image" dc pull --quiet app
+  docker pull --quiet "$image" < /dev/null
   log "Redémarrage de l'application"
-  APP_IMAGE="$image" dc up -d --no-build app
+  APP_IMAGE="$image" dc up -d --no-build app < /dev/null
 
   if healthy; then
     sed -i "s|^APP_IMAGE=.*|APP_IMAGE=$image|" "$env_file"
