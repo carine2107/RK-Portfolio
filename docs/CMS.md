@@ -330,6 +330,15 @@ après `heroPortrait`, diaporama du hero via `PortraitSlideshow`), `heroKeyPoint
 `lead`, `portrait`, `biography`, `career`, `vision`, `values[]`, `languages[]`,
 `regions[]`, `seo`.
 
+### Mise à jour du site public
+
+Les pages publiques sont en cache 5 minutes (`revalidate = 300`). Les collections et
+globals affichés sur le site (`payload.config.ts` : `withSiteRefresh`,
+`withGlobalSiteRefresh`) appellent `revalidatePath('/', 'layout')` après une publication,
+une dépublication, une modification d'un contenu sans brouillon ou une suppression
+(`src/payload/hooks/revalidate.ts`). Un brouillon jamais publié ne déclenche rien. Toute
+nouvelle collection ou global affiché sur le site doit être enveloppé de la même façon.
+
 ---
 
 ## Règles d'accès

@@ -82,20 +82,6 @@ export const Appearance: GlobalConfig = {
     ),
   },
   access: { read: anyone, update: isAdmin, readVersions: isAdmin },
-  hooks: {
-    afterChange: [
-      async () => {
-        // Pages are statically regenerated every 5 minutes; refresh them now.
-        // Outside a Next.js request (seed script) there is nothing to refresh.
-        try {
-          const { revalidatePath } = await import('next/cache')
-          revalidatePath('/', 'layout')
-        } catch {
-          /* not running inside Next.js */
-        }
-      },
-    ],
-  },
   fields: [
     {
       type: 'tabs',

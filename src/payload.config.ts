@@ -33,6 +33,7 @@ import { HomePage } from './payload/globals/HomePage'
 import { Appearance } from './payload/globals/Appearance'
 import { ShopSettings } from './payload/globals/ShopSettings'
 import { SiteSettings } from './payload/globals/SiteSettings'
+import { withGlobalSiteRefresh, withSiteRefresh } from './payload/hooks/revalidate'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -83,29 +84,31 @@ export default buildConfig({
       robots: 'noindex, nofollow',
     },
   },
+  // Content shown on the public site refreshes its pages as soon as it is
+  // published, changed or deleted (src/payload/hooks/revalidate.ts).
   collections: [
-    ExpertiseAreas,
-    Experiences,
-    Insights,
-    Categories,
-    Books,
-    Businesses,
-    Engagements,
-    Campaigns,
-    Credentials,
-    LegalPages,
-    Media,
-    Documents,
+    withSiteRefresh(ExpertiseAreas),
+    withSiteRefresh(Experiences),
+    withSiteRefresh(Insights),
+    withSiteRefresh(Categories),
+    withSiteRefresh(Books),
+    withSiteRefresh(Businesses),
+    withSiteRefresh(Engagements),
+    withSiteRefresh(Campaigns),
+    withSiteRefresh(Credentials),
+    withSiteRefresh(LegalPages),
+    withSiteRefresh(Media),
+    withSiteRefresh(Documents),
     ContactSubmissions,
     Subscribers,
     Orders,
-    Products,
+    withSiteRefresh(Products),
     ProtectedFiles,
     Members,
     Entitlements,
     Users,
   ],
-  globals: [SiteSettings, Appearance, ShopSettings, HomePage, AboutPage],
+  globals: [SiteSettings, Appearance, ShopSettings, HomePage, AboutPage].map(withGlobalSiteRefresh),
   localization: {
     locales: [
       // Named in the language of the admin interface, so a French interface

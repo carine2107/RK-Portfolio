@@ -94,6 +94,8 @@ jobs:
       SEED_ADMIN_EMAIL: admin@example.com
       SEED_ADMIN_PASSWORD: ci-e2e-only-throwaway-password
       E2E_PROD: '1'
+      # Lets cms-refresh.spec.ts create and delete its own entry in this throwaway database.
+      E2E_CMS_WRITE: '1'
     steps:
       - uses: actions/checkout@v4
 

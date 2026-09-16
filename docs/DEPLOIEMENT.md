@@ -138,7 +138,8 @@ dc up -d --no-build       # les migrations en attente s'appliquent au démarrage
 
 L'image est construite **sans accès à la base** : les pages ne sont donc pas
 pré-générées pendant le build. Chacune est rendue depuis le CMS à sa première
-visite, puis servie depuis le cache (renouvelé toutes les 5 minutes). Le site
+visite, puis servie depuis le cache (renouvelé toutes les 5 minutes, et aussitôt après
+chaque publication dans le CMS). Le site
 n'affiche jamais le contenu de démarrage intégré au code.
 
 ### Déploiement automatique (GitHub → serveur)

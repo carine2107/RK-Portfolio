@@ -179,9 +179,11 @@ traduction manque, si une clé est en trop ou si un paramètre ICU diverge.
 ## 8. Publication, aperçu et mise en cache
 
 - Les pages publiques utilisent la **revalidation incrémentale** : elles sont
-  servies depuis le cache et régénérées en arrière-plan toutes les **5 minutes**.
-  Une modification faite dans le CMS apparaît donc sans redéploiement, tout en
-  gardant des temps de réponse de l'ordre de 10 à 30 ms.
+  servies depuis le cache et régénérées en arrière-plan toutes les **5 minutes**,
+  avec des temps de réponse de l'ordre de 10 à 30 ms. Dès qu'un contenu public est
+  publié, modifié ou supprimé dans le CMS, des hooks (`src/payload/hooks/revalidate.ts`)
+  invalident le cache : la modification apparaît en quelques secondes, sans
+  redéploiement. Un brouillon jamais publié ne déclenche rien.
 - Le bouton **Preview** du CMS ouvre `/api/preview`, qui vérifie la session
   Payload (rôle administrateur ou éditeur) avant d'activer le mode brouillon de
   Next.js. La page affiche alors la version non publiée avec un bandeau et un

@@ -10,7 +10,7 @@ Environnement : Windows 11, Node 24.15, PostgreSQL 16 (Docker), build de
 
 | Suite                            | Périmètre                                                               | Résultat                             |
 | -------------------------------- | ----------------------------------------------------------------------- | ------------------------------------ |
-| Tests unitaires (Vitest)         | Traductions, contrastes, moteur d'apparence, validation, SEO, anti-abus | **166 / 166 réussis**                |
+| Tests unitaires (Vitest)         | Traductions, contrastes, moteur d'apparence, validation, SEO, anti-abus | **171 / 171 réussis**                |
 | Tests end-to-end (Playwright)    | 132 scénarios × 4 configurations                                        | **460 réussis, 68 ignorés, 0 échec** |
 | Compilation TypeScript (`tsc`)   | Mode strict, tout le projet                                             | **0 erreur**                         |
 | Lint (ESLint 9 + config Next 16) | Tout le projet                                                          | **0 erreur, 0 avertissement**        |
@@ -65,7 +65,7 @@ node tests/visual/capture.mjs test-results/visual
 
 ---
 
-## 2. Tests unitaires (166)
+## 2. Tests unitaires (171)
 
 | Fichier                                               | Ce qui est vérifié                                                                                                                                                                                                                                                                                                                                                                           |
 | ----------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -322,6 +322,16 @@ Contrôle manuel (serveur de développement, page de test supprimée ensuite) : 
 - Toutes les pages de détail françaises du sitemap (articles, expertises, expériences,
   livres…) répondent 200, sont mises en cache (`s-maxage=300`) et portent leur
   description SEO dans l'en-tête `<head>` pour un navigateur ordinaire
+
+### Publication visible sans attendre le cache (`cms-refresh.spec.ts`, `revalidate.test.ts`)
+
+- Sur le build de production, page « À propos » déjà en cache : une qualification publiée
+  par l'API du CMS apparaît en quelques secondes, puis disparaît aussitôt supprimée (le test
+  crée et supprime sa propre fiche ; lancé seulement sur la base jetable de la CI,
+  `E2E_CMS_WRITE=1`)
+- Tests unitaires : rafraîchissement pour une publication, une dépublication ou un contenu
+  sans brouillon ; rien pour un brouillon jamais publié ; un enregistrement n'échoue jamais
+  hors requête Next.js (scripts) ; les hooks existants des collections sont conservés
 
 ### Audit d'accessibilité approfondi (`a11y-audit.spec.ts`) — 15/09/2026
 

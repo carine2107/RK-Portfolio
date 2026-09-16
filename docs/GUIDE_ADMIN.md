@@ -104,9 +104,12 @@ Le temps de lecture est calculé automatiquement à l'enregistrement.
 > conférences & médias, les pages de campagne, les pages légales et les activités
 > (aperçu de la page Entreprises). Il apparaît une fois le contenu enregistré.
 >
-> **Délai d'affichage** — une modification publiée apparaît sur le site public
-> dans les **5 minutes** au plus (le site met les pages en cache pour rester
-> rapide). Un rechargement forcé ne raccourcit pas ce délai.
+> **Délai d'affichage** — une modification **publiée** (ou une suppression) apparaît
+> sur le site public **en quelques secondes** : rechargez la page, et si l'ancienne
+> version s'affiche encore, rechargez une seconde fois. Un simple brouillon
+> (« Enregistrer le brouillon ») ne change rien sur le site : utilisez l'aperçu. Les
+> articles programmés apparaissent dans les 5 minutes qui suivent leur date de
+> publication.
 
 ### Modifier ou dépublier
 
@@ -380,8 +383,8 @@ montrer). Pour ajouter un profil :
 Les icônes apparaissent dans le **haut du pied de page**, colonne de gauche, sous la
 signature, sur toutes les pages et dans les trois langues ; chaque lien s'ouvre dans
 un nouvel onglet. Elles ne figurent pas dans la barre du bas (mention de crédit et
-choix de la langue). Le changement est visible sur le site dans les **5 minutes**
-(mise en cache des pages). Pour retirer un réseau, supprimer sa ligne et
+choix de la langue). Le changement est visible sur le site **en quelques secondes**
+après l'enregistrement. Pour retirer un réseau, supprimer sa ligne et
 sauvegarder. Le cahier des charges recommande **LinkedIn en priorité**.
 
 **Pages → Page d’accueil** : accroche, proposition de valeur, photo du hero, points
