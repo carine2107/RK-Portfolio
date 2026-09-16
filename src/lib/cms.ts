@@ -22,7 +22,7 @@ import { resolveCampaignLink } from '@/lib/campaign-link'
 import { countryName, isCountryCode } from '@/lib/countries'
 import { cmsEnabled, siteUrl } from '@/lib/env'
 import { paymentsReady } from '@/lib/shop-config'
-import { safeHttpsUrl } from '@/lib/url'
+import { safeHttpsUrl, websiteUrl } from '@/lib/url'
 import { parseVideoUrl } from '@/lib/video'
 import {
   appearanceCss,
@@ -1070,7 +1070,7 @@ const mapBusiness = (record: Doc): BusinessView => ({
   valueProposition: str(record.valueProposition),
   field: str(record.field),
   audience: str(record.audience),
-  website: str(record.website),
+  website: websiteUrl(str(record.website)),
   contactEmail: str(record.contactEmail),
   logo: image(record.logo),
   isPlaceholder: boolean(record.isPlaceholder),

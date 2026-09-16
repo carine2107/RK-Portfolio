@@ -236,6 +236,17 @@ export async function BusinessCard({
   return (
     <Card tone="outline" className="w-full">
       <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-2">
+        {business.logo ? (
+          // Decorative: the company name follows right after.
+          <Image
+            src={business.logo.url}
+            alt=""
+            width={business.logo.width ?? 320}
+            height={business.logo.height ?? 160}
+            sizes="10rem"
+            className="h-14 w-auto max-w-40 basis-full object-contain object-left"
+          />
+        ) : null}
         <div className="min-w-0">
           <CardTitle as={headingLevel}>{business.name}</CardTitle>
           {business.tagline ? (

@@ -1,9 +1,19 @@
-import type { CollectionConfig } from 'payload'
+import type { CollectionConfig, TextFieldSingleValidation } from 'payload'
+
+import { websiteUrl } from '../../lib/url'
 
 import { isAdminOrEditor, publishedOrSignedIn } from '../access'
 import { orderField, placeholderField, seoField, slugField } from '../fields/shared'
 import { GROUPS, tr } from '../i18n'
 import { previewUrl } from '../preview'
+
+const websiteValidation: TextFieldSingleValidation = (value, { req }) => {
+  if (!value || websiteUrl(value)) return true
+  const language = req.i18n?.language
+  if (language === 'de') return 'Webadresse erwartet, z. B. www.example.com'
+  if (language === 'en') return 'Web address expected, e.g. www.example.com'
+  return 'Adresse de site web attendue, par exemple www.exemple.com'
+}
 
 export const Businesses: CollectionConfig = {
   slug: 'businesses',
@@ -77,11 +87,14 @@ export const Businesses: CollectionConfig = {
       name: 'website',
       type: 'text',
       label: tr('Site web', 'Website', 'Website'),
+      validate: websiteValidation,
+      // Stored with its scheme ("www.example.com" → "https://www.example.com/").
+      hooks: { beforeChange: [({ value }) => (value ? websiteUrl(value) || value : value)] },
       admin: {
         description: tr(
-          'Adresse complète, ou laissez vide.',
-          'Vollständige Adresse oder leer lassen.',
-          'Full URL, or leave empty.',
+          'Par exemple www.exemple.com (https:// est ajouté automatiquement), ou laissez vide.',
+          'Zum Beispiel www.beispiel.de (https:// wird automatisch ergänzt) oder leer lassen.',
+          'For example www.example.com (https:// is added automatically), or leave empty.',
         ),
       },
     },

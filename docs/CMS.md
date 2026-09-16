@@ -188,6 +188,9 @@ Clics mesurés par l'événement `campaign_cta_click`.
 `name`_, `slug`_, `tagline`, `description`\*, `valueProposition`, `field`,
 `audience`, `website`, `contactEmail`, `logo`, `active`, `order`,
 `isPlaceholder`, `seo`. `active: false` masque l'activité sans la supprimer.
+`website` accepte une adresse sans schéma (`www.exemple.com`) : elle est enregistrée avec
+`https://` et normalisée aussi à l'affichage (`websiteUrl`, `src/lib/url.ts` ; http et https
+seulement). `logo` s'affiche au-dessus du nom sur la carte, sans recadrage.
 
 ### `engagements` — Conférences & médias
 
