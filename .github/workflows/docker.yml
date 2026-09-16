@@ -147,6 +147,7 @@ jobs:
           printf '%s\n' "$KNOWN_HOSTS" > ~/.ssh/known_hosts
           ssh -i ~/.ssh/deploy_key -p "${PORT:-22}" \
             -o BatchMode=yes -o StrictHostKeyChecking=yes -o ConnectTimeout=20 \
+            -o ServerAliveInterval=30 -o ServerAliveCountMax=20 \
             "$USER_NAME@$HOST" "deploy $TAG"
           echo "deployed=true" >> "$GITHUB_OUTPUT"
 
