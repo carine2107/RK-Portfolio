@@ -455,6 +455,10 @@ Kenmogne Strategic Publishing, KAILI Institut, KAILI Event.
 - **Site web** : saisir l'adresse telle qu'elle apparaît dans le navigateur, par exemple
   `www.rk-businessconsulting.com` ; `https://` est ajouté automatiquement à
   l'enregistrement. Le lien « Site web » de la carte ouvre le site dans un nouvel onglet.
+- **Page de contact** : adresse de la page de contact du site de l'entreprise (par exemple
+  `www.rk-businessconsulting.com/contact`). Le bouton « Prendre contact » de la carte l'ouvre
+  dans un nouvel onglet. Sans page de contact, il ouvre un e-mail vers l'**E-mail de contact** ;
+  si les deux sont vides, il mène à la page Contact de ce site.
 - **Logo** : affiché en haut à droite de la carte, à côté du nom, sur une pastille blanche (lisible en thème clair comme en thème sombre), sans être recadré. Préférer une
   image au fond transparent ou blanc (PNG ou WebP).
 - Décocher **Activité visible** masque immédiatement une activité du site sans la supprimer.

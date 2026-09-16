@@ -99,6 +99,20 @@ export const Businesses: CollectionConfig = {
       },
     },
     {
+      name: 'contactUrl',
+      type: 'text',
+      label: tr('Page de contact', 'Kontaktseite', 'Contact page'),
+      validate: websiteValidation,
+      hooks: { beforeChange: [({ value }) => (value ? websiteUrl(value) || value : value)] },
+      admin: {
+        description: tr(
+          'Page de contact du site de l’entreprise, par exemple www.exemple.com/contact. Le bouton « Prendre contact » y mène ; à défaut, il ouvre un e-mail à l’adresse ci-dessous, sinon la page Contact de ce site.',
+          'Kontaktseite der Unternehmenswebsite, z. B. www.beispiel.de/kontakt. Die Schaltfläche „Kontakt aufnehmen“ führt dorthin; sonst öffnet sie eine E-Mail an die Adresse unten, andernfalls die Kontaktseite dieser Website.',
+          'Contact page on the company website, e.g. www.example.com/contact. The “Get in touch” button leads there; otherwise it opens an e-mail to the address below, or else this site’s contact page.',
+        ),
+      },
+    },
+    {
       name: 'contactEmail',
       type: 'email',
       label: tr('E-mail de contact', 'Kontakt-E-Mail', 'Contact e-mail'),

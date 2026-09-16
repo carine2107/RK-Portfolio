@@ -10,6 +10,7 @@ import * as migration_20260914_154535_engagement_topics from './20260914_154535_
 import * as migration_20260914_173556_contact_qualification from './20260914_173556_contact_qualification'
 import * as migration_20260915_134311_book_order from './20260915_134311_book_order'
 import * as migration_20260916_144007_home_hero_gallery from './20260916_144007_home_hero_gallery'
+import * as migration_20260916_191523_business_contact_url from './20260916_191523_business_contact_url'
 
 export const migrations = [
   {
@@ -71,5 +72,10 @@ export const migrations = [
     up: migration_20260916_144007_home_hero_gallery.up,
     down: migration_20260916_144007_home_hero_gallery.down,
     name: '20260916_144007_home_hero_gallery',
+  },
+  {
+    up: migration_20260916_191523_business_contact_url.up,
+    down: migration_20260916_191523_business_contact_url.down,
+    name: '20260916_191523_business_contact_url',
   },
 ]

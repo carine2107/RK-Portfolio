@@ -232,6 +232,7 @@ export type BusinessView = {
   field: string
   audience: string
   website: string
+  contactUrl: string
   contactEmail: string
   logo: ImageView
   isPlaceholder: boolean

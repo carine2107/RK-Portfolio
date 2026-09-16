@@ -186,11 +186,11 @@ Clics mesurés par l'événement `campaign_cta_click`.
 ### `businesses` — Écosystème entrepreneurial
 
 `name`_, `slug`_, `tagline`, `description`\*, `valueProposition`, `field`,
-`audience`, `website`, `contactEmail`, `logo`, `active`, `order`,
+`audience`, `website`, `contactUrl`, `contactEmail`, `logo`, `active`, `order`,
 `isPlaceholder`, `seo`. `active: false` masque l'activité sans la supprimer.
 `website` accepte une adresse sans schéma (`www.exemple.com`) : elle est enregistrée avec
 `https://` et normalisée aussi à l'affichage (`websiteUrl`, `src/lib/url.ts` ; http et https
-seulement). `logo` s'affiche en haut à droite de la carte, à côté du nom, sur une pastille blanche dans les deux thèmes, sans recadrage.
+seulement ; même traitement pour `contactUrl`). Bouton « Prendre contact » : `contactUrl` (nouvel onglet), sinon `mailto:` vers `contactEmail`, sinon `/contact` du site. `logo` s'affiche en haut à droite de la carte, à côté du nom, sur une pastille blanche dans les deux thèmes, sans recadrage.
 
 ### `engagements` — Conférences & médias
 

@@ -931,9 +931,13 @@ export interface Business {
   field?: string | null;
   audience?: string | null;
   /**
-   * Full URL, or leave empty.
+   * For example www.example.com (https:// is added automatically), or leave empty.
    */
   website?: string | null;
+  /**
+   * Contact page on the company website, e.g. www.example.com/contact. The “Get in touch” button leads there; otherwise it opens an e-mail to the address below, or else this site’s contact page.
+   */
+  contactUrl?: string | null;
   contactEmail?: string | null;
   logo?: (number | null) | Media;
   /**
@@ -2288,6 +2292,7 @@ export interface BusinessesSelect<T extends boolean = true> {
   field?: T;
   audience?: T;
   website?: T;
+  contactUrl?: T;
   contactEmail?: T;
   logo?: T;
   active?: T;

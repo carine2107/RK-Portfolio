@@ -292,13 +292,34 @@ export async function BusinessCard({
             <Icon name="external" className="size-4" />
           </ExternalLink>
         ) : null}
-        <Link
-          href="/contact"
-          className="inline-flex items-center gap-2 font-medium text-primary underline-offset-4 hover:underline"
-        >
-          {t('cta')}
-          <Icon name="arrow" className="size-4" />
-        </Link>
+        {/* The company's own contact page, then its e-mail, then this site's contact page. */}
+        {business.contactUrl ? (
+          <ExternalLink
+            href={business.contactUrl}
+            event="business_click"
+            payload={{ business: business.slug, link: 'contact' }}
+            className="inline-flex items-center gap-2 font-medium text-primary underline-offset-4 hover:underline"
+          >
+            {t('cta')}
+            <Icon name="external" className="size-4" />
+          </ExternalLink>
+        ) : business.contactEmail ? (
+          <a
+            href={`mailto:${business.contactEmail}`}
+            className="inline-flex items-center gap-2 font-medium text-primary underline-offset-4 hover:underline"
+          >
+            {t('cta')}
+            <Icon name="arrow" className="size-4" />
+          </a>
+        ) : (
+          <Link
+            href="/contact"
+            className="inline-flex items-center gap-2 font-medium text-primary underline-offset-4 hover:underline"
+          >
+            {t('cta')}
+            <Icon name="arrow" className="size-4" />
+          </Link>
+        )}
       </div>
     </Card>
   )
