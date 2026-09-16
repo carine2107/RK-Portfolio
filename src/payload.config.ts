@@ -75,6 +75,8 @@ export default buildConfig({
         Logo: '/payload/components/AdminGraphics#AdminLogo',
         Icon: '/payload/components/AdminGraphics#AdminIcon',
       },
+      // Counters of new contact requests and newsletter subscribers in the navigation.
+      afterNavLinks: ['/payload/components/NavBadges#NavBadges'],
     },
     meta: {
       titleSuffix: ' · RK CMS',

@@ -138,6 +138,11 @@ newsletter** (colonne de droite), puis publier.
 **Administration → Abonnés newsletter** : liste des adresses avec leur langue et
 leur statut (_En attente de confirmation_, _Confirmé_, _Désinscrit_).
 
+- **Pastille orange dans le menu** : le nombre à côté de _Abonnés newsletter_
+  compte les nouvelles inscriptions depuis votre dernière ouverture de la liste
+  (propre à chaque compte). Ouvrir la liste la remet à zéro. Le compteur se met à
+  jour toutes les minutes.
+
 - Pour retirer une adresse sur demande : passer son statut à **Désinscrit**, ou la
   supprimer (rôle Administrator).
 - Chaque e-mail contient un lien de désinscription ; les messageries (Gmail, Outlook,
@@ -552,6 +557,10 @@ l'organisation, l'e-mail, le pays, le type de demande, le sujet, le message, la
 langue et l'horodatage du consentement.
 
 - **Statut** : Nouvelle → En cours → Répondue → Archivée.
+- **Pastille orange dans le menu** : le nombre à côté de _Demandes de contact_
+  indique les demandes encore au statut **Nouvelle** (mis à jour toutes les
+  minutes). Passer une demande à _En cours_, _Répondue_ ou _Archivée_ la retire du
+  compteur.
 - **Notification envoyée** indique si la notification a réellement pu être envoyée.
 - Répondre depuis sa messagerie habituelle (l'e-mail de notification a le
   visiteur en `Reply-To`).

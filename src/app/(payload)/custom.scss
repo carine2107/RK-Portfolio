@@ -151,3 +151,28 @@
 .rk-sheets__text {
   margin: 0 0 calc(var(--base) / 2);
 }
+
+/*
+ * Counters in the navigation (NavBadges.tsx): new contact requests and new
+ * newsletter subscribers, set as an attribute on the existing links.
+ */
+.nav__link[data-rk-badge] {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--base) / 2);
+}
+
+.nav__link[data-rk-badge]::after {
+  content: attr(data-rk-badge);
+  margin-left: auto;
+  min-width: 1.35rem;
+  height: 1.35rem;
+  padding: 0 0.4rem;
+  border-radius: 999px;
+  background: #f59e0b;
+  color: #1a1206;
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1.35rem;
+  text-align: center;
+}
