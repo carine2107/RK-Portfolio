@@ -311,7 +311,8 @@ manquent), `vatRate` (TVA incluse dans les prix, 0–30 %), `notificationEmail`.
 
 ### `home-page`
 
-`heroEyebrow`, `heroValueProposition`, `heroPortrait`, `heroKeyPoints[]`,
+`heroEyebrow`, `heroValueProposition`, `heroPortrait`, `heroGallery` (médias, 12 au plus :
+après `heroPortrait`, diaporama du hero via `PortraitSlideshow`), `heroKeyPoints[]`,
 `expertiseIntro`, `experienceIntro`, `ecosystemIntro`, `finalCtaTitle`,
 `finalCtaBody`, `seo`.
 

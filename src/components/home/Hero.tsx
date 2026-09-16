@@ -5,7 +5,7 @@ import { CtaLink } from '@/components/ui/CtaLink'
 import { buttonClasses } from '@/components/ui/Button'
 import { ExpertProfileButton } from '@/components/ui/ExpertProfileButton'
 import { Icon } from '@/components/ui/Icon'
-import { Portrait } from '@/components/ui/Portrait'
+import { PortraitSlideshow } from '@/components/ui/PortraitSlideshow'
 import { Link } from '@/i18n/navigation'
 import type { AppearanceView, HomeContentView, SiteSettingsView } from '@/lib/types'
 
@@ -107,8 +107,10 @@ export async function Hero({
         </div>
 
         <div className="lg:col-span-5">
-          <Portrait
-            image={content.heroPortrait}
+          <PortraitSlideshow
+            images={[content.heroPortrait, ...content.heroGallery].filter(
+              (image): image is NonNullable<typeof image> => image !== null,
+            )}
             alt={t('portraitAlt')}
             placeholderLabel={t('portraitPlaceholder')}
             priority

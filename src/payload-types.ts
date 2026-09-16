@@ -3060,6 +3060,10 @@ export interface HomePage {
    */
   heroPortrait?: (number | null) | Media;
   /**
+   * Optional. As soon as a photo is added here, the hero photograph and then these photos play in this order at the top of the home page. Drag and drop to reorder.
+   */
+  heroGallery?: (number | Media)[] | null;
+  /**
    * Short factual markers (e.g. "Languages — FR / EN / DE"). Never invent figures.
    */
   heroKeyPoints?:
@@ -3288,6 +3292,7 @@ export interface HomePageSelect<T extends boolean = true> {
   heroEyebrow?: T;
   heroValueProposition?: T;
   heroPortrait?: T;
+  heroGallery?: T;
   heroKeyPoints?:
     | T
     | {

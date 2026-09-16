@@ -104,7 +104,16 @@
       "eyebrow": "Europe · Africa · International",
       "valueProposition": "I help organisations, SMEs and investors understand their numbers, structure their projects and build businesses that last.",
       "portraitAlt": "Professional portrait of Romial Kenmogne",
-      "portraitPlaceholder": "Professional photograph to be supplied"
+      "portraitPlaceholder": "Professional photograph to be supplied",
+      "slideshow": {
+        "label": "Photos of Romial Kenmogne",
+        "previous": "Previous photo",
+        "next": "Next photo",
+        "goTo": "Show photo {index} of {count}",
+        "pause": "Pause the slideshow",
+        "play": "Resume the slideshow",
+        "position": "Photo {index} of {count}"
+      }
     },
     "expertise": {
       "eyebrow": "Core expertise",

@@ -286,6 +286,8 @@ export type HomeContentView = {
   heroEyebrow: string
   heroValueProposition: string
   heroPortrait: ImageView
+  /** Further photographs shown after the hero photograph in a slideshow. */
+  heroGallery: NonNullable<ImageView>[]
   heroKeyPoints: { label: string; value: string }[]
   expertiseIntro: string
   experienceIntro: string

@@ -65,6 +65,25 @@ export const HomePage: GlobalConfig = {
               },
             },
             {
+              name: 'heroGallery',
+              type: 'upload',
+              relationTo: 'media',
+              hasMany: true,
+              maxRows: 12,
+              label: tr(
+                'Autres photos du hero (diaporama)',
+                'Weitere Hero-Fotos (Diashow)',
+                'More hero photos (slideshow)',
+              ),
+              admin: {
+                description: tr(
+                  'Facultatif. Dès qu’une photo est ajoutée ici, la photographie du hero puis ces photos défilent, dans cet ordre, en haut de la page d’accueil. Glisser-déposer pour changer l’ordre.',
+                  'Optional. Sobald hier ein Foto hinzugefügt wird, laufen das Hero-Foto und dann diese Fotos in dieser Reihenfolge oben auf der Startseite durch. Reihenfolge per Drag-and-drop ändern.',
+                  'Optional. As soon as a photo is added here, the hero photograph and then these photos play in this order at the top of the home page. Drag and drop to reorder.',
+                ),
+              },
+            },
+            {
               name: 'heroKeyPoints',
               type: 'array',
               localized: true,

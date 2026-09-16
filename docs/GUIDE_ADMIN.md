@@ -382,6 +382,17 @@ sauvegarder. Le cahier des charges recommande **LinkedIn en priorité**.
 **Pages → Page d’accueil** : accroche, proposition de valeur, photo du hero, points
 clés, textes d'introduction des sections, appel à l'action final.
 
+**Diaporama de la page d'accueil** : pour faire défiler plusieurs photos en haut de la
+page d'accueil, garder la **Photographie du hero** (première photo), puis ajouter les
+autres dans **Autres photos du hero (diaporama)** (_Choisir parmi les existant(e)s_ ou
+_Créer un(e) nouveau ou nouvelle_, jusqu'à 12 photos) et sauvegarder. L'ordre se
+change par glisser-déposer. Sur le site, les photos défilent en fondu toutes les
+6 secondes, avec des boutons précédent / suivant / pause et des points de navigation ;
+le défilement s'arrête pendant la navigation au clavier et pour les visiteurs qui ont
+réduit les animations dans leur système. Sans autre photo, seule la photographie du
+hero s'affiche, comme avant. Format conseillé : portrait (4:5), comme la photo du hero,
+avec un **texte alternatif** renseigné dans la médiathèque.
+
 **Pages → Page À propos** : biographie exécutive, parcours, vision Europe–Afrique,
 valeurs, langues, régions.
 

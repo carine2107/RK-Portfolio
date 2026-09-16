@@ -104,7 +104,16 @@
       "eyebrow": "Europe · Afrique · International",
       "valueProposition": "J’aide les organisations, les PME et les investisseurs à comprendre leurs chiffres, structurer leurs projets et bâtir des entreprises durables.",
       "portraitAlt": "Portrait professionnel de Romial Kenmogne",
-      "portraitPlaceholder": "Photographie professionnelle à fournir"
+      "portraitPlaceholder": "Photographie professionnelle à fournir",
+      "slideshow": {
+        "label": "Photos de Romial Kenmogne",
+        "previous": "Photo précédente",
+        "next": "Photo suivante",
+        "goTo": "Afficher la photo {index} sur {count}",
+        "pause": "Mettre le diaporama en pause",
+        "play": "Reprendre le diaporama",
+        "position": "Photo {index} sur {count}"
+      }
     },
     "expertise": {
       "eyebrow": "Expertises clés",

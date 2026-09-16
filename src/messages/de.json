@@ -104,7 +104,16 @@
       "eyebrow": "Europa · Afrika · International",
       "valueProposition": "Ich unterstütze Organisationen, KMU und Investoren dabei, ihre Zahlen zu verstehen, Projekte zu strukturieren und tragfähige Unternehmen aufzubauen.",
       "portraitAlt": "Professionelles Porträt von Romial Kenmogne",
-      "portraitPlaceholder": "Professionelle Fotografie ausstehend"
+      "portraitPlaceholder": "Professionelle Fotografie ausstehend",
+      "slideshow": {
+        "label": "Fotos von Romial Kenmogne",
+        "previous": "Vorheriges Foto",
+        "next": "Nächstes Foto",
+        "goTo": "Foto {index} von {count} anzeigen",
+        "pause": "Diashow anhalten",
+        "play": "Diashow fortsetzen",
+        "position": "Foto {index} von {count}"
+      }
     },
     "expertise": {
       "eyebrow": "Kernkompetenzen",

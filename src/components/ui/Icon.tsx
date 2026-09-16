@@ -1,6 +1,7 @@
 type IconName =
   | 'plus'
   | 'play'
+  | 'pause'
   | 'calendar'
   | 'pin'
   | 'chart'
@@ -106,6 +107,7 @@ const paths: Record<IconName, React.ReactNode> = {
   menu: <path d="M4 7h16M4 12h16M4 17h16" />,
   plus: <path d="M12 5v14M5 12h14" />,
   play: <path d="M7 4.5v15l12.5-7.5L7 4.5Z" />,
+  pause: <path d="M9 5v14M15 5v14" />,
   calendar: (
     <>
       <rect x="3" y="5" width="18" height="16" rx="2" />

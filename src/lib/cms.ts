@@ -583,6 +583,7 @@ const starterHomeContent = (locale: Locale): HomeContentView => ({
   heroEyebrow: pick(starterHome.heroEyebrow, locale),
   heroValueProposition: pick(starterHome.heroValueProposition, locale),
   heroPortrait: null,
+  heroGallery: [],
   heroKeyPoints: starterHome.heroKeyPoints.map((point) => ({
     label: pick(point.label, locale),
     value: pick(point.value, locale),
@@ -608,6 +609,9 @@ export const getHomeContent = cache(
           heroEyebrow: str(doc.heroEyebrow, fallback.heroEyebrow),
           heroValueProposition: str(doc.heroValueProposition, fallback.heroValueProposition),
           heroPortrait: image(doc.heroPortrait, 'portrait'),
+          heroGallery: (Array.isArray(doc.heroGallery) ? doc.heroGallery : [])
+            .map((entry) => image(entry, 'portrait'))
+            .filter((entry): entry is NonNullable<ImageView> => entry !== null),
           heroKeyPoints: keyPoints.length > 0 ? keyPoints : fallback.heroKeyPoints,
           expertiseIntro: str(doc.expertiseIntro),
           experienceIntro: str(doc.experienceIntro),
