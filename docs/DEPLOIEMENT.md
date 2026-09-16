@@ -475,8 +475,8 @@ conservation) retirent aussi les lignes. **Changer ou révoquer la clé** : _Com
 
 ## 13. Checklist de mise en ligne
 
-- [ ] Domaine pointé, HTTPS actif, redirection `http` → `https`
-- [ ] `NEXT_PUBLIC_SITE_URL` correct et build effectué **après** son réglage
+- [x] Domaine pointé, HTTPS actif, redirection `http` → `https` (16/09/2026)
+- [x] `NEXT_PUBLIC_SITE_URL` correct et build effectué **après** son réglage (16/09/2026)
 - [ ] `PAYLOAD_SECRET` unique, `CONTACT_RATE_LIMIT=5`
 - [ ] SMTP configuré, demande de test envoyée et **reçue**
 - [ ] Vente directe (si ouverte) : CGV et retours validés, TVA validée par le comptable, clés live Stripe/PayPal, webhook Stripe actif, achat test réel remboursé ; produits numériques : volume `private` sauvegardé, achat test → e-mail d'accès reçu, connexion et téléchargement vérifiés

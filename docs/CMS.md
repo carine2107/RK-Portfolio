@@ -258,6 +258,15 @@ contre l'injection de formules (`src/lib/csv.ts`, colonnes dans `src/lib/exports
 L'export est journalisé (collection, nombre de lignes, identifiant de l'utilisateur),
 jamais son contenu.
 
+**Pastilles du menu** (`subscribers`, `contact-submissions`) : composant client
+`src/payload/components/NavBadges.tsx` (`admin.components.afterNavLinks`, logique pure dans
+`nav-badges.ts`). Il compte par l'API REST, avec les droits de l'utilisateur connecté, les
+demandes au statut `new` et les abonnés non `unsubscribed` créés après la dernière ouverture
+de leur liste. Cette date est une préférence par utilisateur (`payload-preferences`, clé
+`rk-subscribers-seen`), initialisée à la première visite. Rafraîchi au chargement, à chaque
+navigation et toutes les 60 s ; le chiffre est posé en attribut `data-rk-badge` sur les liens
+`#nav-contact-submissions` et `#nav-subscribers` et affiché par `custom.scss`.
+
 **Google Sheets** (`subscribers`, `contact-submissions`) : hooks `afterChange` /
 `afterDelete` (`src/payload/hooks/sheets.ts`) → `src/lib/google-sheets.ts` (compte de
 service, JWT RS256, API Sheets v4, écriture `RAW`, file d'attente en mémoire, ligne

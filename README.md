@@ -250,7 +250,10 @@ Ce que le site fait réellement aujourd'hui :
 - ✅ Point de santé `/api/health` et suppression automatique des demandes de contact expirées
 - ✅ Tests unitaires et E2E verts
 - ✅ Intégration continue GitHub Actions (`.github/workflows/ci.yml`) : formatage, TypeScript, lint, tests unitaires et build de production à chaque push sur `main` et à chaque pull request, plus les tests end-to-end (Chromium et mobile) sur une base PostgreSQL et un MailHog jetables remplis avec le contenu de départ ; Firefox et WebKit restent lancés en local
-- ✅ Image Docker de production construite après chaque CI verte (`.github/workflows/docker.yml`), publiée sur GHCR dès que la variable de dépôt `NEXT_PUBLIC_SITE_URL` est renseignée ; pas de déploiement automatique tant que l'hébergement n'est pas choisi
+- ✅ Image Docker de production construite après chaque CI verte (`.github/workflows/docker.yml`), publiée sur GHCR puis **déployée automatiquement** sur le serveur (sauvegarde avant mise à jour, retour à l'image précédente si le contrôle de santé échoue)
+- ✅ **En ligne** sur <https://romialkenmogne.com> (VPS, Apache, HTTPS Let's Encrypt), e-mails envoyés par SMTP Titan
+- ✅ Diaporama de photos dans le hero de la page d'accueil (réglable dans le CMS, pause et commandes au clavier, sans défilement si l'utilisateur limite les animations)
+- ✅ Pastilles de notification dans le menu de l'administration : nouvelles demandes de contact et nouveaux abonnés newsletter
 
 Ce qui est **volontairement** inactif, faute d'éléments ou de prestataire :
 
@@ -260,5 +263,6 @@ Ce qui est **volontairement** inactif, faute d'éléments ou de prestataire :
   les clés de paiement ne sont pas configurées et
   que la boutique n'est pas ouverte dans le CMS — le site l'annonce clairement
 - ⛔ Analytics (aucun outil imposé ; activation par variables d'environnement)
-- ⚠️ Contenus marqués « Contenu d'exemple » à remplacer par des informations
-  validées avant la mise en ligne — voir `docs/ELEMENTS_A_FOURNIR.md`
+- ⚠️ Contenus marqués « Contenu d'exemple » et pages légales entre crochets à remplacer
+  par des informations validées avant d'annoncer le site — voir
+  `docs/AUDIT_MISE_EN_LIGNE.md` et `docs/ELEMENTS_A_FOURNIR.md`

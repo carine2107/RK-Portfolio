@@ -4,30 +4,34 @@
 (`npm start`), base de données locale, dépôt GitHub `main`. Audit en lecture seule
 sur les données : aucun contenu n'a été modifié ni supprimé.
 
+**Mise à jour du 16 septembre 2026 (soir) : site en ligne.** Le site tourne sur
+<https://romialkenmogne.com> (VPS, HTTPS, déploiement automatique). Les constats 1.2 à 1.6
+ont été revérifiés **sur le site en ligne**, par son API publique, en lecture seule. Les
+listes privées (comptes, demandes, abonnés, commandes) ne sont pas lisibles sans connexion
+et restent à contrôler dans l'administration.
+
 Légende : 🔴 bloquant pour la mise en ligne · 🟠 important · 🟡 confort · ✅ prêt
 
 ---
 
 ## Synthèse
 
-**Le socle technique est prêt ; le site ne l'est pas encore.** Sécurité, performances,
-référencement, accessibilité, tests automatisés et sauvegardes sont en place et vérifiés.
-Ce qui bloque la mise en ligne relève du **contenu**, des **textes juridiques**, des
-**coordonnées** et de l'**infrastructure** (domaine, hébergement, e-mail), plus le
-remplacement du compte administrateur d'exemple. La mise à jour de sécurité du CMS est
-faite (1.1).
+**Le site est en ligne ; il reste à le finaliser avant de l'annoncer.** Sécurité,
+performances, référencement, accessibilité, tests automatisés, infrastructure et e-mail
+sont en place et vérifiés. Ce qui reste relève du **contenu** (fiches d'exemple, parcours,
+niveaux de langue) et des **textes juridiques**, à compléter par le commanditaire.
 
-| Domaine                           | État                                                                         |
-| --------------------------------- | ---------------------------------------------------------------------------- |
-| Sécurité (en-têtes, API, secrets) | ✅ solide, Payload 3.89 installé · 🔴 compte administrateur à revoir         |
-| Performances                      | ✅ mobile 83 en moyenne, ordinateur 98 – 100 (Lighthouse, 15/09)             |
-| Référencement                     | ✅ sitemap, robots, hreflang, métadonnées, image de partage PNG avec le logo |
-| Accessibilité                     | ✅ WCAG 2.2 AA (axe) sans violation sur les pages auditées                   |
-| Tests                             | ✅ 456 E2E sur 4 navigateurs, CI GitHub verte avec E2E                       |
-| Contenus                          | 🔴 14 contenus d'exemple publiés, dont une conférence « test »               |
-| Textes juridiques                 | 🔴 les 5 pages attendent une validation juridique                            |
-| Coordonnées                       | 🔴 e-mail et adresse vides (Impressum obligatoire)                           |
-| Infrastructure                    | 🔴 domaine, hébergement, HTTPS, SMTP à mettre en place                       |
+| Domaine                           | État                                                                          |
+| --------------------------------- | ----------------------------------------------------------------------------- |
+| Sécurité (en-têtes, API, secrets) | ✅ vérifiée en ligne, Payload 3.89 · 🟠 comptes à contrôler (1.2)             |
+| Performances                      | ✅ mobile 83 en moyenne, ordinateur 98 – 100 (Lighthouse, 15/09)              |
+| Référencement                     | ✅ sitemap (81 adresses en ligne), robots, hreflang, métadonnées              |
+| Accessibilité                     | ✅ WCAG 2.2 AA (axe) sans violation sur les pages auditées                    |
+| Tests                             | ✅ 166 unitaires, 460 E2E sur 4 navigateurs, CI GitHub verte avec E2E         |
+| Contenus                          | 🔴 13 fiches d'exemple en ligne ; parcours et niveaux de langue « à fournir » |
+| Textes juridiques                 | 🔴 12 passages entre crochets dans 4 pages, 5 pages à faire valider           |
+| Coordonnées                       | ✅ e-mail, téléphone et adresse renseignés · 🟠 réseaux sociaux vides         |
+| Infrastructure                    | ✅ domaine, VPS, HTTPS, déploiement automatique, SMTP Titan (DKIM) en service |
 
 ---
 
@@ -56,54 +60,76 @@ ligne ; elle disparaîtra avec une prochaine version de Payload.
 
 Alertes d'origine, pour mémoire (les deux premières lignes sont corrigées).
 
-### 1.2 Compte administrateur d'exemple
+### 1.2 Comptes et données de test (à contrôler dans l'administration)
 
-La base contient **un seul compte**, administrateur, avec une adresse `@example.com`
-(compte créé par le script de démarrage). **Action** : créer le compte définitif avec
-l'adresse réelle et un mot de passe fort, vérifier la connexion, puis supprimer le
-compte d'exemple (checklist `DEPLOIEMENT.md` §13).
+La base en ligne a été remplie par le script de démarrage avec le compte administrateur
+défini sur le serveur, puis utilisée pour des essais. Ces listes sont privées : elles n'ont
+pas été lues pendant l'audit. **Action (commanditaire)** :
 
-### 1.3 Contenus d'exemple encore publiés
+- **Utilisateurs** : ne garder que les comptes réels, mot de passe fort ; supprimer tout
+  compte d'essai ou d'exemple.
+- **Demandes de contact**, **Abonnés newsletter**, **Commandes** : supprimer **une par une**
+  les entrées créées pendant les essais (jamais de suppression en masse).
 
-| Section                   | Publiés | Dont « Contenu d'exemple » | Action                                                         |
-| ------------------------- | ------: | -------------------------: | -------------------------------------------------------------- |
-| Expériences et projets    |       3 |                          3 | Remplacer par les expériences vérifiées ou dépublier           |
-| Articles RK Insights      |       3 |                          3 | Décider : conserver, remplacer ou supprimer                    |
-| Écosystème (activités)    |       5 |                          5 | Descriptions validées des 5 activités                          |
-| Formations et certificats |       2 |                          2 | Intitulés exacts                                               |
-| Conférences & médias      |       1 |                          1 | Fiche **« test »** publiée, en français seulement : la retirer |
-| Domaines d'expertise      |       8 |                          0 | ✅ (relecture DE/EN conseillée)                                |
-| Livres                    |       1 |                          0 | ✅                                                             |
+### 1.3 Contenus d'exemple en ligne
+
+Relevé du site en ligne (16/09/2026, API publique, langue française) :
+
+| Section                   | En ligne | Dont « Contenu d'exemple » | Action                                                                           |
+| ------------------------- | -------: | -------------------------: | -------------------------------------------------------------------------------- |
+| Écosystème (activités)    |        5 |                          5 | Relire les descriptions des 5 activités, puis décocher « Contenu d'exemple »     |
+| Expériences et projets    |        3 |                          3 | Fiches « [… à fournir] » : remplacer par les expériences vérifiées ou supprimer  |
+| Formations et certificats |        2 |                          2 | Fiches « [… à fournir] » : intitulés exacts ou suppression                       |
+| Articles RK Insights      |        3 |                          3 | Décider : conserver, remplacer ou supprimer                                      |
+| Domaines d'expertise      |        8 |                          0 | ✅ (relecture DE/EN conseillée)                                                  |
+| Livres                    |        1 |                          0 | ✅ (prix non renseigné : facultatif, les liens Amazon s'affichent)               |
+| Conférences & médias      |        0 |                          0 | ✅ la fiche « test » de la base locale n'a pas été reprise en ligne              |
+| Médiathèque               |        4 |                          — | ✅ textes alternatifs renseignés ; les deux images de test locales sont absentes |
+
+**Page À propos** (FR, DE, EN) : le **parcours professionnel** commence encore par
+« [Parcours professionnel à fournir.] » et les **3 niveaux de langue** affichent
+« [Niveau] ».
 
 Chaque contenu d'exemple affiche un bandeau « Contenu d'exemple » sur le site public :
-aucun ne doit rester publié le jour de l'ouverture.
-
-**Médiathèque** : deux images de test (« ChatGPT Image 13 août 2026, 09_18_49.webp » et
-« download (17).webp ») ont pour texte alternatif « voila » et « voilawer », en français
-seulement. **Action** : les supprimer si elles ne servent pas, sinon leur donner un vrai
-texte alternatif dans les trois langues (lu par les lecteurs d'écran et les moteurs de
-recherche).
+aucun ne doit rester publié le jour de l'annonce.
 
 ### 1.4 Textes juridiques
 
-Les **5 pages légales** (Impressum, confidentialité, cookies, CGV, livraison et retours)
-portent toutes la case « à faire valider par un juriste » : bandeau visible, `noindex`,
-exclues du sitemap. **Action** : compléter (dénomination, siège, registre, TVA,
-responsable de traitement, durées de conservation, prestataires), faire valider, puis
-décocher la case.
+Les **5 pages légales** portent toujours la case « à faire valider par un juriste »
+(bandeau visible, `noindex`, exclues du sitemap). Passages entre crochets relevés en
+français :
 
-### 1.5 Coordonnées professionnelles
+| Page                         | Passages à compléter | Contenu attendu                                                                                          |
+| ---------------------------- | -------------------: | -------------------------------------------------------------------------------------------------------- |
+| Impressum / Mentions légales |                    4 | Raison sociale, siège, registre, TVA ; responsable de publication ; e-mail et téléphone ; hébergeur      |
+| Politique de confidentialité |                    4 | Responsable de traitement ; passage « à valider » ; prestataire e-mail (Titan) ; adresse pour les droits |
+| Conditions générales         |                    3 | Texte à rédiger et à valider juridiquement                                                               |
+| Politique de cookies         |                    1 | Outils réellement utilisés (aucun outil de mesure activé aujourd'hui)                                    |
+| Livraison et retours         |                    0 | Validation juridique seulement                                                                           |
 
-Dans **Réglages du site** : **e-mail publié vide**, **adresse vide dans les trois langues**
-(le pied de page affiche « Adresse professionnelle à compléter »), téléphone vide.
-L'adresse est **obligatoire pour l'Impressum** en Allemagne.
+**Action** : compléter dans les trois langues, faire valider par un professionnel du droit,
+puis décocher la case. L'Impressum et la politique de confidentialité sont obligatoires en
+Allemagne dès que le site est public.
 
-### 1.6 Infrastructure et e-mail
+### 1.5 Coordonnées professionnelles — ✅ renseignées
 
-Domaine, hébergement, HTTPS et compte SMTP ne sont pas encore en place (éléments 1.1 →
-1.5 et 9.1 de `ELEMENTS_A_FOURNIR.md`). Sans SMTP réel, le formulaire enregistre les
-demandes mais n'envoie aucun e-mail, et la newsletter reste masquée. Le jour J, suivre la
-**checklist de mise en ligne** de `DEPLOIEMENT.md` (§13).
+E-mail (`contact@romialkenmogne.com`), téléphone et adresse professionnelle sont
+renseignés dans **Réglages du site**. Restent vides : réseaux sociaux (2.4), documents
+PDF (2.3), lien de rendez-vous (3) et SEO par défaut (titre, description, image : les
+valeurs du site s'appliquent).
+
+### 1.6 Infrastructure et e-mail — ✅ en service
+
+- Domaine `romialkenmogne.com`, VPS Linux, Apache en proxy, certificat Let's Encrypt,
+  redirections `http` → `https` et `www` → domaine nu.
+- Déploiement automatique après chaque CI verte (image GHCR, sauvegarde avant mise à jour,
+  retour automatique à l'image précédente si le contrôle de santé échoue) : voir
+  `DEPLOIEMENT.md` §3.
+- SMTP Titan (`contact@romialkenmogne.com`, port 465, DKIM `titan2`) vérifié depuis le
+  conteneur.
+- **Reste à faire (commanditaire)** : test réel du formulaire de contact et de la newsletter
+  en ligne (réception, dossier spam), contrôle SPF / DKIM / DMARC, sonde de disponibilité
+  sur `/api/health`, puis le reste de la checklist `DEPLOIEMENT.md` §13.
 
 ---
 
@@ -165,10 +191,13 @@ demandes mais n'envoie aucun e-mail, et la newsletter reste masquée. Le jour J,
 
 **Qualité et exploitation**
 
-- 149 tests unitaires, 131 scénarios E2E × 4 navigateurs (456 réussis), intégration continue
+- 166 tests unitaires, 132 scénarios E2E × 4 navigateurs (460 réussis), intégration continue
   GitHub avec E2E sur base jetable.
-- Point de santé `/api/health` (base de données vérifiée), scripts de sauvegarde et de
-  restauration testés, migrations versionnées, image Docker de production.
+- Point de santé `/api/health` (base de données vérifiée, `ok` en ligne), scripts de
+  sauvegarde et de restauration testés, migrations versionnées, image Docker de production,
+  déploiement automatique avec retour arrière.
+- Administration : pastilles de notification pour les nouvelles demandes de contact et les
+  nouveaux abonnés (guide administrateur §5 et §15).
 - Guides administrateur, installation, déploiement et rapport de tests en PDF.
 
 ---
@@ -185,13 +214,14 @@ demandes mais n'envoie aucun e-mail, et la newsletter reste masquée. Le jour J,
 
 ## 6. Ordre conseillé
 
-1. **Technique** : ~~mise à jour Payload 3.89 (1.1)~~ faite ; reste le compte
-   administrateur définitif (1.2).
-2. **Contenus (commanditaire)** : retirer la fiche « test », remplacer ou dépublier les
-   contenus d'exemple (1.3), coordonnées (1.5), réseaux sociaux et PDF
-   (2.2 → 2.4).
-3. **Juridique (commanditaire + juriste)** : 5 pages légales (1.4) ; décocher la boutique
-   tant que la vente directe n'est pas prête (2.1).
-4. **Infrastructure** : domaine, hébergement, HTTPS, SMTP avec SPF/DKIM/DMARC (1.6).
-5. **Jour J** : checklist `DEPLOIEMENT.md` §13, Lighthouse sur le domaine final, soumission
-   du sitemap à la Search Console.
+1. ~~**Technique** : mise à jour Payload 3.89 (1.1)~~ faite ; ~~**Infrastructure** : domaine,
+   hébergement, HTTPS, SMTP (1.6)~~ faite ; ~~coordonnées (1.5)~~ renseignées.
+2. **Juridique (commanditaire + juriste)** : compléter et faire valider les pages légales
+   (1.4), en priorité l'Impressum et la politique de confidentialité ; boutique fermée tant
+   que la vente directe n'est pas prête (2.1).
+3. **Contenus (commanditaire)** : parcours et niveaux de langue de la page À propos,
+   remplacer ou supprimer les 13 fiches d'exemple (1.3), réseaux sociaux et PDF (2.3, 2.4).
+4. **Nettoyage (commanditaire)** : comptes et données de test, une entrée à la fois (1.2).
+5. **Avant l'annonce** : tests réels des e-mails, SPF / DKIM / DMARC, reste de la checklist
+   `DEPLOIEMENT.md` §13, Lighthouse sur le domaine final, soumission du sitemap à la
+   Search Console.

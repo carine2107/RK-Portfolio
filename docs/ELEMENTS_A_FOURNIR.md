@@ -1,8 +1,8 @@
 # Éléments à fournir par le commanditaire
 
-**Mise à jour : 15 septembre 2026.**
+**Mise à jour : 16 septembre 2026.** Le site est **en ligne** sur <https://romialkenmogne.com>.
 
-Le site est **fonctionnel et déployable en l'état**. Les éléments ci-dessous ne
+Le site est **en ligne et fonctionnel**. Les éléments ci-dessous ne
 bloquent pas l'architecture : ils remplacent des contenus explicitement marqués
 « Contenu d'exemple » ou activent des fonctions volontairement inactives.
 
@@ -27,13 +27,13 @@ de [`DEPLOIEMENT.md`](DEPLOIEMENT.md) (section 13).
 
 ## 1. Domaine, hébergement, comptes
 
-| #   | Élément                                                                                           | Priorité | Où l'utiliser                           |
-| --- | ------------------------------------------------------------------------------------------------- | -------- | --------------------------------------- |
-| 1.1 | ✅ **Nom de domaine** : `romialkenmogne.com` (confirmé le 16/09/2026 ; DNS à pointer vers le VPS) | —        | `NEXT_PUBLIC_SITE_URL`, DNS             |
-| 1.2 | **Hébergement** (VPS ou plateforme Node avec volume persistant)                                   | 🔴       | Voir [`DEPLOIEMENT.md`](DEPLOIEMENT.md) |
-| 1.3 | Certificat HTTPS (Let's Encrypt suffit)                                                           | 🔴       | Reverse proxy                           |
-| 1.4 | Compte **Google Search Console**                                                                  | 🟠       | Soumission du sitemap                   |
-| 1.5 | Titulaire des comptes (domaine, hébergement, e-mail) **au nom du commanditaire**                  | 🔴       | Propriété et réversibilité              |
+| #   | Élément                                                                                       | Priorité | Où l'utiliser                           |
+| --- | --------------------------------------------------------------------------------------------- | -------- | --------------------------------------- |
+| 1.1 | ✅ **Nom de domaine** : `romialkenmogne.com` (confirmé le 16/09/2026, DNS pointé vers le VPS) | —        | `NEXT_PUBLIC_SITE_URL`, DNS             |
+| 1.2 | ✅ **Hébergement** : VPS Linux du commanditaire, déploiement automatique (16/09/2026)         | —        | Voir [`DEPLOIEMENT.md`](DEPLOIEMENT.md) |
+| 1.3 | ✅ Certificat HTTPS Let's Encrypt (16/09/2026)                                                | —        | Reverse proxy                           |
+| 1.4 | Compte **Google Search Console**                                                              | 🟠       | Soumission du sitemap                   |
+| 1.5 | Titulaire des comptes (domaine, hébergement, e-mail) **au nom du commanditaire**              | 🔴       | Propriété et réversibilité              |
 
 ## 2. Identité visuelle et médias
 
@@ -100,10 +100,10 @@ n'est simulé. Ils s'ouvrent quand les éléments ci-dessous sont réunis et que
 
 | #   | Élément                                                                                             | Priorité |
 | --- | --------------------------------------------------------------------------------------------------- | -------- |
-| 7.1 | **E-mail professionnel publiable**                                                                  | 🔴       |
-| 7.2 | Téléphone professionnel (facultatif)                                                                | 🟡       |
-| 7.3 | **Adresse professionnelle** (obligatoire pour l'Impressum)                                          | 🔴       |
-| 7.4 | Adresse de réception des demandes du formulaire                                                     | 🔴       |
+| 7.1 | ✅ **E-mail professionnel publiable** : `contact@romialkenmogne.com`                                | —        |
+| 7.2 | ✅ Téléphone professionnel                                                                          | —        |
+| 7.3 | ✅ **Adresse professionnelle** (Worms) — à reprendre aussi dans l'Impressum (8.1)                   | —        |
+| 7.4 | ✅ Adresse de réception des demandes : même boîte que l'expéditeur                                  | —        |
 | 7.5 | Profils sociaux à afficher (LinkedIn en priorité)                                                   | 🟠       |
 | 7.6 | Lien de la page de **prise de rendez-vous** (Cal.com, Calendly, Google Agenda, Microsoft Bookings…) | 🟡       |
 
@@ -125,7 +125,7 @@ n'est simulé. Ils s'ouvrent quand les éléments ci-dessous sont réunis et que
 
 | #   | Élément                                                                                                                               | Priorité                            |
 | --- | ------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------- |
-| 9.1 | **Compte SMTP** (hôte, port, identifiants, adresse d'expédition autorisée)                                                            | 🔴                                  |
+| 9.1 | ✅ **Compte SMTP** : Titan, `contact@romialkenmogne.com`, connexion vérifiée le 16/09/2026 ; test réel du formulaire à faire          | —                                   |
 | 9.2 | Enregistrements SPF / DKIM / DMARC du domaine                                                                                         | 🟠                                  |
 | 9.3 | Choix de l'outil **analytics** : Umami / Plausible (sans cookie) ou **Google Analytics 4** (identifiant `G-…`, compte Google gratuit) | 🟡                                  |
 | 9.4 | Si Google Analytics : **politique de cookies et de confidentialité** complétées et validées (la bannière de consentement est fournie) | 🔴 avant d'activer Google Analytics |
@@ -171,13 +171,13 @@ Mailchimp…). L'export CSV permet déjà d'importer les abonnés et les demande
 
 ## Récapitulatif : le strict minimum pour la mise en ligne
 
-1. Domaine + hébergement + HTTPS (1.1 → 1.3) et comptes au nom du commanditaire (1.5)
+1. ~~Domaine + hébergement + HTTPS (1.1 → 1.3)~~ fait ; comptes au nom du commanditaire (1.5)
 2. Parcours, expériences et formations validés (3.2, 3.3, 3.5)
 3. International Expert Profile (3.6)
 4. Descriptions des 5 activités (3.9)
 5. Décision sur les 3 articles d'exemple (4.2)
-6. Coordonnées professionnelles (7.1, 7.3, 7.4)
+6. ~~Coordonnées professionnelles (7.1, 7.3, 7.4)~~ renseignées
 7. Textes juridiques validés (8.1 → 8.3, 8.5)
-8. Compte SMTP et test d'envoi réel (9.1)
+8. ~~Compte SMTP (9.1)~~ configuré ; reste le test d'envoi réel (formulaire et newsletter)
 9. Suppression ou remplacement de tous les « Contenus d'exemple »
 10. Checklist technique de [`DEPLOIEMENT.md`](DEPLOIEMENT.md) (section 13) cochée le jour de l'ouverture
