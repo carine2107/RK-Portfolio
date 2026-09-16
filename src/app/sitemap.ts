@@ -94,7 +94,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       const paths: Partial<Record<Locale, string>> = {}
       for (const locale of locales) {
         const match = byLocale.get(locale)?.find((item) => item.id === entry.id)
-        if (match) paths[locale] = `${collection.prefix}/${match.slug}`
+        // An entry not translated in this language has no slug there: no URL for it.
+        if (match?.slug) paths[locale] = `${collection.prefix}/${match.slug}`
       }
       for (const locale of locales) {
         const path = paths[locale]

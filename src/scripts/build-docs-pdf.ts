@@ -81,6 +81,13 @@ export const DOCUMENTS: DocumentSpec[] = [
     title: 'Rapport de tests',
     subtitle: 'Tests automatisés, contrôles manuels et recette visuelle',
   },
+  {
+    source: 'docs/AUDIT_MISE_EN_LIGNE.md',
+    output: 'Audit_mise_en_ligne.pdf',
+    eyebrow: 'Mise en ligne',
+    title: 'Audit avant mise en ligne',
+    subtitle: 'Bloquants, points importants et état de préparation du site',
+  },
 ]
 
 const root = process.cwd()

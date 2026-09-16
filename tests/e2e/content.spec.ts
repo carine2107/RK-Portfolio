@@ -87,6 +87,10 @@ test.describe('legal pages and downloads', () => {
     const body = await sitemap.text()
     expect(body).toContain('/en/expertise')
     expect(body).toContain('hreflang')
+    // An entry not translated in a language must not produce an empty detail URL.
+    expect(body).not.toMatch(
+      /<loc>[^<]+\/(expertise|experience|insights|books|speaking|products|campaigns)\/<\/loc>/,
+    )
 
     const robots = await request.get('/robots.txt')
     expect(robots.status()).toBe(200)
