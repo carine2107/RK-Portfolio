@@ -251,6 +251,23 @@ export const getSiteSettings = cache(
     ),
 )
 
+/**
+ * Private inbox for contact requests ("Contact requests recipient" in Site
+ * settings), '' when not set. Server-only: never part of SiteSettingsView, and
+ * the field is not readable through the public API.
+ */
+export async function getContactNotificationEmail(): Promise<string> {
+  return withCms(
+    async (cms) => {
+      const doc = asDoc(
+        await cms.findGlobal({ slug: 'site-settings', depth: 0, overrideAccess: true }),
+      )
+      return str(doc.notificationEmail)
+    },
+    () => '',
+  )
+}
+
 /* -------------------------------------------------------------------------- */
 /* Appearance                                                                 */
 /* -------------------------------------------------------------------------- */

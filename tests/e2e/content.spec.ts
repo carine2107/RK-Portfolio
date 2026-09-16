@@ -111,6 +111,16 @@ test.describe('legal pages and downloads', () => {
     ])
   })
 
+  test('the public CMS API keeps private data out', async ({ request }) => {
+    for (const collection of ['users', 'contact-submissions', 'orders', 'subscribers', 'members']) {
+      const response = await request.get(`/api/cms/${collection}?limit=1`)
+      expect(response.status(), collection).toBe(403)
+    }
+    const settings = await request.get('/api/cms/globals/site-settings?depth=0')
+    expect(settings.status()).toBe(200)
+    expect(await settings.json()).not.toHaveProperty('notificationEmail')
+  })
+
   test('the CMS admin is not indexable', async ({ request }) => {
     const response = await request.get('/admin')
     expect(response.headers()['x-robots-tag']).toContain('noindex')

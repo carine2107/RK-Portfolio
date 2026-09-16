@@ -2,7 +2,7 @@ import { createHash } from 'crypto'
 import { NextResponse } from 'next/server'
 
 import { isLocale, defaultLocale } from '@/i18n/routing'
-import { getCms, getSiteSettings } from '@/lib/cms'
+import { getCms, getContactNotificationEmail, getSiteSettings } from '@/lib/cms'
 import { contactSchema, toFieldErrors, type ContactResponse } from '@/lib/contact-schema'
 import { countryOptions } from '@/lib/countries'
 import { sendContactEmails } from '@/lib/email'
@@ -101,7 +101,8 @@ export async function POST(request: Request): Promise<NextResponse<ContactRespon
   }
 
   const settings = await getSiteSettings(locale)
-  const recipient = emailConfig.to || settings.email || ''
+  // Site settings first, then EMAIL_TO, then the published address.
+  const recipient = (await getContactNotificationEmail()) || emailConfig.to || settings.email || ''
 
   const emailSent = await sendContactEmails(
     {

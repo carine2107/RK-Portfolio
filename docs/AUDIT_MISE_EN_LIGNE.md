@@ -13,30 +13,38 @@ Légende : 🔴 bloquant pour la mise en ligne · 🟠 important · 🟡 confort
 **Le socle technique est prêt ; le site ne l'est pas encore.** Sécurité, performances,
 référencement, accessibilité, tests automatisés et sauvegardes sont en place et vérifiés.
 Ce qui bloque la mise en ligne relève du **contenu**, des **textes juridiques**, des
-**coordonnées** et de l'**infrastructure** (domaine, hébergement, e-mail), plus une mise à
-jour de sécurité du CMS et le remplacement du compte administrateur d'exemple.
+**coordonnées** et de l'**infrastructure** (domaine, hébergement, e-mail), plus le
+remplacement du compte administrateur d'exemple. La mise à jour de sécurité du CMS est
+faite (1.1).
 
-| Domaine                           | État                                                                      |
-| --------------------------------- | ------------------------------------------------------------------------- |
-| Sécurité (en-têtes, API, secrets) | ✅ solide · 🔴 mise à jour Payload 3.89 et compte administrateur à revoir |
-| Performances                      | ✅ mobile 83 en moyenne, ordinateur 98 – 100 (Lighthouse, 15/09)          |
-| Référencement                     | ✅ sitemap, robots, hreflang, métadonnées · 🟠 image de partage en SVG    |
-| Accessibilité                     | ✅ WCAG 2.2 AA (axe) sans violation sur les pages auditées                |
-| Tests                             | ✅ 456 E2E sur 4 navigateurs, CI GitHub verte avec E2E                    |
-| Contenus                          | 🔴 14 contenus d'exemple publiés, dont une conférence « test »            |
-| Textes juridiques                 | 🔴 les 5 pages attendent une validation juridique                         |
-| Coordonnées                       | 🔴 e-mail et adresse vides (Impressum obligatoire)                        |
-| Infrastructure                    | 🔴 domaine, hébergement, HTTPS, SMTP à mettre en place                    |
+| Domaine                           | État                                                                   |
+| --------------------------------- | ---------------------------------------------------------------------- |
+| Sécurité (en-têtes, API, secrets) | ✅ solide, Payload 3.89 installé · 🔴 compte administrateur à revoir   |
+| Performances                      | ✅ mobile 83 en moyenne, ordinateur 98 – 100 (Lighthouse, 15/09)       |
+| Référencement                     | ✅ sitemap, robots, hreflang, métadonnées · 🟠 image de partage en SVG |
+| Accessibilité                     | ✅ WCAG 2.2 AA (axe) sans violation sur les pages auditées             |
+| Tests                             | ✅ 456 E2E sur 4 navigateurs, CI GitHub verte avec E2E                 |
+| Contenus                          | 🔴 14 contenus d'exemple publiés, dont une conférence « test »         |
+| Textes juridiques                 | 🔴 les 5 pages attendent une validation juridique                      |
+| Coordonnées                       | 🔴 e-mail et adresse vides (Impressum obligatoire)                     |
+| Infrastructure                    | 🔴 domaine, hébergement, HTTPS, SMTP à mettre en place                 |
 
 ---
 
 ## 1. Bloquants 🔴
 
-### 1.1 Mise à jour de sécurité du CMS (technique)
+### 1.1 Mise à jour de sécurité du CMS (technique) — ✅ faite le 16/09/2026
 
 `npm audit` sur les dépendances de production : **13 alertes** (12 modérées, 1 faible,
-aucune élevée ou critique), toutes corrigées par **Payload 3.89.0** (version installée :
-3.88).
+aucune élevée ou critique) avec Payload 3.88.
+
+**Fait** : Payload et ses paquets passés en **3.89.0**, DOMPurify forcé en **3.4.15**
+(`overrides` du `package.json` : l'éditeur de code de l'administration l'imposait en
+3.4.8). Aucune migration de base nécessaire. Vérifié : TypeScript, lint, 149 tests
+unitaires, build, page de connexion de l'administration, 456 tests E2E sur 4 navigateurs.
+**Reste 5 alertes modérées**, toutes la même faille d'esbuild, arrivée par `drizzle-kit`
+(outil de migration) : elle ne touche que le serveur de **développement**, jamais le site en
+ligne ; elle disparaîtra avec une prochaine version de Payload.
 
 | Alerte                                                                                                                 | Portée réelle                                                                                                |
 | ---------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
@@ -46,7 +54,7 @@ aucune élevée ou critique), toutes corrigées par **Payload 3.89.0** (version 
 
 [payload]: https://github.com/advisories/GHSA-jg8r-5jh2-v2xj
 
-**Action** : passer Payload et ses paquets en 3.89.0, puis build, tests E2E et CI.
+Alertes d'origine, pour mémoire (les deux premières lignes sont corrigées).
 
 ### 1.2 Compte administrateur d'exemple
 
@@ -134,8 +142,10 @@ demandes mais n'envoie aucun e-mail, et la newsletter reste masquée. Le jour J,
   `Strict-Transport-Security`, `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`,
   `Referrer-Policy`, `Permissions-Policy`, sans en-tête `X-Powered-By`.
 - Administration en `X-Robots-Tag: noindex, nofollow` et exclue de `robots.txt`.
-- API : collections privées (utilisateurs, demandes de contact, commandes, abonnés,
-  membres) **non accessibles** sans connexion ; bac à sable GraphQL désactivé.
+- API du CMS (`/api/cms`) : sans connexion, les collections privées (utilisateurs, demandes
+  de contact, commandes, abonnés, membres, accès aux produits, fichiers protégés) et les
+  réglages de la boutique répondent **403** ; les contenus publics ne renvoient aucun
+  brouillon ; GraphQL désactivé. Contrôle automatisé dans `content.spec.ts`.
 - `PAYLOAD_SECRET` refusé au démarrage s'il est vide, par défaut ou trop court ; CORS et
   CSRF limités à l'adresse du site.
 - Aucun secret dans le dépôt ; aucun `console.log`, `TODO` ou `FIXME` oublié dans le code.
@@ -163,16 +173,18 @@ demandes mais n'envoie aucun e-mail, et la newsletter reste masquée. Le jour J,
 
 ## 5. Corrigé pendant l'audit
 
-| Constat                                                                                                                                                                              | Correction                                                                                  |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------- |
-| Le sitemap publiait des adresses vides (`/en/speaking/`, `/de/speaking/`) pour un contenu traduit dans une seule langue : un robot aurait suivi une adresse redirigée vers une liste | Une langue n'est plus listée quand le contenu n'y a pas de slug ; variantes `hreflang` idem |
+| Constat                                                                                                                                                                                                             | Correction                                                                                                        |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| Le sitemap publiait des adresses vides (`/en/speaking/`, `/de/speaking/`) pour un contenu traduit dans une seule langue : un robot aurait suivi une adresse redirigée vers une liste                                | Une langue n'est plus listée quand le contenu n'y a pas de slug ; variantes `hreflang` idem                       |
+| L'adresse de **réception des demandes de contact** (Réglages du site) était lisible par tous via `/api/cms/globals/site-settings` ; et le formulaire l'ignorait (envoi à `EMAIL_TO`, contrairement au texte d'aide) | Champ lisible par l'équipe seulement ; le formulaire l'utilise en priorité, puis `EMAIL_TO`, puis l'e-mail publié |
+| Dépendances : 13 alertes (Payload 3.88, DOMPurify 3.4.8)                                                                                                                                                            | Payload 3.89.0 et DOMPurify 3.4.15 ; reste l'alerte esbuild de développement (1.1)                                |
 
 ---
 
 ## 6. Ordre conseillé
 
-1. **Technique (1 à 2 h)** : mise à jour Payload 3.89 (1.1), puis compte administrateur
-   définitif (1.2).
+1. **Technique** : ~~mise à jour Payload 3.89 (1.1)~~ faite ; reste le compte
+   administrateur définitif (1.2).
 2. **Contenus (commanditaire)** : retirer la fiche « test », remplacer ou dépublier les
    contenus d'exemple (1.3), coordonnées (1.5), réseaux sociaux, PDF et image de partage
    (2.2 → 2.4).

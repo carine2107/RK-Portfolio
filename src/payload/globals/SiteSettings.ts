@@ -1,6 +1,6 @@
 import type { GlobalConfig } from 'payload'
 
-import { anyone, isAdmin, isAdminOrEditor } from '../access'
+import { anyone, isAdmin, isAdminOrEditor, isStaffFieldLevel } from '../access'
 import { GROUPS, tr } from '../i18n'
 
 export const SiteSettings: GlobalConfig = {
@@ -146,6 +146,8 @@ export const SiteSettings: GlobalConfig = {
             {
               name: 'notificationEmail',
               type: 'email',
+              // Private inbox: readable by staff only, never through the public API.
+              access: { read: isStaffFieldLevel },
               label: tr(
                 'Réception des demandes de contact',
                 'Empfang der Kontaktanfragen',
