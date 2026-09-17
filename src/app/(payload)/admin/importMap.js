@@ -28,6 +28,7 @@ import { AppearancePreview as AppearancePreview_5b458903790aaf97e98fe43cd6263a3e
 import { AdminIcon as AdminIcon_c810f9cb2a58162fb52e987f16590396 } from '../../../payload/components/AdminGraphics'
 import { AdminLogo as AdminLogo_c810f9cb2a58162fb52e987f16590396 } from '../../../payload/components/AdminGraphics'
 import { NavBadges as NavBadges_6986238ee3a7577c49c1b61cf273046c } from '../../../payload/components/NavBadges'
+import { AdminDashboard as AdminDashboard_1e65a7bcc6020fdc3c5a3419eeaef3bf } from '../../../payload/components/AdminDashboard'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 
 /** @type import('payload').ImportMap */
@@ -62,5 +63,6 @@ export const importMap = {
   "/payload/components/AdminGraphics#AdminIcon": AdminIcon_c810f9cb2a58162fb52e987f16590396,
   "/payload/components/AdminGraphics#AdminLogo": AdminLogo_c810f9cb2a58162fb52e987f16590396,
   "/payload/components/NavBadges#NavBadges": NavBadges_6986238ee3a7577c49c1b61cf273046c,
+  "/payload/components/AdminDashboard#AdminDashboard": AdminDashboard_1e65a7bcc6020fdc3c5a3419eeaef3bf,
   "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1
 }

@@ -13,6 +13,22 @@ nécessaire : tout ce qui suit se fait depuis l'interface d'administration.
 2. En haut à droite, le menu du compte permet de changer le mot de passe.
 3. Après cinq tentatives infructueuses, le compte est verrouillé dix minutes.
 
+### Vue d'ensemble (page d'accueil de l'administration)
+
+En haut de la page d'accueil de l'administration, la **Vue d'ensemble** résume l'activité :
+
+- **Nouvelles demandes** : demandes de contact encore au statut « Nouvelle » ;
+- **Prioritaires en attente** : demandes de priorité haute, nouvelles ou en cours (cadre
+  orange s'il y en a) ;
+- **Demandes ce mois-ci**, comparées au mois précédent ;
+- **Abonnés confirmés**, avec les nouveaux du mois et ceux en attente de confirmation ;
+- un graphique des **demandes par mois** (6 derniers mois) et des **types de demande**
+  (90 derniers jours) ;
+- la liste des **5 dernières demandes prioritaires** à traiter.
+
+Chaque chiffre est cliquable et ouvre la liste correspondante, déjà filtrée. Les chiffres
+sont recalculés à chaque ouverture de la page.
+
 ### Rôles
 
 | Rôle                | Peut faire                                                                                                       | Ne peut pas faire                                                   |

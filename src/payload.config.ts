@@ -78,6 +78,8 @@ export default buildConfig({
       },
       // Counters of new contact requests and newsletter subscribers in the navigation.
       afterNavLinks: ['/payload/components/NavBadges#NavBadges'],
+      // Key figures on the admin home page.
+      beforeDashboard: ['/payload/components/AdminDashboard#AdminDashboard'],
     },
     meta: {
       titleSuffix: ' · RK CMS',

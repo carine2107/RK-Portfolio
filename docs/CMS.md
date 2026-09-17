@@ -261,6 +261,14 @@ contre l'injection de formules (`src/lib/csv.ts`, colonnes dans `src/lib/exports
 L'export est journalisé (collection, nombre de lignes, identifiant de l'utilisateur),
 jamais son contenu.
 
+**Vue d'ensemble** (page d'accueil de l'administration) : composant serveur
+`src/payload/components/AdminDashboard.tsx` (`admin.components.beforeDashboard`, calculs purs
+dans `dashboard-stats.ts`). Requêtes `count` / `find` avec les droits de l'utilisateur connecté
+(`overrideAccess: false`) : demandes `new`, priorité `high` en `new` / `inProgress`, demandes
+par mois (6 mois, UTC), par `requestType` (90 jours), abonnés `confirmed` / `pending` et
+confirmés du mois. Liens vers les listes filtrées (`where` dans l'URL). En cas d'erreur, rien
+n'est affiché et l'erreur est journalisée.
+
 **Pastilles du menu** (`subscribers`, `contact-submissions`) : composant client
 `src/payload/components/NavBadges.tsx` (`admin.components.afterNavLinks`, logique pure dans
 `nav-badges.ts`). Il compte par l'API REST, avec les droits de l'utilisateur connecté, les
