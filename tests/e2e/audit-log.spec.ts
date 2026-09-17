@@ -1,13 +1,12 @@
 import { expect, test } from '@playwright/test'
 
+import { adminHeaders, useAdminSession } from './admin-session'
+
 /**
  * Admin audit log on the production build (throwaway CI database): the test
  * signs in, creates, publishes and deletes its own entry, then reads the log.
  */
 test.describe('admin audit log', () => {
-  // Both tests sign in to the same account: parallel sign-ins made a request fail once.
-  test.describe.configure({ mode: 'serial' })
-
   test.skip(
     process.env.E2E_PROD !== '1' ||
       process.env.E2E_CMS_WRITE !== '1' ||
@@ -24,11 +23,7 @@ test.describe('admin audit log', () => {
     test.skip(testInfo.project.name !== 'chromium', 'API check, run once')
     test.setTimeout(90_000)
 
-    const login = await request.post('/api/cms/users/login', {
-      data: { email: process.env.SEED_ADMIN_EMAIL, password: process.env.SEED_ADMIN_PASSWORD },
-    })
-    expect(login.ok()).toBe(true)
-    const headers = { Authorization: `JWT ${(await login.json()).token as string}` }
+    const headers = adminHeaders()
 
     const title = `Audit check ${Date.now()}`
     const created = await request.post('/api/cms/credentials?locale=fr', {
@@ -92,17 +87,16 @@ test.describe('admin audit log', () => {
   })
   test('shows period tabs, filters and days on the audit log screen', async ({
     page,
+    baseURL,
   }, testInfo) => {
     test.skip(testInfo.project.name !== 'chromium', 'Admin screen, checked once')
     test.setTimeout(90_000)
 
-    const login = await page.request.post('/api/cms/users/login', {
-      data: { email: process.env.SEED_ADMIN_EMAIL, password: process.env.SEED_ADMIN_PASSWORD },
-    })
-    expect(login.ok()).toBe(true)
+    await useAdminSession(page, baseURL)
 
     await page.goto('/admin/globals/site-settings')
-    await page.locator('a[href="/admin/collections/audit-logs"]').first().click()
+    // Client-side navigation from another screen (the menu group may be collapsed).
+    await page.locator('#nav-audit-logs').dispatchEvent('click')
     await page.waitForURL(/\/admin\/collections\/audit-logs(\?|$)/)
     const screen = page.locator('.rk-audit')
     await expect(screen).toBeVisible()

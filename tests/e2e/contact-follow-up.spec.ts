@@ -1,5 +1,7 @@
 import { expect, test } from '@playwright/test'
 
+import { adminHeaders } from './admin-session'
+
 const MAILHOG = process.env.E2E_MAILHOG_URL ?? 'http://localhost:8026'
 
 /**
@@ -40,11 +42,7 @@ test.describe('contact request follow-up', () => {
     })
     expect(submitted.status()).toBe(200)
 
-    const login = await request.post('/api/cms/users/login', {
-      data: { email: process.env.SEED_ADMIN_EMAIL, password: process.env.SEED_ADMIN_PASSWORD },
-    })
-    expect(login.ok()).toBe(true)
-    const headers = { Authorization: `JWT ${(await login.json()).token as string}` }
+    const headers = adminHeaders()
 
     const found = await request.get(
       `/api/cms/contact-submissions?where[subject][equals]=${encodeURIComponent(subject)}&depth=0`,
@@ -105,10 +103,7 @@ test.describe('contact request follow-up', () => {
     await page.goto('/en/contact?business=rk-business-consulting')
     await expect(page.locator('#contact-business')).toHaveValue('rk-business-consulting')
 
-    const login = await request.post('/api/cms/users/login', {
-      data: { email: process.env.SEED_ADMIN_EMAIL, password: process.env.SEED_ADMIN_PASSWORD },
-    })
-    const headers = { Authorization: `JWT ${(await login.json()).token as string}` }
+    const headers = adminHeaders()
     const found = await request.get(
       '/api/cms/businesses?where[slug][equals]=rk-business-consulting&locale=en&depth=0',
       { headers },

@@ -593,6 +593,11 @@ Ces vérifications dépendent d'éléments encore absents (voir
   répondait 500 (`DYNAMIC_SERVER_USAGE`) dans l'image de production le 17/09/2026 ; corrigé le
   jour même et vérifié en ligne (résultats FR / EN, aucun résultat en DE, requête trop courte,
   `noindex`). Depuis, chaque nouvelle page est contrôlée sur le site après déploiement.
+- Les tests qui utilisent l'administration partagent **une seule connexion** au compte de test,
+  ouverte au démarrage (`tests/e2e/admin.setup.ts`, `admin-session.ts`) : des connexions
+  simultanées au même compte se remplaçaient l'une l'autre et faisaient échouer un test au hasard
+  (17/09/2026). En production, cela ne concerne que deux connexions au même compte à la même
+  seconde.
 - Les tests visuels ne sont **pas** comparés automatiquement : les captures sont
   destinées à une relecture humaine, afin qu'un changement de design volontaire
   ne fasse pas échouer la chaîne d'intégration.

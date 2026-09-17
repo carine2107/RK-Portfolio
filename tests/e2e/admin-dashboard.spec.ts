@@ -1,5 +1,7 @@
 import { expect, test } from '@playwright/test'
 
+import { useAdminSession } from './admin-session'
+
 /**
  * Admin home overview (AdminDashboard.tsx) on the production build. Needs the
  * seeded admin account of the throwaway CI database.
@@ -13,14 +15,15 @@ test.describe('admin dashboard', () => {
     'Needs the production build and the throwaway CMS database',
   )
 
-  test('shows the key figures and links to filtered lists', async ({ page, browserName }) => {
+  test('shows the key figures and links to filtered lists', async ({
+    page,
+    baseURL,
+    browserName,
+  }) => {
     test.skip(browserName !== 'chromium', 'Admin screen, checked once')
     test.setTimeout(90_000)
 
-    const login = await page.request.post('/api/cms/users/login', {
-      data: { email: process.env.SEED_ADMIN_EMAIL, password: process.env.SEED_ADMIN_PASSWORD },
-    })
-    expect(login.ok()).toBe(true)
+    await useAdminSession(page, baseURL)
 
     await page.goto('/admin')
     const dashboard = page.locator('.rk-dash')

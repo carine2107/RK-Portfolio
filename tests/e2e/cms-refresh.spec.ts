@@ -1,5 +1,7 @@
 import { expect, test } from '@playwright/test'
 
+import { adminHeaders } from './admin-session'
+
 /**
  * Pages are cached for 5 minutes, but a change published in the CMS must show
  * on the site within seconds (src/payload/hooks/revalidate.ts). Writes to the
@@ -19,12 +21,7 @@ test.describe('CMS changes on the public site', () => {
     test.skip(browserName !== 'chromium', 'HTTP check, browser-independent')
     test.setTimeout(90_000)
 
-    const login = await request.post('/api/cms/users/login', {
-      data: { email: process.env.SEED_ADMIN_EMAIL, password: process.env.SEED_ADMIN_PASSWORD },
-    })
-    expect(login.ok()).toBe(true)
-    const { token } = (await login.json()) as { token: string }
-    const headers = { Authorization: `JWT ${token}` }
+    const headers = adminHeaders()
 
     const pageText = async () => (await request.get('/fr/about')).text()
     // Warm the cache so the page would stay stale for 5 minutes without the hook.

@@ -29,15 +29,18 @@ export default defineConfig({
     timezoneId: 'Europe/Berlin',
   },
   projects: [
-    { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
+    // One admin sign-in shared by the tests that use the CMS (tests/e2e/admin-session.ts).
+    { name: 'setup', testMatch: /admin.setup.ts/ },
+    { name: 'chromium', use: { ...devices['Desktop Chrome'] }, dependencies: ['setup'] },
     {
       name: 'mobile',
       use: { ...devices['Desktop Chrome'], viewport: { width: 375, height: 812 }, isMobile: false },
+      dependencies: ['setup'],
     },
     ...(allBrowsers
       ? [
-          { name: 'firefox', use: { ...devices['Desktop Firefox'] } },
-          { name: 'webkit', use: { ...devices['Desktop Safari'] } },
+          { name: 'firefox', use: { ...devices['Desktop Firefox'] }, dependencies: ['setup'] },
+          { name: 'webkit', use: { ...devices['Desktop Safari'] }, dependencies: ['setup'] },
         ]
       : []),
   ],
