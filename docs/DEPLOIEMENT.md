@@ -150,11 +150,22 @@ lance `ops/deploy.sh` :
 
 1. `git pull --ff-only` (fichier Compose et scripts `ops/` à jour) ;
 2. sauvegarde complète (`ops/backup.sh`, dans `/var/backups/romial`) ;
-3. récupération de l'image du commit et redémarrage de l'application (migrations au
-   démarrage) ;
-4. attente de `/api/health` (3 minutes au plus) ; **en cas d'échec, l'image précédente est
+3. récupération de l'image du commit ;
+4. **migrations de la base** avec la nouvelle image (`docker compose run --rm app npm run
+migrate`), **avant** de changer d'application : leur journal apparaît dans GitHub
+   Actions, et en cas d'échec le déploiement s'arrête sans toucher au site en ligne. Les
+   migrations passent donc pendant que l'ancienne image tourne : elles doivent rester
+   compatibles avec elle (ajout de colonnes ou de tables) ;
+5. redémarrage de l'application (son démarrage relance `npm run migrate`, sans effet) ;
+6. attente de `/api/health` (3 minutes au plus) ; **en cas d'échec, l'image précédente est
    relancée** et le job GitHub échoue ;
-5. l'image déployée est retenue dans `APP_IMAGE` de `.env.production`.
+7. l'image déployée est retenue dans `APP_IMAGE` de `.env.production`.
+
+> Incident du 16/09/2026 : la migration `business_contact_url` ne s'est pas appliquée au
+> démarrage du conteneur, sans trace dans le déploiement ; la section Entreprises répondait
+> en erreur jusqu'à `dc exec -T app npm run migrate`. D'où l'étape 4, explicite et
+> journalisée. En cas de doute : `dc exec -T app npm run migrate` est sans risque (il
+> n'applique que les migrations en attente).
 
 GitHub vérifie ensuite `https://<domaine>/api/health` depuis l'extérieur. Un nouvel envoi
 n'interrompt jamais un déploiement en cours : il attend son tour.

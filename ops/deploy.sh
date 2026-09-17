@@ -11,13 +11,18 @@
 #
 #   1. met à jour les fichiers de déploiement (git pull --ff-only)
 #   2. sauvegarde la base et les fichiers (ops/backup.sh)
-#   3. récupère ghcr.io/carine2107/rk-portfolio:sha-… et redémarre l'application
-#      (les migrations en attente s'appliquent au démarrage)
-#   4. attend /api/health ; en cas d'échec, relance l'image précédente
-#   5. retient l'image déployée dans APP_IMAGE (.env.production)
+#   3. récupère ghcr.io/carine2107/rk-portfolio:sha-…
+#   4. applique les migrations de la base avec la nouvelle image, AVANT de
+#      changer d'application : en cas d'échec, le site en ligne n'est pas touché
+#      et le journal de la migration apparaît dans GitHub Actions
+#   5. redémarre l'application (le démarrage relance aussi les migrations, sans effet)
+#   6. attend /api/health ; en cas d'échec, relance l'image précédente
+#   7. retient l'image déployée dans APP_IMAGE (.env.production)
 #
 # Une migration de base n'est pas annulée par le retour à l'image précédente :
 # si elle est en cause, restaurer la sauvegarde prise à l'étape 2 (ops/restore.sh).
+# Les migrations doivent donc rester compatibles avec l'image en ligne (ajouts de
+# colonnes ou de tables), puisqu'elles passent avant le changement d'application.
 # ---------------------------------------------------------------------------
 set -euo pipefail
 umask 077
@@ -74,6 +79,14 @@ main() {
   # GitHub), the latter kept running after the download had finished.
   log "Récupération de l'image"
   docker pull --quiet "$image" < /dev/null
+
+  # Explicit step: a migration that only ran inside the container start-up
+  # command once failed to apply without any trace in the deployment output.
+  log "Migrations de la base"
+  if ! APP_IMAGE="$image" dc run --rm --no-deps -T app npm run migrate < /dev/null; then
+    fail "les migrations ont échoué : l'application en ligne n'a pas été modifiée"
+  fi
+
   log "Redémarrage de l'application"
   APP_IMAGE="$image" dc up -d --no-build app < /dev/null
 
