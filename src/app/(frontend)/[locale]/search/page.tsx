@@ -12,6 +12,13 @@ import { highlightParts, MIN_QUERY_LENGTH, normalizeQuery, searchTerms } from '@
 import { searchSite } from '@/lib/search-cms'
 import { pageMetadata } from '@/lib/seo'
 
+/**
+ * Rendered on every request: results depend on `?q=`. Without this, the page was
+ * prerendered once (the locale layout lists its params) and every visit failed
+ * with DYNAMIC_SERVER_USAGE in the production image.
+ */
+export const dynamic = 'force-dynamic'
+
 type Props = {
   params: Promise<{ locale: Locale }>
   searchParams: Promise<Record<string, string | string[] | undefined>>
