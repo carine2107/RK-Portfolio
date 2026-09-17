@@ -5,6 +5,9 @@ import { expect, test } from '@playwright/test'
  * signs in, creates, publishes and deletes its own entry, then reads the log.
  */
 test.describe('admin audit log', () => {
+  // Both tests sign in to the same account: parallel sign-ins made a request fail once.
+  test.describe.configure({ mode: 'serial' })
+
   test.skip(
     process.env.E2E_PROD !== '1' ||
       process.env.E2E_CMS_WRITE !== '1' ||
@@ -32,7 +35,7 @@ test.describe('admin audit log', () => {
       headers,
       data: { title, institution: 'E2E', kind: 'credential', _status: 'draft' },
     })
-    expect(created.ok()).toBe(true)
+    expect(created.ok(), await created.text()).toBe(true)
     const id = String(((await created.json()) as { doc: { id: number } }).doc.id)
     expect(
       (
