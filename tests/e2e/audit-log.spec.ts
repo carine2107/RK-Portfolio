@@ -101,9 +101,15 @@ test.describe('admin audit log', () => {
     })
     expect(login.ok()).toBe(true)
 
-    await page.goto('/admin/collections/audit-logs')
+    await page.goto('/admin/globals/site-settings')
+    await page.locator('a[href="/admin/collections/audit-logs"]').first().click()
+    await page.waitForURL(/\/admin\/collections\/audit-logs(\?|$)/)
     const screen = page.locator('.rk-audit')
     await expect(screen).toBeVisible()
+    // Breadcrumb names this screen, even when arriving from another one.
+    await expect(page.locator('.step-nav')).toContainText(
+      await screen.locator('.rk-audit__title').innerText(),
+    )
     await expect(screen.locator('.rk-audit__period')).toHaveCount(5)
     await expect(screen.locator('.rk-audit__period.is-active')).toHaveCount(1)
     // The sign-in above is in today's group, open by default.

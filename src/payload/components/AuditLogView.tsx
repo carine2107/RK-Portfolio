@@ -1,3 +1,4 @@
+import { SetStepNav } from '@payloadcms/ui'
 import type { ListViewServerProps } from 'payload'
 
 import { AUDIT_ACTIONS } from '../../lib/audit-log'
@@ -120,6 +121,7 @@ export async function AuditLogView({ payload, user, i18n, searchParams }: ListVi
   if ((user as { role?: string } | undefined)?.role !== 'admin') {
     return (
       <div className="rk-audit">
+        <SetStepNav nav={[{ label: TEXT.title[lang] }]} />
         <p>{TEXT.forbidden[lang]}</p>
       </div>
     )
@@ -175,6 +177,9 @@ export async function AuditLogView({ payload, user, i18n, searchParams }: ListVi
 
   return (
     <div className="rk-audit">
+      {/* A custom list view does not set the breadcrumb itself: without this it
+          kept the previous screen's title ("Site settings"). */}
+      <SetStepNav nav={[{ label: TEXT.title[lang] }]} />
       <header className="rk-audit__header">
         <h1 className="rk-audit__title">{TEXT.title[lang]}</h1>
         <p className="rk-audit__lead">{TEXT.lead[lang]}</p>
