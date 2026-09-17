@@ -25,7 +25,8 @@
     "breadcrumbLabel": "Breadcrumb",
     "products": "Digital products",
     "account": "My area",
-    "media": "Media library"
+    "media": "Media library",
+    "search": "Search the site"
   },
   "theme": {
     "label": "Colour theme",
@@ -788,5 +789,28 @@
   "preview": {
     "notice": "Preview: you are viewing the unpublished version of this page.",
     "exit": "Leave preview"
+  },
+  "search": {
+    "meta": {
+      "title": "Search",
+      "description": "Search Romial Kenmogne’s articles, books, expertise, experience, talks and businesses."
+    },
+    "title": "Search",
+    "lead": "Articles, books, expertise, experience, talks and businesses.",
+    "label": "What are you looking for?",
+    "placeholder": "For example: due diligence, real estate, SMEs",
+    "submit": "Search",
+    "tooShort": "Please enter at least {min} characters.",
+    "empty": "No results for “{query}”. Try another word or spelling.",
+    "count": "{count, plural, one {# result} other {# results}} for “{query}”",
+    "groups": {
+      "insights": "RK Insights",
+      "expertise": "Expertise",
+      "experience": "Experience and projects",
+      "books": "Books",
+      "speaking": "Speaking & media",
+      "businesses": "Businesses",
+      "products": "Digital products"
+    }
   }
 }

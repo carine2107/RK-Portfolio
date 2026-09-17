@@ -25,7 +25,8 @@
     "breadcrumbLabel": "Fil d’Ariane",
     "products": "Produits numériques",
     "account": "Mon espace",
-    "media": "Médiathèque"
+    "media": "Médiathèque",
+    "search": "Rechercher sur le site"
   },
   "theme": {
     "label": "Thème de couleurs",
@@ -788,5 +789,28 @@
   "preview": {
     "notice": "Aperçu : vous consultez la version non publiée de cette page.",
     "exit": "Quitter l’aperçu"
+  },
+  "search": {
+    "meta": {
+      "title": "Recherche",
+      "description": "Rechercher dans les articles, livres, expertises, expériences, conférences et activités de Romial Kenmogne."
+    },
+    "title": "Recherche",
+    "lead": "Articles, livres, expertises, expériences, conférences et activités.",
+    "label": "Que recherchez-vous ?",
+    "placeholder": "Par exemple : due diligence, immobilier, PME",
+    "submit": "Rechercher",
+    "tooShort": "Saisissez au moins {min} caractères.",
+    "empty": "Aucun résultat pour « {query} ». Essayez un autre mot ou une orthographe différente.",
+    "count": "{count, plural, one {# résultat} other {# résultats}} pour « {query} »",
+    "groups": {
+      "insights": "RK Insights",
+      "expertise": "Expertises",
+      "experience": "Expériences et projets",
+      "books": "Livres",
+      "speaking": "Conférences & médias",
+      "businesses": "Entreprises",
+      "products": "Produits numériques"
+    }
   }
 }

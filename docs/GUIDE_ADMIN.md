@@ -826,6 +826,14 @@ Liste complète des éléments encore attendus :
 
 ## 19. Bonnes pratiques
 
+**Recherche sur le site** : la loupe en haut de chaque page ouvre la recherche. Elle trouve
+les contenus **publiés**, dans la langue de la page, à partir de leur **titre** et de leur
+**résumé** (accroche des articles, résumé des livres, expertises, expériences, conférences,
+produits ; nom, slogan et description des activités). Un contenu bien titré et résumé est
+donc mieux trouvé. Les accents comptent : « immobilier » trouve « Immobilier », mais
+« financiere » ne trouve pas « financière ». Les brouillons et les articles programmés
+n'apparaissent pas avant leur publication.
+
 - Publier en trois langues ou pas du tout : une page à moitié traduite se voit.
 - Toujours renseigner le texte alternatif des images.
 - Vérifier titres, fonctions, organisations, dates, pays et résultats **avant**

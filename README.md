@@ -249,6 +249,7 @@ Ce que le site fait réellement aujourd'hui :
 - ✅ Qualification des prospects : questions facultatives, score sur 100 et priorité dans le CMS, priorité dans l’objet de la notification, rendez-vous proposé aux demandes prioritaires
 - ✅ Médiathèque (vidéos, podcasts, interviews, presse) filtrable par format, thème et langue, alimentée par Conférences & médias
 - ✅ Pages de campagne composées par blocs dans le CMS (en-tête, texte, points clés, vidéo, livres, produits, FAQ, appel à l’action, newsletter)
+- ✅ Recherche sur le site (articles, livres, expertises, expériences, conférences, activités, produits) dans la langue de la page, mots surlignés, page non indexée
 - ✅ Carte Europe–Afrique des expériences (calculée côté serveur, sans service tiers), filtre par pays accessible au clavier
 - ✅ Apparence (palettes, couleurs, police, fond d'accueil) modifiable dans le CMS, contrastes AA garantis
 - ✅ Déploiement Docker testé sur base vierge (migrations, seed, cache)

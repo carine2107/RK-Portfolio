@@ -382,6 +382,19 @@ nouvelle collection ou global affiché sur le site doit être enveloppé de la m
 
 ---
 
+## Recherche sur le site
+
+Page `/[locale]/search?q=` (`noindex`, hors sitemap), lien loupe dans l'en-tête.
+`searchSite` (`src/lib/search-cms.ts`) interroge dans la langue de la page, avec les droits
+d'un visiteur anonyme (`overrideAccess: false`, `_status: published`), 10 résultats au plus
+par rubrique : `insights` (`title`, `excerpt`, date de publication passée),
+`expertise-areas` (`title`, `summary`), `experiences` (`title`, `summary`, `organisation`,
+`role`), `books` (`title`, `subtitle`, `summary`), `engagements` (`title`, `summary`),
+`businesses` (`name`, `tagline`, `description`, `active`), `products` (`title`, `summary`).
+Chaque mot (2 caractères ou plus, 6 au plus) doit figurer dans l'un des champs (opérateur
+`like`, insensible à la casse, sensible aux accents). Extraits et surlignage :
+`src/lib/search.ts`. Un nouveau contenu public à rechercher s'ajoute à `SOURCES`.
+
 ## Règles d'accès
 
 | Opération                         | Public | Editor | Admin |

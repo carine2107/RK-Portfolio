@@ -10,7 +10,7 @@ Environnement : Windows 11, Node 24.15, PostgreSQL 16 (Docker), build de
 
 | Suite                            | Périmètre                                                               | Résultat                             |
 | -------------------------------- | ----------------------------------------------------------------------- | ------------------------------------ |
-| Tests unitaires (Vitest)         | Traductions, contrastes, moteur d'apparence, validation, SEO, anti-abus | **193 / 193 réussis**                |
+| Tests unitaires (Vitest)         | Traductions, contrastes, moteur d'apparence, validation, SEO, anti-abus | **198 / 198 réussis**                |
 | Tests end-to-end (Playwright)    | 132 scénarios × 4 configurations                                        | **460 réussis, 68 ignorés, 0 échec** |
 | Compilation TypeScript (`tsc`)   | Mode strict, tout le projet                                             | **0 erreur**                         |
 | Lint (ESLint 9 + config Next 16) | Tout le projet                                                          | **0 erreur, 0 avertissement**        |
@@ -65,7 +65,7 @@ node tests/visual/capture.mjs test-results/visual
 
 ---
 
-## 2. Tests unitaires (193)
+## 2. Tests unitaires (198)
 
 | Fichier                                               | Ce qui est vérifié                                                                                                                                                                                                                                                                                                                                                                                         |
 | ----------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -84,6 +84,7 @@ node tests/visual/capture.mjs test-results/visual
 | `rate-limit.test.ts`                                  | Limitation par IP : seuil, réinitialisation de fenêtre, isolation entre clients, lecture des en-têtes de proxy                                                                                                                                                                                                                                                                                             |
 | `members.test.ts`                                     | Cookie de session de l’espace membre signé : aller-retour, identifiant modifié, signature falsifiée ou valeur absente refusés                                                                                                                                                                                                                                                                              |
 | `campaign-link.test.ts`                               | Boutons des pages de campagne : pages du site (préfixe de langue retiré), https externe ; http, javascript:, //hôte, espaces et mailto: refusés                                                                                                                                                                                                                                                            |
+| `search.test.ts`                                      | Recherche : requête nettoyée (espaces, longueur, 2 caractères minimum), mots distincts sans ponctuation (6 au plus), filtre « chaque mot dans au moins un champ », extrait centré sur le premier mot trouvé, surlignage insensible à la casse et aux caractères spéciaux                                                                                                                                   |
 | `media-library.test.ts`                               | Médiathèque : formats (interview filmée = vidéo + interview), entrées à venir et ateliers sans vidéo exclus, filtres format / thème / langue combinés                                                                                                                                                                                                                                                      |
 | `lead-score.test.ts`                                  | Qualification des prospects : score maximal 100, demande non qualifiée 5, bornes des priorités (35 / 60), type d’organisation et valeurs inconnues non notés ; questions facultatives et valeurs hors liste refusées par le schéma                                                                                                                                                                         |
 | `contact-routing.test.ts`                             | Demandes adressées à une entreprise : notification à l’e-mail de l’entreprise avec copie à l’adresse générale, adresse générale seule sans entreprise ou sans e-mail, pas de copie vers la même adresse (casse ignorée), slug d’entreprise contrôlé, champ facultatif accepté par le schéma du formulaire                                                                                                  |
@@ -287,6 +288,12 @@ Contrôle manuel (base de développement, demande de test supprimée ensuite ; l
 - Formulaire FR : groupe « Quelques précisions… », 4 listes non obligatoires ; API : réponses acceptées, score et priorité absents de la réponse au visiteur
 
 Contrôle manuel (serveur de développement + MailHog, lien de réservation de test et demandes supprimés ensuite) : demande FR complète (PME, plus de 50 000 €, dans le mois, décideur, due diligence, message court) → score **95**, priorité **haute** enregistrés en base avec les quatre réponses ; notification « [Priorité haute] Nouvelle demande … » avec la ligne « Priorité (score) » et les réponses traduites ; confirmation au visiteur avec ses réponses mais **sans score ni priorité**. Avec un lien de réservation configuré : demande peu prioritaire → `suggestBooking: false` ; demande prioritaire → `true`, et en allemand le message de confirmation propose « Gespräch buchen » (nouvel onglet, `noopener`). Sans lien configuré : aucune proposition. Aucun débordement à 375 px.
+
+### Recherche (`search.spec.ts`)
+
+- La loupe de l'en-tête ouvre `/en/search` ; « due diligence » affiche des résultats surlignés
+  dont le lien répond 200 ; requête trop courte expliquée en français, aucun résultat expliqué
+  en allemand ; page `noindex`
 
 ### Médiathèque (`media.spec.ts`, `media-library.test.ts`)
 

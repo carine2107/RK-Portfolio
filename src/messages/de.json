@@ -25,7 +25,8 @@
     "breadcrumbLabel": "Brotkrümelnavigation",
     "products": "Digitale Produkte",
     "account": "Mein Bereich",
-    "media": "Mediathek"
+    "media": "Mediathek",
+    "search": "Website durchsuchen"
   },
   "theme": {
     "label": "Farbschema",
@@ -788,5 +789,28 @@
   "preview": {
     "notice": "Vorschau: Sie sehen die unveröffentlichte Version dieser Seite.",
     "exit": "Vorschau verlassen"
+  },
+  "search": {
+    "meta": {
+      "title": "Suche",
+      "description": "Suche in Artikeln, Büchern, Fachgebieten, Erfahrungen, Vorträgen und Unternehmen von Romial Kenmogne."
+    },
+    "title": "Suche",
+    "lead": "Artikel, Bücher, Fachgebiete, Erfahrungen, Vorträge und Unternehmen.",
+    "label": "Wonach suchen Sie?",
+    "placeholder": "Zum Beispiel: Due Diligence, Immobilien, KMU",
+    "submit": "Suchen",
+    "tooShort": "Bitte geben Sie mindestens {min} Zeichen ein.",
+    "empty": "Keine Ergebnisse für „{query}“. Versuchen Sie ein anderes Wort oder eine andere Schreibweise.",
+    "count": "{count, plural, one {# Ergebnis} other {# Ergebnisse}} für „{query}“",
+    "groups": {
+      "insights": "RK Insights",
+      "expertise": "Fachgebiete",
+      "experience": "Erfahrungen und Projekte",
+      "books": "Bücher",
+      "speaking": "Vorträge & Medien",
+      "businesses": "Unternehmen",
+      "products": "Digitale Produkte"
+    }
   }
 }

@@ -116,6 +116,14 @@ export function Header() {
         {/* Wrappers carry the responsive visibility: putting `hidden` directly on
             a component whose own classes set a display value is a coin toss. */}
         <div className="flex items-center gap-1.5 sm:gap-2 md:gap-3">
+          <Link
+            href="/search"
+            aria-current={isActive('/search') ? 'page' : undefined}
+            className="inline-flex size-10 shrink-0 items-center justify-center rounded-full border border-line text-primary transition-colors hover:border-line-accent hover:text-accent-text"
+          >
+            <Icon name="search" className="size-4" />
+            <span className="sr-only">{t('search')}</span>
+          </Link>
           <div className="hidden md:flex">
             <LanguageSwitcher variant="dropdown" />
           </div>
