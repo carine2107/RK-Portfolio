@@ -30,6 +30,27 @@ En haut de la page d'accueil de l'administration, la **Vue d'ensemble** résume 
 Chaque chiffre est cliquable et ouvre la liste correspondante, déjà filtrée. Les chiffres
 sont recalculés à chaque ouverture de la page.
 
+### Journal d'audit
+
+**Administration → Journal d'audit** (rôle Administrator uniquement) : qui a fait quoi dans
+l'administration, et quand.
+
+- **Actions notées** : création, modification, publication, dépublication, brouillon
+  enregistré, suppression (contenus, pages, réglages, demandes, abonnés, commandes, comptes…),
+  ainsi que les **connexions** et **déconnexions**.
+- Chaque entrée indique la date, l'utilisateur, la section, l'élément concerné (titre et
+  identifiant), la langue du contenu et le **nom des champs modifiés**. Le contenu des champs
+  n'est jamais recopié : le journal ne contient ni textes, ni données des visiteurs, ni mots de
+  passe.
+- Les actions automatiques du site (formulaire de contact, inscriptions newsletter, rappels,
+  suppressions programmées) ne sont pas notées : seules les actions d'un compte connecté le
+  sont.
+- Le journal **ne peut être ni modifié ni supprimé** depuis l'administration. Les entrées de
+  plus de **12 mois** sont supprimées automatiquement (réglage serveur
+  `AUDIT_LOG_RETENTION_MONTHS`).
+- Filtrer par utilisateur ou par élément : champ de recherche en haut de la liste ; par action
+  ou par section : bouton **Filtres**.
+
 ### Rôles
 
 | Rôle                | Peut faire                                                                                                       | Ne peut pas faire                                                   |

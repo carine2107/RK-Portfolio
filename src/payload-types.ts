@@ -88,6 +88,7 @@ export interface Config {
     members: Member;
     entitlements: Entitlement;
     users: User;
+    'audit-logs': AuditLog;
     'payload-kv': PayloadKv;
     'payload-jobs': PayloadJob;
     'payload-locked-documents': PayloadLockedDocument;
@@ -117,6 +118,7 @@ export interface Config {
     members: MembersSelect<false> | MembersSelect<true>;
     entitlements: EntitlementsSelect<false> | EntitlementsSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
+    'audit-logs': AuditLogsSelect<false> | AuditLogsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -1919,6 +1921,59 @@ export interface User {
   collection: 'users';
 }
 /**
+ * Who created, changed, published or deleted what in the admin, and when; sign-ins and sign-outs. Only the names of changed fields are recorded, never their content. The log cannot be edited; entries older than 12 months are deleted automatically.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "audit-logs".
+ */
+export interface AuditLog {
+  id: number;
+  summary?: string | null;
+  userLabel?: string | null;
+  action?: ('create' | 'update' | 'publish' | 'unpublish' | 'draft' | 'delete' | 'login' | 'logout') | null;
+  entity?:
+    | (
+        | 'expertise-areas'
+        | 'experiences'
+        | 'insights'
+        | 'categories'
+        | 'books'
+        | 'businesses'
+        | 'engagements'
+        | 'campaigns'
+        | 'credentials'
+        | 'legal-pages'
+        | 'media'
+        | 'documents'
+        | 'contact-submissions'
+        | 'reply-templates'
+        | 'subscribers'
+        | 'orders'
+        | 'products'
+        | 'protected-files'
+        | 'members'
+        | 'entitlements'
+        | 'users'
+        | 'global:site-settings'
+        | 'global:appearance'
+        | 'global:shop-settings'
+        | 'global:home-page'
+        | 'global:about-page'
+      )
+    | null;
+  documentTitle?: string | null;
+  /**
+   * Technical field names, without their content.
+   */
+  changedFields?: string | null;
+  documentId?: string | null;
+  locale?: string | null;
+  link?: string | null;
+  user?: (number | null) | User;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
@@ -2117,6 +2172,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'users';
         value: number | User;
+      } | null)
+    | ({
+        relationTo: 'audit-logs';
+        value: number | AuditLog;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -2936,6 +2995,24 @@ export interface UsersSelect<T extends boolean = true> {
         createdAt?: T;
         expiresAt?: T;
       };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "audit-logs_select".
+ */
+export interface AuditLogsSelect<T extends boolean = true> {
+  summary?: T;
+  userLabel?: T;
+  action?: T;
+  entity?: T;
+  documentTitle?: T;
+  changedFields?: T;
+  documentId?: T;
+  locale?: T;
+  link?: T;
+  user?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

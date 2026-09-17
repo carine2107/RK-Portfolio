@@ -10,7 +10,7 @@ Environnement : Windows 11, Node 24.15, PostgreSQL 16 (Docker), build de
 
 | Suite                            | Périmètre                                                               | Résultat                             |
 | -------------------------------- | ----------------------------------------------------------------------- | ------------------------------------ |
-| Tests unitaires (Vitest)         | Traductions, contrastes, moteur d'apparence, validation, SEO, anti-abus | **198 / 198 réussis**                |
+| Tests unitaires (Vitest)         | Traductions, contrastes, moteur d'apparence, validation, SEO, anti-abus | **202 / 202 réussis**                |
 | Tests end-to-end (Playwright)    | 132 scénarios × 4 configurations                                        | **460 réussis, 68 ignorés, 0 échec** |
 | E2E en CI (17/09/2026)           | Chromium + mobile, base jetable, build de production                    | **273 réussis, 3 ignorés, 0 échec**  |
 | Compilation TypeScript (`tsc`)   | Mode strict, tout le projet                                             | **0 erreur**                         |
@@ -66,7 +66,7 @@ node tests/visual/capture.mjs test-results/visual
 
 ---
 
-## 2. Tests unitaires (198)
+## 2. Tests unitaires (202)
 
 | Fichier                                               | Ce qui est vérifié                                                                                                                                                                                                                                                                                                                                                                                         |
 | ----------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -89,6 +89,7 @@ node tests/visual/capture.mjs test-results/visual
 | `media-library.test.ts`                               | Médiathèque : formats (interview filmée = vidéo + interview), entrées à venir et ateliers sans vidéo exclus, filtres format / thème / langue combinés                                                                                                                                                                                                                                                      |
 | `lead-score.test.ts`                                  | Qualification des prospects : score maximal 100, demande non qualifiée 5, bornes des priorités (35 / 60), type d’organisation et valeurs inconnues non notés ; questions facultatives et valeurs hors liste refusées par le schéma                                                                                                                                                                         |
 | `contact-routing.test.ts`                             | Demandes adressées à une entreprise : notification à l’e-mail de l’entreprise avec copie à l’adresse générale, adresse générale seule sans entreprise ou sans e-mail, pas de copie vers la même adresse (casse ignorée), slug d’entreprise contrôlé, champ facultatif accepté par le schéma du formulaire                                                                                                  |
+| `audit-log.test.ts`                                   | Journal d'audit : noms des champs modifiés seulement (dates, statut et champs d'authentification ignorés), action d'une sauvegarde (création, brouillon, publication, dépublication, modification), titre lisible, libellé de l'utilisateur, lien vers l'administration, conservation de 12 mois                                                                                                           |
 | `follow-up.test.ts`                                   | Suivi des demandes : historique (changement de statut, relance posée ou retirée, rien à la création ni pour la même date), horodatage des seules nouvelles notes, rappel dû (date passée, demande ouverte, pas encore rappelée), modèles de réponse ({name}, {organisation}, {subject}), lien mailto encodé, langue de la réponse, e-mail de rappel (liens vers les fiches, contenu échappé)               |
 | `exports.test.ts`                                     | Export CSV : BOM UTF-8, séparateur « ; », CRLF, échappement des guillemets et retours à la ligne, neutralisation des formules ; collections exportables limitées ; colonnes et libellés FR / DE ; nom de fichier par langue et date                                                                                                                                                                        |
 | `google-sheets.test.ts`                               | Google Sheets : configuration inactive tant que les 3 valeurs ne sont pas valides, clé sur une ligne restaurée, endpoints Google imposés en production ; JWT RS256 vérifié ; ajout, mise à jour en place, suppression par index sans création d’onglet, création d’onglet, jeton unique, erreurs sans données                                                                                              |
@@ -352,6 +353,14 @@ Contrôle manuel (serveur de développement, page de test supprimée ensuite) : 
 - Build de production, compte administrateur de la base jetable de la CI : la page d'accueil de
   l'administration affiche les 4 chiffres clés et les 6 mois du graphique ; la tuile « Prioritaires
   en attente » ouvre la liste des demandes filtrée
+
+### Journal d'audit (`audit-log.spec.ts`)
+
+- Build de production, base jetable : connexion du compte administrateur, création d'une
+  qualification en brouillon, publication, suppression ; le journal contient dans l'ordre
+  « brouillon », « publication », « suppression » avec le titre et l'utilisateur, le champ
+  modifié sans sa valeur, et une connexion ; une entrée ne peut être ni modifiée ni supprimée
+  (403), et le journal est illisible sans compte (403)
 
 ### Publication visible sans attendre le cache (`cms-refresh.spec.ts`, `revalidate.test.ts`)
 

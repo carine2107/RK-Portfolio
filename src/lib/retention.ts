@@ -20,6 +20,22 @@ export function retentionCutoff(months: number, now: Date = new Date()): Date | 
   return cutoff
 }
 
+/** Deletes audit log entries older than the retention period; returns how many. */
+export async function purgeAuditLog(
+  payload: Payload,
+  months: number,
+  now: Date = new Date(),
+): Promise<number> {
+  const cutoff = retentionCutoff(months, now)
+  if (!cutoff) return 0
+  const result = await payload.delete({
+    collection: 'audit-logs',
+    where: { createdAt: { less_than: cutoff.toISOString() } },
+    overrideAccess: true,
+  })
+  return result.docs.length
+}
+
 /** Deletes the expired contact requests and returns how many were removed. */
 export async function purgeExpiredContactSubmissions(
   payload: Payload,

@@ -395,6 +395,24 @@ Chaque mot (2 caractères ou plus, 6 au plus) doit figurer dans l'un des champs 
 `like`, insensible à la casse, sensible aux accents). Extraits et surlignage :
 `src/lib/search.ts`. Un nouveau contenu public à rechercher s'ajoute à `SOURCES`.
 
+## Journal d'audit (`audit-logs`)
+
+Collection créée par `auditLogsCollection(collections, globals)` : `userLabel` et `user`
+(relation), `action` (`create` | `update` | `publish` | `unpublish` | `draft` | `delete` |
+`login` | `logout`), `entity` (slug de collection ou `global:<slug>`, libellés repris des
+collections), `documentTitle`, `documentId`, `changedFields` (noms seulement), `locale`, `link`,
+`summary` (titre caché). Lecture réservée aux administrateurs ; création, modification et
+suppression refusées par l'API (403). Entrées écrites par `withAuditLog` / `withGlobalAuditLog`
+(`src/payload/hooks/audit-log.ts`, logique pure `src/lib/audit-log.ts`), appliqués à toutes les
+collections et globals de `payload.config.ts` : `afterChange` (une sauvegarde sans champ modifié
+ni changement de statut n'est pas notée), `afterDelete`, `afterLogin` / `afterLogout` des
+comptes `users`. Seules les actions d'un utilisateur `users` connecté sont notées ; l'écriture
+se fait hors de la transaction de la requête et une erreur est journalisée sans bloquer la
+sauvegarde. Champs ignorés : identifiant, dates, `_status`, `history`, champs d'authentification.
+Purge quotidienne des entrées plus anciennes que `AUDIT_LOG_RETENTION_MONTHS` (12, `0` =
+jamais). Ajouter une collection ou un global ajoute sa valeur à l'énumération `entity` : créer la
+migration.
+
 ## Règles d'accès
 
 | Opération                         | Public | Editor | Admin |
@@ -411,6 +429,7 @@ Chaque mot (2 caractères ou plus, 6 au plus) doit figurer dans l'un des champs 
 | Voir les abonnés newsletter       | ❌     | ✅     | ✅    |
 | Modifier / supprimer un abonné    | ❌     | ❌     | ✅    |
 | Gérer les comptes et les rôles    | ❌     | ❌     | ✅    |
+| Lire le journal d'audit           | ❌     | ❌     | ✅    |
 
 Implémentation : `src/payload/access.ts`.
 

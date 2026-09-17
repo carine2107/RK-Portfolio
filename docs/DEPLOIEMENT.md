@@ -46,6 +46,7 @@ chmod 600 .env.production      # jamais versionné (.gitignore) ni copié dans l
 | `EMAIL_ENABLED`, `SMTP_*`, `EMAIL_FROM`, `EMAIL_TO` | Envoi des e-mails du formulaire ; laisser `EMAIL_ENABLED=false` tant qu'un envoi réel n'a pas été testé                                                                                   |
 | `CONTACT_RATE_LIMIT`, `CONTACT_RATE_WINDOW_MINUTES` | Anti-abus du formulaire (5 envois / 15 min)                                                                                                                                               |
 | `CONTACT_RETENTION_MONTHS`                          | Suppression automatique des demandes de contact inchangées depuis N mois (24 par défaut ; `0` = jamais)                                                                                   |
+| `AUDIT_LOG_RETENTION_MONTHS`                        | Suppression automatique des entrées du journal d'audit de l'administration plus anciennes que N mois (12 par défaut ; `0` = jamais)                                                       |
 | `NEXT_PUBLIC_ANALYTICS_*`                           | Mesure d'audience facultative (inscrite dans le build) : `umami` / `plausible` (+ `SCRIPT_URL`), ou `google` + `SITE_ID=G-…` (bannière de consentement, domaines Google ajoutés à la CSP) |
 | `SEED_ADMIN_EMAIL`, `SEED_ADMIN_PASSWORD`           | Premier administrateur, créé par `npm run seed` ; à retirer du fichier ensuite                                                                                                            |
 

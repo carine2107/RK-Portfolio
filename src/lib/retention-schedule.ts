@@ -1,10 +1,10 @@
 import config from '@payload-config'
 import { getPayload } from 'payload'
 
-import { cmsEnabled, contactRetentionMonths } from '@/lib/env'
+import { auditLogRetentionMonths, cmsEnabled, contactRetentionMonths } from '@/lib/env'
 import { sendFollowUpReminders } from '@/lib/follow-up-reminders'
 import { processPendingNewsletters, purgeNewsletterSubscribers } from '@/lib/newsletter'
-import { purgeExpiredContactSubmissions } from '@/lib/retention'
+import { purgeAuditLog, purgeExpiredContactSubmissions } from '@/lib/retention'
 
 const FIRST_RUN_DELAY_MS = 60_000
 const DAY_MS = 24 * 60 * 60 * 1000
@@ -43,6 +43,12 @@ export function scheduleContactRetention(): void {
           `[retention] ${deleted} contact request(s) unchanged for ${contactRetentionMonths} months deleted.`,
         )
       }
+    }
+    const auditEntries = await purgeAuditLog(payload, auditLogRetentionMonths)
+    if (auditEntries > 0) {
+      console.info(
+        `[retention] ${auditEntries} audit log entr(y/ies) older than ${auditLogRetentionMonths} months deleted.`,
+      )
     }
     const subscribers = await purgeNewsletterSubscribers(payload)
     if (subscribers > 0) {

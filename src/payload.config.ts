@@ -6,9 +6,10 @@ import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import { de } from '@payloadcms/translations/languages/de'
 import { en } from '@payloadcms/translations/languages/en'
 import { fr } from '@payloadcms/translations/languages/fr'
-import { buildConfig } from 'payload'
+import { buildConfig, type CollectionConfig, type GlobalConfig } from 'payload'
 import sharp from 'sharp'
 
+import { auditLogsCollection } from './payload/collections/AuditLogs'
 import { Books } from './payload/collections/Books'
 import { Businesses } from './payload/collections/Businesses'
 import { Engagements } from './payload/collections/Engagements'
@@ -34,6 +35,7 @@ import { HomePage } from './payload/globals/HomePage'
 import { Appearance } from './payload/globals/Appearance'
 import { ShopSettings } from './payload/globals/ShopSettings'
 import { SiteSettings } from './payload/globals/SiteSettings'
+import { withAuditLog, withGlobalAuditLog } from './payload/hooks/audit-log'
 import { withGlobalSiteRefresh, withSiteRefresh } from './payload/hooks/revalidate'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -49,6 +51,36 @@ if (process.env.NODE_ENV === 'production' && process.env.NEXT_PHASE !== 'phase-p
     )
   }
 }
+
+// Content shown on the public site refreshes its pages as soon as it is
+// published, changed or deleted (src/payload/hooks/revalidate.ts).
+const collections: CollectionConfig[] = [
+  withSiteRefresh(ExpertiseAreas),
+  withSiteRefresh(Experiences),
+  withSiteRefresh(Insights),
+  withSiteRefresh(Categories),
+  withSiteRefresh(Books),
+  withSiteRefresh(Businesses),
+  withSiteRefresh(Engagements),
+  withSiteRefresh(Campaigns),
+  withSiteRefresh(Credentials),
+  withSiteRefresh(LegalPages),
+  withSiteRefresh(Media),
+  withSiteRefresh(Documents),
+  ContactSubmissions,
+  ReplyTemplates,
+  Subscribers,
+  Orders,
+  withSiteRefresh(Products),
+  ProtectedFiles,
+  Members,
+  Entitlements,
+  Users,
+]
+
+const globals: GlobalConfig[] = [SiteSettings, Appearance, ShopSettings, HomePage, AboutPage].map(
+  withGlobalSiteRefresh,
+)
 
 export default buildConfig({
   serverURL: process.env.NEXT_PUBLIC_SITE_URL,
@@ -87,32 +119,8 @@ export default buildConfig({
       robots: 'noindex, nofollow',
     },
   },
-  // Content shown on the public site refreshes its pages as soon as it is
-  // published, changed or deleted (src/payload/hooks/revalidate.ts).
-  collections: [
-    withSiteRefresh(ExpertiseAreas),
-    withSiteRefresh(Experiences),
-    withSiteRefresh(Insights),
-    withSiteRefresh(Categories),
-    withSiteRefresh(Books),
-    withSiteRefresh(Businesses),
-    withSiteRefresh(Engagements),
-    withSiteRefresh(Campaigns),
-    withSiteRefresh(Credentials),
-    withSiteRefresh(LegalPages),
-    withSiteRefresh(Media),
-    withSiteRefresh(Documents),
-    ContactSubmissions,
-    ReplyTemplates,
-    Subscribers,
-    Orders,
-    withSiteRefresh(Products),
-    ProtectedFiles,
-    Members,
-    Entitlements,
-    Users,
-  ],
-  globals: [SiteSettings, Appearance, ShopSettings, HomePage, AboutPage].map(withGlobalSiteRefresh),
+  collections: [...collections.map(withAuditLog), auditLogsCollection(collections, globals)],
+  globals: globals.map(withGlobalAuditLog),
   localization: {
     locales: [
       // Named in the language of the admin interface, so a French interface

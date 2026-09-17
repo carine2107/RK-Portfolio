@@ -13,6 +13,7 @@ import * as migration_20260916_144007_home_hero_gallery from './20260916_144007_
 import * as migration_20260916_191523_business_contact_url from './20260916_191523_business_contact_url'
 import * as migration_20260917_082709_contact_follow_up from './20260917_082709_contact_follow_up'
 import * as migration_20260917_092536_contact_business from './20260917_092536_contact_business'
+import * as migration_20260917_101858_audit_log from './20260917_101858_audit_log'
 
 export const migrations = [
   {
@@ -89,5 +90,10 @@ export const migrations = [
     up: migration_20260917_092536_contact_business.up,
     down: migration_20260917_092536_contact_business.down,
     name: '20260917_092536_contact_business',
+  },
+  {
+    up: migration_20260917_101858_audit_log.up,
+    down: migration_20260917_101858_audit_log.down,
+    name: '20260917_101858_audit_log',
   },
 ]

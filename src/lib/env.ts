@@ -43,6 +43,8 @@ export const contactRateLimit = {
 
 /** Months a contact request is kept after its last change; 0 disables deletion. */
 export const contactRetentionMonths = int(process.env.CONTACT_RETENTION_MONTHS, 24)
+/** Audit log entries older than this are deleted (0 = kept forever). */
+export const auditLogRetentionMonths = int(process.env.AUDIT_LOG_RETENTION_MONTHS, 12)
 
 export const analyticsConfig = {
   provider: process.env.NEXT_PUBLIC_ANALYTICS_PROVIDER ?? '',
