@@ -1,6 +1,6 @@
 # Rapport des tests exécutés
 
-Date d'exécution : **10 septembre 2026**, dernière exécution complète le **15 septembre 2026**, tests unitaires relancés le **16 septembre 2026**
+Date d'exécution : **10 septembre 2026**, dernière exécution complète sur 4 navigateurs le **15 septembre 2026** ; tests unitaires et E2E de la CI (Chromium et mobile) relancés le **17 septembre 2026**
 Environnement : Windows 11, Node 24.15, PostgreSQL 16 (Docker), build de
 **production** (`npm run build` + `npm start`), contenu servi par le CMS.
 
@@ -12,6 +12,7 @@ Environnement : Windows 11, Node 24.15, PostgreSQL 16 (Docker), build de
 | -------------------------------- | ----------------------------------------------------------------------- | ------------------------------------ |
 | Tests unitaires (Vitest)         | Traductions, contrastes, moteur d'apparence, validation, SEO, anti-abus | **198 / 198 réussis**                |
 | Tests end-to-end (Playwright)    | 132 scénarios × 4 configurations                                        | **460 réussis, 68 ignorés, 0 échec** |
+| E2E en CI (17/09/2026)           | Chromium + mobile, base jetable, build de production                    | **273 réussis, 3 ignorés, 0 échec**  |
 | Compilation TypeScript (`tsc`)   | Mode strict, tout le projet                                             | **0 erreur**                         |
 | Lint (ESLint 9 + config Next 16) | Tout le projet                                                          | **0 erreur, 0 avertissement**        |
 | Formatage (Prettier)             | `src`, `tests`, `docs`                                                  | **conforme**                         |
@@ -571,6 +572,11 @@ Ces vérifications dépendent d'éléments encore absents (voir
 - Le mode aperçu couvre toutes les pages publiques issues du CMS, sauf l'accueil, la
   page À propos et les formations et qualifications (réglages globaux sans brouillon ou
   contenus sans page propre) : ces modifications sont visibles à la publication.
+- Une page qui lit les paramètres d'adresse (`?q=` de la recherche) doit être déclarée
+  `dynamic = 'force-dynamic'`. Sans ce réglage, la recherche passait les tests E2E de la CI mais
+  répondait 500 (`DYNAMIC_SERVER_USAGE`) dans l'image de production le 17/09/2026 ; corrigé le
+  jour même et vérifié en ligne (résultats FR / EN, aucun résultat en DE, requête trop courte,
+  `noindex`). Depuis, chaque nouvelle page est contrôlée sur le site après déploiement.
 - Les tests visuels ne sont **pas** comparés automatiquement : les captures sont
   destinées à une relecture humaine, afin qu'un changement de design volontaire
   ne fasse pas échouer la chaîne d'intégration.

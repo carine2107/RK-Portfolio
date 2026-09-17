@@ -1,6 +1,6 @@
 # Éléments à fournir par le commanditaire
 
-**Mise à jour : 16 septembre 2026.** Le site est **en ligne** sur <https://romialkenmogne.com>.
+**Mise à jour : 17 septembre 2026.** Le site est **en ligne** sur <https://romialkenmogne.com>.
 
 Le site est **en ligne et fonctionnel**. Les éléments ci-dessous ne
 bloquent pas l'architecture : ils remplacent des contenus explicitement marqués
@@ -98,14 +98,17 @@ n'est simulé. Ils s'ouvrent quand les éléments ci-dessous sont réunis et que
 
 ## 7. Coordonnées, rendez-vous et réseaux
 
-| #   | Élément                                                                                             | Priorité |
-| --- | --------------------------------------------------------------------------------------------------- | -------- |
-| 7.1 | ✅ **E-mail professionnel publiable** : `contact@romialkenmogne.com`                                | —        |
-| 7.2 | ✅ Téléphone professionnel                                                                          | —        |
-| 7.3 | ✅ **Adresse professionnelle** (Worms) — à reprendre aussi dans l'Impressum (8.1)                   | —        |
-| 7.4 | ✅ Adresse de réception des demandes : même boîte que l'expéditeur                                  | —        |
-| 7.5 | Profils sociaux à afficher (LinkedIn en priorité)                                                   | 🟠       |
-| 7.6 | Lien de la page de **prise de rendez-vous** (Cal.com, Calendly, Google Agenda, Microsoft Bookings…) | 🟡       |
+| #   | Élément                                                                                                                            | Priorité |
+| --- | ---------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| 7.1 | ✅ **E-mail professionnel publiable** : `contact@romialkenmogne.com`                                                               | —        |
+| 7.2 | ✅ Téléphone professionnel                                                                                                         | —        |
+| 7.3 | ✅ **Adresse professionnelle** (Worms) — à reprendre aussi dans l'Impressum (8.1)                                                  | —        |
+| 7.4 | ✅ Adresse de réception des demandes : même boîte que l'expéditeur                                                                 | —        |
+| 7.5 | Profils sociaux à afficher (LinkedIn en priorité)                                                                                  | 🟠       |
+| 7.6 | Lien de la page de **prise de rendez-vous** (Cal.com, Calendly, Google Agenda, Microsoft Bookings…)                                | 🟡       |
+| 7.7 | **E-mail de contact** de chaque activité (Écosystème entrepreneurial) : reçoit les demandes du formulaire adressées à l'entreprise | 🟠       |
+| 7.8 | **Page de contact** du site de chaque activité, si elle existe (bouton « Prendre contact »)                                        | 🟡       |
+| 7.9 | Relecture des **6 modèles de réponse** d'exemple (Administration → Modèles de réponse), dans les trois langues                     | 🟠       |
 
 ## 8. Textes juridiques
 
@@ -162,7 +165,13 @@ médiathèque vidéo / podcasts · prise de rendez-vous · qualification des dem
 newsletter avec double opt-in · vente directe, espace membres et produits numériques
 (fermés tant que les éléments de la section 6 ne sont pas réunis) · pages de campagne ·
 export CSV · copie vers Google Sheets · Google Analytics avec consentement · aperçu des
-brouillons sur toutes les pages · version allemande.
+brouillons sur toutes les pages · version allemande · diaporama de l'accueil · pastilles de
+notification et vue d'ensemble de l'administration · suivi des demandes (relances, notes,
+historique, modèles de réponse) · demandes orientées vers l'entreprise concernée · recherche
+sur le site · mise à jour du site en quelques secondes après publication.
+
+Reportées à la demande du commanditaire (17/09/2026) : **copie des sauvegardes hors du
+serveur** (stockage à choisir) et **alerte si le site ne répond plus**.
 
 Reste à décider : **intégration CRM ou outil d'e-mail marketing** (Brevo, HubSpot,
 Mailchimp…). L'export CSV permet déjà d'importer les abonnés et les demandes à la main.

@@ -196,8 +196,13 @@ valeurs du site s'appliquent).
 - Point de santé `/api/health` (base de données vérifiée, `ok` en ligne), scripts de
   sauvegarde et de restauration testés, migrations versionnées, image Docker de production,
   déploiement automatique avec retour arrière.
-- Administration : pastilles de notification pour les nouvelles demandes de contact et les
-  nouveaux abonnés (guide administrateur §5 et §15).
+- Administration : pastilles de notification, vue d'ensemble chiffrée, suivi des demandes
+  (relance avec rappel e-mail, notes, historique, modèles de réponse FR / DE / EN), demandes
+  orientées vers l'entreprise concernée (guide administrateur §1, §12 et §15).
+- Site public : recherche (`/fr/search`, non indexée) vérifiée en ligne le 17/09/2026 ; mise à
+  jour des pages en quelques secondes après publication.
+- Déploiement : migrations de base lancées comme étape journalisée avant le changement
+  d'image (incident du 16/09/2026 corrigé, voir `DEPLOIEMENT.md`).
 - Guides administrateur, installation, déploiement et rapport de tests en PDF.
 
 ---
@@ -222,6 +227,8 @@ valeurs du site s'appliquent).
 3. **Contenus (commanditaire)** : parcours et niveaux de langue de la page À propos,
    remplacer ou supprimer les 13 fiches d'exemple (1.3), réseaux sociaux et PDF (2.3, 2.4).
 4. **Nettoyage (commanditaire)** : comptes et données de test, une entrée à la fois (1.2).
-5. **Avant l'annonce** : tests réels des e-mails, SPF / DKIM / DMARC, reste de la checklist
+5. **Reporté (commanditaire, 17/09/2026)** : copie des sauvegardes hors du serveur et alerte
+   si le site ne répond plus.
+6. **Avant l'annonce** : tests réels des e-mails, SPF / DKIM / DMARC, reste de la checklist
    `DEPLOIEMENT.md` §13, Lighthouse sur le domaine final, soumission du sitemap à la
    Search Console.

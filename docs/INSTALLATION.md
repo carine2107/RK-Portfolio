@@ -158,6 +158,7 @@ Après toute modification dans `src/payload/` :
 ```bash
 npm run generate:types        # met à jour src/payload-types.ts
 npm run generate:importmap    # si un composant d'admin personnalisé est ajouté
+npm run seed:reply-templates  # modèles de réponse d'exemple (seulement ceux qui manquent)
 ```
 
 En développement, le schéma de base est synchronisé automatiquement
