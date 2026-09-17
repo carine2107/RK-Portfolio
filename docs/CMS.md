@@ -305,7 +305,9 @@ rappelée qu'après l'envoi (`context.followUpReminder`, entrée `reminderSent`)
 Lecture et écriture réservées à l'équipe (403 sans compte). Composant `ReplyWithTemplate`
 (champ `ui` du bloc Suivi) : charge les modèles dans la langue du visiteur (`locale` de la
 demande), remplace `{name}`, `{organisation}`, `{subject}` et ouvre un lien `mailto:` ;
-le serveur n'envoie rien.
+le serveur n'envoie rien. Six modèles d'exemple FR/DE/EN : `src/content/reply-templates.ts`,
+ajoutés par `npm run seed:reply-templates` (seulement ceux dont le nom n'existe pas ; aucun
+modèle existant n'est modifié ; lancé aussi dans la CI).
 
 ### `users` — Comptes
 

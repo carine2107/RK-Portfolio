@@ -119,3 +119,27 @@ describe('contact request follow-up', () => {
     expect(message.html).not.toContain('<Diallo>')
   })
 })
+
+describe('example reply templates', () => {
+  it('are complete in the three languages and use only known variables', async () => {
+    const { replyTemplateSeeds } = await import('@/content/reply-templates')
+    const { REQUEST_TYPES } = await import('@/payload/collections/ContactSubmissions')
+    const titles = new Set<string>()
+    for (const template of replyTemplateSeeds) {
+      expect(titles.has(template.title)).toBe(false)
+      titles.add(template.title)
+      for (const locale of ['fr', 'de', 'en'] as const) {
+        expect(template.subject[locale].trim()).not.toBe('')
+        expect(template.body[locale]).toContain('{name}')
+        const variables = `${template.subject[locale]} ${template.body[locale]}`.match(/\{\w+\}/g)
+        for (const variable of variables ?? []) {
+          expect(['{name}', '{organisation}', '{subject}']).toContain(variable)
+        }
+      }
+      for (const type of template.requestTypes ?? []) {
+        expect(REQUEST_TYPES).toContain(type)
+      }
+    }
+    expect(replyTemplateSeeds.length).toBeGreaterThanOrEqual(5)
+  })
+})

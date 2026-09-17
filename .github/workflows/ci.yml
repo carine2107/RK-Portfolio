@@ -116,6 +116,11 @@ jobs:
           # The schema comes from the migrations: no development schema push.
           PAYLOAD_MIGRATING: 'true'
 
+      - name: Example reply templates
+        run: npm run seed:reply-templates
+        env:
+          PAYLOAD_MIGRATING: 'true'
+
       - name: Production build
         run: npm run build
 

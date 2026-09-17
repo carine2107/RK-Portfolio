@@ -27,7 +27,7 @@ niveaux de langue) et des **textes juridiques**, à compléter par le commandita
 | Performances                      | ✅ mobile 83 en moyenne, ordinateur 98 – 100 (Lighthouse, 15/09)              |
 | Référencement                     | ✅ sitemap (81 adresses en ligne), robots, hreflang, métadonnées              |
 | Accessibilité                     | ✅ WCAG 2.2 AA (axe) sans violation sur les pages auditées                    |
-| Tests                             | ✅ 187 unitaires, 460 E2E sur 4 navigateurs, CI GitHub verte avec E2E         |
+| Tests                             | ✅ 188 unitaires, 460 E2E sur 4 navigateurs, CI GitHub verte avec E2E         |
 | Contenus                          | 🔴 13 fiches d'exemple en ligne ; parcours et niveaux de langue « à fournir » |
 | Textes juridiques                 | 🔴 12 passages entre crochets dans 4 pages, 5 pages à faire valider           |
 | Coordonnées                       | ✅ e-mail, téléphone et adresse renseignés · 🟠 réseaux sociaux vides         |
@@ -191,7 +191,7 @@ valeurs du site s'appliquent).
 
 **Qualité et exploitation**
 
-- 187 tests unitaires, 132 scénarios E2E × 4 navigateurs (460 réussis), intégration continue
+- 188 tests unitaires, 132 scénarios E2E × 4 navigateurs (460 réussis), intégration continue
   GitHub avec E2E sur base jetable.
 - Point de santé `/api/health` (base de données vérifiée, `ok` en ligne), scripts de
   sauvegarde et de restauration testés, migrations versionnées, image Docker de production,

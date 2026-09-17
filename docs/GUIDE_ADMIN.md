@@ -625,6 +625,10 @@ Dans une demande, la colonne de droite et le bloc **Suivi** servent à ne rien o
    chaque langue** (sélecteur de langue en haut de page). Variables possibles : `{name}`,
    `{organisation}`, `{subject}` ; elles sont remplacées par les informations de la
    demande. Facultatif : les types de demande pour lesquels le modèle est proposé en premier.
+   Six modèles d'exemple sont fournis (accusé de réception, demande de précisions, proposition
+   d'un premier échange, demande d'intervention, relance sans réponse, demande hors de mon
+   champ d'intervention) : relisez-les et adaptez-les à votre façon d'écrire ; vous pouvez les
+   modifier ou les supprimer librement.
 2. Dans une demande, choisissez le modèle : l'aperçu montre la réponse **dans la langue du
    visiteur**.
 3. **Ouvrir dans ma messagerie** ouvre votre logiciel d'e-mail avec le destinataire, l'objet

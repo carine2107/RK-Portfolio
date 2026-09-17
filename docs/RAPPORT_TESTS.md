@@ -10,7 +10,7 @@ Environnement : Windows 11, Node 24.15, PostgreSQL 16 (Docker), build de
 
 | Suite                            | Périmètre                                                               | Résultat                             |
 | -------------------------------- | ----------------------------------------------------------------------- | ------------------------------------ |
-| Tests unitaires (Vitest)         | Traductions, contrastes, moteur d'apparence, validation, SEO, anti-abus | **187 / 187 réussis**                |
+| Tests unitaires (Vitest)         | Traductions, contrastes, moteur d'apparence, validation, SEO, anti-abus | **188 / 188 réussis**                |
 | Tests end-to-end (Playwright)    | 132 scénarios × 4 configurations                                        | **460 réussis, 68 ignorés, 0 échec** |
 | Compilation TypeScript (`tsc`)   | Mode strict, tout le projet                                             | **0 erreur**                         |
 | Lint (ESLint 9 + config Next 16) | Tout le projet                                                          | **0 erreur, 0 avertissement**        |
@@ -65,7 +65,7 @@ node tests/visual/capture.mjs test-results/visual
 
 ---
 
-## 2. Tests unitaires (187)
+## 2. Tests unitaires (188)
 
 | Fichier                                               | Ce qui est vérifié                                                                                                                                                                                                                                                                                                                                                                                         |
 | ----------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -272,7 +272,7 @@ Contrôle manuel (base de développement, demande de test supprimée ensuite ; l
   passée à « Répondue » avec une date de relance et une note par le compte administrateur ;
   la note est horodatée, `answeredAt` est rempli, l'historique contient le changement de
   statut puis la relance, et un historique falsifié envoyé par l'API est ignoré ; les
-  modèles de réponse répondent 403 sans compte ; la demande de test est ensuite supprimée
+  modèles d'exemple présents en allemand ; modèles de réponse en 403 sans compte ; la demande de test est ensuite supprimée
 
 ### Qualification des prospects (`contact.spec.ts`, `lead-score.test.ts`)
 

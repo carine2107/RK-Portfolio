@@ -64,6 +64,7 @@ Guide détaillé : [`docs/INSTALLATION.md`](docs/INSTALLATION.md).
 | `npm run build`                   | Build de production                                                                                                                                      |
 | `npm start`                       | Serveur de production                                                                                                                                    |
 | `npm run seed`                    | Injecte le contenu de démarrage et crée le premier administrateur                                                                                        |
+| `npm run seed:reply-templates`    | Ajoute les modèles de réponse d'exemple (FR/DE/EN) qui manquent, sans modifier les modèles existants                                                     |
 | `npm run import:assets`           | Importe les photos et la couverture fournies par le client (voir `docs/INSTALLATION.md`)                                                                 |
 | `npm run docs:pdf`                | Régénère tous les documents en PDF dans `docs/pdf/` (guide, éléments à fournir, présentation, installation, déploiement, CMS, dépendances, tests, audit) |
 | `npm run brand:assets`            | Régénère le logo en PNG (icônes, image de partage, `public/brand/`) à partir de `src/lib/brand-mark.ts`, avec la police Playfair Display                 |

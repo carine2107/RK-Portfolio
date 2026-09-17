@@ -76,6 +76,14 @@ test.describe('contact request follow-up', () => {
       expect(doc.history.map((entry) => entry.action)).toEqual(['statusChanged', 'followUpSet'])
       expect(doc.history[0]).toMatchObject({ fromStatus: 'new', toStatus: 'answered' })
 
+      // Example templates added by `npm run seed:reply-templates` (CI step), in German.
+      const templates = await request.get('/api/cms/reply-templates?locale=de&limit=50&depth=0', {
+        headers,
+      })
+      const { docs } = (await templates.json()) as { docs: { body: string }[] }
+      expect(docs.length).toBeGreaterThanOrEqual(5)
+      expect(docs.map((doc) => doc.body).join(' ')).toContain('Guten Tag {name}')
+
       // Templates are private: not readable without an account (fresh context, no cookie).
       const anonymous = await playwright.request.newContext({ baseURL })
       expect((await anonymous.get('/api/cms/reply-templates')).status()).toBe(403)
