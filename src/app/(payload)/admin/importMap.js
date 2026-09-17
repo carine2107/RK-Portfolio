@@ -24,6 +24,7 @@ import { ItalicFeatureClient as ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0
 import { ReplyWithTemplate as ReplyWithTemplate_369b744463c4fd9a63c2aa8319c8188e } from '../../../payload/components/ReplyWithTemplate'
 import { ExportCsvButton as ExportCsvButton_4995377b0f92c9a970ca897b01637845 } from '../../../payload/components/ExportCsvButton'
 import { SheetsSync as SheetsSync_5e34b55f82c6ba016a34cfe0f82c3667 } from '../../../payload/components/SheetsSync'
+import { AuditLogView as AuditLogView_4c031d9f9e3914402fa12e1e81286c68 } from '../../../payload/components/AuditLogView'
 import { ColorField as ColorField_45df064d6b2bdb77d37f43651fe02d71 } from '../../../payload/components/ColorField'
 import { AppearancePreview as AppearancePreview_5b458903790aaf97e98fe43cd6263a3e } from '../../../payload/components/AppearancePreview'
 import { AdminIcon as AdminIcon_c810f9cb2a58162fb52e987f16590396 } from '../../../payload/components/AdminGraphics'
@@ -60,6 +61,7 @@ export const importMap = {
   "/payload/components/ReplyWithTemplate#ReplyWithTemplate": ReplyWithTemplate_369b744463c4fd9a63c2aa8319c8188e,
   "/payload/components/ExportCsvButton#ExportCsvButton": ExportCsvButton_4995377b0f92c9a970ca897b01637845,
   "/payload/components/SheetsSync#SheetsSync": SheetsSync_5e34b55f82c6ba016a34cfe0f82c3667,
+  "/payload/components/AuditLogView#AuditLogView": AuditLogView_4c031d9f9e3914402fa12e1e81286c68,
   "/payload/components/ColorField#ColorField": ColorField_45df064d6b2bdb77d37f43651fe02d71,
   "/payload/components/AppearancePreview#AppearancePreview": AppearancePreview_5b458903790aaf97e98fe43cd6263a3e,
   "/payload/components/AdminGraphics#AdminIcon": AdminIcon_c810f9cb2a58162fb52e987f16590396,

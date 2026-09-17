@@ -48,8 +48,19 @@ l'administration, et quand.
 - Le journal **ne peut être ni modifié ni supprimé** depuis l'administration. Les entrées de
   plus de **12 mois** sont supprimées automatiquement (réglage serveur
   `AUDIT_LOG_RETENTION_MONTHS`).
-- Filtrer par utilisateur ou par élément : champ de recherche en haut de la liste ; par action
-  ou par section : bouton **Filtres**.
+- **Écran du journal** :
+  - onglets de période **Jour**, **Semaine** (par défaut, depuis lundi), **Mois**, **Année**,
+    **Tout** (heure de Berlin) ;
+  - **recherche** (utilisateur, élément ou nom de champ), listes **Action** et **Section**,
+    bouton **Filtrer**, lien **Réinitialiser** ;
+  - activités **regroupées par jour**, avec le nombre d'activités ; cliquer sur un jour l'ouvre
+    ou le referme (le plus récent est ouvert) ;
+  - pour chaque activité : heure, initiale et nom de l'utilisateur, action en couleur (vert
+    création et publication, bleu modification et brouillon, orange dépublication, rouge
+    suppression, violet connexion et déconnexion), élément avec un lien vers sa fiche et les
+    champs modifiés ;
+  - 200 activités affichées, puis **Afficher plus**. L'adresse de la page garde les filtres :
+    elle peut être ajoutée aux favoris.
 
 ### Rôles
 

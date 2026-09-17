@@ -412,3 +412,240 @@
     white-space: pre-wrap;
   }
 }
+
+/*
+ * Audit log screen (AuditLogView.tsx): period tabs, filters, days.
+ */
+.rk-audit {
+  display: grid;
+  gap: var(--base);
+  padding: calc(var(--base) * 1.5) var(--gutter-h, calc(var(--base) * 2));
+}
+
+.rk-audit__header {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.rk-audit__title {
+  margin: 0;
+}
+
+.rk-audit__lead {
+  margin: 0;
+  color: var(--theme-elevation-600);
+}
+
+.rk-audit__sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.rk-audit__periods {
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-self: start;
+  overflow: hidden;
+  border: 1px solid var(--theme-elevation-150);
+  border-radius: var(--style-radius-m);
+  background: var(--theme-elevation-0);
+}
+
+.rk-audit__period {
+  padding: 0.5rem 1rem;
+  color: var(--theme-elevation-800);
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
+
+  &:hover {
+    background: var(--theme-elevation-50);
+  }
+
+  &.is-active {
+    background: var(--theme-elevation-800);
+    color: var(--theme-elevation-0);
+  }
+}
+
+.rk-audit__filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  padding: calc(var(--base) * 0.75);
+  border: 1px solid var(--theme-elevation-150);
+  border-radius: var(--style-radius-m);
+  background: var(--theme-elevation-0);
+
+  input,
+  select {
+    height: 2.5rem;
+    padding: 0 0.75rem;
+    border: 1px solid var(--theme-elevation-150);
+    border-radius: var(--style-radius-s);
+    background: var(--theme-input-bg);
+    color: var(--theme-elevation-800);
+  }
+
+  .btn {
+    margin: 0;
+  }
+}
+
+.rk-audit__search {
+  flex: 1 1 16rem;
+
+  input {
+    width: 100%;
+  }
+}
+
+.rk-audit__reset {
+  font-size: 0.875rem;
+}
+
+.rk-audit__table {
+  overflow: hidden;
+  border: 1px solid var(--theme-elevation-150);
+  border-radius: var(--style-radius-m);
+  background: var(--theme-elevation-0);
+}
+
+.rk-audit__row {
+  display: grid;
+  grid-template-columns: 11rem minmax(10rem, 1.2fr) 11rem minmax(12rem, 2fr);
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.625rem 1rem;
+  border-top: 1px solid var(--theme-elevation-100);
+  font-size: 0.875rem;
+}
+
+.rk-audit__row--head {
+  border-top: 0;
+  color: var(--theme-elevation-600);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.rk-audit__day {
+  border-top: 1px solid var(--theme-elevation-150);
+}
+
+.rk-audit__day-summary {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: var(--theme-elevation-50);
+  cursor: pointer;
+}
+
+.rk-audit__day-label {
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.rk-audit__day-count {
+  color: var(--theme-elevation-600);
+  font-size: 0.75rem;
+}
+
+.rk-audit__time {
+  color: var(--theme-elevation-700);
+  font-variant-numeric: tabular-nums;
+}
+
+.rk-audit__user {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.rk-audit__avatar {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 999px;
+  background: var(--theme-elevation-100);
+  color: var(--theme-elevation-800);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.rk-audit__badge {
+  display: inline-block;
+  padding: 0.125rem 0.5rem;
+  border-radius: var(--style-radius-s);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.rk-audit__badge--create {
+  background: #dcfce7;
+  color: #14532d;
+}
+
+.rk-audit__badge--update {
+  background: #e0f2fe;
+  color: #0c4a6e;
+}
+
+.rk-audit__badge--warning {
+  background: #fef3c7;
+  color: #78350f;
+}
+
+.rk-audit__badge--danger {
+  background: #fee2e2;
+  color: #7f1d1d;
+}
+
+.rk-audit__badge--session {
+  background: #ede9fe;
+  color: #4c1d95;
+}
+
+.rk-audit__item {
+  display: grid;
+  gap: 0.125rem;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.rk-audit__fields {
+  color: var(--theme-elevation-600);
+  font-size: 0.75rem;
+}
+
+.rk-audit__empty,
+.rk-audit__footer {
+  margin: 0;
+  padding: 1rem;
+  color: var(--theme-elevation-600);
+  font-size: 0.875rem;
+}
+
+@media (max-width: 900px) {
+  .rk-audit__row {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .rk-audit__row--head {
+    display: none;
+  }
+}

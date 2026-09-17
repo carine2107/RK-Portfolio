@@ -410,6 +410,12 @@ comptes `users`. Seules les actions d'un utilisateur `users` connecté sont not�
 se fait hors de la transaction de la requête, **sans être attendue** (l'entrée référence le
 compte, que la transaction d'une connexion ou d'une modification de compte verrouille : l'attendre
 bloquait la requête), et une erreur est journalisée sans bloquer la sauvegarde. Champs ignorés : identifiant, dates, `_status`, `history`, champs d'authentification.
+Écran de liste remplacé par `AuditLogView` (`admin.components.views.list`, composant serveur,
+logique pure `src/lib/audit-log-view.ts`) : périodes jour / semaine (lundi) / mois / année / tout
+calculées en heure de Berlin, recherche `like` sur `userLabel`, `documentTitle`,
+`changedFields`, filtres `action` et `entity` validés contre les listes connues, regroupement
+par jour (`<details>`), 200 entrées par palier (2 000 au plus), état dans l'adresse
+(`?period=&q=&action=&entity=&limit=`), lecture avec les droits de l'utilisateur.
 Purge quotidienne des entrées plus anciennes que `AUDIT_LOG_RETENTION_MONTHS` (12, `0` =
 jamais). Ajouter une collection ou un global ajoute sa valeur à l'énumération `entity` : créer la
 migration.

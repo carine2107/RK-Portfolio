@@ -4,7 +4,7 @@ import { AUDIT_ACTIONS, type AuditAction } from '../../lib/audit-log'
 import { isAdmin } from '../access'
 import { GROUPS, tr } from '../i18n'
 
-const ACTION_LABELS: Record<AuditAction, Record<string, string>> = {
+export const ACTION_LABELS: Record<AuditAction, Record<string, string>> = {
   create: tr('Création', 'Erstellt', 'Created'),
   update: tr('Modification', 'Geändert', 'Updated'),
   publish: tr('Publication', 'Veröffentlicht', 'Published'),
@@ -54,6 +54,10 @@ export function auditLogsCollection(
       useAsTitle: 'summary',
       defaultColumns: ['createdAt', 'userLabel', 'action', 'entity', 'documentTitle'],
       listSearchableFields: ['userLabel', 'documentTitle'],
+      // Timeline with period tabs, filters and days (AuditLogView.tsx).
+      components: {
+        views: { list: { Component: '/payload/components/AuditLogView#AuditLogView' } },
+      },
       description: tr(
         'Qui a créé, modifié, publié ou supprimé quoi dans l’administration, et quand ; connexions et déconnexions. Seuls les noms des champs modifiés sont notés, jamais leur contenu. Le journal ne peut pas être modifié ; les entrées de plus de 12 mois sont supprimées automatiquement.',
         'Wer in der Verwaltung was erstellt, geändert, veröffentlicht oder gelöscht hat und wann; An- und Abmeldungen. Es werden nur die Namen geänderter Felder erfasst, nie deren Inhalt. Das Protokoll ist nicht änderbar; Einträge älter als 12 Monate werden automatisch gelöscht.',

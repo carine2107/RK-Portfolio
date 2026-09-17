@@ -87,4 +87,34 @@ test.describe('admin audit log', () => {
     expect((await anonymous.get('/api/cms/audit-logs')).status()).toBe(403)
     await anonymous.dispose()
   })
+  test('shows period tabs, filters and days on the audit log screen', async ({
+    page,
+  }, testInfo) => {
+    test.skip(testInfo.project.name !== 'chromium', 'Admin screen, checked once')
+    test.setTimeout(90_000)
+
+    const login = await page.request.post('/api/cms/users/login', {
+      data: { email: process.env.SEED_ADMIN_EMAIL, password: process.env.SEED_ADMIN_PASSWORD },
+    })
+    expect(login.ok()).toBe(true)
+
+    await page.goto('/admin/collections/audit-logs')
+    const screen = page.locator('.rk-audit')
+    await expect(screen).toBeVisible()
+    await expect(screen.locator('.rk-audit__period')).toHaveCount(5)
+    await expect(screen.locator('.rk-audit__period.is-active')).toHaveCount(1)
+    // The sign-in above is in today's group, open by default.
+    await expect(screen.locator('.rk-audit__day').first()).toHaveAttribute('open', '')
+    await expect(screen.locator('.rk-audit__badge--session').first()).toBeVisible()
+
+    // Day tab, then the action filter: the address keeps the choices.
+    await screen.locator('.rk-audit__period').first().click()
+    await expect(page).toHaveURL(/period=day/)
+    await screen.locator('select[name="action"]').selectOption('login')
+    await screen.locator('.rk-audit__filters button[type="submit"]').click()
+    await expect(page).toHaveURL(/period=day.*action=login/)
+    const badges = screen.locator('.rk-audit__badge')
+    expect(await badges.count()).toBeGreaterThan(0)
+    await expect(screen.locator('.rk-audit__badge--session')).toHaveCount(await badges.count())
+  })
 })
