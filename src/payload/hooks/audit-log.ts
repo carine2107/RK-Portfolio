@@ -29,6 +29,11 @@ type Entry = {
  * Writes an audit entry for an action of a signed-in user. Runs outside the
  * request transaction and swallows its own errors: logging never blocks or
  * fails a save. Background jobs and visitors (no user) are not logged.
+ *
+ * Never awaited by the hooks: the entry references the user row, which the
+ * request transaction may hold locked (sign-in, account change). Awaiting it
+ * inside the hook deadlocked the request; started without waiting, the insert
+ * simply completes once the transaction has committed.
  */
 async function record(req: PayloadRequest, entry: Entry): Promise<void> {
   const user = req.user as {
@@ -74,7 +79,7 @@ export function withAuditLog(collection: CollectionConfig): CollectionConfig {
     const fields = operation === 'update' ? changedFields(previousDoc, doc) : []
     // A save that changes nothing (same values, same status) is not an event.
     if (action === 'update' && fields.length === 0) return doc
-    await record(req, {
+    void record(req, {
       action,
       entity: collection.slug,
       documentTitle: documentTitle(doc, titleField),
@@ -91,7 +96,7 @@ export function withAuditLog(collection: CollectionConfig): CollectionConfig {
   }
 
   const afterDelete: CollectionAfterDeleteHook = async ({ doc, id, req }) => {
-    await record(req, {
+    void record(req, {
       action: 'delete',
       entity: collection.slug,
       documentTitle: documentTitle(doc, titleField),
@@ -110,7 +115,7 @@ export function withAuditLog(collection: CollectionConfig): CollectionConfig {
     hooks.afterLogin = [
       ...(collection.hooks?.afterLogin ?? []),
       async ({ req, user }) => {
-        await record({ ...req, user } as PayloadRequest, {
+        void record({ ...req, user } as PayloadRequest, {
           action: 'login',
           entity: collection.slug,
           documentTitle: userLabel(user),
@@ -122,7 +127,7 @@ export function withAuditLog(collection: CollectionConfig): CollectionConfig {
       ...(collection.hooks?.afterLogout ?? []),
       async ({ req }) => {
         if (!req.user) return
-        await record(req, {
+        void record(req, {
           action: 'logout',
           entity: collection.slug,
           documentTitle: userLabel(req.user),
@@ -140,7 +145,7 @@ export function withGlobalAuditLog(global: GlobalConfig): GlobalConfig {
     const fields = changedFields(previousDoc, doc)
     if (fields.length === 0) return doc
     const label = global.label
-    await record(req, {
+    void record(req, {
       action: 'update',
       entity: `global:${global.slug}`,
       documentTitle:

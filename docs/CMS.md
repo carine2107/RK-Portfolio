@@ -407,8 +407,9 @@ suppression refusées par l'API (403). Entrées écrites par `withAuditLog` / `w
 collections et globals de `payload.config.ts` : `afterChange` (une sauvegarde sans champ modifié
 ni changement de statut n'est pas notée), `afterDelete`, `afterLogin` / `afterLogout` des
 comptes `users`. Seules les actions d'un utilisateur `users` connecté sont notées ; l'écriture
-se fait hors de la transaction de la requête et une erreur est journalisée sans bloquer la
-sauvegarde. Champs ignorés : identifiant, dates, `_status`, `history`, champs d'authentification.
+se fait hors de la transaction de la requête, **sans être attendue** (l'entrée référence le
+compte, que la transaction d'une connexion ou d'une modification de compte verrouille : l'attendre
+bloquait la requête), et une erreur est journalisée sans bloquer la sauvegarde. Champs ignorés : identifiant, dates, `_status`, `history`, champs d'authentification.
 Purge quotidienne des entrées plus anciennes que `AUDIT_LOG_RETENTION_MONTHS` (12, `0` =
 jamais). Ajouter une collection ou un global ajoute sa valeur à l'énumération `entity` : créer la
 migration.
