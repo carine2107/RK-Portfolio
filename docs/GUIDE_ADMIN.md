@@ -18,6 +18,7 @@ nécessaire : tout ce qui suit se fait depuis l'interface d'administration.
 En haut de la page d'accueil de l'administration, la **Vue d'ensemble** résume l'activité :
 
 - **Nouvelles demandes** : demandes de contact encore au statut « Nouvelle » ;
+- **Relances dues** : demandes nouvelles ou en cours dont la date de relance est arrivée ;
 - **Prioritaires en attente** : demandes de priorité haute, nouvelles ou en cours (cadre
   orange s'il y en a) ;
 - **Demandes ce mois-ci**, comparées au mois précédent ;
@@ -598,6 +599,40 @@ langue et l'horodatage du consentement.
   (`CONTACT_RETENTION_MONTHS`, `0` = jamais) et doit correspondre à celle
   annoncée dans la politique de confidentialité. Une demande peut aussi être
   supprimée à la main (rôle Administrator), par exemple sur demande de la personne.
+
+### Suivi d'une demande
+
+Dans une demande, la colonne de droite et le bloc **Suivi** servent à ne rien oublier :
+
+- **Relance prévue le** : choisissez une date. Ce jour-là, si la demande est encore
+  _Nouvelle_ ou _En cours_, un **e-mail de rappel** part vers l'adresse de réception des
+  demandes (Réglages du site), avec le lien vers la fiche. Un seul rappel par date : changer
+  la date en programme un nouveau. Passer la demande à _Répondue_ ou _Archivée_ annule le
+  rappel. Le tableau de bord affiche aussi les **relances dues**.
+- **Notes internes** : ajoutez une note (appel passé, devis envoyé…) puis enregistrez ; la
+  date et votre nom sont ajoutés automatiquement. Les notes ne sont jamais visibles du
+  visiteur.
+- **Historique** : rempli automatiquement à chaque enregistrement (changement de statut
+  avec l'auteur, date de relance posée ou retirée, rappel envoyé). Il ne peut pas être
+  modifié à la main.
+- **Répondue le** : date enregistrée automatiquement au premier passage au statut
+  _Répondue_.
+
+**Répondre avec un modèle** (en haut du bloc Suivi) :
+
+1. Créez d'abord vos réponses types dans **Administration → Modèles de réponse** : un nom
+   (« Accusé de réception », « Demande de précisions »…), l'objet et le texte, **dans
+   chaque langue** (sélecteur de langue en haut de page). Variables possibles : `{name}`,
+   `{organisation}`, `{subject}` ; elles sont remplacées par les informations de la
+   demande. Facultatif : les types de demande pour lesquels le modèle est proposé en premier.
+2. Dans une demande, choisissez le modèle : l'aperçu montre la réponse **dans la langue du
+   visiteur**.
+3. **Ouvrir dans ma messagerie** ouvre votre logiciel d'e-mail avec le destinataire, l'objet
+   et le texte déjà remplis. Relisez, envoyez depuis votre messagerie, puis passez le
+   statut à _Répondue_. Le site n'envoie rien lui-même.
+
+Le rappel par e-mail ne fonctionne que si l'envoi d'e-mails est configuré sur le serveur
+(c'est le cas en ligne).
 
 ### Priorité des demandes (qualification)
 

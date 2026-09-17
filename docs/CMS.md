@@ -287,6 +287,26 @@ retrouvée par l'ID en colonne A). Abonnés synchronisés seulement en `confirme
 Inactif sans `GOOGLE_SHEETS_SPREADSHEET_ID`, `GOOGLE_SERVICE_ACCOUNT_EMAIL`,
 `GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY`.
 
+**Suivi** (`contact-submissions`) : `followUpAt` (date de relance), `followUpReminderSentAt`
+et `answeredAt` (lecture seule), `notes[{text, at, author}]`, `history[{at, author, action,
+fromStatus, toStatus, date}]` (lecture seule). Hook `beforeChange` (`trackFollowUp`,
+logique pure dans `src/lib/follow-up.ts`) : horodate les nouvelles notes, reconstruit
+l'historique à partir de la version enregistrée (une saisie envoyée par l'API est ignorée),
+enregistre `answeredAt`, remet `followUpReminderSentAt` à vide quand la date de relance
+change. Rappel : tâche horaire `sendFollowUpReminders` (`src/lib/follow-up-reminders.ts`,
+lancée par `src/lib/retention-schedule.ts`) : un e-mail listant les demandes `new` /
+`inProgress` dont la date est passée et sans rappel, vers `notificationEmail`, sinon
+`EMAIL_TO`, sinon l'e-mail publié ; rien sans SMTP réel, et une demande n'est marquée
+rappelée qu'après l'envoi (`context.followUpReminder`, entrée `reminderSent`).
+
+### `reply-templates` — Modèles de réponse
+
+`title`\*, `subject`\* et `body`\* (localisés), `requestTypes[]` (types proposés en premier).
+Lecture et écriture réservées à l'équipe (403 sans compte). Composant `ReplyWithTemplate`
+(champ `ui` du bloc Suivi) : charge les modèles dans la langue du visiteur (`locale` de la
+demande), remplace `{name}`, `{organisation}`, `{subject}` et ouvre un lien `mailto:` ;
+le serveur n'envoie rien.
+
 ### `users` — Comptes
 
 `name`_, `email`_, `role`\* (`admin` | `editor`).

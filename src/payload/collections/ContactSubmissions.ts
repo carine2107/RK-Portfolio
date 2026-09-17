@@ -1,4 +1,4 @@
-import type { CollectionConfig } from 'payload'
+import type { CollectionBeforeChangeHook, CollectionConfig, Field } from 'payload'
 
 import {
   BUDGETS,
@@ -9,6 +9,13 @@ import {
   QUALIFICATION_LABELS,
   TIMELINES,
 } from '../../lib/lead-score'
+import {
+  authorName,
+  historyEntries,
+  stampNotes,
+  type HistoryEntry,
+  type NoteEntry,
+} from '../../lib/follow-up'
 import { isAdmin, isAdminOrEditor } from '../access'
 import { removeFromSheets, syncToSheets } from '../hooks/sheets'
 import { GROUPS, tr } from '../i18n'
@@ -49,6 +56,188 @@ export const REQUEST_TYPE_LABELS: Record<RequestType, Record<string, string>> = 
   bookOrder: tr('Commande de livre', 'Buchbestellung', 'Book order'),
   other: tr('Autre', 'Sonstiges', 'Other'),
 }
+
+const STATUS_OPTIONS = [
+  { label: tr('Nouvelle', 'Neu', 'New'), value: 'new' },
+  { label: tr('En cours', 'In Bearbeitung', 'In progress'), value: 'inProgress' },
+  { label: tr('Répondue', 'Beantwortet', 'Answered'), value: 'answered' },
+  { label: tr('Archivée', 'Archiviert', 'Archived'), value: 'archived' },
+]
+
+type FollowUpDoc = {
+  status?: string | null
+  followUpAt?: string | null
+  answeredAt?: string | null
+  notes?: NoteEntry[] | null
+  history?: HistoryEntry[] | null
+}
+
+/**
+ * Follow-up bookkeeping on every save: stamps new notes, appends to the
+ * history (always rebuilt from the stored one, so it cannot be edited), records
+ * when the request was answered and re-arms the reminder when its date changes.
+ */
+const trackFollowUp: CollectionBeforeChangeHook = ({
+  data,
+  originalDoc,
+  operation,
+  req,
+  context,
+}) => {
+  if (operation !== 'update' || !originalDoc) return data
+  const previous = originalDoc as FollowUpDoc
+  const next = { ...previous, ...(data as FollowUpDoc) }
+  const now = new Date()
+  const author = authorName(req.user as { name?: string; email?: string } | null)
+
+  if (Array.isArray(data.notes)) data.notes = stampNotes(data.notes as NoteEntry[], author, now)
+
+  const entries: HistoryEntry[] = context?.followUpReminder
+    ? [{ at: now.toISOString(), action: 'reminderSent' }]
+    : historyEntries(previous, next, author, now)
+  data.history = [...(previous.history ?? []), ...entries]
+
+  if (!context?.followUpReminder && entries.some((entry) => entry.action !== 'statusChanged')) {
+    data.followUpReminderSentAt = null
+  }
+  if (next.status === 'answered' && previous.status !== 'answered' && !previous.answeredAt) {
+    data.answeredAt = now.toISOString()
+  }
+  return data
+}
+
+const followUpFields: Field[] = [
+  {
+    type: 'collapsible',
+    label: tr('Suivi', 'Nachverfolgung', 'Follow-up'),
+    admin: { initCollapsed: false },
+    fields: [
+      {
+        name: 'replyWithTemplate',
+        type: 'ui',
+        admin: {
+          components: { Field: '/payload/components/ReplyWithTemplate#ReplyWithTemplate' },
+        },
+      },
+      {
+        name: 'notes',
+        type: 'array',
+        label: tr('Notes internes', 'Interne Notizen', 'Internal notes'),
+        labels: {
+          singular: tr('Note', 'Notiz', 'Note'),
+          plural: tr('Notes', 'Notizen', 'Notes'),
+        },
+        admin: {
+          description: tr(
+            'Visibles uniquement dans l’administration. La date et l’auteur sont ajoutés à l’enregistrement.',
+            'Nur in der Verwaltung sichtbar. Datum und Verfasser werden beim Speichern ergänzt.',
+            'Only visible in the admin. Date and author are added when saving.',
+          ),
+        },
+        fields: [
+          { name: 'text', type: 'textarea', label: tr('Note', 'Notiz', 'Note'), required: true },
+          {
+            type: 'row',
+            fields: [
+              {
+                name: 'at',
+                type: 'date',
+                label: tr('Le', 'Am', 'On'),
+                admin: { readOnly: true, date: { pickerAppearance: 'dayAndTime' } },
+              },
+              {
+                name: 'author',
+                type: 'text',
+                label: tr('Par', 'Von', 'By'),
+                admin: { readOnly: true },
+              },
+            ],
+          },
+        ],
+      },
+      {
+        name: 'history',
+        type: 'array',
+        label: tr('Historique', 'Verlauf', 'History'),
+        labels: {
+          singular: tr('Événement', 'Ereignis', 'Event'),
+          plural: tr('Événements', 'Ereignisse', 'Events'),
+        },
+        admin: {
+          readOnly: true,
+          initCollapsed: true,
+          description: tr(
+            'Rempli automatiquement : changements de statut, dates de relance, rappels envoyés.',
+            'Automatisch gefüllt: Statusänderungen, Wiedervorlagen, gesendete Erinnerungen.',
+            'Filled in automatically: status changes, follow-up dates, reminders sent.',
+          ),
+        },
+        fields: [
+          {
+            type: 'row',
+            fields: [
+              {
+                name: 'at',
+                type: 'date',
+                label: tr('Le', 'Am', 'On'),
+                admin: { date: { pickerAppearance: 'dayAndTime' } },
+              },
+              {
+                name: 'action',
+                type: 'select',
+                label: tr('Événement', 'Ereignis', 'Event'),
+                options: [
+                  {
+                    label: tr('Changement de statut', 'Statusänderung', 'Status changed'),
+                    value: 'statusChanged',
+                  },
+                  {
+                    label: tr('Relance prévue', 'Wiedervorlage geplant', 'Follow-up planned'),
+                    value: 'followUpSet',
+                  },
+                  {
+                    label: tr('Relance retirée', 'Wiedervorlage entfernt', 'Follow-up removed'),
+                    value: 'followUpCleared',
+                  },
+                  {
+                    label: tr('Rappel envoyé', 'Erinnerung gesendet', 'Reminder sent'),
+                    value: 'reminderSent',
+                  },
+                ],
+              },
+              { name: 'author', type: 'text', label: tr('Par', 'Von', 'By') },
+            ],
+          },
+          {
+            type: 'row',
+            fields: [
+              {
+                name: 'fromStatus',
+                type: 'select',
+                label: tr('De', 'Von', 'From'),
+                options: STATUS_OPTIONS,
+                admin: { condition: (_, row) => row?.action === 'statusChanged' },
+              },
+              {
+                name: 'toStatus',
+                type: 'select',
+                label: tr('À', 'Zu', 'To'),
+                options: STATUS_OPTIONS,
+                admin: { condition: (_, row) => row?.action === 'statusChanged' },
+              },
+              {
+                name: 'date',
+                type: 'date',
+                label: tr('Date de relance', 'Wiedervorlage am', 'Follow-up date'),
+                admin: { condition: (_, row) => row?.action === 'followUpSet' },
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+]
 
 const options = <T extends string>(
   values: readonly T[],
@@ -92,6 +281,7 @@ export const ContactSubmissions: CollectionConfig = {
     delete: isAdmin,
   },
   hooks: {
+    beforeChange: [trackFollowUp],
     afterChange: [syncToSheets('contact-submissions')],
     afterDelete: [removeFromSheets('contact-submissions')],
   },
@@ -215,14 +405,46 @@ export const ContactSubmissions: CollectionConfig = {
       type: 'select',
       label: tr('Statut', 'Status', 'Status'),
       defaultValue: 'new',
-      options: [
-        { label: tr('Nouvelle', 'Neu', 'New'), value: 'new' },
-        { label: tr('En cours', 'In Bearbeitung', 'In progress'), value: 'inProgress' },
-        { label: tr('Répondue', 'Beantwortet', 'Answered'), value: 'answered' },
-        { label: tr('Archivée', 'Archiviert', 'Archived'), value: 'archived' },
-      ],
+      options: STATUS_OPTIONS,
       admin: { position: 'sidebar' },
     },
+    {
+      name: 'followUpAt',
+      type: 'date',
+      label: tr('Relance prévue le', 'Wiedervorlage am', 'Follow up on'),
+      admin: {
+        position: 'sidebar',
+        date: { pickerAppearance: 'dayOnly', displayFormat: 'dd/MM/yyyy' },
+        description: tr(
+          'Un e-mail de rappel est envoyé ce jour-là si la demande est encore nouvelle ou en cours.',
+          'An diesem Tag kommt eine Erinnerungs-E-Mail, wenn die Anfrage noch neu oder in Bearbeitung ist.',
+          'A reminder e-mail is sent on that day if the request is still new or in progress.',
+        ),
+      },
+    },
+    {
+      name: 'followUpReminderSentAt',
+      type: 'date',
+      label: tr('Rappel envoyé le', 'Erinnerung gesendet am', 'Reminder sent on'),
+      admin: {
+        position: 'sidebar',
+        readOnly: true,
+        date: { pickerAppearance: 'dayAndTime' },
+        condition: (data) => Boolean(data?.followUpReminderSentAt),
+      },
+    },
+    {
+      name: 'answeredAt',
+      type: 'date',
+      label: tr('Répondue le', 'Beantwortet am', 'Answered on'),
+      admin: {
+        position: 'sidebar',
+        readOnly: true,
+        date: { pickerAppearance: 'dayAndTime' },
+        condition: (data) => Boolean(data?.answeredAt),
+      },
+    },
+
     {
       name: 'emailDelivered',
       type: 'checkbox',
@@ -251,5 +473,6 @@ export const ContactSubmissions: CollectionConfig = {
         ),
       },
     },
+    ...followUpFields,
   ],
 }

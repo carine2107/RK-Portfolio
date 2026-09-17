@@ -80,6 +80,7 @@ export interface Config {
     media: Media;
     documents: Document;
     'contact-submissions': ContactSubmission;
+    'reply-templates': ReplyTemplate;
     subscribers: Subscriber;
     orders: Order;
     products: Product;
@@ -108,6 +109,7 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     documents: DocumentsSelect<false> | DocumentsSelect<true>;
     'contact-submissions': ContactSubmissionsSelect<false> | ContactSubmissionsSelect<true>;
+    'reply-templates': ReplyTemplatesSelect<false> | ReplyTemplatesSelect<true>;
     subscribers: SubscribersSelect<false> | SubscribersSelect<true>;
     orders: OrdersSelect<false> | OrdersSelect<true>;
     products: ProductsSelect<false> | ProductsSelect<true>;
@@ -1689,6 +1691,12 @@ export interface ContactSubmission {
   leadScore?: number | null;
   status?: ('new' | 'inProgress' | 'answered' | 'archived') | null;
   /**
+   * A reminder e-mail is sent on that day if the request is still new or in progress.
+   */
+  followUpAt?: string | null;
+  followUpReminderSentAt?: string | null;
+  answeredAt?: string | null;
+  /**
    * Whether the notification e-mail could actually be sent.
    */
   emailDelivered?: boolean | null;
@@ -1696,6 +1704,68 @@ export interface ContactSubmission {
    * Timestamp of the privacy consent.
    */
   consentAt?: string | null;
+  /**
+   * Only visible in the admin. Date and author are added when saving.
+   */
+  notes?:
+    | {
+        text: string;
+        at?: string | null;
+        author?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Filled in automatically: status changes, follow-up dates, reminders sent.
+   */
+  history?:
+    | {
+        at?: string | null;
+        action?: ('statusChanged' | 'followUpSet' | 'followUpCleared' | 'reminderSent') | null;
+        author?: string | null;
+        fromStatus?: ('new' | 'inProgress' | 'answered' | 'archived') | null;
+        toStatus?: ('new' | 'inProgress' | 'answered' | 'archived') | null;
+        date?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Standard replies to contact requests in French, German and English. In a request, “Reply with a template” opens your mail client with the reply in the visitor’s language. Variables: {name}, {organisation}, {subject}.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "reply-templates".
+ */
+export interface ReplyTemplate {
+  id: number;
+  /**
+   * For your own reference, e.g. “Acknowledgement” or “Request for details”.
+   */
+  title: string;
+  subject: string;
+  /**
+   * Example: “Dear {name}, thank you for your request about {subject}…”. Fill in each language with the language selector at the top.
+   */
+  body: string;
+  /**
+   * Optional: request types for which this template is listed first.
+   */
+  requestTypes?:
+    | (
+        | 'consulting'
+        | 'dueDiligence'
+        | 'advisory'
+        | 'projectManagement'
+        | 'smeProgramme'
+        | 'training'
+        | 'speaking'
+        | 'partnership'
+        | 'bookOrder'
+        | 'other'
+      )[]
+    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -2011,6 +2081,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'contact-submissions';
         value: number | ContactSubmission;
+      } | null)
+    | ({
+        relationTo: 'reply-templates';
+        value: number | ReplyTemplate;
       } | null)
     | ({
         relationTo: 'subscribers';
@@ -2641,8 +2715,42 @@ export interface ContactSubmissionsSelect<T extends boolean = true> {
   priority?: T;
   leadScore?: T;
   status?: T;
+  followUpAt?: T;
+  followUpReminderSentAt?: T;
+  answeredAt?: T;
   emailDelivered?: T;
   consentAt?: T;
+  notes?:
+    | T
+    | {
+        text?: T;
+        at?: T;
+        author?: T;
+        id?: T;
+      };
+  history?:
+    | T
+    | {
+        at?: T;
+        action?: T;
+        author?: T;
+        fromStatus?: T;
+        toStatus?: T;
+        date?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "reply-templates_select".
+ */
+export interface ReplyTemplatesSelect<T extends boolean = true> {
+  title?: T;
+  subject?: T;
+  body?: T;
+  requestTypes?: T;
   updatedAt?: T;
   createdAt?: T;
 }

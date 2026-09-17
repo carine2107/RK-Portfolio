@@ -25,7 +25,7 @@ test.describe('admin dashboard', () => {
     await page.goto('/admin')
     const dashboard = page.locator('.rk-dash')
     await expect(dashboard).toBeVisible()
-    await expect(dashboard.locator('.rk-dash__tile')).toHaveCount(4)
+    await expect(dashboard.locator('.rk-dash__tile')).toHaveCount(5)
     await expect(dashboard.locator('.rk-dash__bars').first().locator('li')).toHaveCount(6)
 
     // The high-priority tile opens the contact requests list with its filter.

@@ -24,6 +24,7 @@
       .collection-edit--users,
       .collection-list--contact-submissions,
       .collection-edit--contact-submissions,
+      .collection-list--reply-templates,
       .collection-list--subscribers,
       .collection-edit--subscribers,
       .collection-list--orders,
@@ -357,4 +358,55 @@
   background: #f59e0b;
   color: #1a1206;
   font-weight: 600;
+}
+
+/* "Reply with a template" panel in a contact request (ReplyWithTemplate.tsx). */
+.rk-reply {
+  display: grid;
+  gap: 0.5rem;
+  margin-bottom: var(--base);
+  padding: calc(var(--base) * 0.75);
+  border: 1px solid var(--theme-elevation-150);
+  border-radius: var(--style-radius-m);
+
+  .btn {
+    justify-self: start;
+    margin: 0;
+  }
+}
+
+.rk-reply__title {
+  margin: 0;
+}
+
+.rk-reply__label {
+  font-size: 0.8125rem;
+}
+
+.rk-reply__select {
+  max-width: 28rem;
+  height: 2.5rem;
+  padding: 0 0.75rem;
+  border: 1px solid var(--theme-elevation-150);
+  border-radius: var(--style-radius-s);
+  background: var(--theme-input-bg);
+  color: var(--theme-elevation-800);
+}
+
+.rk-reply__note {
+  margin: 0;
+  color: var(--theme-elevation-600);
+  font-size: 0.8125rem;
+}
+
+.rk-reply__preview {
+  padding: 0.75rem;
+  border-radius: var(--style-radius-s);
+  background: var(--theme-elevation-50);
+
+  pre {
+    margin: 0.5rem 0 0;
+    font-family: inherit;
+    white-space: pre-wrap;
+  }
 }

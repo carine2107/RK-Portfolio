@@ -18,6 +18,7 @@ import { Subscribers } from './payload/collections/Subscribers'
 import { Orders } from './payload/collections/Orders'
 import { Products } from './payload/collections/Products'
 import { ProtectedFiles } from './payload/collections/ProtectedFiles'
+import { ReplyTemplates } from './payload/collections/ReplyTemplates'
 import { Members } from './payload/collections/Members'
 import { Entitlements } from './payload/collections/Entitlements'
 import { Credentials } from './payload/collections/Credentials'
@@ -102,6 +103,7 @@ export default buildConfig({
     withSiteRefresh(Media),
     withSiteRefresh(Documents),
     ContactSubmissions,
+    ReplyTemplates,
     Subscribers,
     Orders,
     withSiteRefresh(Products),

@@ -31,6 +31,12 @@ const TEXT = {
     de: 'hohe Priorität, neu oder in Bearbeitung',
     en: 'high priority, new or in progress',
   },
+  followUps: { fr: 'Relances dues', de: 'Fällige Wiedervorlagen', en: 'Follow-ups due' },
+  followUpsHint: {
+    fr: 'date de relance arrivée, demande ouverte',
+    de: 'Wiedervorlage erreicht, Anfrage offen',
+    en: 'follow-up date reached, request open',
+  },
   thisMonth: { fr: 'Demandes ce mois-ci', de: 'Anfragen diesen Monat', en: 'Requests this month' },
   subscribers: {
     fr: 'Abonnés confirmés',
@@ -97,9 +103,15 @@ async function loadStats(payload: Payload, user: ServerProps['user'], now: Date)
     and: [{ priority: { equals: 'high' } }, { status: { in: ['new', 'inProgress'] } }],
   }
 
-  const [newRequests, perMonth, perType, urgent, confirmed, addedThisMonth, pending] =
+  const [newRequests, followUps, perMonth, perType, urgent, confirmed, addedThisMonth, pending] =
     await Promise.all([
       countRequests({ status: { equals: 'new' } }),
+      countRequests({
+        and: [
+          { followUpAt: { less_than_equal: now.toISOString() } },
+          { status: { in: ['new', 'inProgress'] } },
+        ],
+      }),
       Promise.all(
         months.map((range) =>
           countRequests({
@@ -141,6 +153,8 @@ async function loadStats(payload: Payload, user: ServerProps['user'], now: Date)
   return {
     months,
     newRequests,
+    followUps,
+    followUpsUrl: now.toISOString(),
     perMonth,
     types: REQUEST_TYPES.map((type, index) => ({ type, count: perType[index] ?? 0 }))
       .filter((entry) => entry.count > 0)
@@ -198,6 +212,17 @@ export async function AdminDashboard({ payload, user, i18n }: ServerProps) {
           <span className="rk-dash__label">{TEXT.urgent[lang]}</span>
           <span className="rk-dash__figure">{stats.urgentTotal}</span>
           <span className="rk-dash__hint">{TEXT.urgentHint[lang]}</span>
+        </a>
+        <a
+          className={`rk-dash__tile${stats.followUps > 0 ? ' rk-dash__tile--alert' : ''}`}
+          href={requests({
+            followUpAt: { less_than_equal: stats.followUpsUrl },
+            status: { in: 'new,inProgress' },
+          })}
+        >
+          <span className="rk-dash__label">{TEXT.followUps[lang]}</span>
+          <span className="rk-dash__figure">{stats.followUps}</span>
+          <span className="rk-dash__hint">{TEXT.followUpsHint[lang]}</span>
         </a>
         <a className="rk-dash__tile" href={requests()}>
           <span className="rk-dash__label">{TEXT.thisMonth[lang]}</span>
