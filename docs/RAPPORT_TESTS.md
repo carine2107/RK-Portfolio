@@ -10,7 +10,7 @@ Environnement : Windows 11, Node 24.15, PostgreSQL 16 (Docker), build de
 
 | Suite                            | Périmètre                                                               | Résultat                             |
 | -------------------------------- | ----------------------------------------------------------------------- | ------------------------------------ |
-| Tests unitaires (Vitest)         | Traductions, contrastes, moteur d'apparence, validation, SEO, anti-abus | **188 / 188 réussis**                |
+| Tests unitaires (Vitest)         | Traductions, contrastes, moteur d'apparence, validation, SEO, anti-abus | **193 / 193 réussis**                |
 | Tests end-to-end (Playwright)    | 132 scénarios × 4 configurations                                        | **460 réussis, 68 ignorés, 0 échec** |
 | Compilation TypeScript (`tsc`)   | Mode strict, tout le projet                                             | **0 erreur**                         |
 | Lint (ESLint 9 + config Next 16) | Tout le projet                                                          | **0 erreur, 0 avertissement**        |
@@ -65,7 +65,7 @@ node tests/visual/capture.mjs test-results/visual
 
 ---
 
-## 2. Tests unitaires (188)
+## 2. Tests unitaires (193)
 
 | Fichier                                               | Ce qui est vérifié                                                                                                                                                                                                                                                                                                                                                                                         |
 | ----------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -86,6 +86,7 @@ node tests/visual/capture.mjs test-results/visual
 | `campaign-link.test.ts`                               | Boutons des pages de campagne : pages du site (préfixe de langue retiré), https externe ; http, javascript:, //hôte, espaces et mailto: refusés                                                                                                                                                                                                                                                            |
 | `media-library.test.ts`                               | Médiathèque : formats (interview filmée = vidéo + interview), entrées à venir et ateliers sans vidéo exclus, filtres format / thème / langue combinés                                                                                                                                                                                                                                                      |
 | `lead-score.test.ts`                                  | Qualification des prospects : score maximal 100, demande non qualifiée 5, bornes des priorités (35 / 60), type d’organisation et valeurs inconnues non notés ; questions facultatives et valeurs hors liste refusées par le schéma                                                                                                                                                                         |
+| `contact-routing.test.ts`                             | Demandes adressées à une entreprise : notification à l’e-mail de l’entreprise avec copie à l’adresse générale, adresse générale seule sans entreprise ou sans e-mail, pas de copie vers la même adresse (casse ignorée), slug d’entreprise contrôlé, champ facultatif accepté par le schéma du formulaire                                                                                                  |
 | `follow-up.test.ts`                                   | Suivi des demandes : historique (changement de statut, relance posée ou retirée, rien à la création ni pour la même date), horodatage des seules nouvelles notes, rappel dû (date passée, demande ouverte, pas encore rappelée), modèles de réponse ({name}, {organisation}, {subject}), lien mailto encodé, langue de la réponse, e-mail de rappel (liens vers les fiches, contenu échappé)               |
 | `exports.test.ts`                                     | Export CSV : BOM UTF-8, séparateur « ; », CRLF, échappement des guillemets et retours à la ligne, neutralisation des formules ; collections exportables limitées ; colonnes et libellés FR / DE ; nom de fichier par langue et date                                                                                                                                                                        |
 | `google-sheets.test.ts`                               | Google Sheets : configuration inactive tant que les 3 valeurs ne sont pas valides, clé sur une ligne restaurée, endpoints Google imposés en production ; JWT RS256 vérifié ; ajout, mise à jour en place, suppression par index sans création d’onglet, création d’onglet, jeton unique, erreurs sans données                                                                                              |
@@ -267,6 +268,11 @@ Contrôle manuel (serveur de développement relié à un **faux serveur Google l
 Contrôle manuel (base de développement, demande de test supprimée ensuite ; l’admin n’a pas été ouvert faute de session) : export exécuté comme la route, avec les droits d’un compte de l’équipe → fichier commençant par le BOM UTF-8 (`EF BB BF`), en-têtes et libellés français (priorité « Haute », budget « Plus de 50 000 € », type « Due diligence financière »), nom `=HYPERLINK(…)` exporté en `'=HYPERLINK(…)`, organisation contenant `;` et des guillemets correctement échappée, message sur deux lignes et accents intacts ; lecture anonyme de la collection refusée (Forbidden). Bouton ajouté à la carte d’import de l’admin (`npm run generate:importmap`).
 
 ### Suivi des demandes (`contact-follow-up.spec.ts`)
+
+- Demande adressée à une entreprise : `/en/contact?business=rk-business-consulting` présélectionne
+  l'entreprise ; après avoir donné un e-mail de contact à l'entreprise, une demande envoyée pour
+  elle est enregistrée avec la relation et la notification arrive dans MailHog à cette adresse,
+  avec une copie ; l'e-mail de l'entreprise est ensuite rétabli (projet Chromium seulement)
 
 - Build de production, base jetable de la CI : une demande envoyée par le formulaire est
   passée à « Répondue » avec une date de relance et une note par le compte administrateur ;

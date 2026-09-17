@@ -1671,6 +1671,10 @@ export interface ContactSubmission {
     | 'partnership'
     | 'bookOrder'
     | 'other';
+  /**
+   * Chosen by the visitor. Empty = general request. The notification went to this company’s contact e-mail, with a copy to the general address.
+   */
+  business?: (number | null) | Business;
   subject: string;
   message: string;
   organisationType?: ('company' | 'sme' | 'startup' | 'publicInstitution' | 'ngo' | 'investor' | 'individual') | null;
@@ -2705,6 +2709,7 @@ export interface ContactSubmissionsSelect<T extends boolean = true> {
   email?: T;
   country?: T;
   requestType?: T;
+  business?: T;
   subject?: T;
   message?: T;
   organisationType?: T;

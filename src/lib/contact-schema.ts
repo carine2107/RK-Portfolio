@@ -42,6 +42,8 @@ export const contactSchema = z.object({
   budget: optionalChoice(BUDGETS),
   timeline: optionalChoice(TIMELINES),
   decisionRole: optionalChoice(DECISION_ROLES),
+  /** Company the request concerns (slug of a business), empty for a general request. */
+  business: z.string().trim().max(100).optional(),
   consent: z.literal(true, 'consent'),
   /**
    * Honeypot: real visitors never fill this field. It is accepted by the schema

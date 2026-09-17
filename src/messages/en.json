@@ -628,6 +628,7 @@
       "email": "E-mail address",
       "country": "Country",
       "requestType": "Type of request",
+      "business": "Company concerned",
       "subject": "Subject",
       "message": "Message",
       "consent": "I have read the <link>privacy policy</link> and agree that my data may be used to answer my request.",
@@ -642,6 +643,7 @@
       "email": "jane.doe@organisation.com",
       "country": "Select a country",
       "requestType": "Select a request type",
+      "business": "Romial Kenmogne — general request",
       "subject": "Financial due diligence for an acquisition",
       "message": "Context, objectives, timeline and expected support.",
       "choose": "Choose…"

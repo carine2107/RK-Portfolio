@@ -628,6 +628,7 @@
       "email": "E-Mail-Adresse",
       "country": "Land",
       "requestType": "Art der Anfrage",
+      "business": "Betroffenes Unternehmen",
       "subject": "Betreff",
       "message": "Nachricht",
       "consent": "Ich habe die <link>Datenschutzerklärung</link> gelesen und bin damit einverstanden, dass meine Daten zur Beantwortung meiner Anfrage verwendet werden.",
@@ -642,6 +643,7 @@
       "email": "maria.muster@organisation.com",
       "country": "Land auswählen",
       "requestType": "Art der Anfrage auswählen",
+      "business": "Romial Kenmogne — allgemeine Anfrage",
       "subject": "Financial Due Diligence für eine Akquisition",
       "message": "Kontext, Ziele, Zeitplan und erwartete Unterstützung.",
       "choose": "Auswählen…"

@@ -8,7 +8,7 @@ import { Icon } from '@/components/ui/Icon'
 import { PageHeader } from '@/components/ui/PageHeader'
 import { Section } from '@/components/ui/Section'
 import type { Locale } from '@/i18n/routing'
-import { legalSlug, getSiteSettings } from '@/lib/cms'
+import { getBusinesses, legalSlug, getSiteSettings } from '@/lib/cms'
 import { pageMetadata } from '@/lib/seo'
 
 /**
@@ -40,6 +40,10 @@ export default async function ContactPage({ params }: Props) {
   const t = await getTranslations('contact')
   const nav = await getTranslations('nav')
   const settings = await getSiteSettings(locale)
+  // Starter entries (no CMS content yet) have no record to attach a request to.
+  const businesses = (await getBusinesses(locale))
+    .filter((business) => /^\d+$/.test(business.id) && business.slug)
+    .map((business) => ({ slug: business.slug, name: business.name }))
   const privacyHref = `/legal/${legalSlug('privacy', locale)}`
 
   return (
@@ -64,7 +68,11 @@ export default async function ContactPage({ params }: Props) {
         <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-7">
             <h2 className="rk-rule mb-8 text-2xl">{t('formTitle')}</h2>
-            <ContactForm privacyHref={privacyHref} bookingUrl={settings.bookingUrl} />
+            <ContactForm
+              privacyHref={privacyHref}
+              bookingUrl={settings.bookingUrl}
+              businesses={businesses}
+            />
           </div>
 
           <aside className="lg:col-span-5">

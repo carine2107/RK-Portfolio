@@ -11,6 +11,8 @@ export type ContactEmailData = {
   email: string
   country: string
   requestType: string
+  /** Company the request concerns, empty for a general request. */
+  business?: string
   subject: string
   message: string
   organisationType?: string
@@ -31,7 +33,15 @@ type Template = {
   ownerSubject: (data: ContactEmailData, priority: string) => string
   ownerIntro: string
   labels: Record<
-    'name' | 'organisation' | 'email' | 'country' | 'type' | 'subject' | 'message' | 'priority',
+    | 'name'
+    | 'organisation'
+    | 'email'
+    | 'country'
+    | 'type'
+    | 'business'
+    | 'subject'
+    | 'message'
+    | 'priority',
     string
   >
   confirmationSubject: string
@@ -52,6 +62,7 @@ const templates: Record<Locale, Template> = {
       email: 'E-mail',
       country: 'Country',
       type: 'Type of request',
+      business: 'Company concerned',
       subject: 'Subject',
       message: 'Message',
       priority: 'Priority (score)',
@@ -75,6 +86,7 @@ const templates: Record<Locale, Template> = {
       email: 'E-mail',
       country: 'Pays',
       type: 'Type de demande',
+      business: 'Entreprise concernée',
       subject: 'Sujet',
       message: 'Message',
       priority: 'Priorité (score)',
@@ -98,6 +110,7 @@ const templates: Record<Locale, Template> = {
       email: 'E-Mail',
       country: 'Land',
       type: 'Art der Anfrage',
+      business: 'Betroffenes Unternehmen',
       subject: 'Betreff',
       message: 'Nachricht',
       priority: 'Priorität (Score)',
@@ -132,6 +145,7 @@ function detailsRows(data: ContactEmailData, template: Template): [string, strin
     [template.labels.email, data.email],
     [template.labels.country, data.country],
     [template.labels.type, data.requestType],
+    [template.labels.business, data.business ?? ''],
     [
       QUALIFICATION_LABELS.organisationType[locale],
       answer('organisationType', data.organisationType, locale),
@@ -171,6 +185,8 @@ function detailsText(rows: [string, string][]): string {
 export async function sendContactEmails(
   data: ContactEmailData,
   recipient: string,
+  /** Copy of the notification (general address when a company received it). */
+  cc: string[] = [],
 ): Promise<boolean> {
   if (!emailConfig.enabled || !emailConfig.host || !emailConfig.from || !recipient) {
     console.info('[contact] E-mail delivery disabled — request stored without notification.')
@@ -191,6 +207,7 @@ export async function sendContactEmails(
     await transport.sendMail({
       from: emailConfig.from,
       to: recipient,
+      ...(cc.length > 0 ? { cc } : {}),
       replyTo: data.email,
       subject: template.ownerSubject(data, priority),
       text: `${template.ownerIntro}\n\n${detailsText(ownerRows)}\n\n${siteUrl}/admin`,

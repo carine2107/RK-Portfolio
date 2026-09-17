@@ -628,6 +628,7 @@
       "email": "Adresse e-mail",
       "country": "Pays",
       "requestType": "Type de demande",
+      "business": "Entreprise concernée",
       "subject": "Sujet",
       "message": "Message",
       "consent": "J’ai lu la <link>politique de confidentialité</link> et j’accepte que mes données soient utilisées pour répondre à ma demande.",
@@ -642,6 +643,7 @@
       "email": "jeanne.dupont@organisation.com",
       "country": "Sélectionnez un pays",
       "requestType": "Sélectionnez un type de demande",
+      "business": "Romial Kenmogne — demande générale",
       "subject": "Due diligence financière pour une acquisition",
       "message": "Contexte, objectifs, calendrier et accompagnement attendu.",
       "choose": "Choisir…"

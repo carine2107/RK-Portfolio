@@ -258,7 +258,7 @@ export const ContactSubmissions: CollectionConfig = {
   admin: {
     group: GROUPS.administration,
     useAsTitle: 'subject',
-    defaultColumns: ['subject', 'name', 'priority', 'leadScore', 'status', 'createdAt'],
+    defaultColumns: ['subject', 'name', 'business', 'priority', 'leadScore', 'status', 'createdAt'],
     components: {
       beforeListTable: [
         {
@@ -300,6 +300,19 @@ export const ContactSubmissions: CollectionConfig = {
       label: tr('Type de demande', 'Art der Anfrage', 'Type of request'),
       required: true,
       options: REQUEST_TYPES.map((value) => ({ label: REQUEST_TYPE_LABELS[value], value })),
+    },
+    {
+      name: 'business',
+      type: 'relationship',
+      relationTo: 'businesses',
+      label: tr('Entreprise concernée', 'Betroffenes Unternehmen', 'Company concerned'),
+      admin: {
+        description: tr(
+          'Choisie par le visiteur. Vide = demande générale. La notification est partie à l’e-mail de contact de cette entreprise, avec une copie à l’adresse de réception générale.',
+          'Vom Besucher gewählt. Leer = allgemeine Anfrage. Die Benachrichtigung ging an die Kontakt-E-Mail dieses Unternehmens, mit Kopie an die allgemeine Empfangsadresse.',
+          'Chosen by the visitor. Empty = general request. The notification went to this company’s contact e-mail, with a copy to the general address.',
+        ),
+      },
     },
     { name: 'subject', type: 'text', label: tr('Sujet', 'Betreff', 'Subject'), required: true },
     {

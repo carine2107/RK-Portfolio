@@ -313,7 +313,7 @@ export async function BusinessCard({
           </a>
         ) : (
           <Link
-            href="/contact"
+            href={{ pathname: '/contact', query: { business: business.slug } }}
             className="inline-flex items-center gap-2 font-medium text-primary underline-offset-4 hover:underline"
           >
             {t('cta')}

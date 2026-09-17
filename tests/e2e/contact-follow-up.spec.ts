@@ -1,5 +1,7 @@
 import { expect, test } from '@playwright/test'
 
+const MAILHOG = process.env.E2E_MAILHOG_URL ?? 'http://localhost:8026'
+
 /**
  * Follow-up of a contact request in the CMS (production build, throwaway CI
  * database): the test creates its own request through the public form API,
@@ -90,6 +92,77 @@ test.describe('contact request follow-up', () => {
       await anonymous.dispose()
     } finally {
       expect((await request.delete(url, { headers })).ok()).toBe(true)
+    }
+  })
+  test('routes a request to the company it concerns', async ({ page, request }, testInfo) => {
+    // Changes a shared company record: one project only, never in parallel with itself.
+    test.skip(testInfo.project.name !== 'chromium', 'Checked once')
+    test.setTimeout(90_000)
+    const mailhog = await request.get(`${MAILHOG}/api/v2/messages?limit=1`).catch(() => null)
+    test.skip(!mailhog?.ok(), 'MailHog is not running: e-mail delivery cannot be observed')
+
+    // The business card link preselects the company in the form.
+    await page.goto('/en/contact?business=rk-business-consulting')
+    await expect(page.locator('#contact-business')).toHaveValue('rk-business-consulting')
+
+    const login = await request.post('/api/cms/users/login', {
+      data: { email: process.env.SEED_ADMIN_EMAIL, password: process.env.SEED_ADMIN_PASSWORD },
+    })
+    const headers = { Authorization: `JWT ${(await login.json()).token as string}` }
+    const found = await request.get(
+      '/api/cms/businesses?where[slug][equals]=rk-business-consulting&locale=en&depth=0',
+      { headers },
+    )
+    const [business] = (await found.json()).docs as { id: number; contactEmail?: string | null }[]
+    expect(business).toBeTruthy()
+    const companyEmail = `company-${Date.now()}@example.com`
+    const businessUrl = `/api/cms/businesses/${business!.id}`
+    expect(
+      (await request.patch(businessUrl, { headers, data: { contactEmail: companyEmail } })).ok(),
+    ).toBe(true)
+
+    const subject = `Routing check ${Date.now()}`
+    try {
+      const submitted = await request.post('/api/contact', {
+        data: {
+          name: 'Routing Test',
+          email: 'qa-routing@example.com',
+          country: 'DE',
+          requestType: 'consulting',
+          business: 'rk-business-consulting',
+          subject,
+          message:
+            'This message was created by the automated end-to-end test suite of the website.',
+          consent: true,
+          locale: 'en',
+        },
+      })
+      expect(submitted.status()).toBe(200)
+
+      const stored = await request.get(
+        `/api/cms/contact-submissions?where[subject][equals]=${encodeURIComponent(subject)}&depth=0`,
+        { headers },
+      )
+      const [doc] = (await stored.json()).docs as { id: number; business?: number }[]
+      expect(doc?.business).toBe(business!.id)
+
+      const search = await request.get(
+        `${MAILHOG}/api/v2/search?kind=to&query=${encodeURIComponent(companyEmail)}`,
+      )
+      const { items } = (await search.json()) as {
+        items: { Content: { Headers: Record<string, string[]> } }[]
+      }
+      expect(items).toHaveLength(1)
+      const mailHeaders = items[0]!.Content.Headers
+      expect(mailHeaders.To?.join(',')).toContain(companyEmail)
+      expect(mailHeaders.Cc?.join(',') ?? '').not.toBe('')
+
+      if (doc) await request.delete(`/api/cms/contact-submissions/${doc.id}`, { headers })
+    } finally {
+      await request.patch(businessUrl, {
+        headers,
+        data: { contactEmail: business!.contactEmail ?? null },
+      })
     }
   })
 })

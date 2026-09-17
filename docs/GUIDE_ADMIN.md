@@ -472,6 +472,9 @@ Kenmogne Strategic Publishing, KAILI Institut, KAILI Event.
 - **Site web** : saisir l'adresse telle qu'elle apparaît dans le navigateur, par exemple
   `www.rk-businessconsulting.com` ; `https://` est ajouté automatiquement à
   l'enregistrement. Le lien « Site web » de la carte ouvre le site dans un nouvel onglet.
+- **E-mail de contact** : reçoit les demandes du formulaire du site adressées à cette
+  entreprise (champ « Entreprise concernée »), avec une copie à l'adresse de réception
+  générale des Réglages du site. Vide : la demande arrive seulement à l'adresse générale.
 - **Page de contact** : adresse de la page de contact du site de l'entreprise (par exemple
   `www.rk-businessconsulting.com/contact`). Le bouton « Prendre contact » de la carte l'ouvre
   dans un nouvel onglet. Sans page de contact, il ouvre un e-mail vers l'**E-mail de contact** ;
@@ -599,6 +602,19 @@ langue et l'horodatage du consentement.
   (`CONTACT_RETENTION_MONTHS`, `0` = jamais) et doit correspondre à celle
   annoncée dans la politique de confidentialité. Une demande peut aussi être
   supprimée à la main (rôle Administrator), par exemple sur demande de la personne.
+
+### Demandes adressées à une entreprise
+
+Le formulaire de contact propose un champ facultatif **Entreprise concernée** (vos activités
+visibles, ou « Romial Kenmogne — demande générale »). Depuis la page Entreprises, un clic
+sur « Prendre contact » d'une activité sans page ni e-mail de contact ouvre le formulaire
+avec cette entreprise déjà choisie.
+
+- La notification part à l'**E-mail de contact** de l'entreprise (§12), avec une **copie** à
+  l'adresse de réception générale ; sans e-mail d'entreprise, elle part seulement à
+  l'adresse générale.
+- Dans la demande, le champ **Entreprise concernée** l'indique ; il est aussi affiché dans
+  la liste des demandes et dans l'e-mail de notification. Vous pouvez le corriger à la main.
 
 ### Suivi d'une demande
 

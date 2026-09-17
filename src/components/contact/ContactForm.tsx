@@ -24,10 +24,13 @@ const QUALIFICATION_QUESTIONS = [
 export function ContactForm({
   privacyHref,
   bookingUrl = '',
+  businesses = [],
 }: {
   privacyHref: string
   /** External booking page, offered after a priority request when configured. */
   bookingUrl?: string
+  /** Companies the visitor can address the request to (active businesses). */
+  businesses?: { slug: string; name: string }[]
 }) {
   const t = useTranslations('contact')
   const common = useTranslations('common')
@@ -56,6 +59,16 @@ export function ContactForm({
     ) {
       select.value = type
     }
+    // "&business=<slug>" preselects the company ("Get in touch" on a business card).
+    const business = params.get('business')
+    const businessField = formRef.current?.elements.namedItem('business')
+    if (
+      business &&
+      businessField instanceof HTMLSelectElement &&
+      [...businessField.options].some((option) => option.value === business)
+    ) {
+      businessField.value = business
+    }
     const subject = params.get('subject')?.trim().slice(0, 200)
     const subjectField = formRef.current?.elements.namedItem('subject')
     if (subject && subjectField instanceof HTMLInputElement && !subjectField.value) {
@@ -72,6 +85,7 @@ export function ContactForm({
       email: String(formData.get('email') ?? ''),
       country: String(formData.get('country') ?? ''),
       requestType: String(formData.get('requestType') ?? ''),
+      business: String(formData.get('business') ?? ''),
       subject: String(formData.get('subject') ?? ''),
       message: String(formData.get('message') ?? ''),
       organisationType: String(formData.get('organisationType') ?? ''),
@@ -239,6 +253,22 @@ export function ContactForm({
             </option>
           ))}
         </SelectField>
+
+        {businesses.length > 0 ? (
+          <SelectField
+            name="business"
+            label={t('fields.business')}
+            optionalLabel={common('optional')}
+            className="sm:col-span-2"
+          >
+            <option value="">{t('placeholders.business')}</option>
+            {businesses.map((business) => (
+              <option key={business.slug} value={business.slug}>
+                {business.name}
+              </option>
+            ))}
+          </SelectField>
+        ) : null}
 
         <TextField
           name="subject"

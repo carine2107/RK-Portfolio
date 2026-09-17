@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server'
 
 import { isLocale, defaultLocale } from '@/i18n/routing'
 import { getCms, getContactNotificationEmail, getSiteSettings } from '@/lib/cms'
+import { businessSlug, contactRecipients, type RoutingBusiness } from '@/lib/contact-routing'
 import { contactSchema, toFieldErrors, type ContactResponse } from '@/lib/contact-schema'
 import { countryOptions } from '@/lib/countries'
 import { sendContactEmails } from '@/lib/email'
@@ -64,9 +65,35 @@ export async function POST(request: Request): Promise<NextResponse<ContactRespon
     decisionRole: data.decisionRole,
   }
 
+  // Company the request concerns: a published, active business with this slug.
+  let business: (NonNullable<RoutingBusiness> & { id: number | string }) | null = null
+  const slug = businessSlug(data.business)
+  const cms = await getCms()
+  if (cms && slug) {
+    try {
+      const found = await cms.find({
+        collection: 'businesses',
+        locale,
+        depth: 0,
+        limit: 1,
+        overrideAccess: true,
+        where: {
+          and: [
+            { slug: { equals: slug } },
+            { _status: { equals: 'published' } },
+            { active: { equals: true } },
+          ],
+        },
+      })
+      const doc = found.docs[0] as { id: number; name?: string; contactEmail?: string | null }
+      if (doc) business = { id: doc.id, name: doc.name ?? '', contactEmail: doc.contactEmail }
+    } catch {
+      /* unknown company: handled as a general request */
+    }
+  }
+
   let stored = false
   let submissionId: string | number | null = null
-  const cms = await getCms()
   try {
     if (cms) {
       const created = await cms.create({
@@ -78,6 +105,7 @@ export async function POST(request: Request): Promise<NextResponse<ContactRespon
           email: data.email,
           country: countryLabel,
           requestType: data.requestType,
+          business: business ? (business.id as number) : null,
           subject: data.subject,
           message: data.message,
           ...qualification,
@@ -102,7 +130,8 @@ export async function POST(request: Request): Promise<NextResponse<ContactRespon
 
   const settings = await getSiteSettings(locale)
   // Site settings first, then EMAIL_TO, then the published address.
-  const recipient = (await getContactNotificationEmail()) || emailConfig.to || settings.email || ''
+  const general = (await getContactNotificationEmail()) || emailConfig.to || settings.email || ''
+  const recipients = contactRecipients(business, general)
 
   const emailSent = await sendContactEmails(
     {
@@ -111,6 +140,7 @@ export async function POST(request: Request): Promise<NextResponse<ContactRespon
       email: data.email,
       country: countryLabel,
       requestType: data.requestType,
+      business: business?.name ?? '',
       subject: data.subject,
       message: data.message,
       ...qualification,
@@ -118,7 +148,8 @@ export async function POST(request: Request): Promise<NextResponse<ContactRespon
       priority,
       locale,
     },
-    recipient,
+    recipients.to,
+    recipients.cc,
   )
 
   if (cms && submissionId !== null && emailSent) {

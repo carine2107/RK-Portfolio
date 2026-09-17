@@ -287,6 +287,14 @@ retrouvée par l'ID en colonne A). Abonnés synchronisés seulement en `confirme
 Inactif sans `GOOGLE_SHEETS_SPREADSHEET_ID`, `GOOGLE_SERVICE_ACCOUNT_EMAIL`,
 `GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY`.
 
+**Entreprise concernée** (`contact-submissions.business`, relation vers `businesses`) : envoyée
+par le formulaire (`business`, slug ; `/contact?business=<slug>` la présélectionne ; liste
+fournie par `getBusinesses`, entrées de démarrage exclues). La route `/api/contact` ne retient
+qu'une entreprise publiée et active dont le slug existe dans la langue du visiteur ; la
+notification part alors à son `contactEmail` avec la copie (`cc`) à l'adresse générale
+(`contactRecipients`, `src/lib/contact-routing.ts` ; pas de copie vers la même adresse).
+Sans entreprise ou sans `contactEmail` : adresse générale seule.
+
 **Suivi** (`contact-submissions`) : `followUpAt` (date de relance), `followUpReminderSentAt`
 et `answeredAt` (lecture seule), `notes[{text, at, author}]`, `history[{at, author, action,
 fromStatus, toStatus, date}]` (lecture seule). Hook `beforeChange` (`trackFollowUp`,

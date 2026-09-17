@@ -244,6 +244,7 @@ Ce que le site fait réellement aujourd'hui :
 - ✅ Page Conférences & médias (interventions à venir / passées, vidéos chargées au clic sans cookie, invitation préremplie)
 - ⏸️ Synchronisation Google Sheets des demandes de contact et des abonnés confirmés **construite**, inactive tant que la clé du compte de service n’est pas configurée
 - ✅ Export CSV des abonnés newsletter et des demandes de contact depuis l’administration (Excel, outil d’e-mailing, CRM)
+- ✅ Demandes orientées vers l’entreprise concernée : choix facultatif dans le formulaire, notification à l’e-mail de l’entreprise avec copie à l’adresse générale
 - ✅ Suivi des demandes dans l’administration : date de relance avec e-mail de rappel, notes internes, historique automatique, réponses types FR / DE / EN ouvertes dans la messagerie ; vue d’ensemble chiffrée sur l’accueil de l’administration
 - ✅ Qualification des prospects : questions facultatives, score sur 100 et priorité dans le CMS, priorité dans l’objet de la notification, rendez-vous proposé aux demandes prioritaires
 - ✅ Médiathèque (vidéos, podcasts, interviews, presse) filtrable par format, thème et langue, alimentée par Conférences & médias
