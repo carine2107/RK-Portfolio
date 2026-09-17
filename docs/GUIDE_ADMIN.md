@@ -826,7 +826,7 @@ Liste complète des éléments encore attendus :
 
 ## 19. Bonnes pratiques
 
-**Recherche sur le site** : la loupe en haut de chaque page ouvre la recherche. Elle trouve
+**Recherche sur le site** : la loupe en haut de chaque page (sur téléphone : dans le menu) ouvre la recherche. Elle trouve
 les contenus **publiés**, dans la langue de la page, à partir de leur **titre** et de leur
 **résumé** (accroche des articles, résumé des livres, expertises, expériences, conférences,
 produits ; nom, slogan et description des activités). Un contenu bien titré et résumé est

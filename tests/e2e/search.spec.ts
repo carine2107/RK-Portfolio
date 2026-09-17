@@ -3,8 +3,12 @@ import { expect, test } from '@playwright/test'
 test.describe('site search', () => {
   test('finds published content in the page language and highlights the words', async ({
     page,
-  }) => {
+  }, testInfo) => {
     await page.goto('/en')
+    // Phones: the search link is in the menu.
+    if (testInfo.project.name === 'mobile') {
+      await page.getByRole('button', { name: 'Open the main menu' }).click()
+    }
     await page.getByRole('link', { name: 'Search the site' }).first().click()
     await expect(page).toHaveURL(/\/en\/search$/)
 

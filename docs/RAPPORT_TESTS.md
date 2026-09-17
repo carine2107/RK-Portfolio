@@ -291,7 +291,7 @@ Contrôle manuel (serveur de développement + MailHog, lien de réservation de t
 
 ### Recherche (`search.spec.ts`)
 
-- La loupe de l'en-tête ouvre `/en/search` ; « due diligence » affiche des résultats surlignés
+- La loupe de l'en-tête (dans le menu sur téléphone) ouvre `/en/search` ; « due diligence » affiche des résultats surlignés
   dont le lien répond 200 ; requête trop courte expliquée en français, aucun résultat expliqué
   en allemand ; page `noindex`
 
