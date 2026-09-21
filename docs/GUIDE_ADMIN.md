@@ -511,7 +511,11 @@ Kenmogne Strategic Publishing, KAILI Institut, KAILI Event.
   `www.rk-businessconsulting.com/contact`). Le bouton « Prendre contact » de la carte l'ouvre
   dans un nouvel onglet. Sans page de contact, il ouvre un e-mail vers l'**E-mail de contact** ;
   si les deux sont vides, il mène à la page Contact de ce site.
-- **Logo** : affiché en haut à droite de la carte, à côté du nom, sur une pastille blanche (lisible en thème clair comme en thème sombre), sans être recadré. Préférer une
+- **Logo** : affiché en haut à droite de la carte, à côté du nom, sans être recadré. Le fond
+  blanc du fichier se fond dans la page : les logos à fond blanc et ceux à fond transparent
+  rendent donc pareil. En thème sombre, une pastille claire est ajoutée pour que les logos
+  foncés restent lisibles. Un logo sur fond **de couleur** (autre que blanc) garde ce fond :
+  dans ce cas, fournir une
   image au fond transparent ou blanc (PNG ou WebP).
 - Décocher **Activité visible** masque immédiatement une activité du site sans la supprimer.
 

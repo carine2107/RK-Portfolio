@@ -245,9 +245,11 @@ export async function BusinessCard({
         {business.logo || business.isPlaceholder ? (
           <div className="flex shrink-0 flex-col items-end gap-2">
             {business.logo ? (
-              // White tile in both themes: company logos are designed for a light
-              // background and would disappear on the dark theme.
-              <div className="flex h-16 items-center rounded-card bg-white px-3 py-1.5 shadow-card ring-1 ring-black/5">
+              // `mix-blend-multiply` drops the white background most logo files
+              // carry, so files with and without transparency look the same. The
+              // light plate comes back in the dark theme, where logos drawn for a
+              // white background would otherwise disappear.
+              <div className="flex h-16 items-center dark:rounded-card dark:bg-white dark:px-3 dark:py-1.5 dark:ring-1 dark:ring-black/5">
                 {/* Decorative: the company name is right next to it. */}
                 <Image
                   src={business.logo.url}
@@ -255,7 +257,7 @@ export async function BusinessCard({
                   width={business.logo.width ?? 320}
                   height={business.logo.height ?? 160}
                   sizes="10rem"
-                  className="h-full w-auto max-w-40 object-contain"
+                  className="h-full w-auto max-w-40 object-contain mix-blend-multiply"
                 />
               </div>
             ) : null}

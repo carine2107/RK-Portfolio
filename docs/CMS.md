@@ -190,7 +190,10 @@ Clics mesurés par l'événement `campaign_cta_click`.
 `isPlaceholder`, `seo`. `active: false` masque l'activité sans la supprimer.
 `website` accepte une adresse sans schéma (`www.exemple.com`) : elle est enregistrée avec
 `https://` et normalisée aussi à l'affichage (`websiteUrl`, `src/lib/url.ts` ; http et https
-seulement ; même traitement pour `contactUrl`). Bouton « Prendre contact » : `contactUrl` (nouvel onglet), sinon `mailto:` vers `contactEmail`, sinon `/contact` du site. `logo` s'affiche en haut à droite de la carte, à côté du nom, sur une pastille blanche dans les deux thèmes, sans recadrage.
+seulement ; même traitement pour `contactUrl`). Bouton « Prendre contact » : `contactUrl` (nouvel onglet), sinon `mailto:` vers `contactEmail`, sinon `/contact` du site. `logo` s'affiche en haut à droite de la carte, à côté du nom, sans recadrage :
+`mix-blend-multiply` fait disparaître le fond blanc des fichiers (rendu identique avec ou sans
+transparence) et la pastille claire n'apparaît qu'en thème sombre (`dark:` — variante liée à
+`data-theme`). Les fichiers téléversés ne sont pas modifiés.
 
 ### `engagements` — Conférences & médias
 
