@@ -91,7 +91,13 @@ main() {
   APP_IMAGE="$image" dc up -d --no-build app < /dev/null
 
   if healthy; then
-    sed -i "s|^APP_IMAGE=.*|APP_IMAGE=$image|" "$env_file"
+    # The line is appended when missing: a `sed` substitution alone silently
+    # did nothing, and a later `dc up` then restarted the stale local image.
+    if grep -q '^APP_IMAGE=' "$env_file"; then
+      sed -i "s|^APP_IMAGE=.*|APP_IMAGE=$image|" "$env_file"
+    else
+      echo "APP_IMAGE=$image" >> "$env_file"
+    fi
     docker image prune -f > /dev/null
     log "Déployé : $image (/api/health répond)"
     exit 0

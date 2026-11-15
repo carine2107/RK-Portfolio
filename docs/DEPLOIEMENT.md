@@ -162,6 +162,12 @@ migrate`), **avant** de changer d'application : leur journal apparaît dans GitH
    relancée** et le job GitHub échoue ;
 7. l'image déployée est retenue dans `APP_IMAGE` de `.env.production`.
 
+> Un redémarrage manuel (`dc up -d --no-build app`) relance **l'image nommée dans
+> `APP_IMAGE`**. Si cette ligne manque dans `.env.production`, Docker repart sur l'image
+> locale du premier déploiement et le site perd les dernières fonctionnalités (constaté le
+> 15/11/2026). Le script écrit désormais la ligne même lorsqu'elle est absente ; en cas de
+> doute : `grep ^APP_IMAGE= .env.production`.
+
 > Incident du 16/09/2026 : la migration `business_contact_url` ne s'est pas appliquée au
 > démarrage du conteneur, sans trace dans le déploiement ; la section Entreprises répondait
 > en erreur jusqu'à `dc exec -T app npm run migrate`. D'où l'étape 4, explicite et
