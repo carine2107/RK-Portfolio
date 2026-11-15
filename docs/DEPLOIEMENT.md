@@ -398,6 +398,38 @@ avec `PAYLOAD_SECRET` : **changer ce secret invalide les liens déjà envoyés**
 
 ---
 
+## 11 bis. Assistant IA du site (Azure OpenAI)
+
+La bulle d'assistance du site public appelle **Azure OpenAI** depuis le serveur : la clé
+n'atteint jamais le navigateur. Sans configuration complète, la bulle n'apparaît pas et
+`POST /api/assistant` répond **503** — rien n'est simulé.
+
+Dans le portail Azure : créer une ressource **Azure OpenAI** dans une région **européenne**
+(Suisse Nord, Suède Centre, France Centre…), y **déployer un modèle** de discussion
+(`gpt-4o-mini` suffit et coûte le moins cher), puis relever l'**endpoint**, une **clé** et le
+**nom du déploiement**. Variables à renseigner dans `.env.production` :
+
+```bash
+AZURE_OPENAI_ENDPOINT=https://<ressource>.openai.azure.com
+AZURE_OPENAI_API_KEY=<clé>
+AZURE_OPENAI_DEPLOYMENT=<nom du déploiement>
+AZURE_OPENAI_API_VERSION=2024-10-21
+ASSISTANT_RATE_LIMIT=20            # questions par visiteur / 15 minutes
+```
+
+Puis `dc up -d --no-build app` (ou un déploiement) pour relire le fichier. Pour couper
+l'assistant sans retirer les clés : `ASSISTANT_ENABLED=false`.
+
+**Protection des données** : aucune conversation n'est enregistrée (ni base, ni journal) ;
+seules la langue et le nombre de pages utilisées sont journalisées. Les questions partent
+chez Microsoft : choisir une région européenne, et mentionner Azure OpenAI comme
+sous-traitant dans la politique de confidentialité. Demander à Microsoft l'exclusion de
+l'**abuse monitoring** si aucune rétention de 30 jours n'est souhaitée.
+
+**Coût** : facturé au nombre de mots échangés. Avec `gpt-4o-mini`, quelques centimes pour
+des centaines de questions ; le plafond `ASSISTANT_RATE_LIMIT` évite les dérapages. Un
+budget et une alerte de coût se règlent dans Azure.
+
 ## 12. Vente directe : Stripe et PayPal
 
 Variables (`.env.production`) : `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`,

@@ -812,5 +812,30 @@
       "businesses": "Entreprises",
       "products": "Produits numériques"
     }
+  },
+  "assistant": {
+    "title": "Assistant du site",
+    "lead": "Réponses à partir des pages publiées",
+    "greeting": "Bonjour, je peux vous orienter dans les contenus du site : expertises, expériences, livres, articles et activités.",
+    "you": "Vous",
+    "assistant": "Assistant",
+    "open": "Ouvrir l’assistant",
+    "close": "Fermer l’assistant",
+    "send": "Envoyer la question",
+    "inputLabel": "Votre question",
+    "placeholder": "Posez votre question…",
+    "thinking": "Recherche en cours…",
+    "sources": "Pages consultées :",
+    "disclaimer": "Assistant automatique : il peut se tromper et ne remplace pas un échange.",
+    "contactLink": "Écrire à Romial Kenmogne",
+    "suggestions": {
+      "services": "Quels accompagnements propose Romial Kenmogne ?",
+      "book": "De quoi parle son livre sur l’achat immobilier ?",
+      "speaking": "Comment l’inviter à une conférence ?"
+    },
+    "errors": {
+      "rateLimit": "Trop de questions en peu de temps. Réessayez dans quelques minutes.",
+      "server": "L’assistant est momentanément indisponible. Utilisez le formulaire de contact."
+    }
   }
 }

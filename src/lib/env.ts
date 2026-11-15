@@ -46,6 +46,26 @@ export const contactRetentionMonths = int(process.env.CONTACT_RETENTION_MONTHS, 
 /** Audit log entries older than this are deleted (0 = kept forever). */
 export const auditLogRetentionMonths = int(process.env.AUDIT_LOG_RETENTION_MONTHS, 12)
 
+/**
+ * Azure OpenAI, used by the visitor assistant. The assistant only appears when
+ * the endpoint, the key and the deployment are all set.
+ */
+export const azureOpenAI = {
+  enabled: bool(process.env.ASSISTANT_ENABLED, true),
+  endpoint: process.env.AZURE_OPENAI_ENDPOINT ?? '',
+  apiKey: process.env.AZURE_OPENAI_API_KEY ?? '',
+  deployment: process.env.AZURE_OPENAI_DEPLOYMENT ?? '',
+  apiVersion: process.env.AZURE_OPENAI_API_VERSION ?? '2024-10-21',
+  maxTokens: int(process.env.AZURE_OPENAI_MAX_TOKENS, 500),
+  timeoutMs: int(process.env.AZURE_OPENAI_TIMEOUT_SECONDS, 30) * 1000,
+}
+
+/** Questions allowed per visitor and per window (anti-abuse, shared cost). */
+export const assistantRateLimit = {
+  max: int(process.env.ASSISTANT_RATE_LIMIT, 20),
+  windowMs: int(process.env.ASSISTANT_RATE_WINDOW_MINUTES, 15) * 60 * 1000,
+}
+
 export const analyticsConfig = {
   provider: process.env.NEXT_PUBLIC_ANALYTICS_PROVIDER ?? '',
   scriptUrl: process.env.NEXT_PUBLIC_ANALYTICS_SCRIPT_URL ?? '',

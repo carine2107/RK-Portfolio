@@ -812,5 +812,30 @@
       "businesses": "Unternehmen",
       "products": "Digitale Produkte"
     }
+  },
+  "assistant": {
+    "title": "Website-Assistent",
+    "lead": "Antworten aus den veröffentlichten Seiten",
+    "greeting": "Guten Tag, ich helfe Ihnen durch die Inhalte der Website: Fachgebiete, Erfahrungen, Bücher, Artikel und Unternehmen.",
+    "you": "Sie",
+    "assistant": "Assistent",
+    "open": "Assistent öffnen",
+    "close": "Assistent schließen",
+    "send": "Frage senden",
+    "inputLabel": "Ihre Frage",
+    "placeholder": "Stellen Sie Ihre Frage…",
+    "thinking": "Suche läuft…",
+    "sources": "Verwendete Seiten:",
+    "disclaimer": "Automatischer Assistent: Er kann sich irren und ersetzt kein Gespräch.",
+    "contactLink": "Romial Kenmogne schreiben",
+    "suggestions": {
+      "services": "Welche Leistungen bietet Romial Kenmogne an?",
+      "book": "Worum geht es in seinem Buch zum Immobilienkauf?",
+      "speaking": "Wie lädt man ihn zu einem Vortrag ein?"
+    },
+    "errors": {
+      "rateLimit": "Zu viele Fragen in kurzer Zeit. Bitte in einigen Minuten erneut versuchen.",
+      "server": "Der Assistent ist vorübergehend nicht verfügbar. Bitte das Kontaktformular nutzen."
+    }
   }
 }

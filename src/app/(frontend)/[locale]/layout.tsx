@@ -5,12 +5,14 @@ import { notFound } from 'next/navigation'
 import type { ReactNode } from 'react'
 
 import { Analytics } from '@/components/analytics/Analytics'
+import { AssistantWidget } from '@/components/assistant/AssistantWidget'
 import { Footer } from '@/components/layout/Footer'
 import { Header } from '@/components/layout/Header'
 import { ThemeScript } from '@/components/theme/ThemeScript'
 import { Notice } from '@/components/ui/Notices'
 import { locales, routing, type Locale } from '@/i18n/routing'
 import { getAppearance, getCms, getContentSource, getSiteSettings } from '@/lib/cms'
+import { assistantReady } from '@/lib/azure-openai'
 import { emailReady } from '@/lib/email-layout'
 import { analyticsConfig, analyticsEnabled } from '@/lib/env'
 import { cmsEnabled, isProduction, siteUrl } from '@/lib/env'
@@ -128,6 +130,8 @@ export default async function LocaleLayout({
             newsletterEnabled={emailReady()}
             consentSettings={analyticsConfig.provider === 'google' && analyticsEnabled}
           />
+          {/* Visitor assistant: rendered only when Azure OpenAI is configured. */}
+          {assistantReady() ? <AssistantWidget /> : null}
           <Analytics locale={locale as Locale} />
         </NextIntlClientProvider>
       </body>

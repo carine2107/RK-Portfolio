@@ -124,6 +124,14 @@ n'est simulé. Ils s'ouvrent quand les éléments ci-dessous sont réunis et que
 > « brouillon » : bandeau visible, `noindex`, exclusion du sitemap tant que la
 > case n'est pas décochée.
 
+## 8 bis. Assistant IA (facultatif)
+
+| #   | Élément                                                                                                                      | Priorité                    |
+| --- | ---------------------------------------------------------------------------------------------------------------------------- | --------------------------- |
+| 8.6 | **Ressource Azure OpenAI** en région européenne + déploiement d'un modèle de discussion : endpoint, clé, nom du déploiement  | 🟡                          |
+| 8.7 | Mention d'**Azure OpenAI (Microsoft)** comme sous-traitant dans la politique de confidentialité, avant d'activer l'assistant | 🔴 pour activer l'assistant |
+| 8.8 | Budget et alerte de coût dans Azure (quelques centimes pour des centaines de questions avec `gpt-4o-mini`)                   | 🟡                          |
+
 ## 9. E-mail et mesure d'audience
 
 | #   | Élément                                                                                                                               | Priorité                            |

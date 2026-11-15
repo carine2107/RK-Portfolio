@@ -812,5 +812,30 @@
       "businesses": "Businesses",
       "products": "Digital products"
     }
+  },
+  "assistant": {
+    "title": "Website assistant",
+    "lead": "Answers from the published pages",
+    "greeting": "Hello, I can guide you through the content of the site: expertise, experience, books, articles and businesses.",
+    "you": "You",
+    "assistant": "Assistant",
+    "open": "Open the assistant",
+    "close": "Close the assistant",
+    "send": "Send the question",
+    "inputLabel": "Your question",
+    "placeholder": "Ask your question…",
+    "thinking": "Looking it up…",
+    "sources": "Pages used:",
+    "disclaimer": "Automated assistant: it can be wrong and does not replace a conversation.",
+    "contactLink": "Write to Romial Kenmogne",
+    "suggestions": {
+      "services": "What does Romial Kenmogne help companies with?",
+      "book": "What is his book on buying property about?",
+      "speaking": "How can he be invited to speak?"
+    },
+    "errors": {
+      "rateLimit": "Too many questions in a short time. Please try again in a few minutes.",
+      "server": "The assistant is temporarily unavailable. Please use the contact form."
+    }
   }
 }

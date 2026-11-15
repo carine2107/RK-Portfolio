@@ -25,8 +25,10 @@ type IconName =
   | 'search'
   | 'close'
   | 'menu'
+  | 'chat'
 
 const paths: Record<IconName, React.ReactNode> = {
+  chat: <path d="M21 12a8 8 0 0 1-8 8H8l-5 3 1.2-4.2A8 8 0 1 1 21 12Z" />,
   chart: <path d="M4 20V10M10 20V4M16 20v-6M22 20H2" />,
   magnifier: (
     <>
