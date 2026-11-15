@@ -1,6 +1,15 @@
 import { describe, expect, it } from 'vitest'
 
-import { excerpt, highlightParts, normalizeQuery, searchTerms, termsWhere } from '@/lib/search'
+import {
+  anyTermWhere,
+  contentTerms,
+  excerpt,
+  highlightParts,
+  normalizeQuery,
+  rankByTerms,
+  searchTerms,
+  termsWhere,
+} from '@/lib/search'
 
 describe('site search', () => {
   it('normalizes the query and ignores what is too short', () => {
@@ -47,6 +56,54 @@ describe('site search', () => {
     expect(highlightParts('a+b (c)', ['(c)'])).toEqual([
       { text: 'a+b ', match: false },
       { text: '(c)', match: true },
+    ])
+  })
+})
+
+describe('context search for the assistant', () => {
+  it('drops the words of a question that no page carries', () => {
+    expect(contentTerms('Que propose Romial Kenmogne comme accompagnement ?')).toEqual([
+      'propose',
+      'romial',
+      'kenmogne',
+      'accompagnement',
+    ])
+    expect(contentTerms('Wie kann man ihn für einen Vortrag einladen?')).toEqual([
+      'vortrag',
+      'einladen',
+    ])
+    // A question made only of common words keeps them rather than searching nothing.
+    expect(contentTerms('what is this')).toEqual(['what', 'is', 'this'])
+  })
+
+  it('accepts a page carrying a single word, unlike the site search', () => {
+    expect(
+      anyTermWhere(['title', 'summary'], ['due', 'diligence'], [{ active: { equals: true } }]),
+    ).toEqual({
+      and: [
+        { active: { equals: true } },
+        {
+          or: [
+            { title: { like: 'due' } },
+            { summary: { like: 'due' } },
+            { title: { like: 'diligence' } },
+            { summary: { like: 'diligence' } },
+          ],
+        },
+      ],
+    })
+  })
+
+  it('puts the pages matching the most words first, keeping the original order on a tie', () => {
+    const entries = [
+      { title: 'Financement', excerpt: 'Immobilier' },
+      { title: 'Due diligence financière', excerpt: 'Comptes' },
+      { title: 'Diligence', excerpt: 'Audit' },
+    ]
+    expect(rankByTerms(entries, ['due', 'diligence']).map((entry) => entry.title)).toEqual([
+      'Due diligence financière',
+      'Diligence',
+      'Financement',
     ])
   })
 })

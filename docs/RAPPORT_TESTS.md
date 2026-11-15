@@ -10,7 +10,7 @@ Environnement : Windows 11, Node 24.15, PostgreSQL 16 (Docker), build de
 
 | Suite                            | Périmètre                                                               | Résultat                             |
 | -------------------------------- | ----------------------------------------------------------------------- | ------------------------------------ |
-| Tests unitaires (Vitest)         | Traductions, contrastes, moteur d'apparence, validation, SEO, anti-abus | **212 / 212 réussis**                |
+| Tests unitaires (Vitest)         | Traductions, contrastes, moteur d'apparence, validation, SEO, anti-abus | **215 / 215 réussis**                |
 | Tests end-to-end (Playwright)    | 132 scénarios × 4 configurations                                        | **460 réussis, 68 ignorés, 0 échec** |
 | E2E en CI (17/09/2026)           | Chromium + mobile, base jetable, build de production                    | **273 réussis, 3 ignorés, 0 échec**  |
 | Compilation TypeScript (`tsc`)   | Mode strict, tout le projet                                             | **0 erreur**                         |
@@ -66,7 +66,7 @@ node tests/visual/capture.mjs test-results/visual
 
 ---
 
-## 2. Tests unitaires (212)
+## 2. Tests unitaires (215)
 
 | Fichier                                               | Ce qui est vérifié                                                                                                                                                                                                                                                                                                                                                                                         |
 | ----------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

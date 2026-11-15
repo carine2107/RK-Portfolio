@@ -4,7 +4,14 @@ import type { CollectionSlug, Where } from 'payload'
 
 import type { Locale } from '@/i18n/routing'
 import { getCms } from '@/lib/cms'
-import { excerpt, searchTerms, termsWhere } from '@/lib/search'
+import {
+  anyTermWhere,
+  contentTerms,
+  excerpt,
+  rankByTerms,
+  searchTerms,
+  termsWhere,
+} from '@/lib/search'
 
 export type SearchGroup =
   | 'insights'
@@ -146,6 +153,60 @@ export async function searchSite(query: string, locale: Locale): Promise<SearchR
         console.warn(
           `[search] ${source.collection} unavailable:`,
           error instanceof Error ? error.message : 'unknown error',
+        )
+        return { group: source.group, results: [] }
+      }
+    }),
+  )
+  return groups.filter((group) => group.results.length > 0)
+}
+
+/**
+ * Pages for the assistant: a question is a sentence, not a list of keywords,
+ * so common words are dropped and a page matching **one** meaningful word is
+ * kept, the best matches first. Same permissions as the public search.
+ */
+export async function searchSiteForAssistant(
+  query: string,
+  locale: Locale,
+  perGroup = 4,
+): Promise<SearchResults> {
+  const terms = contentTerms(query)
+  const cms = await getCms()
+  if (!cms || terms.length === 0) return []
+
+  const groups = await Promise.all(
+    SOURCES.map(async (source) => {
+      try {
+        const found = await cms.find({
+          collection: source.collection,
+          locale,
+          depth: 0,
+          limit: perGroup * 3,
+          overrideAccess: false,
+          where: anyTermWhere(source.fields, terms, [
+            { _status: { equals: 'published' } },
+            ...(source.extra?.() ?? []),
+          ]) as Where,
+        })
+        const results = found.docs.flatMap((doc) => {
+          const record = doc as unknown as Record<string, unknown>
+          const slug = text(record.slug)
+          const title = text(record[source.titleField])
+          if (!title || (!slug && source.group !== 'businesses')) return []
+          return [
+            {
+              id: `${source.group}-${String(record.id)}`,
+              title,
+              excerpt: excerpt(text(record[source.textField]), terms, 260),
+              href: source.href(slug),
+            },
+          ]
+        })
+        return { group: source.group, results: rankByTerms(results, terms).slice(0, perGroup) }
+      } catch (error) {
+        console.warn(
+          `[assistant] ${source.collection} unavailable: ${error instanceof Error ? error.message : 'unknown error'}`,
         )
         return { group: source.group, results: [] }
       }

@@ -25,7 +25,7 @@ export function completionsUrl(): string {
  * Answer of the model, or null when Azure cannot be reached or answers with an
  * error — the visitor is then told the assistant is unavailable.
  */
-export async function chatCompletion(messages: ChatMessage[]): Promise<string | null> {
+export async function chatCompletion(messages: ChatMessage[], attempt = 1): Promise<string | null> {
   if (!assistantReady()) return null
 
   const controller = new AbortController()
@@ -47,6 +47,15 @@ export async function chatCompletion(messages: ChatMessage[]): Promise<string | 
       // The body can carry the deployment name and quota details: log the
       // status only, never the request or the visitor's question.
       console.error(`[assistant] Azure OpenAI answered ${response.status}.`)
+      // 429 (deployment busy) and 5xx are worth one retry: Azure asks for a
+      // wait through Retry-After, capped so the visitor is not left hanging.
+      const retriable = response.status === 429 || response.status >= 500
+      if (retriable && attempt === 1) {
+        const after = Number.parseInt(response.headers.get('retry-after') ?? '', 10)
+        const waitMs = Math.min(Number.isFinite(after) ? after * 1000 : 1500, 5000)
+        await new Promise((resolve) => setTimeout(resolve, waitMs))
+        return chatCompletion(messages, attempt + 1)
+      }
       return null
     }
     const body = (await response.json()) as {

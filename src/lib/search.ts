@@ -17,13 +17,243 @@ export function normalizeQuery(raw: unknown): string {
 }
 
 /** Distinct words of at least two characters, six at most. */
-export function searchTerms(query: string): string[] {
+export function searchTerms(query: string, max = MAX_TERMS): string[] {
   const words = query
     .toLowerCase()
     .split(' ')
     .map((word) => word.replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu, ''))
     .filter((word) => word.length >= MIN_QUERY_LENGTH)
-  return [...new Set(words)].slice(0, MAX_TERMS)
+  return [...new Set(words)].slice(0, max)
+}
+
+/**
+ * Words carried by a question but by no title or summary. Removed before the
+ * assistant looks for pages, so "Que propose Romial Kenmogne ?" searches
+ * "propose" rather than failing on "que".
+ */
+const fold = (value: string) => value.toLowerCase()
+
+const STOPWORDS = new Set([
+  // French
+  'au',
+  'aux',
+  'avec',
+  'ce',
+  'ces',
+  'dans',
+  'de',
+  'des',
+  'du',
+  'elle',
+  'en',
+  'est',
+  'et',
+  'eux',
+  'il',
+  'ils',
+  'je',
+  'la',
+  'le',
+  'les',
+  'leur',
+  'lui',
+  'ma',
+  'mais',
+  'me',
+  'mes',
+  'moi',
+  'mon',
+  'ne',
+  'nos',
+  'notre',
+  'nous',
+  'on',
+  'ou',
+  'par',
+  'pas',
+  'pour',
+  'qu',
+  'que',
+  'qui',
+  'quoi',
+  'sa',
+  'se',
+  'ses',
+  'son',
+  'sur',
+  'ta',
+  'te',
+  'tes',
+  'toi',
+  'ton',
+  'tu',
+  'un',
+  'une',
+  'vos',
+  'votre',
+  'vous',
+  'comme',
+  'quel',
+  'quelle',
+  'quels',
+  'quelles',
+  'combien',
+  'comment',
+  'pourquoi',
+  'quand',
+  'faire',
+  'fait',
+  'sont',
+  'etre',
+  'être',
+  'avoir',
+  'plus',
+  'tout',
+  'tous',
+  'toute',
+  'toutes',
+  // German
+  'der',
+  'die',
+  'das',
+  'den',
+  'dem',
+  'des',
+  'ein',
+  'eine',
+  'einen',
+  'einem',
+  'einer',
+  'und',
+  'oder',
+  'aber',
+  'auch',
+  'auf',
+  'aus',
+  'bei',
+  'bis',
+  'durch',
+  'für',
+  'fur',
+  'gegen',
+  'ich',
+  'ihr',
+  'ist',
+  'mit',
+  'nach',
+  'nicht',
+  'noch',
+  'nur',
+  'sie',
+  'sind',
+  'über',
+  'uber',
+  'um',
+  'von',
+  'vor',
+  'was',
+  'wer',
+  'wie',
+  'wo',
+  'warum',
+  'wann',
+  'welche',
+  'welcher',
+  'kann',
+  'sich',
+  'haben',
+  'sein',
+  'man',
+  'ihn',
+  'ihm',
+  'ihnen',
+  'als',
+  'am',
+  'im',
+  'zu',
+  'zum',
+  'zur',
+  'gibt',
+  'soll',
+  ,
+  ,
+  ,
+  ,
+  ,
+  ,
+  ,
+  ,
+  ,
+  ,
+  ,
+  ,
+  ,
+  ,
+  // English
+  'is',
+  'in',
+  'of',
+  'on',
+  'to',
+  'at',
+  'as',
+  'by',
+  'it',
+  'be',
+  'or',
+  'an',
+  'was',
+  'were',
+  'about',
+  'and',
+  'are',
+  'can',
+  'did',
+  'does',
+  'for',
+  'from',
+  'has',
+  'have',
+  'how',
+  'into',
+  'its',
+  'may',
+  'not',
+  'does',
+  'the',
+  'their',
+  'them',
+  'there',
+  'they',
+  'this',
+  'that',
+  'what',
+  'when',
+  'where',
+  'which',
+  'who',
+  'why',
+  'will',
+  'with',
+  'you',
+  'your',
+  'does',
+  'could',
+  'would',
+  'should',
+  'tell',
+  'give',
+  'need',
+  'want',
+])
+
+/** Terms worth searching: meaningful words first, the raw ones as a fallback. */
+export function contentTerms(query: string): string[] {
+  // Common words are dropped **before** the limit, so a full sentence does not
+  // spend its budget on "wie", "kann" or "que".
+  const terms = searchTerms(query, MAX_TERMS * 4)
+  const kept = terms.filter((term) => !STOPWORDS.has(term))
+  return (kept.length > 0 ? kept : terms).slice(0, MAX_TERMS)
 }
 
 type Condition = Record<string, unknown>
@@ -38,7 +268,30 @@ export function termsWhere(fields: string[], terms: string[], extra: Condition[]
   }
 }
 
-const fold = (value: string) => value.toLowerCase()
+/** At least one term in one of the fields: used to find context, not to list results. */
+export function anyTermWhere(fields: string[], terms: string[], extra: Condition[] = []) {
+  return {
+    and: [
+      ...extra,
+      { or: terms.flatMap((term) => fields.map((field) => ({ [field]: { like: term } }))) },
+    ],
+  }
+}
+
+/** Pages that match the most words first; ties keep the order of the source. */
+export function rankByTerms<T extends { title: string; excerpt: string }>(
+  entries: T[],
+  terms: string[],
+): T[] {
+  const score = (entry: T) => {
+    const haystack = fold(`${entry.title} ${entry.excerpt}`)
+    return terms.filter((term) => haystack.includes(fold(term))).length
+  }
+  return entries
+    .map((entry, index) => ({ entry, index, score: score(entry) }))
+    .sort((a, b) => b.score - a.score || a.index - b.index)
+    .map((item) => item.entry)
+}
 
 /** Short excerpt around the first matching term, with ellipses where cut. */
 export function excerpt(text: string, terms: string[], length = 180): string {

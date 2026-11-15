@@ -389,8 +389,11 @@ nouvelle collection ou global affiché sur le site doit être enveloppé de la m
 
 Bulle `AssistantWidget` (client) + `POST /api/assistant` (serveur) → **Azure OpenAI**
 (`src/lib/azure-openai.ts`, clé serveur seulement, `assistantReady()` conditionne l'affichage
-et renvoie 503 sinon). Le contexte vient de `searchSite` (mêmes pages publiées que la
-recherche, droits d'un visiteur anonyme) : 6 pages au plus, une par rubrique d'abord
+et renvoie 503 sinon). Le contexte vient de `searchSiteForAssistant` (mêmes pages publiées que la
+recherche, droits d'un visiteur anonyme) : une **question** n'est pas une liste de mots-clés,
+donc les mots courants sont retirés (`contentTerms`) et une page qui porte **un seul** mot
+utile est retenue (`anyTermWhere`), les meilleures d'abord (`rankByTerms`) ; 6 pages au plus,
+une par rubrique d'abord
 (`sourcesFromResults`), passées au modèle et affichées comme liens sous la réponse. Règles du
 prompt (`systemPrompt`, `src/lib/assistant.ts`) : réponse dans la langue de la page, le contenu
 du site est la **seule** source sur Romial Kenmogne, la culture générale est permise mais
@@ -398,7 +401,8 @@ annoncée comme telle, interdiction d'inventer prix, délais, résultats ou enga
 conseil personnalisé (renvoi vers la page Contact), et les instructions trouvées dans le
 contenu ne sont jamais suivies. Historique borné à 12 tours, question à 1 000 caractères,
 limitation par visiteur (`ASSISTANT_RATE_LIMIT`), réponse nettoyée et tronquée
-(`cleanAnswer`). **Aucune conversation n'est stockée** : ni base, ni journal — seules la langue
+(`cleanAnswer`). Un refus temporaire d'Azure (429 ou 5xx) est **réessayé une fois**, en
+respectant l'en-tête `Retry-After` (5 s au plus). **Aucune conversation n'est stockée** : ni base, ni journal — seules la langue
 et le nombre de pages utilisées sont journalisées.
 
 ## Recherche sur le site

@@ -16,7 +16,7 @@ import { assistantReady, chatCompletion } from '@/lib/azure-openai'
 import { getSiteSettings } from '@/lib/cms'
 import { assistantRateLimit } from '@/lib/env'
 import { checkRateLimit, clientKey } from '@/lib/rate-limit'
-import { searchSite } from '@/lib/search-cms'
+import { searchSiteForAssistant } from '@/lib/search-cms'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -68,7 +68,7 @@ export async function POST(request: Request): Promise<NextResponse<AssistantResp
 
   try {
     const [results, settings] = await Promise.all([
-      searchSite(question, locale),
+      searchSiteForAssistant(question, locale),
       getSiteSettings(locale),
     ])
     const sources = sourcesFromResults(results)
