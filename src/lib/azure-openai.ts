@@ -25,7 +25,11 @@ export function completionsUrl(): string {
  * Answer of the model, or null when Azure cannot be reached or answers with an
  * error — the visitor is then told the assistant is unavailable.
  */
-export async function chatCompletion(messages: ChatMessage[], attempt = 1): Promise<string | null> {
+export async function chatCompletion(
+  messages: ChatMessage[],
+  attempt = 1,
+  maxTokens = azureOpenAI.maxTokens,
+): Promise<string | null> {
   if (!assistantReady()) return null
 
   const controller = new AbortController()
@@ -36,7 +40,7 @@ export async function chatCompletion(messages: ChatMessage[], attempt = 1): Prom
       headers: { 'Content-Type': 'application/json', 'api-key': azureOpenAI.apiKey },
       body: JSON.stringify({
         messages,
-        max_completion_tokens: azureOpenAI.maxTokens,
+        max_completion_tokens: maxTokens,
         temperature: 0.2,
         top_p: 0.9,
         user: 'website-visitor',
@@ -54,15 +58,30 @@ export async function chatCompletion(messages: ChatMessage[], attempt = 1): Prom
         const after = Number.parseInt(response.headers.get('retry-after') ?? '', 10)
         const waitMs = Math.min(Number.isFinite(after) ? after * 1000 : 1500, 5000)
         await new Promise((resolve) => setTimeout(resolve, waitMs))
-        return chatCompletion(messages, attempt + 1)
+        return chatCompletion(messages, attempt + 1, maxTokens)
       }
       return null
     }
     const body = (await response.json()) as {
-      choices?: { message?: { content?: string } }[]
+      choices?: { message?: { content?: string }; finish_reason?: string }[]
+      usage?: { completion_tokens?: number; total_tokens?: number }
     }
-    const answer = body.choices?.[0]?.message?.content
-    return typeof answer === 'string' && answer.trim() ? answer : null
+    const choice = body.choices?.[0]
+    const answer = choice?.message?.content
+    if (typeof answer === 'string' && answer.trim()) return answer
+
+    // An empty answer used to fail silently. It happens when the budget is
+    // spent before the first word (reasoning models, long context) or when
+    // Azure filters the answer: both need to be visible in the logs.
+    const reason = choice?.finish_reason ?? 'none'
+    console.error(
+      `[assistant] Azure OpenAI returned an empty answer (finish_reason=${reason}, completion_tokens=${body.usage?.completion_tokens ?? '?'}, max=${maxTokens}).`,
+    )
+    if (reason === 'length' && attempt === 1) {
+      // Give the model room once, rather than leaving the visitor with nothing.
+      return chatCompletion(messages, attempt + 1, Math.min(maxTokens * 3, 2000))
+    }
+    return null
   } catch (error) {
     console.error(
       '[assistant] Azure OpenAI unreachable:',
